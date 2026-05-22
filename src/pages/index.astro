@@ -278,6 +278,10 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         return plantKind(plant);
       }
 
+      function plantImage(plant) {
+        return plantArt(plant) === "blackberry" ? "/plant-art/blackberry.webp" : "";
+      }
+
       function scoreBreakdown(plant, inputs) {
         const userZone = zoneToNumber(inputs.zone);
         const minZone = zoneToNumber(plant.zones[0]);
@@ -482,6 +486,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         const item = document.createElement("li");
         const kind = plantKind(plant);
         const art = plantArt(plant);
+        const image = plantImage(plant);
         item.className = `result-card ${index === 0 ? "top-card" : ""} ${kind}-card ${art}-art`;
 
         const partner = partners[plant.partner] ?? partners.amazon;
@@ -490,7 +495,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         item.innerHTML = `
           <figure class="plant-visual ${kind} ${art}" aria-hidden="true">
             <span class="rank">${index + 1}</span>
-            <span class="plant-visual-icon"></span>
+            ${image ? `<img class="plant-photo" src="${image}" alt="" loading="lazy" decoding="async" />` : `<span class="plant-visual-icon"></span>`}
           </figure>
           <div class="result-copy">
             <div class="result-title">

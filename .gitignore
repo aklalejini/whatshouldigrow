@@ -5,4 +5,5 @@ dist/
 .tmp-npm/
 qa-growwell*.png
 qa-whatshouldigrow*.png
+qa-blackberry*.png
 .DS_Store
