@@ -15,6 +15,12 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
       name="description"
       content="Enter a ZIP code and growing conditions to get ranked plant recommendations with nursery links."
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,750&family=Inter:wght@400;500;650;750;850&display=swap"
+      rel="stylesheet"
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>What Should I Grow | ZIP-Based Plant Matcher</title>
   </head>
@@ -28,29 +34,24 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
           </div>
           <h1 id="app-title">What should I grow here?</h1>
           <p>
-            A fast, opinionated matcher for edible yards, pollinator patches, and no-fuss ornamentals.
-            It ranks {plantCount} plants by hardiness zone, sun, soil, water, and what you actually want from the space.
+            Enter your ZIP code and a few garden conditions. Get a ranked field-guide of edible,
+            pollinator, and ornamental plants that are actually worth considering.
           </p>
-          <div class="codex-stats" aria-label="What Should I Grow summary">
-            <span><strong>{plantCount}</strong> plant entries</span>
-            <span><strong>USDA</strong> zone lookup</span>
-            <span><strong>12</strong> ranked picks</span>
-          </div>
-          <div class="visual-strip" aria-hidden="true">
-            <span class="plant-tile fruit"></span>
-            <span class="plant-tile veg"></span>
-            <span class="plant-tile flower"></span>
-            <span class="plant-tile shrub"></span>
-          </div>
+          <figure class="hero-plate" aria-hidden="true">
+            <img src="/botanical-plate.svg" alt="" />
+          </figure>
         </div>
 
         <form class="matcher-panel" id="matcher-form">
           <div class="form-heading">
             <p class="eyebrow">Plot conditions</p>
-            <h2>Describe your garden.</h2>
+            <h2>Start with your place.</h2>
           </div>
-          <div class="field-row">
-            <label for="zip">ZIP code</label>
+          <div class="zip-row">
+            <div>
+              <label for="zip">ZIP code</label>
+              <p>Hardiness zone anchors the ranking.</p>
+            </div>
             <input
               id="zip"
               name="zip"
@@ -61,6 +62,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
               placeholder="75001"
               required
             />
+            <div id="zone-preview" class="zone-preview" hidden></div>
           </div>
 
           <fieldset>
@@ -193,6 +195,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         <div id="status" class="status"></div>
         <ol id="results" class="results-grid"></ol>
         <div class="results-actions">
+          <button id="save-list" class="save-list-button" type="button" hidden>Save this list</button>
           <button id="see-more" class="see-more-button" type="button" hidden>See more results</button>
         </div>
       </section>
@@ -209,15 +212,20 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
       const zoneNoteEl = document.getElementById("zone-note");
       const resultsEl = document.getElementById("results");
       const seeMoreEl = document.getElementById("see-more");
+      const saveListEl = document.getElementById("save-list");
+      const zipEl = document.getElementById("zip");
+      const zonePreviewEl = document.getElementById("zone-preview");
       let currentRanked = [];
       let currentInputs = null;
       let visibleCount = 12;
+      const zoneCache = new Map();
+      let zoneLookupTimer = null;
 
       const waterRank = { low: 1, medium: 2, high: 3 };
       const waterCopy = {
-        low: "drought-tolerant once established",
-        medium: "fits normal garden watering",
-        high: "likes steady moisture"
+        low: "it can coast through dry spells once established",
+        medium: "normal garden watering is plenty",
+        high: "it appreciates steady moisture"
       };
 
       function zoneToNumber(zone) {
@@ -227,10 +235,12 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
       }
 
       async function lookupZone(zip) {
+        if (zoneCache.has(zip)) return zoneCache.get(zip);
         const response = await fetch(`https://phzmapi.org/${zip}.json`);
         if (!response.ok) throw new Error("Zone lookup failed");
         const data = await response.json();
         if (!data.zone) throw new Error("Zone missing from lookup");
+        zoneCache.set(zip, data);
         return data;
       }
 
@@ -247,6 +257,19 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
 
       function formatList(values) {
         return values.map((value) => value.replace("-", " ")).join(", ");
+      }
+
+      function sentenceCase(text) {
+        return text ? text.charAt(0).toUpperCase() + text.slice(1) : "";
+      }
+
+      function plantKind(plant) {
+        const type = plant.type.toLowerCase();
+        if (type.includes("flower") || type.includes("herb") || type.includes("grass")) return "bloom";
+        if (type.includes("vegetable")) return "vegetable";
+        if (type.includes("vine")) return "vine";
+        if (type.includes("shrub") || type.includes("cane")) return "shrub";
+        return "fruit";
       }
 
       function scoreBreakdown(plant, inputs) {
@@ -385,12 +408,24 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
       }
 
       function explainPlant(plant, inputs) {
-        const bits = [`hardy to your zone ${inputs.zone}`];
-        bits.push(plant.soils.includes(inputs.soil) ? `tolerates ${inputs.soil}` : `prefers ${plant.soils.join(" or ")} soil`);
-        bits.push(waterCopy[plant.water]);
-        if (plant.sun.includes(inputs.sun)) bits.push(`works in ${inputs.sun} sun`);
-        bits.push(plant.harvest);
-        return `${plant.name} - ${bits.join(", ")}.`;
+        const soilLine = plant.soils.includes(inputs.soil)
+          ? `${sentenceCase(inputs.soil)} soil is fine`
+          : `Best in ${plant.soils.join(" or ")} soil`;
+        const sunLine = plant.sun.includes(inputs.sun)
+          ? inputs.sun === "full" ? "give it sun" : `${inputs.sun} sun works`
+          : `It would rather have ${formatList(plant.sun)} sun`;
+        return `Easy in zone ${inputs.zone}. ${soilLine}; ${waterCopy[plant.water]}; ${sunLine}. ${sentenceCase(plant.harvest)}.`;
+      }
+
+      function whyThisWon(plant, inputs) {
+        const reasons = [];
+        if (plant.goals.includes(inputs.goal)) reasons.push(`it matches your ${inputs.goal} goal`);
+        if (plant.sun.includes(inputs.sun)) reasons.push(`${inputs.sun} sun suits it`);
+        if (plant.soils.includes(inputs.soil)) reasons.push(`${inputs.soil} soil works`);
+        if (plant.water === inputs.water) reasons.push(`${inputs.water} watering is right`);
+        return reasons.length
+          ? `Why this won: ${reasons.slice(0, 3).join(", ")}.`
+          : "Why this won: it has the strongest zone and condition fit in this search.";
       }
 
       function renderFitRows(details) {
@@ -439,26 +474,30 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
       function createResultItem(entry, index, inputs) {
         const { plant, score } = entry;
         const item = document.createElement("li");
-        item.className = "result-card";
+        const kind = plantKind(plant);
+        item.className = `result-card ${index === 0 ? "top-card" : ""} ${kind}-card`;
 
         const partner = partners[plant.partner] ?? partners.amazon;
         const breakdown = scoreBreakdown(plant, inputs);
         const fit = overallFit(score);
         item.innerHTML = `
-          <div class="rank">${index + 1}</div>
+          <figure class="plant-visual ${kind}" aria-hidden="true">
+            <span class="rank">${index + 1}</span>
+            <span class="plant-visual-icon"></span>
+          </figure>
           <div class="result-copy">
             <div class="result-title">
               <h3>${plant.name}</h3>
               <span>${plant.type}</span>
             </div>
-            <div class="overall-fit ${fit.tone}" aria-label="Overall fit ${fit.percent} percent, ${fit.label}">
+            <div class="overall-fit ${fit.tone}" style="--fit: ${fit.percent}%" aria-label="Overall fit ${fit.percent} percent, ${fit.label}">
+              <div class="fit-ring" aria-hidden="true"><span>${fit.percent}</span></div>
               <div>
                 <span>Overall fit</span>
                 <strong>${fit.label}</strong>
               </div>
-              <meter min="0" max="100" value="${fit.percent}">${fit.percent}%</meter>
-              <em>${fit.percent}%</em>
             </div>
+            ${index === 0 ? `<p class="winner-note">${whyThisWon(plant, inputs)}</p>` : ""}
             <p>${explainPlant(plant, inputs)}</p>
             <div class="trait-row">
               ${plant.traits.slice(0, 2).map((trait) => `<span>${trait}</span>`).join("")}
@@ -533,12 +572,53 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         currentInputs = inputs;
         visibleCount = Math.min(12, currentRanked.length);
         statusEl.textContent = `${currentRanked.length} ranked matches found. Showing the strongest ${visibleCount}.`;
+        saveListEl.hidden = false;
         renderVisibleResults();
       }
 
       seeMoreEl.addEventListener("click", () => {
         visibleCount = Math.min(visibleCount + 12, currentRanked.length);
         renderVisibleResults();
+      });
+
+      saveListEl.addEventListener("click", () => {
+        if (!currentInputs || currentRanked.length === 0) return;
+        const lines = [
+          `What Should I Grow - picks for ${currentInputs.zip} / zone ${currentInputs.zone}`,
+          "",
+          ...currentRanked.slice(0, visibleCount).map((entry, index) => {
+            const fit = overallFit(entry.score);
+            return `${index + 1}. ${entry.plant.name} (${fit.percent}% ${fit.label}) - ${explainPlant(entry.plant, currentInputs)}`;
+          })
+        ];
+        const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `what-should-i-grow-${currentInputs.zip}.txt`;
+        link.click();
+        URL.revokeObjectURL(url);
+      });
+
+      zipEl.addEventListener("input", () => {
+        const zip = zipEl.value.trim();
+        clearTimeout(zoneLookupTimer);
+        zonePreviewEl.hidden = true;
+        zonePreviewEl.textContent = "";
+        zonePreviewEl.classList.remove("is-error");
+        if (!/^\d{5}$/.test(zip)) return;
+        zonePreviewEl.hidden = false;
+        zonePreviewEl.textContent = "Checking USDA zone...";
+        zoneLookupTimer = setTimeout(async () => {
+          try {
+            const zoneData = await lookupZone(zip);
+            zonePreviewEl.textContent = `Zone ${zoneData.zone} detected`;
+            zonePreviewEl.classList.remove("is-error");
+          } catch (error) {
+            zonePreviewEl.textContent = "Zone lookup needs another try";
+            zonePreviewEl.classList.add("is-error");
+          }
+        }, 350);
       });
 
       form.addEventListener("submit", async (event) => {
@@ -555,6 +635,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         statusEl.textContent = "Looking up your USDA hardiness zone...";
         resultsEl.replaceChildren();
         seeMoreEl.hidden = true;
+        saveListEl.hidden = true;
 
         try {
           const zoneData = await lookupZone(zip);

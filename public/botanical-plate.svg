@@ -1,0 +1,28 @@
+<svg width="520" height="620" viewBox="0 0 520 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="42" y="30" width="392" height="520" rx="28" fill="#FFFDF8"/>
+  <rect x="58" y="46" width="360" height="488" rx="20" stroke="#DDE4D2" stroke-width="2"/>
+  <path d="M258 502C255 452 252 403 246 354C239 299 225 245 200 195" stroke="#27583A" stroke-width="6" stroke-linecap="round"/>
+  <path d="M248 360C214 350 184 329 164 300C207 294 237 310 248 360Z" fill="#AFCB9F" stroke="#27583A" stroke-width="4"/>
+  <path d="M236 278C200 268 171 244 154 210C198 208 229 224 236 278Z" fill="#DCE9D2" stroke="#27583A" stroke-width="4"/>
+  <path d="M257 397C300 383 330 355 350 315C299 315 267 336 257 397Z" fill="#C9DDBE" stroke="#27583A" stroke-width="4"/>
+  <path d="M229 224C263 207 285 179 296 137C252 147 227 172 229 224Z" fill="#BCD4AE" stroke="#27583A" stroke-width="4"/>
+  <path d="M272 310C315 292 342 262 354 218C306 225 274 251 272 310Z" fill="#EEF4E9" stroke="#27583A" stroke-width="4"/>
+  <circle cx="183" cy="178" r="34" fill="#DF7B4F"/>
+  <circle cx="207" cy="162" r="22" fill="#F2A15F"/>
+  <circle cx="190" cy="190" r="12" fill="#BF5C3F"/>
+  <path d="M183 144C179 132 172 124 160 120C171 113 184 119 188 132" stroke="#27583A" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="360" cy="194" r="30" fill="#D8AD55"/>
+  <circle cx="344" cy="178" r="11" fill="#F3CC73"/>
+  <circle cx="369" cy="206" r="9" fill="#B88935"/>
+  <path d="M360 164C362 151 369 142 381 136C367 132 355 139 352 153" stroke="#27583A" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="355" cy="362" r="28" fill="#BF5C3F"/>
+  <circle cx="340" cy="350" r="10" fill="#DF7B4F"/>
+  <circle cx="365" cy="373" r="8" fill="#8F3F2C"/>
+  <path d="M356 334C361 323 370 316 383 315C373 306 359 309 353 321" stroke="#27583A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M112 482C124 462 144 451 168 451C156 472 136 482 112 482Z" fill="#EEF4E9" stroke="#77835B" stroke-width="3"/>
+  <path d="M112 482C139 468 165 463 191 466" stroke="#77835B" stroke-width="3" stroke-linecap="round"/>
+  <path d="M310 490C324 468 348 457 376 460C360 482 337 492 310 490Z" fill="#F6EFE0" stroke="#BF5C3F" stroke-width="3"/>
+  <path d="M310 490C339 477 365 474 390 479" stroke="#BF5C3F" stroke-width="3" stroke-linecap="round"/>
+  <text x="90" y="88" fill="#77835B" font-family="Georgia, serif" font-size="18" letter-spacing="2">FIELD NOTES</text>
+  <text x="92" y="516" fill="#A6AF9B" font-family="Arial, sans-serif" font-size="13">edible yards / pollinator patches</text>
+</svg>
