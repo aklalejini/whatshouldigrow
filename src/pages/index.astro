@@ -495,7 +495,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         item.innerHTML = `
           <figure class="plant-visual ${kind} ${art}" aria-hidden="true">
             <span class="rank">${index + 1}</span>
-            ${image ? `<img class="plant-photo" src="${image}" alt="" loading="lazy" decoding="async" />` : `<span class="plant-visual-icon"></span>`}
+            ${image ? `<img class="plant-photo" src="${image}" alt="" decoding="async" />` : `<span class="plant-visual-icon"></span>`}
           </figure>
           <div class="result-copy">
             <div class="result-title">
