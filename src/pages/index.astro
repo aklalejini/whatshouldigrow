@@ -272,6 +272,12 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         return "fruit";
       }
 
+      function plantArt(plant) {
+        const identity = `${plant.id} ${plant.name} ${plant.query ?? ""}`.toLowerCase();
+        if (identity.includes("blackberry")) return "blackberry";
+        return plantKind(plant);
+      }
+
       function scoreBreakdown(plant, inputs) {
         const userZone = zoneToNumber(inputs.zone);
         const minZone = zoneToNumber(plant.zones[0]);
@@ -475,13 +481,14 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         const { plant, score } = entry;
         const item = document.createElement("li");
         const kind = plantKind(plant);
-        item.className = `result-card ${index === 0 ? "top-card" : ""} ${kind}-card`;
+        const art = plantArt(plant);
+        item.className = `result-card ${index === 0 ? "top-card" : ""} ${kind}-card ${art}-art`;
 
         const partner = partners[plant.partner] ?? partners.amazon;
         const breakdown = scoreBreakdown(plant, inputs);
         const fit = overallFit(score);
         item.innerHTML = `
-          <figure class="plant-visual ${kind}" aria-hidden="true">
+          <figure class="plant-visual ${kind} ${art}" aria-hidden="true">
             <span class="rank">${index + 1}</span>
             <span class="plant-visual-icon"></span>
           </figure>
