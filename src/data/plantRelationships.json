@@ -19,18 +19,18 @@
     "id": "pepper-basil-marigold",
     "type": "companion",
     "strength": "medium",
-    "sourceMatch": ["pepper"],
+    "sourceMatch": ["pepper", "eggplant"],
     "sourceExclude": ["peppermint"],
     "targetMatch": ["basil", "marigold"],
-    "note": "Peppers share tomato-like growing conditions and benefit from nearby flowering or aromatic companions in mixed beds."
+    "note": "Peppers and eggplants share tomato-like growing conditions and pair cleanly with nearby flowering or aromatic companions in mixed beds."
   },
   {
-    "id": "cucumber-flower-herb-strip",
+    "id": "cucurbit-flower-herb-strip",
     "type": "companion",
     "strength": "medium",
-    "sourceMatch": ["cucumber"],
+    "sourceMatch": ["cucumber", "squash", "zucchini", "pumpkin", "melon", "watermelon", "cantaloupe", "butternut", "delicata", "kabocha", "crookneck"],
     "targetMatch": ["dill", "borage", "nasturtium", "calendula"],
-    "note": "Cucumbers need steady pollinator traffic, so nearby flowering herbs and annuals are useful bed neighbors."
+    "note": "Cucumbers, squash, and melons need steady pollinator traffic, so nearby flowering herbs and annuals are useful bed neighbors."
   },
   {
     "id": "strawberry-borage",
@@ -45,8 +45,8 @@
     "id": "three-sisters-style",
     "type": "guild",
     "strength": "high",
-    "plantMatch": ["corn", "bean", "squash"],
-    "plantExclude": ["cornelian"],
+    "plantMatch": ["corn", "pole bean", "scarlet runner", "squash", "zucchini", "butternut", "delicata", "kabocha", "crookneck"],
+    "plantExclude": ["cornelian", "chayote", "bush bean", "lima bean"],
     "note": "Corn, climbing beans, and squash can work as a warm-season guild when spacing, timing, and fertility are managed carefully."
   },
   {
@@ -77,23 +77,49 @@
     "type": "understory",
     "strength": "medium",
     "sourceMatch": ["apple", "pear", "peach", "plum", "cherry"],
-    "sourceExclude": ["cherry tomato", "cherry laurel"],
+    "sourceExclude": ["cherry tomato", "cherry laurel", "prickly pear"],
     "targetMatch": ["chives", "garlic", "yarrow", "calendula"],
     "note": "Low alliums and long-blooming flowers can form a simple orchard-edge understory without competing heavily with young trees."
   },
   {
-    "id": "native-pollinator-patch",
+    "id": "pollinator-patch",
     "type": "guild",
     "strength": "medium",
-    "plantMatch": ["coneflower", "bee balm", "yarrow", "sunflower", "milkweed", "rudbeckia", "black-eyed susan"],
-    "note": "Repeated native and pollinator-friendly blooms work better as a patch than as isolated one-off plants."
+    "plantMatch": ["coneflower", "bee balm", "yarrow", "sunflower", "milkweed", "rudbeckia", "black-eyed susan", "mountain mint", "zinnia", "cosmos"],
+    "plantExclude": ["sunflower pawpaw"],
+    "note": "Repeated pollinator-friendly blooms work better as a patch than as isolated one-off plants."
   },
   {
     "id": "lettuce-pea-cool-season",
     "type": "companion",
     "strength": "medium",
     "sourceMatch": ["lettuce", "spinach"],
+    "sourceExclude": ["malabar spinach", "new zealand spinach"],
     "targetMatch": ["pea", "radish"],
+    "targetExclude": ["cowpea", "crowder pea"],
     "note": "Fast cool-season crops can share spring or fall bed space before heat-loving plants take over."
+  },
+  {
+    "id": "warm-season-annual-flower-strip",
+    "type": "companion",
+    "strength": "medium",
+    "sourceMatch": ["tomato", "pepper", "eggplant", "okra", "bean", "cucumber", "squash", "zucchini", "melon"],
+    "sourceExclude": ["peppermint"],
+    "targetMatch": ["marigold", "calendula", "borage", "nasturtium", "zinnia", "cosmos", "tithonia"],
+    "note": "Warm-season vegetables benefit from nearby flower strips that keep bloom and insect activity close to the crop bed."
+  },
+  {
+    "id": "woodland-shade-layer",
+    "type": "guild",
+    "strength": "medium",
+    "plantMatch": ["hosta", "heuchera", "astilbe", "foamflower", "wild ginger", "trillium", "mayapple", "bloodroot", "iris cristata"],
+    "note": "Shade-tolerant foliage and spring woodland plants make more sense as a layered understory than as isolated specimens."
+  },
+  {
+    "id": "rain-garden-wet-site",
+    "type": "guild",
+    "strength": "medium",
+    "plantMatch": ["buttonbush", "swamp milkweed", "blue flag iris", "sweetspire", "clethra", "palm sedge", "swamp sunflower"],
+    "note": "Wet-site plants can anchor rain gardens and low spots together where average garden perennials would struggle."
   }
 ]

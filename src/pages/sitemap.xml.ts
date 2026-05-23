@@ -1,5 +1,7 @@
 import { getCollection } from "astro:content";
+import plants from "../data/plants.json";
 import { siteUrl } from "../lib/site";
+import { plantUrl } from "../lib/plantUtils";
 
 export async function GET() {
   const posts = await getCollection("blog");
@@ -10,6 +12,10 @@ export async function GET() {
       loc: siteUrl(`/blog/${post.data.slug}/`),
       lastmod: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
       priority: "0.8"
+    })),
+    ...plants.map((plant) => ({
+      loc: siteUrl(plantUrl(plant)),
+      priority: "0.7"
     }))
   ];
 

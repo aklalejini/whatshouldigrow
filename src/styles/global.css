@@ -813,6 +813,18 @@ fieldset:nth-of-type(2) .segmented {
   letter-spacing: 0;
 }
 
+.plant-name-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.plant-name-link:hover {
+  color: var(--leaf);
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.12em;
+}
+
 .top-card .result-title h3 {
   font-size: 2.65rem;
 }
@@ -1138,6 +1150,7 @@ fieldset:nth-of-type(2) .segmented {
   gap: 7px;
 }
 
+.relationship-tags a,
 .relationship-tags span {
   display: inline-flex;
   align-items: center;
@@ -1149,6 +1162,16 @@ fieldset:nth-of-type(2) .segmented {
   background: #fff;
   font-size: 0.72rem;
   font-weight: 700;
+}
+
+.relationship-tags a {
+  text-decoration: none;
+}
+
+.relationship-tags a:hover {
+  color: var(--leaf-dark);
+  border-color: rgba(39, 88, 58, 0.32);
+  background: var(--sage-2);
 }
 
 .fit-chart {
@@ -1339,12 +1362,15 @@ fieldset:nth-of-type(2) .segmented {
 
 .card-actions {
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   justify-content: flex-end;
   align-self: end;
   margin-top: auto;
 }
 
 .buy-link,
+.plant-page-action,
 .nursery-placeholder {
   display: inline-flex;
   align-items: center;
@@ -1361,7 +1387,14 @@ fieldset:nth-of-type(2) .segmented {
   text-decoration: none;
 }
 
-.buy-link:hover {
+.plant-page-action {
+  color: #fff;
+  background: var(--leaf);
+  text-decoration: none;
+}
+
+.buy-link:hover,
+.plant-page-action:hover {
   background: var(--leaf-dark);
 }
 
@@ -1645,6 +1678,157 @@ fieldset:nth-of-type(2) .segmented {
   background: rgba(255, 253, 248, 0.9);
 }
 
+.plant-page {
+  width: min(1040px, calc(100% - 40px));
+  margin: 32px auto 54px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  margin-bottom: 14px;
+  padding: 0 13px;
+  border: 1px solid #cfdac8;
+  border-radius: 999px;
+  color: var(--leaf-dark);
+  background: rgba(255, 253, 248, 0.94);
+  font-size: 0.84rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  border-color: rgba(39, 88, 58, 0.32);
+  background: #fff;
+}
+
+.plant-page-hero {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.44fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: stretch;
+  padding: 30px;
+  border: 1px solid var(--soft-line);
+  border-radius: 22px;
+  background:
+    linear-gradient(135deg, rgba(255, 253, 248, 0.98), rgba(239, 244, 233, 0.74)),
+    var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.plant-page-visual {
+  min-height: 380px;
+}
+
+.plant-page-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.plant-page-copy h1 {
+  max-width: 720px;
+  margin: 8px 0 18px;
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.plant-page-dek {
+  max-width: 680px;
+  margin-bottom: 20px;
+  color: #405246;
+  font-size: 1.12rem;
+  line-height: 1.65;
+}
+
+.plant-page-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.plant-page-tags span {
+  min-height: 30px;
+  padding: 5px 10px;
+  border: 1px solid #dfe7d8;
+  border-radius: 999px;
+  color: #4d5c50;
+  background: #fff;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.plant-page-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.plant-page-panel {
+  border-radius: 8px;
+}
+
+.plant-page-panel h2,
+.plant-page-relationships h2 {
+  margin: 0 0 12px;
+  color: #24352a;
+  font-size: 0.76rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.plant-page-panel p {
+  margin: 0 0 10px;
+  color: #3f4d43;
+  line-height: 1.6;
+}
+
+.plant-page-panel p:last-child {
+  margin-bottom: 0;
+}
+
+.plant-page-stats {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.plant-page-stats div {
+  display: grid;
+  grid-template-columns: minmax(96px, 0.42fr) minmax(0, 1fr);
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid #edf1e9;
+}
+
+.plant-page-stats div:last-child {
+  border-bottom: 0;
+}
+
+.plant-page-stats dt {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.plant-page-stats dd {
+  margin: 0;
+  color: #2f3e34;
+  font-weight: 700;
+}
+
+.plant-page-relationships {
+  grid-column: 1 / -1;
+}
+
 .article-reader {
   display: grid;
   gap: 14px;
@@ -1774,6 +1958,7 @@ fieldset:nth-of-type(2) .segmented {
   .site-tabs,
   .blog-view,
   .public-notes,
+  .plant-page,
   .article-page {
     width: min(100% - 24px, 1180px);
   }
@@ -1784,6 +1969,8 @@ fieldset:nth-of-type(2) .segmented {
   .blog-hero,
   .article-list,
   .public-notes,
+  .plant-page-hero,
+  .plant-page-grid,
   .note-grid {
     grid-template-columns: 1fr;
   }
@@ -1808,6 +1995,7 @@ fieldset:nth-of-type(2) .segmented {
   .matcher-panel,
   .results-band,
   .blog-hero,
+  .plant-page-hero,
   .article-full,
   .public-notes {
     border-radius: 18px;
@@ -1828,8 +2016,13 @@ fieldset:nth-of-type(2) .segmented {
   }
 
   .blog-hero h1,
+  .plant-page-copy h1,
   .article-full h1 {
     font-size: 2.45rem;
+  }
+
+  .plant-page-visual {
+    min-height: 280px;
   }
 
   .article-card h2 {
@@ -1924,6 +2117,7 @@ fieldset:nth-of-type(2) .segmented {
   }
 
   .blog-hero h1,
+  .plant-page-copy h1,
   .article-full h1 {
     font-size: 2.1rem;
   }
@@ -1961,6 +2155,11 @@ fieldset:nth-of-type(2) .segmented {
   .plant-visual,
   .top-card .plant-visual {
     min-height: 160px;
+  }
+
+  .plant-page-stats div {
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
 
   .top-card .result-copy {

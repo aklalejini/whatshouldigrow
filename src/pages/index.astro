@@ -501,6 +501,10 @@ const webAppJsonLd = {
         return values.map(formatGoal).join(", ");
       }
 
+      function plantPagePath(plant) {
+        return `/plants/${plant.id}/`;
+      }
+
       function escapeRegExp(value) {
         return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       }
@@ -584,7 +588,7 @@ const webAppJsonLd = {
                     </div>
                     <p>${relationship.note}</p>
                     <div class="relationship-tags">
-                      ${visiblePlants.map((relatedPlant) => `<span>${relatedPlant.name}</span>`).join("")}
+                      ${visiblePlants.map((relatedPlant) => `<a href="${plantPagePath(relatedPlant)}">${relatedPlant.name}</a>`).join("")}
                       ${moreCount > 0 ? `<span>+${moreCount} more</span>` : ""}
                     </div>
                   </article>
@@ -971,7 +975,7 @@ const webAppJsonLd = {
           </figure>
           <div class="result-copy">
             <div class="result-title">
-              <h3>${plant.name}</h3>
+              <h3><a class="plant-name-link" href="${plantPagePath(plant)}">${plant.name}</a></h3>
               <span>${plant.type}</span>
             </div>
             <div class="overall-fit ${fit.tone}" style="--fit: ${fit.percent}%" aria-label="Overall fit ${fit.percent} percent, ${fit.label}">
@@ -1017,6 +1021,7 @@ const webAppJsonLd = {
             </div>
           </details>
           <div class="card-actions">
+            <a class="plant-page-action" href="${plantPagePath(plant)}">View plant page</a>
             <span class="nursery-placeholder">Nursery links coming soon</span>
           </div>
         `;

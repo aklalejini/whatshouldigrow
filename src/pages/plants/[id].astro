@@ -1,0 +1,167 @@
+---
+import plants from "../../data/plants.json";
+import plantArtEntries from "../../data/plantArt.json";
+import plantRelationships from "../../data/plantRelationships.json";
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+  siteUrl
+} from "../../lib/site";
+import {
+  formatGoalList,
+  formatList,
+  plantArtEntry,
+  plantKind,
+  plantPhotoStyle,
+  plantUrl,
+  relationshipEntriesForPlant,
+  relationshipTypeLabels,
+  sentenceCase
+} from "../../lib/plantUtils";
+import "../../styles/global.css";
+
+export function getStaticPaths() {
+  return plants.map((plant) => ({
+    params: { id: plant.id },
+    props: { plant }
+  }));
+}
+
+const { plant } = Astro.props;
+const artEntry = plantArtEntry(plant, plantArtEntries);
+const artId = artEntry?.id ?? "generic-fruit";
+const kind = plantKind(plant);
+const hasImage = Boolean(artEntry?.image);
+const photoStyle = plantPhotoStyle(artEntry);
+const canonicalUrl = siteUrl(plantUrl(plant));
+const socialImageUrl = hasImage ? siteUrl(`/plant-art/${artEntry.image}`) : siteUrl(DEFAULT_SOCIAL_IMAGE);
+const description = `${plant.name} growing profile for ${SITE_NAME}: zones ${plant.zones[0]}-${plant.zones[1]}, ${formatList(plant.sun)} light, ${formatList(plant.soils)} soil, ${plant.water} water, and practical plant relationships.`;
+const relationshipEntries = relationshipEntriesForPlant(plant, plantRelationships, plants).slice(0, 5);
+const plantJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: `${plant.name} growing profile`,
+  description,
+  url: canonicalUrl,
+  isPartOf: {
+    "@type": "WebSite",
+    name: SITE_NAME,
+    url: SITE_URL
+  },
+  about: {
+    "@type": "Thing",
+    name: plant.name,
+    additionalType: plant.type,
+    description: plant.notes
+  }
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description || SITE_DESCRIPTION} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${plant.name} | ${SITE_NAME}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${plant.name} | ${SITE_NAME}`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,750&family=Inter:wght@400;500;650;750;850&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
+    <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
+    <title>{plant.name} | {SITE_NAME}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(plantJsonLd)}></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <nav class="site-tabs" aria-label="Primary sections">
+        <a class="site-tab is-active" href="/">Plant matcher</a>
+        <a class="site-tab" href="/blog/">Blog</a>
+      </nav>
+
+      <article class="plant-page">
+        <a class="back-link" href="/">Back to plant matcher</a>
+
+        <header class="plant-page-hero">
+          <figure
+            class={`plant-visual plant-page-visual ${kind} ${artId} ${hasImage ? "photo-plate" : ""}`}
+            aria-label={`${plant.name} botanical plate`}
+            style={photoStyle}
+          >
+            {!hasImage && <span class="plant-visual-icon"></span>}
+          </figure>
+          <div class="plant-page-copy">
+            <p class="eyebrow">{plant.type}</p>
+            <h1>{plant.name}</h1>
+            <p class="plant-page-dek">{plant.notes}</p>
+            <div class="plant-page-tags" aria-label="Plant traits">
+              {plant.traits.map((trait) => <span>{trait}</span>)}
+            </div>
+          </div>
+        </header>
+
+        <div class="plant-page-grid">
+          <section class="detail-panel plant-page-panel">
+            <h2>Growing Profile</h2>
+            <dl class="plant-page-stats">
+              <div><dt>Hardiness</dt><dd>Zones {plant.zones[0]}-{plant.zones[1]}</dd></div>
+              <div><dt>Sun</dt><dd>{formatList(plant.sun)}</dd></div>
+              <div><dt>Soil</dt><dd>{formatList(plant.soils)}</dd></div>
+              <div><dt>Water</dt><dd>{plant.water}</dd></div>
+              <div><dt>Goals</dt><dd>{formatGoalList(plant.goals)}</dd></div>
+            </dl>
+          </section>
+
+          <section class="detail-panel plant-page-panel">
+            <h2>Harvest & Use</h2>
+            <p>{plant.harvest}</p>
+            <p>{plant.query ? `Useful search phrase: ${plant.query}.` : "Nursery links are coming soon."}</p>
+          </section>
+
+          {relationshipEntries.length > 0 && (
+            <section class="detail-panel relationship-panel plant-page-relationships">
+              <h2>Plant Relationships</h2>
+              <div class="relationship-list">
+                {relationshipEntries.map(({ relationship, relatedPlants }) => {
+                  const visiblePlants = relatedPlants.slice(0, 8);
+                  const moreCount = relatedPlants.length - visiblePlants.length;
+                  return (
+                    <article class="relationship-item">
+                      <div class="relationship-head">
+                        <span>{relationshipTypeLabels[relationship.type] ?? sentenceCase(relationship.type)}</span>
+                        <strong>{sentenceCase(relationship.strength ?? "noted")}</strong>
+                      </div>
+                      <p>{relationship.note}</p>
+                      <div class="relationship-tags">
+                        {visiblePlants.map((relatedPlant) => (
+                          <a href={plantUrl(relatedPlant)}>{relatedPlant.name}</a>
+                        ))}
+                        {moreCount > 0 && <span>+{moreCount} more</span>}
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+        </div>
+      </article>
+    </main>
+  </body>
+</html>
