@@ -1641,6 +1641,35 @@ fieldset:nth-of-type(2) .segmented {
   line-height: 1.78;
 }
 
+.article-body a[rel~="sponsored"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  margin: 2px 2px 3px 0;
+  padding: 0 12px;
+  border: 1px solid rgba(21, 55, 33, 0.18);
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--leaf), var(--leaf-dark));
+  box-shadow: 0 8px 16px rgba(21, 55, 33, 0.16);
+  font-size: 0.94rem;
+  font-weight: 850;
+  line-height: 1.2;
+  text-decoration: none;
+  vertical-align: baseline;
+}
+
+.article-body a[rel~="sponsored"]:hover {
+  background: linear-gradient(135deg, #326d49, var(--leaf-dark));
+  box-shadow: 0 10px 20px rgba(21, 55, 33, 0.22);
+  transform: translateY(-1px);
+}
+
+.article-body a[rel~="sponsored"]:focus-visible {
+  outline: 3px solid rgba(223, 123, 79, 0.3);
+  outline-offset: 2px;
+}
+
 .article-body strong {
   color: var(--leaf-dark);
 }
