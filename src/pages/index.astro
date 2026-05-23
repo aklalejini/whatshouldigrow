@@ -314,10 +314,10 @@ const webAppJsonLd = {
             </p>
           </article>
           <article>
-            <h3>Affiliate disclosure</h3>
+            <h3>Nursery links</h3>
             <p>
-              Some nursery links may be affiliate links. They help support the project and do not
-              change the plant ranking.
+              Nursery search links are placeholders while Plant by ZIP is being tested. They are
+              not paid placements and do not affect the plant ranking.
             </p>
           </article>
         </div>
@@ -482,6 +482,7 @@ const webAppJsonLd = {
       function buildAffiliateUrl(plant) {
         const partner = partners[plant.partner] ?? partners.amazon;
         const searchUrl = partner.searchUrl.replace("{query}", encodeURIComponent(plant.query ?? plant.name));
+        if (!partner.affiliateParam) return searchUrl;
         const glue = searchUrl.includes("?") ? "&" : "?";
         return `${searchUrl}${glue}${partner.affiliateParam}`;
       }
@@ -924,8 +925,8 @@ const webAppJsonLd = {
             </div>
           </details>
           <div class="card-actions">
-            <a class="buy-link" href="${buildAffiliateUrl(plant)}" target="_blank" rel="nofollow sponsored noopener">
-              ${partner.name}
+            <a class="buy-link" href="${buildAffiliateUrl(plant)}" target="_blank" rel="nofollow noopener">
+              Search ${partner.name}
             </a>
           </div>
         `;

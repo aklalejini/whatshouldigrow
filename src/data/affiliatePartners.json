@@ -2,16 +2,16 @@
   "starkbros": {
     "name": "Stark Bro's",
     "searchUrl": "https://www.starkbros.com/search?q={query}",
-    "affiliateParam": "utm_source=plantbyzip&utm_medium=affiliate&utm_campaign=plant-match"
+    "affiliateParam": ""
   },
   "raintree": {
     "name": "Raintree Nursery",
     "searchUrl": "https://raintreenursery.com/search?q={query}",
-    "affiliateParam": "utm_source=plantbyzip&utm_medium=affiliate&utm_campaign=plant-match"
+    "affiliateParam": ""
   },
   "amazon": {
     "name": "Amazon",
     "searchUrl": "https://www.amazon.com/s?k={query}",
-    "affiliateParam": "tag=YOUR-AMAZON-ASSOCIATES-TAG"
+    "affiliateParam": ""
   }
 }

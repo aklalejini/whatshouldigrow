@@ -11,12 +11,12 @@ An Astro site for ZIP-based plant recommendations. Visitors enter a ZIP code plu
 - Scores 219 hardcoded plants from `src/data/plants.json`.
 - Shows 12 ranked recommendations per search.
 - Expands each result into match bars, a hardiness-zone range marker, plant stats, and a short grower note.
-- Adds `rel="nofollow sponsored noopener"` to outbound nursery links.
+- Adds `rel="nofollow noopener"` to outbound nursery search links.
 - Builds as a static site for Cloudflare Pages.
 
-## Affiliate Setup
+## Future Affiliate Setup
 
-Replace the placeholders in `src/data/affiliatePartners.json` before launch:
+Affiliate links are not active yet. The current partner config leaves tracking parameters blank so live links behave like general nursery searches. When affiliate programs are ready, replace the placeholders in `src/data/affiliatePartners.json`:
 
 - `starkbros.affiliateParam`: use your Stark Bro's affiliate tracking parameter.
 - `raintree.affiliateParam`: use your Raintree Nursery affiliate tracking parameter.
