@@ -1277,21 +1277,31 @@ fieldset:nth-of-type(2) .segmented {
   margin-top: auto;
 }
 
-.buy-link {
+.buy-link,
+.nursery-placeholder {
   display: inline-flex;
   align-items: center;
   min-height: 36px;
   padding: 0 14px;
   border-radius: 999px;
-  color: #fff;
-  background: var(--leaf);
   font-size: 0.84rem;
   font-weight: 750;
+}
+
+.buy-link {
+  color: #fff;
+  background: var(--leaf);
   text-decoration: none;
 }
 
 .buy-link:hover {
   background: var(--leaf-dark);
+}
+
+.nursery-placeholder {
+  border: 1px solid #d8e3d0;
+  color: var(--muted);
+  background: #fbfdf8;
 }
 
 .results-actions {
