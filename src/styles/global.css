@@ -85,6 +85,9 @@ button {
 }
 
 .site-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 42px;
   padding: 0 16px;
   border: 1px solid #cfdac8;
@@ -93,6 +96,7 @@ button {
   background: rgba(255, 253, 248, 0.9);
   font-size: 0.88rem;
   font-weight: 850;
+  text-decoration: none;
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(31, 45, 35, 0.07);
 }
@@ -1326,6 +1330,56 @@ fieldset:nth-of-type(2) .segmented {
   display: none;
 }
 
+.public-notes {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.6fr) minmax(0, 1fr);
+  gap: 22px;
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto 54px;
+  padding: 28px;
+  border: 1px solid var(--soft-line);
+  border-radius: 22px;
+  background: rgba(255, 253, 248, 0.9);
+  box-shadow: var(--shadow);
+}
+
+.public-notes h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.note-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.note-grid article {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #e0e7d8;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.note-grid h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.note-grid p {
+  margin: 0;
+  color: #46574b;
+  font-size: 0.9rem;
+  line-height: 1.56;
+}
+
 .blog-view {
   width: min(1080px, calc(100% - 40px));
   margin: 0 auto;
@@ -1427,6 +1481,7 @@ fieldset:nth-of-type(2) .segmented {
     linear-gradient(180deg, #fff, rgba(248, 251, 245, 0.94)),
     #fff;
   text-align: left;
+  text-decoration: none;
   cursor: pointer;
   box-shadow: 0 12px 30px rgba(31, 45, 35, 0.08);
   transition:
@@ -1538,6 +1593,11 @@ fieldset:nth-of-type(2) .segmented {
   box-shadow: var(--shadow);
 }
 
+.article-page {
+  width: min(960px, calc(100% - 40px));
+  margin: 32px auto 54px;
+}
+
 .article-full h1 {
   max-width: 850px;
   margin: 0 0 16px;
@@ -1545,6 +1605,14 @@ fieldset:nth-of-type(2) .segmented {
   font-size: 3rem;
   line-height: 1.02;
   letter-spacing: 0;
+}
+
+.article-dek {
+  max-width: 760px;
+  margin: 0 0 18px;
+  color: #405246;
+  font-size: 1.08rem;
+  line-height: 1.65;
 }
 
 .article-body {
@@ -1598,7 +1666,9 @@ fieldset:nth-of-type(2) .segmented {
   .workspace,
   .results-band,
   .site-tabs,
-  .blog-view {
+  .blog-view,
+  .public-notes,
+  .article-page {
     width: min(100% - 24px, 1180px);
   }
 
@@ -1606,7 +1676,9 @@ fieldset:nth-of-type(2) .segmented {
   .results-grid,
   .results-head,
   .blog-hero,
-  .article-list {
+  .article-list,
+  .public-notes,
+  .note-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1630,7 +1702,8 @@ fieldset:nth-of-type(2) .segmented {
   .matcher-panel,
   .results-band,
   .blog-hero,
-  .article-full {
+  .article-full,
+  .public-notes {
     border-radius: 18px;
     padding: 20px;
   }

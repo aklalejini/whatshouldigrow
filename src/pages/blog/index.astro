@@ -1,0 +1,139 @@
+---
+import { getCollection } from "astro:content";
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  siteUrl
+} from "../../lib/site";
+import "../../styles/global.css";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const articles = posts.map((post) => ({
+  slug: post.data.slug,
+  title: post.data.title,
+  excerpt: post.data.excerpt,
+  category: post.data.category,
+  tags: post.data.tags,
+  heroImage: post.data.heroImage,
+  heroAlt: post.data.heroAlt,
+  bodyText: post.body ?? "",
+  url: `/blog/${post.data.slug}/`
+}));
+const stripMarkdown = (value) =>
+  String(value)
+    .replace(/<[^>]*>/g, " ")
+    .replace(/[#*_`>\-[\]()]/g, " ");
+const searchData = articles.map((article) => ({
+  slug: article.slug,
+  searchableText: [article.title, article.excerpt, article.category, article.tags.join(" "), article.bodyText]
+    .map(stripMarkdown)
+    .join(" ")
+    .toLowerCase()
+}));
+const canonicalUrl = siteUrl("/blog/");
+const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={`Garden planning articles from ${SITE_NAME}. ${SITE_DESCRIPTION}`} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`Blog | ${SITE_NAME}`} />
+    <meta property="og:description" content={`Garden planning articles from ${SITE_NAME}.`} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`Blog | ${SITE_NAME}`} />
+    <meta name="twitter:description" content={`Garden planning articles from ${SITE_NAME}.`} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,750&family=Inter:wght@400;500;650;750;850&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Blog | {SITE_NAME}</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <nav class="site-tabs" aria-label="Primary sections">
+        <a class="site-tab" href="/">Plant matcher</a>
+        <a class="site-tab is-active" href="/blog/">Blog</a>
+      </nav>
+
+      <section class="view-panel blog-view is-active" aria-labelledby="blog-title">
+        <div class="blog-shell">
+          <header class="blog-hero">
+            <div>
+              <p class="eyebrow">Field notes</p>
+              <h1 id="blog-title">Blog</h1>
+              <p>
+                Practical growing notes for matching plants to real yards, real weather,
+                and the space you actually have.
+              </p>
+            </div>
+            <figure class="blog-hero-photo">
+              <img src={articles[0].heroImage} alt={articles[0].heroAlt} loading="eager" />
+            </figure>
+            <div class="blog-search">
+              <label for="article-search">Search articles</label>
+              <input id="article-search" type="search" placeholder="Search by topic, tag, or text" />
+            </div>
+          </header>
+
+          <div id="article-list" class="article-list">
+            {articles.map((article) => (
+              <a class="article-card" href={article.url} data-article-slug={article.slug}>
+                <span class="article-category">{article.category}</span>
+                <h2>{article.title}</h2>
+                <p>{article.excerpt}</p>
+                <span class="article-open">Read article</span>
+                <span class="article-tags" aria-label="Article tags">
+                  {article.tags.slice(0, 3).map((tag) => <span>{tag}</span>)}
+                </span>
+              </a>
+            ))}
+          </div>
+          <p id="blog-empty" class="blog-empty" hidden>No articles match that search.</p>
+        </div>
+      </section>
+    </main>
+
+    <script is:inline type="application/json" id="blog-search-data" set:html={JSON.stringify(searchData)}></script>
+    <script is:inline>
+      const articleSearchEl = document.getElementById("article-search");
+      const blogEmptyEl = document.getElementById("blog-empty");
+      const articleCards = Array.from(document.querySelectorAll("[data-article-slug]"));
+      const blogSearchData = JSON.parse(document.getElementById("blog-search-data").textContent);
+
+      function filterArticles() {
+        const query = articleSearchEl.value.trim().toLowerCase();
+        let visibleArticles = 0;
+        articleCards.forEach((card) => {
+          const article = blogSearchData.find((entry) => entry.slug === card.dataset.articleSlug);
+          const isMatch = !query || article?.searchableText.includes(query);
+          card.hidden = !isMatch;
+          if (isMatch) visibleArticles += 1;
+        });
+        blogEmptyEl.hidden = visibleArticles > 0;
+      }
+
+      const initialQuery = new URLSearchParams(window.location.search).get("q");
+      if (initialQuery) {
+        articleSearchEl.value = initialQuery;
+        filterArticles();
+      }
+      articleSearchEl.addEventListener("input", filterArticles);
+    </script>
+  </body>
+</html>
