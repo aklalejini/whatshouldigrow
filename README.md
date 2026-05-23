@@ -1,6 +1,6 @@
-# What Should I Grow
+# Plant by ZIP
 
-A single-page Astro proof of concept for ZIP-based plant recommendations. Visitors enter a ZIP code plus sun, soil, water, and a plain-English goal, then get ranked plant picks with concise reasons and nursery search links.
+An Astro site for ZIP-based plant recommendations. Visitors enter a ZIP code plus sun, soil, water, and a plain-English goal, then get ranked plant picks with concise reasons, gardening articles, and nursery search links.
 
 ## What It Does
 

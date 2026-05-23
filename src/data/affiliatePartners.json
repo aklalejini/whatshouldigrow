@@ -2,12 +2,12 @@
   "starkbros": {
     "name": "Stark Bro's",
     "searchUrl": "https://www.starkbros.com/search?q={query}",
-    "affiliateParam": "utm_source=whatshouldigrow&utm_medium=affiliate&utm_campaign=plant-match"
+    "affiliateParam": "utm_source=plantbyzip&utm_medium=affiliate&utm_campaign=plant-match"
   },
   "raintree": {
     "name": "Raintree Nursery",
     "searchUrl": "https://raintreenursery.com/search?q={query}",
-    "affiliateParam": "utm_source=whatshouldigrow&utm_medium=affiliate&utm_campaign=plant-match"
+    "affiliateParam": "utm_source=plantbyzip&utm_medium=affiliate&utm_campaign=plant-match"
   },
   "amazon": {
     "name": "Amazon",

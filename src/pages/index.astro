@@ -124,9 +124,9 @@ const webAppJsonLd = {
       <div id="matcher-view" class="view-panel is-active" role="tabpanel" data-view-panel="matcher">
       <section class="workspace" aria-labelledby="app-title">
         <div class="intro-panel">
-          <div class="brand-lockup" aria-label="What Should I Grow">
+          <div class="brand-lockup" aria-label={SITE_NAME}>
             <span class="brand-mark" aria-hidden="true"></span>
-            <span>What Should I Grow</span>
+            <span>{SITE_NAME}</span>
           </div>
           <h1 id="app-title">What should I grow here?</h1>
           <p>
@@ -987,7 +987,7 @@ const webAppJsonLd = {
       saveListEl.addEventListener("click", () => {
         if (!currentInputs || currentRanked.length === 0) return;
         const lines = [
-          `What Should I Grow - picks for ${currentInputs.zip} / zone ${currentInputs.zone}`,
+          `Plant by ZIP - picks for ${currentInputs.zip} / zone ${currentInputs.zone}`,
           "",
           ...currentRanked.slice(0, visibleCount).map((entry, index) => {
             const fit = overallFit(entry.score);
@@ -998,7 +998,7 @@ const webAppJsonLd = {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = `what-should-i-grow-${currentInputs.zip}.txt`;
+        link.download = `plant-by-zip-${currentInputs.zip}.txt`;
         link.click();
         URL.revokeObjectURL(url);
       });
