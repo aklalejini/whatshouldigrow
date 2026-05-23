@@ -1,11 +1,12 @@
 # What Should I Grow
 
-A single-page Astro proof of concept for ZIP-based plant recommendations. Visitors enter a ZIP code plus sun, soil, water, and goal, then get ranked plant picks with concise reasons and nursery search links.
+A single-page Astro proof of concept for ZIP-based plant recommendations. Visitors enter a ZIP code plus sun, soil, water, and a plain-English goal, then get ranked plant picks with concise reasons and nursery search links.
 
 ## What It Does
 
 - Looks up USDA hardiness zone from ZIP with the free `https://phzmapi.org/{zip}.json` endpoint.
 - Defaults "not sure" soil to loam.
+- Filters by six goals: fruit, vegetables and herbs, pollinators and wildlife, curb appeal and color, privacy and screening, and low-maintenance natives.
 - Optionally filters by plant form, including trees, shrubs, vines, vegetables, and flowers/herbs.
 - Scores 219 hardcoded plants from `src/data/plants.json`.
 - Shows 12 ranked recommendations per search.

@@ -35,7 +35,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
           <h1 id="app-title">What should I grow here?</h1>
           <p>
             Enter your ZIP code and a few garden conditions. Get a ranked field-guide of edible,
-            pollinator, and ornamental plants that are actually worth considering.
+            wildlife-friendly, useful, and good-looking plants that are actually worth considering.
           </p>
           <figure class="hero-plate hero-gallery" aria-hidden="true">
             <span class="hero-frame" style="--hero-image: url('/plant-art/fig.webp'); --i: 0"></span>
@@ -147,19 +147,27 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
             <div class="segmented goal-grid">
               <label>
                 <input type="radio" name="goal" value="fruit" checked />
-                <span class="option-card"><span class="option-label">Fruit</span><span class="option-help">Trees, vines, berries</span></span>
+                <span class="option-card"><span class="option-label">Fruit</span><span class="option-help">Trees, vines, and berries</span></span>
               </label>
               <label>
-                <input type="radio" name="goal" value="vegetables" />
-                <span class="option-card"><span class="option-label">Vegetables</span><span class="option-help">Kitchen crops</span></span>
+                <input type="radio" name="goal" value="vegetables-herbs" />
+                <span class="option-card"><span class="option-label">Vegetables &amp; herbs</span><span class="option-help">What you'd plant for the kitchen</span></span>
               </label>
               <label>
-                <input type="radio" name="goal" value="pollinator" />
-                <span class="option-card"><span class="option-label">Pollinator</span><span class="option-help">Flowers and habitat</span></span>
+                <input type="radio" name="goal" value="pollinators-wildlife" />
+                <span class="option-card"><span class="option-label">Pollinators &amp; wildlife</span><span class="option-help">Feed bees, birds, and butterflies</span></span>
               </label>
               <label>
-                <input type="radio" name="goal" value="ornamental" />
-                <span class="option-card"><span class="option-label">Ornamental</span><span class="option-help">Looks good first</span></span>
+                <input type="radio" name="goal" value="curb-appeal" />
+                <span class="option-card"><span class="option-label">Curb appeal &amp; color</span><span class="option-help">Plants that earn their spot out front</span></span>
+              </label>
+              <label>
+                <input type="radio" name="goal" value="privacy-screening" />
+                <span class="option-card"><span class="option-label">Privacy &amp; screening</span><span class="option-help">Hide a fence, block a view, soften a line</span></span>
+              </label>
+              <label>
+                <input type="radio" name="goal" value="low-maintenance-natives" />
+                <span class="option-card"><span class="option-label">Low-maintenance natives</span><span class="option-help">Tough plants that belong here</span></span>
               </label>
             </div>
           </fieldset>
@@ -246,6 +254,14 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         medium: "normal garden watering is plenty",
         high: "it appreciates steady moisture"
       };
+      const goalLabels = {
+        fruit: "fruit",
+        "vegetables-herbs": "vegetables & herbs",
+        "pollinators-wildlife": "pollinators & wildlife",
+        "curb-appeal": "curb appeal & color",
+        "privacy-screening": "privacy & screening",
+        "low-maintenance-natives": "low-maintenance natives"
+      };
 
       function zoneToNumber(zone) {
         const match = String(zone).trim().toLowerCase().match(/^(\d{1,2})([ab])$/);
@@ -276,6 +292,14 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
 
       function formatList(values) {
         return values.map((value) => value.replace("-", " ")).join(", ");
+      }
+
+      function formatGoal(value) {
+        return goalLabels[value] ?? value.replaceAll("-", " ");
+      }
+
+      function formatGoalList(values) {
+        return values.map(formatGoal).join(", ");
       }
 
       function sentenceCase(text) {
@@ -376,7 +400,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
           label: "Goal",
           value: goalFit ? 100 : 0,
           score: goalFit ? 34 : 0,
-          note: goalFit ? `matches ${inputs.goal}` : `better for ${formatList(plant.goals)}`
+          note: goalFit ? `matches ${formatGoal(inputs.goal)}` : `better for ${formatGoalList(plant.goals)}`
         });
 
         let sunScore = -18;
@@ -424,9 +448,11 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         details.push({ label: "Water", value: clamp(waterFit, 0, 100), score: waterScore, note: waterNote });
 
         let bonus = 0;
-        if (plant.type.includes("annual") && inputs.goal === "vegetables") bonus += 8;
+        if (plant.type.includes("annual") && inputs.goal === "vegetables-herbs") bonus += 8;
         if (plant.type.includes("fruit") && inputs.goal === "fruit") bonus += 6;
-        if (plant.type.includes("perennial") && inputs.goal === "pollinator") bonus += 5;
+        if (plant.type.includes("perennial") && inputs.goal === "pollinators-wildlife") bonus += 5;
+        if ((plant.type.includes("shrub") || plant.type.includes("vine") || plant.type.includes("grass")) && inputs.goal === "privacy-screening") bonus += 6;
+        if (plant.water === "low" && inputs.goal === "low-maintenance-natives") bonus += 5;
         if (bonus > 0) details.push({ label: "Use case", value: 100, score: bonus, note: "extra practical fit" });
 
         const score = details.reduce((sum, detail) => sum + detail.score, 0);
@@ -497,7 +523,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
 
       function whyThisWon(plant, inputs) {
         const reasons = [];
-        if (plant.goals.includes(inputs.goal)) reasons.push(`it matches your ${inputs.goal} goal`);
+        if (plant.goals.includes(inputs.goal)) reasons.push(`it matches your ${formatGoal(inputs.goal)} goal`);
         if (plant.sun.includes(inputs.sun)) reasons.push(`${inputs.sun} sun suits it`);
         if (plant.soils.includes(inputs.soil)) reasons.push(`${inputs.soil} soil works`);
         if (plant.water === inputs.water) reasons.push(`${inputs.water} watering is right`);
@@ -611,7 +637,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
                   <div><dt>Sun</dt><dd>${formatList(plant.sun)}</dd></div>
                   <div><dt>Soil</dt><dd>${formatList(plant.soils)}</dd></div>
                   <div><dt>Water</dt><dd>${plant.water}</dd></div>
-                  <div><dt>Use</dt><dd>${formatList(plant.goals)}</dd></div>
+                  <div><dt>Goals</dt><dd>${formatGoalList(plant.goals)}</dd></div>
                 </dl>
               </div>
               <p class="grow-note">${plant.notes}</p>
@@ -638,18 +664,18 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
       }
 
       function renderResults(zoneData, inputs) {
-        const candidates = plants.filter((plant) => matchesPlantForm(plant, inputs.form));
+        const candidates = plants.filter((plant) => plant.goals.includes(inputs.goal) && matchesPlantForm(plant, inputs.form));
         const ranked = candidates
           .map((plant) => ({ plant, score: scorePlant(plant, inputs), rankScore: rankingScore(plant, inputs) }))
           .sort((a, b) => b.rankScore - a.rankScore || b.score - a.score || a.plant.name.localeCompare(b.plant.name));
 
         const formLabel = inputs.form === "any" ? "" : ` ${inputs.form.replace("-", " and ")}`;
-        titleEl.textContent = `Best${formLabel} matches for zone ${inputs.zone}.`;
+        titleEl.textContent = `Best ${formatGoal(inputs.goal)}${formLabel} matches for zone ${inputs.zone}.`;
         zoneNoteEl.textContent = zoneData.temperature_range
           ? `USDA average annual extreme minimum: ${zoneData.temperature_range} F. Zone lookup returned coordinates near ${zoneData.coordinates.lat}, ${zoneData.coordinates.lon}.`
           : "Zone lookup succeeded. Local microclimates, chill hours, pests, and drainage still matter.";
         if (ranked.length === 0) {
-          statusEl.textContent = "No plants matched that form filter. Try Any or loosen one growing condition.";
+          statusEl.textContent = "No plants matched that goal and form combination. Try Any form or a broader goal.";
           resultsEl.replaceChildren();
           seeMoreEl.hidden = true;
           return;

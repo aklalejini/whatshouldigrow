@@ -412,6 +412,22 @@ fieldset:nth-of-type(2) .segmented {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.goal-grid .option-card {
+  min-height: 74px;
+  border-radius: 22px;
+  padding-inline: 14px;
+}
+
+.goal-grid .option-label {
+  font-size: 0.82rem;
+  line-height: 1.12;
+}
+
+.goal-grid .option-help {
+  max-width: 22ch;
+  margin-inline: auto;
+}
+
 .segmented label {
   position: relative;
   margin: 0;
