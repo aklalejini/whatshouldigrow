@@ -12,6 +12,8 @@ const blogArticles = [
     excerpt:
       "Learn how to read light, soil, space, and climate before choosing plants that can actually thrive where you put them.",
     category: "Garden planning",
+    heroImage: "/blog/right-plant-right-place-hero.jpg",
+    heroAlt: "A layered garden bed with ornamental grasses, hydrangeas, coneflowers, and purple flowering perennials in warm evening light.",
     tags: ["right plant right place", "garden planning", "light", "soil", "plant selection"],
     body: [
       {
@@ -432,6 +434,9 @@ const blogSearchData = blogArticles.map((article) => ({
                 and the space you actually have.
               </p>
             </div>
+            <figure class="blog-hero-photo">
+              <img src={blogArticles[0].heroImage} alt={blogArticles[0].heroAlt} loading="eager" />
+            </figure>
             <div class="blog-search">
               <label for="article-search">Search articles</label>
               <input id="article-search" type="search" placeholder="Search by topic, tag, or text" />
@@ -462,6 +467,11 @@ const blogSearchData = blogArticles.map((article) => ({
                 <div class="article-full-tags" aria-label="Article tags">
                   {article.tags.map((tag) => <span>{tag}</span>)}
                 </div>
+                {article.heroImage && (
+                  <figure class="article-hero-photo">
+                    <img src={article.heroImage} alt={article.heroAlt} loading="lazy" />
+                  </figure>
+                )}
                 <div class="article-body">
                   {article.body.map((block) =>
                     block.kind === "heading" ? (
