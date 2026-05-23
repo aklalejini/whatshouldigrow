@@ -31,6 +31,24 @@ npm install
 npm run dev
 ```
 
+## Adding Plant Art
+
+Plant artwork is driven by `src/data/plantArt.json`. Add one entry with:
+
+- `id`: CSS-safe art key, such as `bee-balm`
+- `source`: the PNG filename in your local Plant Photos folder
+- `image`: the WebP filename that should be written to `public/plant-art`
+- `match`: plant-name/id/query terms that should use that image
+- optional `exclude`, `position`, and `plateBg`
+
+Then run:
+
+```bash
+npm run art:import
+```
+
+The importer skips current files, converts only new or changed source images, resizes oversized art, and writes optimized WebP files. Use `python scripts/import_plant_art.py --source-dir "C:\path\to\photos"` if the photos are not in `~/OneDrive/Documents/Plant Photos`.
+
 ## Cloudflare Pages
 
 Use these settings:

@@ -1,0 +1,363 @@
+[
+  {
+    "id": "blackberry",
+    "image": "blackberry.webp",
+    "source": "Blackberry.png",
+    "match": ["blackberry"],
+    "position": "68% 58%",
+    "plateBg": "linear-gradient(145deg, #d8ddd0, #f8f1e4)"
+  },
+  {
+    "id": "raspberry",
+    "image": "raspberry.webp",
+    "source": "Raspberry.png",
+    "match": ["raspberry"],
+    "position": "42% 56%",
+    "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
+  },
+  {
+    "id": "black-currant",
+    "image": "black-currant.webp",
+    "source": "Black Currant.png",
+    "match": ["black currant", "black-currant"],
+    "position": "54% 52%",
+    "plateBg": "linear-gradient(145deg, #d8ddd0, #f7efe0)"
+  },
+  {
+    "id": "red-currant",
+    "image": "red-currant.webp",
+    "source": "Red Currant.png",
+    "match": ["red currant", "red-currant"],
+    "position": "52% 54%",
+    "plateBg": "linear-gradient(145deg, #e9d8c5, #f7efe0)"
+  },
+  {
+    "id": "white-currant",
+    "image": "white-currant.webp",
+    "source": "White Currant.png",
+    "match": ["white currant", "white-currant", "pink champagne currant", "pink-champagne-currant"],
+    "position": "48% 56%",
+    "plateBg": "linear-gradient(145deg, #eadfbc, #f7efe0)"
+  },
+  {
+    "id": "fig",
+    "image": "fig.webp",
+    "source": "Fig.png",
+    "match": ["fig"],
+    "position": "48% 56%",
+    "plateBg": "linear-gradient(145deg, #d7dfcb, #f7efe0)"
+  },
+  {
+    "id": "gooseberry",
+    "image": "gooseberry.webp",
+    "source": "Gooseberry.png",
+    "match": ["gooseberry"],
+    "position": "54% 52%",
+    "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
+  },
+  {
+    "id": "grape",
+    "image": "grape.webp",
+    "source": "Grape.png",
+    "match": ["grape"],
+    "position": "58% 56%",
+    "plateBg": "linear-gradient(145deg, #d9e7c5, #f7f2df)"
+  },
+  {
+    "id": "hardy-kiwi",
+    "image": "hardy-kiwi.webp",
+    "source": "Hardy Kiwi.png",
+    "match": ["kiwi"],
+    "position": "54% 50%",
+    "plateBg": "linear-gradient(145deg, #d8ddd0, #f7efe0)"
+  },
+  {
+    "id": "maypop-passionfruit",
+    "image": "maypop-passionfruit.webp",
+    "source": "Maypop Passionfruit.png",
+    "match": ["maypop", "passionfruit", "passion fruit"],
+    "position": "56% 52%",
+    "plateBg": "linear-gradient(145deg, #d9e7c5, #f7f2df)"
+  },
+  {
+    "id": "zucchini",
+    "image": "zucchini.webp",
+    "source": "Zuchinni.png",
+    "match": ["zucchini"],
+    "position": "50% 52%",
+    "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
+  },
+  {
+    "id": "squash",
+    "image": "squash.webp",
+    "source": "Squash.png",
+    "match": ["squash"],
+    "position": "54% 52%",
+    "plateBg": "linear-gradient(145deg, #ead39b, #f7efe0)"
+  },
+  {
+    "id": "onion",
+    "image": "onion.webp",
+    "source": "Onion.png",
+    "match": ["onion"],
+    "position": "50% 60%",
+    "plateBg": "linear-gradient(145deg, #e7d6b8, #f7efe0)"
+  },
+  {
+    "id": "bean",
+    "image": "bean.webp",
+    "source": "Bean.png",
+    "match": ["bean"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
+  },
+  {
+    "id": "swiss-chard",
+    "image": "swiss-chard.webp",
+    "source": "Swiss Chard.png",
+    "match": ["chard"],
+    "position": "50% 50%",
+    "plateBg": "linear-gradient(145deg, #d8e0bd, #f7efe0)"
+  },
+  {
+    "id": "mint",
+    "image": "mint.webp",
+    "source": "Mint.png",
+    "match": ["mint", "spearmint"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
+  },
+  {
+    "id": "milkweed",
+    "image": "milkweed.webp",
+    "source": "Milkweed.png",
+    "match": ["milkweed", "asclepias", "butterfly weed"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #dccfc8, #f7efe0)"
+  },
+  {
+    "id": "bee-balm",
+    "image": "bee-balm.webp",
+    "source": "Bee Balm.png",
+    "match": ["bee balm", "bee-balm", "monarda"],
+    "position": "52% 50%",
+    "plateBg": "linear-gradient(145deg, #e0c4bb, #f7efe0)"
+  },
+  {
+    "id": "zinnia",
+    "image": "zinnia.webp",
+    "source": "Zinnia.png",
+    "match": ["zinnia"],
+    "position": "50% 50%",
+    "plateBg": "linear-gradient(145deg, #ebc2ce, #f7efe0)"
+  },
+  {
+    "id": "artichoke",
+    "image": "artichoke.webp",
+    "source": "Artichoke.png",
+    "match": ["artichoke"],
+    "position": "52% 50%",
+    "plateBg": "linear-gradient(145deg, #d6d9cf, #f7efe0)"
+  },
+  {
+    "id": "prickly-pear",
+    "image": "prickly-pear.webp",
+    "source": "Prickly Pear.png",
+    "match": ["prickly pear", "prickly-pear"],
+    "position": "50% 52%",
+    "plateBg": "linear-gradient(145deg, #d7dfcb, #f1ddb8)"
+  },
+  {
+    "id": "aronia",
+    "image": "aronia.webp",
+    "source": "Aronia Berry.png",
+    "match": ["aronia", "chokeberry"],
+    "position": "58% 54%",
+    "plateBg": "linear-gradient(145deg, #d7dfcb, #f7efe0)"
+  },
+  {
+    "id": "blueberry",
+    "image": "blueberry.webp",
+    "source": "Blueberry.png",
+    "match": ["blueberry"],
+    "position": "56% 46%",
+    "plateBg": "linear-gradient(145deg, #d6dde1, #f7efe0)"
+  },
+  {
+    "id": "elderberry",
+    "image": "elderberry.webp",
+    "source": "Elderberry.png",
+    "match": ["elderberry"],
+    "position": "46% 56%",
+    "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
+  },
+  {
+    "id": "persimmon",
+    "image": "persimmon.webp",
+    "source": "Persimmon.png",
+    "match": ["persimmon"],
+    "position": "52% 48%",
+    "plateBg": "linear-gradient(145deg, #f3d4b7, #f7efe0)"
+  },
+  {
+    "id": "peach",
+    "image": "peach.webp",
+    "source": "Peach.png",
+    "match": ["peach"],
+    "position": "56% 52%",
+    "plateBg": "linear-gradient(145deg, #f1c7ab, #f7efe0)"
+  },
+  {
+    "id": "pear",
+    "image": "pear.webp",
+    "source": "Pear.png",
+    "match": ["pear"],
+    "exclude": ["prickly pear"],
+    "position": "54% 54%",
+    "plateBg": "linear-gradient(145deg, #e4dfad, #f7efe0)"
+  },
+  {
+    "id": "quince",
+    "image": "quince.webp",
+    "source": "Quince.png",
+    "match": ["quince"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #e5d8a9, #f7efe0)"
+  },
+  {
+    "id": "orange",
+    "image": "orange.webp",
+    "source": "Orange.png",
+    "match": ["calamondin orange", "hardy orange", "flying dragon hardy orange", "nagami kumquat"],
+    "position": "54% 54%",
+    "plateBg": "linear-gradient(145deg, #f0c18e, #f7efe0)"
+  },
+  {
+    "id": "lemon",
+    "image": "lemon.webp",
+    "source": "Lemon.png",
+    "match": ["meyer lemon", "improved-meyer-lemon", "lemon tree"],
+    "position": "54% 52%",
+    "plateBg": "linear-gradient(145deg, #eadb91, #f7efe0)"
+  },
+  {
+    "id": "guava",
+    "image": "guava.webp",
+    "source": "Guava.png",
+    "match": ["guava", "feijoa"],
+    "position": "52% 54%",
+    "plateBg": "linear-gradient(145deg, #d9dfc5, #f7efe0)"
+  },
+  {
+    "id": "loquat",
+    "image": "loquat.webp",
+    "source": "Loquat.png",
+    "match": ["loquat"],
+    "position": "54% 54%",
+    "plateBg": "linear-gradient(145deg, #e9c88f, #f7efe0)"
+  },
+  {
+    "id": "hazelnut",
+    "image": "hazelnut.webp",
+    "source": "Hazelnut.png",
+    "match": ["hazelnut"],
+    "position": "54% 52%",
+    "plateBg": "linear-gradient(145deg, #d7dfcb, #f7efe0)"
+  },
+  {
+    "id": "cherry-dogwood",
+    "image": "cherry-dogwood.webp",
+    "source": "Cherry Dogwood.png",
+    "match": ["cornelian cherry", "cornelian-cherry", "cherry dogwood"],
+    "position": "54% 52%",
+    "plateBg": "linear-gradient(145deg, #d8ddd0, #f7efe0)"
+  },
+  {
+    "id": "pawpaw",
+    "image": "pawpaw.webp",
+    "source": "Pawpaw.png",
+    "match": ["pawpaw"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d6dfc5, #f7efe0)"
+  },
+  {
+    "id": "mulberry",
+    "image": "mulberry.webp",
+    "source": "Mulberry.png",
+    "match": ["mulberry"],
+    "position": "52% 54%",
+    "plateBg": "linear-gradient(145deg, #d8ddd0, #f7efe0)"
+  },
+  {
+    "id": "plum",
+    "image": "plum.webp",
+    "source": "Plum.png",
+    "match": ["plum"],
+    "position": "60% 54%",
+    "plateBg": "linear-gradient(145deg, #ded7e3, #f7efe0)"
+  },
+  {
+    "id": "serviceberry",
+    "image": "serviceberry.webp",
+    "source": "Serviceberry.png",
+    "match": ["serviceberry"],
+    "position": "62% 56%",
+    "plateBg": "linear-gradient(145deg, #d8ddd0, #f7efe0)"
+  },
+  {
+    "id": "bushcherry",
+    "image": "bush-cherry.webp",
+    "source": "Bush Cherry.png",
+    "match": ["bush cherry", "carmine-jewel-cherry", "romeo-bush-cherry", "nanking-cherry"],
+    "position": "center",
+    "plateBg": "linear-gradient(145deg, #e8d7c4, #fbf0df)"
+  },
+  {
+    "id": "holly",
+    "image": "holly.webp",
+    "source": "Holly.png",
+    "match": ["holly", "yaupon"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d1dcc8, #f7efe0)"
+  },
+  {
+    "id": "generic-flower-herb",
+    "image": "generic-flower-herb.webp",
+    "source": "Generic Flower_Herb.png",
+    "match": [],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d8ddd0, #f7efe0)"
+  },
+  {
+    "id": "generic-fruit",
+    "image": "generic-fruit.webp",
+    "source": "Generic Fruit.png",
+    "match": [],
+    "position": "50% 52%",
+    "plateBg": "linear-gradient(145deg, #d8ddd0, #f7efe0)"
+  },
+  {
+    "id": "generic-tree",
+    "image": "generic-tree.webp",
+    "source": "Generic Tree.png",
+    "match": [],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d8ddd0, #f7efe0)"
+  },
+  {
+    "id": "generic-vegetable",
+    "image": "generic-vegetable.webp",
+    "source": "Generic Vegetable.png",
+    "match": [],
+    "position": "50% 50%",
+    "plateBg": "linear-gradient(145deg, #d7e6b8, #fbf1d8)"
+  },
+  {
+    "id": "generic-vine",
+    "image": "generic-vine.webp",
+    "source": "Generic Vine.png",
+    "match": [],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d9e7c5, #f7f2df)"
+  }
+]

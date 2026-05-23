@@ -1,6 +1,7 @@
 ---
 import plants from "../data/plants.json";
 import partners from "../data/affiliatePartners.json";
+import plantArtEntries from "../data/plantArt.json";
 import "../styles/global.css";
 
 const plantCount = Array.isArray(plants) ? plants.length : 0;
@@ -200,9 +201,12 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
 
     <script is:inline type="application/json" id="plant-data" set:html={JSON.stringify(plants)}></script>
     <script is:inline type="application/json" id="partner-data" set:html={JSON.stringify(partners)}></script>
+    <script is:inline type="application/json" id="plant-art-data" set:html={JSON.stringify(plantArtEntries)}></script>
     <script is:inline>
       const plants = JSON.parse(document.getElementById("plant-data").textContent);
       const partners = JSON.parse(document.getElementById("partner-data").textContent);
+      const plantArtEntries = JSON.parse(document.getElementById("plant-art-data").textContent);
+      const plantArtById = Object.fromEntries(plantArtEntries.map((entry) => [entry.id, entry]));
       const form = document.getElementById("matcher-form");
       const statusEl = document.getElementById("status");
       const titleEl = document.getElementById("results-title");
@@ -317,47 +321,15 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
           .join(", ");
       }
 
-      function plantArt(plant) {
-        const identity = `${plant.id} ${plant.name} ${plant.query ?? ""}`.toLowerCase();
-        if (identity.includes("blackberry")) return "blackberry";
-        if (identity.includes("raspberry")) return "raspberry";
-        if (identity.includes("black currant") || identity.includes("black-currant")) return "black-currant";
-        if (identity.includes("red currant") || identity.includes("red-currant")) return "red-currant";
-        if (
-          identity.includes("white currant") ||
-          identity.includes("white-currant") ||
-          identity.includes("pink champagne currant") ||
-          identity.includes("pink-champagne-currant")
-        ) return "white-currant";
-        if (identity.includes("fig")) return "fig";
-        if (identity.includes("gooseberry")) return "gooseberry";
-        if (identity.includes("grape")) return "grape";
-        if (identity.includes("kiwi")) return "hardy-kiwi";
-        if (identity.includes("maypop") || identity.includes("passionfruit") || identity.includes("passion fruit")) return "maypop-passionfruit";
-        if (identity.includes("zucchini")) return "zucchini";
-        if (identity.includes("squash")) return "squash";
-        if (identity.includes("onion")) return "onion";
-        if (identity.includes("bean")) return "bean";
-        if (identity.includes("chard")) return "swiss-chard";
-        if (identity.includes("aronia") || identity.includes("chokeberry")) return "aronia";
-        if (identity.includes("blueberry")) return "blueberry";
-        if (identity.includes("elderberry")) return "elderberry";
-        if (identity.includes("persimmon")) return "persimmon";
-        if (identity.includes("peach")) return "peach";
-        if (identity.includes("pear") && !identity.includes("prickly pear")) return "pear";
-        if (identity.includes("hazelnut")) return "hazelnut";
-        if (identity.includes("cornelian cherry") || identity.includes("cornelian-cherry") || identity.includes("cherry dogwood")) return "cherry-dogwood";
-        if (identity.includes("pawpaw")) return "pawpaw";
-        if (identity.includes("mulberry")) return "mulberry";
-        if (identity.includes("plum")) return "plum";
-        if (identity.includes("serviceberry")) return "serviceberry";
-        if (
-          identity.includes("bush cherry") ||
-          identity.includes("carmine-jewel-cherry") ||
-          identity.includes("romeo-bush-cherry") ||
-          identity.includes("nanking-cherry")
-        ) return "bushcherry";
-        return genericArt(plant);
+      function plantIdentity(plant) {
+        return `${plant.id} ${plant.name} ${plant.query ?? ""}`.toLowerCase();
+      }
+
+      function matchesArtEntry(identity, entry) {
+        const matches = entry.match ?? [];
+        const excludes = entry.exclude ?? [];
+        return matches.some((term) => identity.includes(term.toLowerCase()))
+          && !excludes.some((term) => identity.includes(term.toLowerCase()));
       }
 
       function genericArt(plant) {
@@ -369,44 +341,21 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         return "generic-fruit";
       }
 
-      function plantImage(plant) {
-        const art = plantArt(plant);
-        const images = {
-          aronia: "/plant-art/aronia.webp",
-          bean: "/plant-art/bean.webp",
-          blackberry: "/plant-art/blackberry.webp",
-          "black-currant": "/plant-art/black-currant.webp",
-          blueberry: "/plant-art/blueberry.webp",
-          bushcherry: "/plant-art/bush-cherry.webp",
-          "cherry-dogwood": "/plant-art/cherry-dogwood.webp",
-          elderberry: "/plant-art/elderberry.webp",
-          fig: "/plant-art/fig.webp",
-          gooseberry: "/plant-art/gooseberry.webp",
-          grape: "/plant-art/grape.webp",
-          "generic-flower-herb": "/plant-art/generic-flower-herb.webp",
-          "generic-fruit": "/plant-art/generic-fruit.webp",
-          "generic-tree": "/plant-art/generic-tree.webp",
-          "generic-vegetable": "/plant-art/generic-vegetable.webp",
-          "generic-vine": "/plant-art/generic-vine.webp",
-          "hardy-kiwi": "/plant-art/hardy-kiwi.webp",
-          hazelnut: "/plant-art/hazelnut.webp",
-          "maypop-passionfruit": "/plant-art/maypop-passionfruit.webp",
-          mulberry: "/plant-art/mulberry.webp",
-          onion: "/plant-art/onion.webp",
-          pawpaw: "/plant-art/pawpaw.webp",
-          peach: "/plant-art/peach.webp",
-          pear: "/plant-art/pear.webp",
-          persimmon: "/plant-art/persimmon.webp",
-          plum: "/plant-art/plum.webp",
-          raspberry: "/plant-art/raspberry.webp",
-          "red-currant": "/plant-art/red-currant.webp",
-          serviceberry: "/plant-art/serviceberry.webp",
-          squash: "/plant-art/squash.webp",
-          "swiss-chard": "/plant-art/swiss-chard.webp",
-          "white-currant": "/plant-art/white-currant.webp",
-          zucchini: "/plant-art/zucchini.webp",
-        };
-        return images[art] ?? "";
+      function plantArtEntry(plant) {
+        const identity = plantIdentity(plant);
+        return plantArtEntries.find((entry) => matchesArtEntry(identity, entry))
+          ?? plantArtById[genericArt(plant)]
+          ?? null;
+      }
+
+      function plantPhotoStyle(entry) {
+        if (!entry?.image) return "";
+        const styles = [
+          `--plant-photo: url('/plant-art/${entry.image}')`,
+          entry.position ? `--photo-position: ${entry.position}` : "",
+          entry.plateBg ? `--plate-bg: ${entry.plateBg}` : ""
+        ].filter(Boolean);
+        return ` style="${styles.join("; ")}"`;
       }
 
       function scoreBreakdown(plant, inputs) {
@@ -688,10 +637,11 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         const { plant, score } = entry;
         const item = document.createElement("li");
         const kind = plantKind(plant);
-        const art = plantArt(plant);
-        const image = plantImage(plant);
-        const photoStyle = image ? ` style="--plant-photo: url('${image}')"` : "";
-        const detailArt = image
+        const artEntry = plantArtEntry(plant);
+        const art = artEntry?.id ?? genericArt(plant);
+        const hasImage = Boolean(artEntry?.image);
+        const photoStyle = plantPhotoStyle(artEntry);
+        const detailArt = hasImage
           ? `<figure class="detail-art ${art}" role="img" aria-label="${plant.name} botanical plate"${photoStyle}>
               <span>${plant.name}</span>
             </figure>`
@@ -702,9 +652,9 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         const breakdown = scoreBreakdown(plant, inputs);
         const fit = overallFit(score);
         item.innerHTML = `
-          <figure class="plant-visual ${kind} ${art} ${image ? "photo-plate" : ""}" aria-hidden="true"${photoStyle}>
+          <figure class="plant-visual ${kind} ${art} ${hasImage ? "photo-plate" : ""}" aria-hidden="true"${photoStyle}>
             <span class="rank">${index + 1}</span>
-            ${image ? "" : `<span class="plant-visual-icon"></span>`}
+            ${hasImage ? "" : `<span class="plant-visual-icon"></span>`}
           </figure>
           <div class="result-copy">
             <div class="result-title">
@@ -724,7 +674,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
               ${plant.traits.slice(0, 2).map((trait) => `<span>${trait}</span>`).join("")}
             </div>
           </div>
-          <details class="plant-details ${image ? "has-art" : ""}">
+          <details class="plant-details ${hasImage ? "has-art" : ""}">
             <summary>
               <span>More data</span>
               <svg viewBox="0 0 24 24" aria-hidden="true">
