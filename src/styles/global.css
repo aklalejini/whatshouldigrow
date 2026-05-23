@@ -166,13 +166,100 @@ h1 {
   align-self: start;
   width: 100%;
   max-width: 260px;
+  min-height: 348px;
   margin: 54px 0 0;
 }
 
-.hero-plate img {
-  display: block;
-  width: 100%;
+.hero-gallery {
+  isolation: isolate;
   filter: drop-shadow(0 18px 36px rgba(31, 45, 35, 0.16));
+}
+
+.hero-gallery::before,
+.hero-gallery::after {
+  content: "";
+  position: absolute;
+  inset: 12px 4px 18px 18px;
+  z-index: -1;
+  border: 1px solid rgba(214, 221, 204, 0.88);
+  border-radius: 18px;
+  background: rgba(255, 253, 248, 0.72);
+  transform: rotate(3deg);
+}
+
+.hero-gallery::after {
+  inset: 22px 18px 8px 4px;
+  transform: rotate(-4deg);
+  opacity: 0.72;
+}
+
+.hero-frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 1px solid #dce4d3;
+  border-radius: 18px;
+  background:
+    var(--hero-image) center / cover no-repeat,
+    var(--paper);
+  opacity: 0;
+  transform: translateY(8px) scale(0.975);
+  animation: heroPlateCycle 35s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 7s);
+}
+
+.hero-frame::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: 13px;
+}
+
+.hero-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.16), transparent 28%, rgba(23, 54, 35, 0.08)),
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.28), transparent 42%);
+}
+
+.hero-specimen {
+  position: absolute;
+  z-index: 2;
+  width: 64px;
+  height: 86px;
+  overflow: hidden;
+  border: 1px solid rgba(220, 228, 211, 0.95);
+  border-radius: 12px;
+  background: var(--specimen-image) center / cover no-repeat;
+  box-shadow: 0 12px 24px rgba(31, 45, 35, 0.13);
+  opacity: 0.92;
+}
+
+.hero-specimen-a {
+  --specimen-image: url("/plant-art/serviceberry.webp");
+  right: -16px;
+  bottom: 28px;
+  transform: rotate(7deg);
+}
+
+.hero-specimen-b {
+  --specimen-image: url("/plant-art/raspberry.webp");
+  left: -18px;
+  bottom: 72px;
+  transform: rotate(-8deg);
+}
+
+.hero-specimen-c {
+  --specimen-image: url("/plant-art/generic-vine.webp");
+  right: 38px;
+  top: -18px;
+  width: 54px;
+  height: 74px;
+  transform: rotate(-5deg);
+  opacity: 0.78;
 }
 
 .matcher-panel,
@@ -1035,6 +1122,23 @@ fieldset:nth-of-type(2) .segmented {
   }
 }
 
+@keyframes heroPlateCycle {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.975);
+  }
+  4%,
+  18% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  26%,
+  100% {
+    opacity: 0;
+    transform: translateY(-7px) scale(1.035);
+  }
+}
+
 .detail-panel {
   min-width: 0;
   padding: 14px;
@@ -1358,6 +1462,7 @@ fieldset:nth-of-type(2) .segmented {
     top: auto;
     bottom: auto;
     width: 220px;
+    min-height: 292px;
     margin: 28px auto 0;
     opacity: 0.92;
   }
@@ -1426,6 +1531,7 @@ fieldset:nth-of-type(2) .segmented {
 
   .hero-plate {
     width: 190px;
+    min-height: 252px;
   }
 
   .segmented,
@@ -1462,5 +1568,17 @@ fieldset:nth-of-type(2) .segmented {
   .overall-fit,
   .top-card .overall-fit {
     grid-template-columns: 44px auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-frame {
+    animation: none;
+    opacity: 0;
+    transform: none;
+  }
+
+  .hero-frame:first-child {
+    opacity: 1;
   }
 }
