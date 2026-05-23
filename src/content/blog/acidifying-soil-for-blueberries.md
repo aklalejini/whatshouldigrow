@@ -10,7 +10,7 @@ tags:
   - soil testing
   - amendments
 pubDate: "2026-05-23T10:55:00-05:00"
-updatedDate: "2026-05-23T11:12:00-05:00"
+updatedDate: "2026-05-23T11:28:00-05:00"
 heroImage: "/blog/struggling-blueberry-hero.jpg"
 heroAlt: "A small struggling blueberry shrub with spotted leaves and a few berries growing in mulched soil."
 ---
@@ -18,6 +18,8 @@ heroAlt: "A small struggling blueberry shrub with spotted leaves and a few berri
 If you've ever planted blueberries with high hopes and watched them turn into sad, yellow-leafed shrubs that refuse to produce more than a thimble of fruit, you've already met the problem this article is about. The plant isn't sick. The soil is wrong. Specifically, your soil is too alkaline for what blueberries, and a surprising number of other valuable plants, actually need.
 
 Soil pH is the single most overlooked variable in home horticulture. People will spend money on fertilizer, premium compost, and clever irrigation while completely ignoring the chemistry that determines whether their plants can absorb any of it. The pH of your soil controls which nutrients are available to plant roots. Get it wrong, and the most expensive fertilizer in the world won't help.
+
+Disclosure: Some product links in this article are affiliate links, which means Plant by ZIP may earn a commission if you buy through them at no extra cost to you.
 
 Here's how to know whether you have a pH problem, and what to actually do about it.
 
@@ -45,7 +47,7 @@ This is the rule that cannot be emphasized enough. Do not start amending your so
 
 You have two reasonable options. The first is a cheap mail-in test from your county extension office, which typically runs ten to twenty dollars and gives you pH plus major nutrients with regional context. This is the right choice for anyone serious about getting it right. The second is an at-home test kit, which is faster and good enough for ballpark work.
 
-[AFFILIATE: Luster Leaf Rapitest soil test kit] is the standard at-home option and tests pH plus N-P-K for around fifteen dollars. For more precise readings, [AFFILIATE: digital soil pH meter] gives you instant numbers without chemistry, though calibration matters and the cheap ones drift. For the most accurate at-home work, [AFFILIATE: MySoil mail-in test kit] sends you a prepaid mailer and returns a detailed report in about a week.
+<a href="https://amzn.to/4vaj5Si" rel="sponsored">Luster Leaf Rapitest soil test kit</a> is the standard at-home option and tests pH plus N-P-K for around fifteen dollars. For more precise readings, a <a href="https://amzn.to/4uE7HOk" rel="sponsored">digital soil pH meter</a> gives you instant numbers without chemistry, though calibration matters and the cheap ones drift. For the most accurate at-home work, a <a href="https://amzn.to/4nHKsjS" rel="sponsored">MySoil mail-in test kit</a> sends you a prepaid mailer and returns a detailed report in about a week.
 
 Take samples from several spots in the area you intend to plant, mix them, and test the mixture. One reading from one spot is unreliable. Three readings averaged is a real number.
 
@@ -61,7 +63,7 @@ If you're serious about lowering pH, elemental sulfur is the right tool. Soil ba
 
 The general rule of thumb is that to lower pH by one full point in loamy soil, you need roughly one pound of elemental sulfur per 100 square feet. Sandy soils need less, around three quarters of a pound. Clay soils, which resist pH changes stubbornly, need more, closer to a pound and a half. These are rough numbers. The exact rate depends on your starting pH, soil texture, and the form of sulfur. Read the bag, or check your extension service's local guidance.
 
-[AFFILIATE: Espoma Soil Acidifier (elemental sulfur)] is the most widely available consumer option and works well for most home gardeners. It comes in convenient bags, dust is minimal, and the granule size dissolves predictably. For larger applications, [AFFILIATE: bulk elemental sulfur (agricultural grade)] is significantly cheaper per pound but harder to handle.
+<a href="https://amzn.to/4nIzMS6" rel="sponsored">Espoma Soil Acidifier</a> is the most widely available consumer option and works well for most home gardeners. It comes in convenient bags, dust is minimal, and the granule size dissolves predictably. For larger applications, <a href="https://amzn.to/4a5HZtT" rel="sponsored">bulk elemental sulfur</a> is significantly cheaper per pound but harder to handle.
 
 Work the sulfur into the top six to eight inches of soil if you can. Surface application works but is much slower. Water it in. Then wait. Test again in three to four months and reapply if needed. Do not exceed the recommended rate trying to speed things up. You'll burn roots and harm beneficial soil biology.
 
@@ -71,13 +73,13 @@ Aluminum sulfate works almost immediately because it doesn't depend on bacterial
 
 It generally isn't the right choice for broader acidification work. Aluminum is toxic to many plants at high concentrations, and repeated aluminum sulfate applications can build up to harmful levels over time. Blueberries in particular are sensitive to aluminum and can suffer even when they're getting the lower pH they wanted.
 
-[AFFILIATE: aluminum sulfate for hydrangeas] is fine for ornamentals where you want fast color change. For anything edible, especially blueberries, stick with elemental sulfur.
+<a href="https://amzn.to/4wHgCQR" rel="sponsored">Aluminum sulfate for hydrangeas</a> is fine for ornamentals where you want fast color change. For anything edible, especially blueberries, stick with elemental sulfur.
 
 ### Iron sulfate, middle ground
 
 Iron sulfate (sometimes sold as ferrous sulfate or "iron tonic") works faster than elemental sulfur but slower than aluminum sulfate, and it has the side benefit of supplying iron, which alkaline soils often lock up. It's a reasonable choice for situations where you want measurable change in weeks rather than months but don't want the aluminum issue.
 
-It does take significantly more iron sulfate than elemental sulfur to achieve the same pH drop, roughly five to six times as much by weight. So it's better for spot treatments and smaller beds than for whole gardens. [AFFILIATE: iron sulfate granules] is the typical home garden product.
+It does take significantly more iron sulfate than elemental sulfur to achieve the same pH drop, roughly five to six times as much by weight. So it's better for spot treatments and smaller beds than for whole gardens. <a href="https://amzn.to/3Phn7Ji" rel="sponsored">Iron sulfate granules</a> are the typical home garden product.
 
 ### Organic matter, the long game that's always worth playing
 
@@ -85,7 +87,7 @@ Adding acidic organic matter doesn't dramatically lower pH on its own, but it co
 
 For anyone establishing a permanent blueberry bed, plan on a multi year approach. Amend with sulfur to get into range, then maintain with acidic mulch year after year. The combination is far more durable than either alone.
 
-[AFFILIATE: pine bark fines] are the best acidic mulch around for blueberries. [AFFILIATE: peat moss] is widely available and effective when worked into planting holes, though there are real ecological concerns about peat harvesting worth considering. [AFFILIATE: coconut coir] is a sustainable alternative with a near neutral pH that improves soil texture without the acid contribution.
+Pine bark fines are the best acidic mulch around for blueberries. Peat moss is widely available and effective when worked into planting holes, though there are real ecological concerns about peat harvesting worth considering. Coconut coir is a sustainable alternative with a near neutral pH that improves soil texture without the acid contribution.
 
 ### Coffee grounds, useful but oversold
 
@@ -95,7 +97,7 @@ Coffee grounds get talked about constantly as a soil acidifier. The reality is m
 
 Fertilizers formulated for acid loving plants, typically containing ammonium sulfate, provide a mild, sustained acidifying effect along with nutrients. They're useful for maintaining acidic conditions you've already established, not for correcting a soil that's significantly off.
 
-[AFFILIATE: Espoma Holly-tone] is the standard acid loving plant fertilizer, formulated for hollies, blueberries, azaleas, rhododendrons, and similar plants. Apply twice a year, in early spring and again in fall, once your pH is in range.
+<a href="https://amzn.to/42VvkG7" rel="sponsored">Espoma Holly-tone</a> is the standard acid loving plant fertilizer, formulated for hollies, blueberries, azaleas, rhododendrons, and similar plants. Apply twice a year, in early spring and again in fall, once your pH is in range.
 
 ## What to avoid
 
@@ -127,7 +129,7 @@ This is the patient, durable approach. The shortcut approaches, things like heav
 
 One honest piece of advice. If your native soil is heavily alkaline, say pH 8.0 or higher, common in much of the West and parts of the Plains, and especially if you have alkaline groundwater that will keep raising the pH no matter what you do, you may be better off growing your acid lovers in containers or raised beds filled with a custom acidic mix. The amount of sulfur required to drag genuinely alkaline soil down to 4.8 and keep it there is enormous, and the work is endless.
 
-A 20 gallon container filled with two parts pine bark fines, one part peat moss, and one part compost gives a blueberry exactly the conditions it wants. Water it with rainwater or acidified water, and you'll get better fruit with a fraction of the effort. [AFFILIATE: large fabric grow bags] or [AFFILIATE: half whiskey barrel planters] both work well for blueberries and similar shrubs.
+A 20 gallon container filled with two parts pine bark fines, one part peat moss, and one part compost gives a blueberry exactly the conditions it wants. Water it with rainwater or acidified water, and you'll get better fruit with a fraction of the effort. <a href="https://amzn.to/4dLFqyt" rel="sponsored">Large fabric grow bags</a> or half whiskey barrel planters both work well for blueberries and similar shrubs.
 
 Sometimes the right answer isn't fighting your soil. It's working around it.
 
