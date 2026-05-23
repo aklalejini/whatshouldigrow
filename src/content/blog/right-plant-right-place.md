@@ -11,7 +11,7 @@ tags:
   - plant selection
 pubDate: 2026-05-23
 heroImage: "/blog/right-plant-right-place-hero.jpg"
-heroAlt: "A layered garden bed with ornamental grasses, hydrangeas, coneflowers, and purple flowering perennials in warm evening light."
+heroAlt: "Raised vegetable garden beds with leafy greens, tomatoes, herbs, and trellised plants."
 ---
 
 The single most expensive mistake gardeners make has nothing to do with money. It's putting the wrong plant in the wrong spot. That gorgeous hydrangea you bought on impulse will sulk and scorch in your west-facing front bed. The tomato you tucked into a shady corner will give you exactly two sad fruits all summer. The Japanese maple your neighbor swears by will struggle if your soil drains like a clay bowl.
