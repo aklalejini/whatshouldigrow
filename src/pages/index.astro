@@ -503,6 +503,11 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         const art = plantArt(plant);
         const image = plantImage(plant);
         const photoStyle = image ? ` style="--plant-photo: url('${image}')"` : "";
+        const detailArt = image
+          ? `<figure class="detail-art ${art}" role="img" aria-label="${plant.name} botanical plate"${photoStyle}>
+              <span>${plant.name}</span>
+            </figure>`
+          : "";
         item.className = `result-card ${index === 0 ? "top-card" : ""} ${kind}-card ${art}-art`;
 
         const partner = partners[plant.partner] ?? partners.amazon;
@@ -530,38 +535,39 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
             <div class="trait-row">
               ${plant.traits.slice(0, 2).map((trait) => `<span>${trait}</span>`).join("")}
             </div>
-            <details class="plant-details">
-              <summary>
-                <span>More data</span>
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6 1.4-1.4Z"></path>
-                </svg>
-              </summary>
-              <div class="details-grid">
-                <div class="detail-panel">
-                  <h4>Fit breakdown</h4>
-                  <div class="fit-chart">
-                    ${renderFitRows(breakdown.details)}
-                  </div>
+          </div>
+          <details class="plant-details ${image ? "has-art" : ""}">
+            <summary>
+              <span>More data</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6 1.4-1.4Z"></path>
+              </svg>
+            </summary>
+            <div class="details-grid">
+              ${detailArt}
+              <div class="detail-panel">
+                <h4>Fit breakdown</h4>
+                <div class="fit-chart">
+                  ${renderFitRows(breakdown.details)}
                 </div>
-                <div class="detail-panel">
-                  <h4>Plant data</h4>
-                  ${renderZoneRange(plant, inputs)}
-                  <dl class="plant-stats">
-                    <div><dt>Sun</dt><dd>${formatList(plant.sun)}</dd></div>
-                    <div><dt>Soil</dt><dd>${formatList(plant.soils)}</dd></div>
-                    <div><dt>Water</dt><dd>${plant.water}</dd></div>
-                    <div><dt>Use</dt><dd>${formatList(plant.goals)}</dd></div>
-                  </dl>
-                </div>
-                <p class="grow-note">${plant.notes}</p>
               </div>
-            </details>
-            <div class="card-actions">
-              <a class="buy-link" href="${buildAffiliateUrl(plant)}" target="_blank" rel="nofollow sponsored noopener">
-                ${partner.name}
-              </a>
+              <div class="detail-panel">
+                <h4>Plant data</h4>
+                ${renderZoneRange(plant, inputs)}
+                <dl class="plant-stats">
+                  <div><dt>Sun</dt><dd>${formatList(plant.sun)}</dd></div>
+                  <div><dt>Soil</dt><dd>${formatList(plant.soils)}</dd></div>
+                  <div><dt>Water</dt><dd>${plant.water}</dd></div>
+                  <div><dt>Use</dt><dd>${formatList(plant.goals)}</dd></div>
+                </dl>
+              </div>
+              <p class="grow-note">${plant.notes}</p>
             </div>
+          </details>
+          <div class="card-actions">
+            <a class="buy-link" href="${buildAffiliateUrl(plant)}" target="_blank" rel="nofollow sponsored noopener">
+              ${partner.name}
+            </a>
           </div>
         `;
         return item;
