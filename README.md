@@ -7,7 +7,7 @@ A single-page Astro proof of concept for ZIP-based plant recommendations. Visito
 - Looks up USDA hardiness zone from ZIP with the free `https://phzmapi.org/{zip}.json` endpoint.
 - Defaults "not sure" soil to loam.
 - Filters by six goals: fruit, vegetables and herbs, pollinators and wildlife, curb appeal and color, privacy and screening, and low-maintenance natives.
-- Optionally filters by plant form, including trees, shrubs, vines, vegetables, and flowers/herbs.
+- Summarizes the form mix in the ranked results, such as trees, shrubs, vines, vegetables, and flowers/herbs.
 - Scores 219 hardcoded plants from `src/data/plants.json`.
 - Shows 12 ranked recommendations per search.
 - Expands each result into match bars, a hardiness-zone range marker, plant stats, and a short grower note.

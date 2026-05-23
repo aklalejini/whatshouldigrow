@@ -407,7 +407,6 @@ input[type="text"]:focus {
 }
 
 .goal-grid,
-.form-grid,
 fieldset:nth-of-type(2) .segmented {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -1525,7 +1524,6 @@ fieldset:nth-of-type(2) .segmented {
 
   .segmented,
   .goal-grid,
-  .form-grid,
   fieldset:nth-of-type(2) .segmented {
     grid-template-columns: 1fr 1fr;
   }
@@ -1592,7 +1590,6 @@ fieldset:nth-of-type(2) .segmented {
 
   .segmented,
   .goal-grid,
-  .form-grid,
   fieldset:nth-of-type(2) .segmented {
     grid-template-columns: 1fr;
   }

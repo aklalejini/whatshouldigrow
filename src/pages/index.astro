@@ -172,36 +172,6 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
             </div>
           </fieldset>
 
-          <fieldset>
-            <legend>Plant form</legend>
-            <div class="segmented form-grid">
-              <label>
-                <input type="radio" name="form" value="any" checked />
-                <span class="option-card"><span class="option-label">Any</span><span class="option-help">Best fit first</span></span>
-              </label>
-              <label>
-                <input type="radio" name="form" value="tree" />
-                <span class="option-card"><span class="option-label">Tree</span><span class="option-help">Orchard anchors</span></span>
-              </label>
-              <label>
-                <input type="radio" name="form" value="shrub" />
-                <span class="option-card"><span class="option-label">Shrub</span><span class="option-help">Hedges, berries</span></span>
-              </label>
-              <label>
-                <input type="radio" name="form" value="vine" />
-                <span class="option-card"><span class="option-label">Vine</span><span class="option-help">Needs support</span></span>
-              </label>
-              <label>
-                <input type="radio" name="form" value="vegetable" />
-                <span class="option-card"><span class="option-label">Vegetable</span><span class="option-help">Beds and pots</span></span>
-              </label>
-              <label>
-                <input type="radio" name="form" value="flower-herb" />
-                <span class="option-card"><span class="option-label">Flower/herb</span><span class="option-help">Useful color</span></span>
-              </label>
-            </div>
-          </fieldset>
-
           <button class="match-button" type="submit">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M11 20a9 9 0 1 1 7.03-3.38l3.17 3.17-1.41 1.41-3.17-3.17A8.96 8.96 0 0 1 11 20Zm0-2a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z"></path>
@@ -262,6 +232,16 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         "privacy-screening": "privacy & screening",
         "low-maintenance-natives": "low-maintenance natives"
       };
+      const formLabels = {
+        tree: ["tree", "trees"],
+        shrub: ["shrub", "shrubs"],
+        vine: ["vine", "vines"],
+        vegetable: ["vegetable", "vegetables"],
+        flowerHerb: ["flower/herb", "flowers/herbs"],
+        cactus: ["cactus", "cacti"],
+        fruiting: ["fruiting plant", "fruiting plants"]
+      };
+      const formOrder = ["tree", "shrub", "vine", "vegetable", "flowerHerb", "cactus", "fruiting"];
 
       function zoneToNumber(zone) {
         const match = String(zone).trim().toLowerCase().match(/^(\d{1,2})([ab])$/);
@@ -313,6 +293,33 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         if (type.includes("vine")) return "vine";
         if (type.includes("shrub") || type.includes("cane")) return "shrub";
         return "fruit";
+      }
+
+      function plantFormKey(plant) {
+        const type = plant.type.toLowerCase();
+        if (type.includes("tree") || type === "citrus") return "tree";
+        if (type.includes("shrub") || type.includes("cane")) return "shrub";
+        if (type.includes("vine")) return "vine";
+        if (type.includes("vegetable")) return "vegetable";
+        if (type.includes("flower") || type.includes("herb") || type.includes("grass")) return "flowerHerb";
+        if (type.includes("cactus")) return "cactus";
+        return "fruiting";
+      }
+
+      function summarizeForms(entries) {
+        const counts = entries.reduce((summary, entry) => {
+          const key = plantFormKey(entry.plant);
+          summary[key] = (summary[key] ?? 0) + 1;
+          return summary;
+        }, {});
+        return formOrder
+          .filter((key) => counts[key])
+          .map((key) => {
+            const count = counts[key];
+            const labels = formLabels[key];
+            return `${count} ${count === 1 ? labels[0] : labels[1]}`;
+          })
+          .join(", ");
       }
 
       function plantArt(plant) {
@@ -476,8 +483,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
           (plant.soils.includes(inputs.soil) ? 0.2 : 0) +
           (plant.water === inputs.water ? 0.2 : plant.water === "low" && inputs.water !== "low" ? 0.08 : 0);
         const goalSpecificity = plant.goals[0] === inputs.goal ? 0.18 : plant.goals.includes(inputs.goal) ? 0.1 : 0;
-        const formSpecificity = inputs.form !== "any" && matchesPlantForm(plant, inputs.form) ? 0.12 : 0;
-        return base + clamp(edgeMargin, -4, 4) * 0.7 - centerPenalty + conditionFit + goalSpecificity + formSpecificity;
+        return base + clamp(edgeMargin, -4, 4) * 0.7 - centerPenalty + conditionFit + goalSpecificity;
       }
 
       function overallFit(score) {
@@ -498,17 +504,6 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
           tone = "workable";
         }
         return { percent, label, tone };
-      }
-
-      function matchesPlantForm(plant, selectedForm) {
-        if (selectedForm === "any") return true;
-        const type = plant.type.toLowerCase();
-        if (selectedForm === "tree") return type.includes("tree") || type === "citrus";
-        if (selectedForm === "shrub") return type.includes("shrub") || type.includes("cane");
-        if (selectedForm === "vine") return type.includes("vine");
-        if (selectedForm === "vegetable") return type.includes("vegetable");
-        if (selectedForm === "flower-herb") return type.includes("flower") || type.includes("herb") || type.includes("grass");
-        return true;
       }
 
       function explainPlant(plant, inputs) {
@@ -655,6 +650,10 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
       function renderVisibleResults() {
         const visible = currentRanked.slice(0, visibleCount);
         resultsEl.replaceChildren(...visible.map((entry, index) => createResultItem(entry, index, currentInputs)));
+        const shownText = currentRanked.length > visibleCount
+          ? `Showing the strongest ${visibleCount} of ${currentRanked.length}.`
+          : `${currentRanked.length} ranked matches found.`;
+        statusEl.textContent = `${shownText} Top picks include ${summarizeForms(visible)}.`;
         if (currentRanked.length > visibleCount) {
           seeMoreEl.hidden = false;
           seeMoreEl.textContent = `See more results (${currentRanked.length - visibleCount} left)`;
@@ -664,18 +663,17 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
       }
 
       function renderResults(zoneData, inputs) {
-        const candidates = plants.filter((plant) => plant.goals.includes(inputs.goal) && matchesPlantForm(plant, inputs.form));
+        const candidates = plants.filter((plant) => plant.goals.includes(inputs.goal));
         const ranked = candidates
           .map((plant) => ({ plant, score: scorePlant(plant, inputs), rankScore: rankingScore(plant, inputs) }))
           .sort((a, b) => b.rankScore - a.rankScore || b.score - a.score || a.plant.name.localeCompare(b.plant.name));
 
-        const formLabel = inputs.form === "any" ? "" : ` ${inputs.form.replace("-", " and ")}`;
-        titleEl.textContent = `Best ${formatGoal(inputs.goal)}${formLabel} matches for zone ${inputs.zone}.`;
+        titleEl.textContent = `Best ${formatGoal(inputs.goal)} matches for zone ${inputs.zone}.`;
         zoneNoteEl.textContent = zoneData.temperature_range
           ? `USDA average annual extreme minimum: ${zoneData.temperature_range} F. Zone lookup returned coordinates near ${zoneData.coordinates.lat}, ${zoneData.coordinates.lon}.`
           : "Zone lookup succeeded. Local microclimates, chill hours, pests, and drainage still matter.";
         if (ranked.length === 0) {
-          statusEl.textContent = "No plants matched that goal and form combination. Try Any form or a broader goal.";
+          statusEl.textContent = "No plants matched that goal. Try a broader goal or loosen one growing condition.";
           resultsEl.replaceChildren();
           seeMoreEl.hidden = true;
           return;
@@ -684,7 +682,6 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         currentRanked = ranked;
         currentInputs = inputs;
         visibleCount = Math.min(12, currentRanked.length);
-        statusEl.textContent = `${currentRanked.length} ranked matches found. Showing the strongest ${visibleCount}.`;
         saveListEl.hidden = false;
         renderVisibleResults();
       }
@@ -766,8 +763,7 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
             sun: String(formData.get("sun")),
             soil: soilInput === "not-sure" ? "loam" : soilInput,
             water: String(formData.get("water")),
-            goal: String(formData.get("goal")),
-            form: String(formData.get("form"))
+            goal: String(formData.get("goal"))
           };
           statusEl.textContent = soilInput === "not-sure" ? "Soil set to loam because you selected not sure." : "";
           renderResults(zoneData, inputs);
