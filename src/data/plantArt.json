@@ -152,6 +152,30 @@
     "plateBg": "linear-gradient(145deg, #ebc2ce, #f7efe0)"
   },
   {
+    "id": "marigold",
+    "image": "marigold.webp",
+    "source": "Marigold.png",
+    "match": ["marigold"],
+    "position": "50% 52%",
+    "plateBg": "linear-gradient(145deg, #f0c36a, #f7efe0)"
+  },
+  {
+    "id": "tomato",
+    "image": "tomato.webp",
+    "source": "Tomato.png",
+    "match": ["tomato"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #e6c0a3, #f7efe0)"
+  },
+  {
+    "id": "pepper",
+    "image": "pepper.webp",
+    "source": "Pepper.png",
+    "match": ["pepper"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d6dfc5, #f7efe0)"
+  },
+  {
     "id": "artichoke",
     "image": "artichoke.webp",
     "source": "Artichoke.png",
