@@ -615,6 +615,14 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         renderVisibleResults();
       });
 
+      resultsEl.addEventListener("toggle", (event) => {
+        const openedDetails = event.target;
+        if (!(openedDetails instanceof HTMLDetailsElement) || !openedDetails.classList.contains("plant-details") || !openedDetails.open) return;
+        resultsEl.querySelectorAll(".plant-details[open]").forEach((details) => {
+          if (details !== openedDetails) details.open = false;
+        });
+      }, true);
+
       saveListEl.addEventListener("click", () => {
         if (!currentInputs || currentRanked.length === 0) return;
         const lines = [
