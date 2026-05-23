@@ -275,11 +275,26 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
       function plantArt(plant) {
         const identity = `${plant.id} ${plant.name} ${plant.query ?? ""}`.toLowerCase();
         if (identity.includes("blackberry")) return "blackberry";
+        if (identity.includes("raspberry")) return "raspberry";
+        if (identity.includes("fig")) return "fig";
+        if (
+          identity.includes("bush cherry") ||
+          identity.includes("carmine-jewel-cherry") ||
+          identity.includes("romeo-bush-cherry") ||
+          identity.includes("nanking-cherry")
+        ) return "bushcherry";
         return plantKind(plant);
       }
 
       function plantImage(plant) {
-        return plantArt(plant) === "blackberry" ? "/plant-art/blackberry.webp" : "";
+        const art = plantArt(plant);
+        const images = {
+          blackberry: "/plant-art/blackberry.webp",
+          bushcherry: "/plant-art/bush-cherry.webp",
+          fig: "/plant-art/fig.webp",
+          raspberry: "/plant-art/raspberry.webp",
+        };
+        return images[art] ?? "";
       }
 
       function scoreBreakdown(plant, inputs) {
@@ -487,15 +502,16 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         const kind = plantKind(plant);
         const art = plantArt(plant);
         const image = plantImage(plant);
+        const photoStyle = image ? ` style="--plant-photo: url('${image}')"` : "";
         item.className = `result-card ${index === 0 ? "top-card" : ""} ${kind}-card ${art}-art`;
 
         const partner = partners[plant.partner] ?? partners.amazon;
         const breakdown = scoreBreakdown(plant, inputs);
         const fit = overallFit(score);
         item.innerHTML = `
-          <figure class="plant-visual ${kind} ${art}" aria-hidden="true">
+          <figure class="plant-visual ${kind} ${art} ${image ? "photo-plate" : ""}" aria-hidden="true"${photoStyle}>
             <span class="rank">${index + 1}</span>
-            ${image ? `<img class="plant-photo" src="${image}" alt="" decoding="async" />` : `<span class="plant-visual-icon"></span>`}
+            ${image ? "" : `<span class="plant-visual-icon"></span>`}
           </figure>
           <div class="result-copy">
             <div class="result-title">

@@ -6,4 +6,5 @@ dist/
 qa-growwell*.png
 qa-whatshouldigrow*.png
 qa-blackberry*.png
+qa-*.png
 .DS_Store

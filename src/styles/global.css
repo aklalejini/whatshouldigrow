@@ -486,6 +486,13 @@ fieldset:nth-of-type(2) .segmented {
   border-radius: 18px;
 }
 
+.plant-visual.photo-plate {
+  background:
+    var(--plant-photo) var(--photo-position, center) / cover no-repeat,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(31, 45, 35, 0.04)),
+    var(--plate-bg, var(--sage));
+}
+
 .plant-visual::before {
   content: "";
   position: absolute;
@@ -511,17 +518,6 @@ fieldset:nth-of-type(2) .segmented {
   height: 72px;
   background: var(--plate-icon) center / contain no-repeat;
   filter: drop-shadow(0 10px 18px rgba(31, 45, 35, 0.18));
-}
-
-.plant-photo {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 58% 52%;
-  transform: scale(1.03);
 }
 
 .top-card .plant-visual-icon {
@@ -558,21 +554,39 @@ fieldset:nth-of-type(2) .segmented {
   --plate-bg: linear-gradient(145deg, #d8ddd0, #f8f1e4);
 }
 
-.plant-visual.blackberry::after {
+.plant-visual.fig {
+  --plate-bg: linear-gradient(145deg, #d7dfcb, #f7efe0);
+}
+
+.plant-visual.bushcherry {
+  --plate-bg: linear-gradient(145deg, #e8d7c4, #fbf0df);
+}
+
+.plant-visual.raspberry {
+  --plate-bg: linear-gradient(145deg, #d9e3c8, #f7efe0);
+}
+
+.plant-visual.blackberry::after,
+.plant-visual.fig::after,
+.plant-visual.bushcherry::after,
+.plant-visual.raspberry::after {
   display: none;
 }
 
-.top-card .plant-visual.blackberry .plant-photo {
-  object-position: 68% 58%;
+.plant-visual.blackberry {
+  --photo-position: 68% 58%;
 }
 
-.plant-visual.blackberry .plant-photo {
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 68% 58%;
-  transform: none;
+.plant-visual.fig {
+  --photo-position: 48% 56%;
+}
+
+.plant-visual.bushcherry {
+  --photo-position: center;
+}
+
+.plant-visual.raspberry {
+  --photo-position: 42% 56%;
 }
 
 .rank {
