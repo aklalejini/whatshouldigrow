@@ -631,6 +631,26 @@ fieldset:nth-of-type(2) .segmented {
   --plate-bg: linear-gradient(145deg, #d9e3c8, #f7efe0);
 }
 
+.plant-visual.generic-flower-herb {
+  --plate-bg: linear-gradient(145deg, #d8ddd0, #f7efe0);
+}
+
+.plant-visual.generic-fruit {
+  --plate-bg: linear-gradient(145deg, #d8ddd0, #f7efe0);
+}
+
+.plant-visual.generic-tree {
+  --plate-bg: linear-gradient(145deg, #d8ddd0, #f7efe0);
+}
+
+.plant-visual.generic-vegetable {
+  --plate-bg: linear-gradient(145deg, #d7e6b8, #fbf1d8);
+}
+
+.plant-visual.generic-vine {
+  --plate-bg: linear-gradient(145deg, #d9e7c5, #f7f2df);
+}
+
 .plant-visual.persimmon {
   --plate-bg: linear-gradient(145deg, #f3d4b7, #f7efe0);
 }
@@ -656,6 +676,11 @@ fieldset:nth-of-type(2) .segmented {
 .plant-visual.blueberry::after,
 .plant-visual.elderberry::after,
 .plant-visual.fig::after,
+.plant-visual.generic-flower-herb::after,
+.plant-visual.generic-fruit::after,
+.plant-visual.generic-tree::after,
+.plant-visual.generic-vegetable::after,
+.plant-visual.generic-vine::after,
 .plant-visual.persimmon::after,
 .plant-visual.plum::after,
 .plant-visual.bushcherry::after,
@@ -682,6 +707,26 @@ fieldset:nth-of-type(2) .segmented {
 
 .plant-visual.fig {
   --photo-position: 48% 56%;
+}
+
+.plant-visual.generic-flower-herb {
+  --photo-position: 52% 52%;
+}
+
+.plant-visual.generic-fruit {
+  --photo-position: 50% 52%;
+}
+
+.plant-visual.generic-tree {
+  --photo-position: 52% 52%;
+}
+
+.plant-visual.generic-vegetable {
+  --photo-position: 50% 50%;
+}
+
+.plant-visual.generic-vine {
+  --photo-position: 52% 52%;
 }
 
 .plant-visual.persimmon {

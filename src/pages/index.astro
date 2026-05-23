@@ -289,7 +289,16 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
           identity.includes("romeo-bush-cherry") ||
           identity.includes("nanking-cherry")
         ) return "bushcherry";
-        return plantKind(plant);
+        return genericArt(plant);
+      }
+
+      function genericArt(plant) {
+        const type = plant.type.toLowerCase();
+        if (type.includes("flower") || type.includes("herb") || type.includes("grass") || type.includes("ornamental")) return "generic-flower-herb";
+        if (type.includes("vegetable")) return "generic-vegetable";
+        if (type.includes("vine")) return "generic-vine";
+        if (type.includes("tree")) return "generic-tree";
+        return "generic-fruit";
       }
 
       function plantImage(plant) {
@@ -301,6 +310,11 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
           bushcherry: "/plant-art/bush-cherry.webp",
           elderberry: "/plant-art/elderberry.webp",
           fig: "/plant-art/fig.webp",
+          "generic-flower-herb": "/plant-art/generic-flower-herb.webp",
+          "generic-fruit": "/plant-art/generic-fruit.webp",
+          "generic-tree": "/plant-art/generic-tree.webp",
+          "generic-vegetable": "/plant-art/generic-vegetable.webp",
+          "generic-vine": "/plant-art/generic-vine.webp",
           persimmon: "/plant-art/persimmon.webp",
           plum: "/plant-art/plum.webp",
           raspberry: "/plant-art/raspberry.webp",
