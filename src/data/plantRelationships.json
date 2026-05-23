@@ -1,0 +1,99 @@
+[
+  {
+    "id": "tomato-marigold",
+    "type": "companion",
+    "strength": "high",
+    "sourceMatch": ["tomato"],
+    "targetMatch": ["marigold"],
+    "note": "Classic kitchen-garden pairing: marigolds add season-long flowers near tomatoes and help draw beneficial insects into the bed."
+  },
+  {
+    "id": "tomato-basil",
+    "type": "companion",
+    "strength": "medium",
+    "sourceMatch": ["tomato"],
+    "targetMatch": ["basil"],
+    "note": "Basil fits the same sunny, warm, regularly watered bed as tomatoes and keeps harvest tasks clustered together."
+  },
+  {
+    "id": "pepper-basil-marigold",
+    "type": "companion",
+    "strength": "medium",
+    "sourceMatch": ["pepper"],
+    "sourceExclude": ["peppermint"],
+    "targetMatch": ["basil", "marigold"],
+    "note": "Peppers share tomato-like growing conditions and benefit from nearby flowering or aromatic companions in mixed beds."
+  },
+  {
+    "id": "cucumber-flower-herb-strip",
+    "type": "companion",
+    "strength": "medium",
+    "sourceMatch": ["cucumber"],
+    "targetMatch": ["dill", "borage", "nasturtium", "calendula"],
+    "note": "Cucumbers need steady pollinator traffic, so nearby flowering herbs and annuals are useful bed neighbors."
+  },
+  {
+    "id": "strawberry-borage",
+    "type": "companion",
+    "strength": "high",
+    "sourceMatch": ["strawberry"],
+    "sourceExclude": ["guava"],
+    "targetMatch": ["borage"],
+    "note": "Borage is a traditional strawberry companion because it flowers heavily and pulls pollinators into low fruiting beds."
+  },
+  {
+    "id": "three-sisters-style",
+    "type": "guild",
+    "strength": "high",
+    "plantMatch": ["corn", "bean", "squash"],
+    "plantExclude": ["cornelian"],
+    "note": "Corn, climbing beans, and squash can work as a warm-season guild when spacing, timing, and fertility are managed carefully."
+  },
+  {
+    "id": "carrot-allium",
+    "type": "companion",
+    "strength": "high",
+    "sourceMatch": ["carrot"],
+    "targetMatch": ["onion", "garlic", "chives"],
+    "note": "Carrots and alliums are compact crops that share bed space well and make sense as alternating rows or close neighbors."
+  },
+  {
+    "id": "blueberry-acid-bed",
+    "type": "guild",
+    "strength": "high",
+    "plantMatch": ["blueberry", "cranberry", "lingonberry"],
+    "note": "These crops all prefer acidic soil, making them natural candidates for the same managed acid bed or container mix."
+  },
+  {
+    "id": "brassica-beneficial-insect-strip",
+    "type": "companion",
+    "strength": "medium",
+    "sourceMatch": ["broccoli", "cauliflower", "cabbage", "kale", "collards"],
+    "targetMatch": ["dill", "cilantro", "calendula", "yarrow"],
+    "note": "Small-flowered herbs and annuals near brassicas can support beneficial insects while the brassicas fill out."
+  },
+  {
+    "id": "fruit-tree-understory",
+    "type": "understory",
+    "strength": "medium",
+    "sourceMatch": ["apple", "pear", "peach", "plum", "cherry"],
+    "sourceExclude": ["cherry tomato", "cherry laurel"],
+    "targetMatch": ["chives", "garlic", "yarrow", "calendula"],
+    "note": "Low alliums and long-blooming flowers can form a simple orchard-edge understory without competing heavily with young trees."
+  },
+  {
+    "id": "native-pollinator-patch",
+    "type": "guild",
+    "strength": "medium",
+    "plantMatch": ["coneflower", "bee balm", "yarrow", "sunflower", "milkweed", "rudbeckia", "black-eyed susan"],
+    "note": "Repeated native and pollinator-friendly blooms work better as a patch than as isolated one-off plants."
+  },
+  {
+    "id": "lettuce-pea-cool-season",
+    "type": "companion",
+    "strength": "medium",
+    "sourceMatch": ["lettuce", "spinach"],
+    "targetMatch": ["pea", "radish"],
+    "note": "Fast cool-season crops can share spring or fall bed space before heat-loving plants take over."
+  }
+]

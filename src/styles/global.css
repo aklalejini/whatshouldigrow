@@ -1084,6 +1084,73 @@ fieldset:nth-of-type(2) .segmented {
   letter-spacing: 0.08em;
 }
 
+.relationship-panel {
+  grid-column: 1 / -1;
+}
+
+.relationship-list {
+  display: grid;
+  gap: 10px;
+}
+
+.relationship-item {
+  padding: 12px;
+  border: 1px solid #e2e8dc;
+  border-radius: 8px;
+  background: #fbfdf8;
+}
+
+.relationship-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.relationship-head span,
+.relationship-head strong {
+  font-size: 0.68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.relationship-head span {
+  color: var(--terracotta);
+}
+
+.relationship-head strong {
+  color: var(--leaf-dark);
+}
+
+.relationship-item p {
+  margin: 0 0 10px;
+  color: #3f4d43;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.relationship-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.relationship-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 3px 9px;
+  border: 1px solid #dfe7d8;
+  border-radius: 999px;
+  color: #4d5c50;
+  background: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
 .fit-chart {
   display: grid;
   gap: 8px;
@@ -1263,6 +1330,10 @@ fieldset:nth-of-type(2) .segmented {
 }
 
 .plant-details:not(.has-art) .grow-note {
+  grid-column: 1 / -1;
+}
+
+.relationship-panel ~ .grow-note {
   grid-column: 1 / -1;
 }
 

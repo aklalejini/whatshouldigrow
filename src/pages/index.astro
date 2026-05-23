@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import plants from "../data/plants.json";
 import partners from "../data/affiliatePartners.json";
 import plantArtEntries from "../data/plantArt.json";
+import plantRelationships from "../data/plantRelationships.json";
 import {
   DEFAULT_SOCIAL_IMAGE,
   SITE_DESCRIPTION,
@@ -375,11 +376,13 @@ const webAppJsonLd = {
     <script is:inline type="application/json" id="plant-data" set:html={JSON.stringify(plants)}></script>
     <script is:inline type="application/json" id="partner-data" set:html={JSON.stringify(partners)}></script>
     <script is:inline type="application/json" id="plant-art-data" set:html={JSON.stringify(plantArtEntries)}></script>
+    <script is:inline type="application/json" id="plant-relationship-data" set:html={JSON.stringify(plantRelationships)}></script>
     <script is:inline type="application/json" id="blog-search-data" set:html={JSON.stringify(blogSearchData)}></script>
     <script is:inline>
       const plants = JSON.parse(document.getElementById("plant-data").textContent);
       const partners = JSON.parse(document.getElementById("partner-data").textContent);
       const plantArtEntries = JSON.parse(document.getElementById("plant-art-data").textContent);
+      const plantRelationships = JSON.parse(document.getElementById("plant-relationship-data").textContent);
       const blogSearchData = JSON.parse(document.getElementById("blog-search-data").textContent);
       const plantArtById = Object.fromEntries(plantArtEntries.map((entry) => [entry.id, entry]));
       const form = document.getElementById("matcher-form");
@@ -496,6 +499,100 @@ const webAppJsonLd = {
 
       function formatGoalList(values) {
         return values.map(formatGoal).join(", ");
+      }
+
+      function escapeRegExp(value) {
+        return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+
+      function relationshipIdentity(plant) {
+        return `${plant.id} ${plant.name} ${plant.query ?? ""} ${plant.type}`
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, " ")
+          .trim();
+      }
+
+      function termMatchesIdentity(identity, term) {
+        const normalizedTerm = String(term).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+        if (!normalizedTerm) return false;
+        return new RegExp(`(^|\\s)${escapeRegExp(normalizedTerm)}(\\s|$)`).test(identity);
+      }
+
+      function matchesRelationshipTerms(plant, terms = [], excludes = []) {
+        if (!terms.length) return false;
+        const identity = relationshipIdentity(plant);
+        return terms.some((term) => termMatchesIdentity(identity, term))
+          && !excludes.some((term) => termMatchesIdentity(identity, term));
+      }
+
+      function relatedPlantsForRelationship(plant, relationship) {
+        const related = new Map();
+        if (relationship.plantMatch?.length) {
+          if (!matchesRelationshipTerms(plant, relationship.plantMatch, relationship.plantExclude ?? [])) return [];
+          plants.forEach((candidate) => {
+            if (candidate.id !== plant.id && matchesRelationshipTerms(candidate, relationship.plantMatch, relationship.plantExclude ?? [])) {
+              related.set(candidate.id, candidate);
+            }
+          });
+          return Array.from(related.values());
+        }
+
+        const isSource = matchesRelationshipTerms(plant, relationship.sourceMatch ?? [], relationship.sourceExclude ?? []);
+        const isTarget = matchesRelationshipTerms(plant, relationship.targetMatch ?? [], relationship.targetExclude ?? []);
+        plants.forEach((candidate) => {
+          if (candidate.id === plant.id) return;
+          if (isSource && matchesRelationshipTerms(candidate, relationship.targetMatch ?? [], relationship.targetExclude ?? [])) {
+            related.set(candidate.id, candidate);
+          }
+          if (isTarget && matchesRelationshipTerms(candidate, relationship.sourceMatch ?? [], relationship.sourceExclude ?? [])) {
+            related.set(candidate.id, candidate);
+          }
+        });
+        return Array.from(related.values());
+      }
+
+      const relationshipTypeLabels = {
+        companion: "Companion",
+        guild: "Plant guild",
+        understory: "Understory"
+      };
+
+      function relationshipEntriesForPlant(plant) {
+        return plantRelationships
+          .map((relationship) => ({
+            relationship,
+            relatedPlants: relatedPlantsForRelationship(plant, relationship)
+          }))
+          .filter((entry) => entry.relatedPlants.length > 0);
+      }
+
+      function renderRelationshipPanel(plant) {
+        const entries = relationshipEntriesForPlant(plant).slice(0, 3);
+        if (!entries.length) return "";
+        return `
+          <div class="detail-panel relationship-panel">
+            <h4>Plant relationships</h4>
+            <div class="relationship-list">
+              ${entries.map(({ relationship, relatedPlants }) => {
+                const visiblePlants = relatedPlants.slice(0, 5);
+                const moreCount = relatedPlants.length - visiblePlants.length;
+                return `
+                  <article class="relationship-item">
+                    <div class="relationship-head">
+                      <span>${relationshipTypeLabels[relationship.type] ?? sentenceCase(relationship.type)}</span>
+                      <strong>${sentenceCase(relationship.strength ?? "noted")}</strong>
+                    </div>
+                    <p>${relationship.note}</p>
+                    <div class="relationship-tags">
+                      ${visiblePlants.map((relatedPlant) => `<span>${relatedPlant.name}</span>`).join("")}
+                      ${moreCount > 0 ? `<span>+${moreCount} more</span>` : ""}
+                    </div>
+                  </article>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        `;
       }
 
       function sentenceCase(text) {
@@ -915,6 +1012,7 @@ const webAppJsonLd = {
                   <div><dt>Goals</dt><dd>${formatGoalList(plant.goals)}</dd></div>
                 </dl>
               </div>
+              ${renderRelationshipPanel(plant)}
               <p class="grow-note">${plant.notes}</p>
             </div>
           </details>
