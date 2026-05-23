@@ -721,6 +721,18 @@ fieldset:nth-of-type(2) .segmented {
   --plate-bg: linear-gradient(145deg, #d8ddd0, #f8f1e4);
 }
 
+.plant-visual.black-currant {
+  --plate-bg: linear-gradient(145deg, #d8ddd0, #f7efe0);
+}
+
+.plant-visual.red-currant {
+  --plate-bg: linear-gradient(145deg, #e9d8c5, #f7efe0);
+}
+
+.plant-visual.white-currant {
+  --plate-bg: linear-gradient(145deg, #eadfbc, #f7efe0);
+}
+
 .plant-visual.aronia {
   --plate-bg: linear-gradient(145deg, #d7dfcb, #f7efe0);
 }
@@ -773,6 +785,50 @@ fieldset:nth-of-type(2) .segmented {
   --plate-bg: linear-gradient(145deg, #d9e7c5, #f7f2df);
 }
 
+.plant-visual.peach {
+  --plate-bg: linear-gradient(145deg, #f1c7ab, #f7efe0);
+}
+
+.plant-visual.pear {
+  --plate-bg: linear-gradient(145deg, #e4dfad, #f7efe0);
+}
+
+.plant-visual.hazelnut {
+  --plate-bg: linear-gradient(145deg, #d7dfcb, #f7efe0);
+}
+
+.plant-visual.cherry-dogwood {
+  --plate-bg: linear-gradient(145deg, #d8ddd0, #f7efe0);
+}
+
+.plant-visual.pawpaw {
+  --plate-bg: linear-gradient(145deg, #d6dfc5, #f7efe0);
+}
+
+.plant-visual.mulberry {
+  --plate-bg: linear-gradient(145deg, #d8ddd0, #f7efe0);
+}
+
+.plant-visual.onion {
+  --plate-bg: linear-gradient(145deg, #e7d6b8, #f7efe0);
+}
+
+.plant-visual.bean {
+  --plate-bg: linear-gradient(145deg, #d9e3c8, #f7efe0);
+}
+
+.plant-visual.swiss-chard {
+  --plate-bg: linear-gradient(145deg, #d8e0bd, #f7efe0);
+}
+
+.plant-visual.squash {
+  --plate-bg: linear-gradient(145deg, #ead39b, #f7efe0);
+}
+
+.plant-visual.zucchini {
+  --plate-bg: linear-gradient(145deg, #d9e3c8, #f7efe0);
+}
+
 .plant-visual.persimmon {
   --plate-bg: linear-gradient(145deg, #f3d4b7, #f7efe0);
 }
@@ -795,7 +851,10 @@ fieldset:nth-of-type(2) .segmented {
 
 .plant-visual.blackberry::after,
 .plant-visual.aronia::after,
+.plant-visual.bean::after,
+.plant-visual.black-currant::after,
 .plant-visual.blueberry::after,
+.plant-visual.cherry-dogwood::after,
 .plant-visual.elderberry::after,
 .plant-visual.fig::after,
 .plant-visual.generic-flower-herb::after,
@@ -806,12 +865,23 @@ fieldset:nth-of-type(2) .segmented {
 .plant-visual.gooseberry::after,
 .plant-visual.grape::after,
 .plant-visual.hardy-kiwi::after,
+.plant-visual.hazelnut::after,
 .plant-visual.maypop-passionfruit::after,
+.plant-visual.mulberry::after,
+.plant-visual.onion::after,
+.plant-visual.pawpaw::after,
+.plant-visual.peach::after,
+.plant-visual.pear::after,
 .plant-visual.persimmon::after,
 .plant-visual.plum::after,
+.plant-visual.red-currant::after,
 .plant-visual.bushcherry::after,
 .plant-visual.raspberry::after,
-.plant-visual.serviceberry::after {
+.plant-visual.serviceberry::after,
+.plant-visual.squash::after,
+.plant-visual.swiss-chard::after,
+.plant-visual.white-currant::after,
+.plant-visual.zucchini::after {
   display: none;
 }
 
@@ -821,6 +891,18 @@ fieldset:nth-of-type(2) .segmented {
 
 .plant-visual.blackberry {
   --photo-position: 68% 58%;
+}
+
+.plant-visual.black-currant {
+  --photo-position: 54% 52%;
+}
+
+.plant-visual.red-currant {
+  --photo-position: 52% 54%;
+}
+
+.plant-visual.white-currant {
+  --photo-position: 48% 56%;
 }
 
 .plant-visual.blueberry {
@@ -869,6 +951,50 @@ fieldset:nth-of-type(2) .segmented {
 
 .plant-visual.maypop-passionfruit {
   --photo-position: 56% 52%;
+}
+
+.plant-visual.peach {
+  --photo-position: 56% 52%;
+}
+
+.plant-visual.pear {
+  --photo-position: 54% 54%;
+}
+
+.plant-visual.hazelnut {
+  --photo-position: 54% 52%;
+}
+
+.plant-visual.cherry-dogwood {
+  --photo-position: 54% 52%;
+}
+
+.plant-visual.pawpaw {
+  --photo-position: 52% 52%;
+}
+
+.plant-visual.mulberry {
+  --photo-position: 52% 54%;
+}
+
+.plant-visual.onion {
+  --photo-position: 50% 60%;
+}
+
+.plant-visual.bean {
+  --photo-position: 52% 52%;
+}
+
+.plant-visual.swiss-chard {
+  --photo-position: 50% 50%;
+}
+
+.plant-visual.squash {
+  --photo-position: 54% 52%;
+}
+
+.plant-visual.zucchini {
+  --photo-position: 50% 52%;
 }
 
 .plant-visual.persimmon {

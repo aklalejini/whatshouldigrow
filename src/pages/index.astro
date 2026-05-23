@@ -321,15 +321,34 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         const identity = `${plant.id} ${plant.name} ${plant.query ?? ""}`.toLowerCase();
         if (identity.includes("blackberry")) return "blackberry";
         if (identity.includes("raspberry")) return "raspberry";
+        if (identity.includes("black currant") || identity.includes("black-currant")) return "black-currant";
+        if (identity.includes("red currant") || identity.includes("red-currant")) return "red-currant";
+        if (
+          identity.includes("white currant") ||
+          identity.includes("white-currant") ||
+          identity.includes("pink champagne currant") ||
+          identity.includes("pink-champagne-currant")
+        ) return "white-currant";
         if (identity.includes("fig")) return "fig";
         if (identity.includes("gooseberry")) return "gooseberry";
         if (identity.includes("grape")) return "grape";
         if (identity.includes("kiwi")) return "hardy-kiwi";
         if (identity.includes("maypop") || identity.includes("passionfruit") || identity.includes("passion fruit")) return "maypop-passionfruit";
+        if (identity.includes("zucchini")) return "zucchini";
+        if (identity.includes("squash")) return "squash";
+        if (identity.includes("onion")) return "onion";
+        if (identity.includes("bean")) return "bean";
+        if (identity.includes("chard")) return "swiss-chard";
         if (identity.includes("aronia") || identity.includes("chokeberry")) return "aronia";
         if (identity.includes("blueberry")) return "blueberry";
         if (identity.includes("elderberry")) return "elderberry";
         if (identity.includes("persimmon")) return "persimmon";
+        if (identity.includes("peach")) return "peach";
+        if (identity.includes("pear") && !identity.includes("prickly pear")) return "pear";
+        if (identity.includes("hazelnut")) return "hazelnut";
+        if (identity.includes("cornelian cherry") || identity.includes("cornelian-cherry") || identity.includes("cherry dogwood")) return "cherry-dogwood";
+        if (identity.includes("pawpaw")) return "pawpaw";
+        if (identity.includes("mulberry")) return "mulberry";
         if (identity.includes("plum")) return "plum";
         if (identity.includes("serviceberry")) return "serviceberry";
         if (
@@ -354,9 +373,12 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         const art = plantArt(plant);
         const images = {
           aronia: "/plant-art/aronia.webp",
+          bean: "/plant-art/bean.webp",
           blackberry: "/plant-art/blackberry.webp",
+          "black-currant": "/plant-art/black-currant.webp",
           blueberry: "/plant-art/blueberry.webp",
           bushcherry: "/plant-art/bush-cherry.webp",
+          "cherry-dogwood": "/plant-art/cherry-dogwood.webp",
           elderberry: "/plant-art/elderberry.webp",
           fig: "/plant-art/fig.webp",
           gooseberry: "/plant-art/gooseberry.webp",
@@ -367,11 +389,22 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
           "generic-vegetable": "/plant-art/generic-vegetable.webp",
           "generic-vine": "/plant-art/generic-vine.webp",
           "hardy-kiwi": "/plant-art/hardy-kiwi.webp",
+          hazelnut: "/plant-art/hazelnut.webp",
           "maypop-passionfruit": "/plant-art/maypop-passionfruit.webp",
+          mulberry: "/plant-art/mulberry.webp",
+          onion: "/plant-art/onion.webp",
+          pawpaw: "/plant-art/pawpaw.webp",
+          peach: "/plant-art/peach.webp",
+          pear: "/plant-art/pear.webp",
           persimmon: "/plant-art/persimmon.webp",
           plum: "/plant-art/plum.webp",
           raspberry: "/plant-art/raspberry.webp",
+          "red-currant": "/plant-art/red-currant.webp",
           serviceberry: "/plant-art/serviceberry.webp",
+          squash: "/plant-art/squash.webp",
+          "swiss-chard": "/plant-art/swiss-chard.webp",
+          "white-currant": "/plant-art/white-currant.webp",
+          zucchini: "/plant-art/zucchini.webp",
         };
         return images[art] ?? "";
       }
