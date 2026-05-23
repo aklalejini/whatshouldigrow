@@ -8,7 +8,7 @@ An Astro site for ZIP-based plant recommendations. Visitors enter a ZIP code plu
 - Defaults "not sure" soil to loam.
 - Filters by six goals: fruit, vegetables and herbs, pollinators and wildlife, curb appeal and color, privacy and screening, and low-maintenance natives.
 - Summarizes the form mix in the ranked results, such as trees, shrubs, vines, vegetables, and flowers/herbs.
-- Scores 219 hardcoded plants from `src/data/plants.json`.
+- Scores 478 hardcoded plants from `src/data/plants.json`.
 - Shows 12 ranked recommendations per search.
 - Expands each result into match bars, a hardiness-zone range marker, plant stats, and a short grower note.
 - Adds `rel="nofollow noopener"` to outbound nursery search links.

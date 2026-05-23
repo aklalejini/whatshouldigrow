@@ -252,7 +252,7 @@
     "id": "orange",
     "image": "orange.webp",
     "source": "Orange.png",
-    "match": ["calamondin orange", "hardy orange", "flying dragon hardy orange", "nagami kumquat"],
+    "match": ["calamondin orange", "hardy orange", "flying dragon hardy orange", "nagami kumquat", "satsuma", "mandarin", "yuzu", "finger lime"],
     "position": "54% 54%",
     "plateBg": "linear-gradient(145deg, #f0c18e, #f7efe0)"
   },
@@ -332,7 +332,7 @@
     "id": "bushcherry",
     "image": "bush-cherry.webp",
     "source": "Bush Cherry.png",
-    "match": ["bush cherry", "carmine-jewel-cherry", "romeo-bush-cherry", "nanking-cherry"],
+    "match": ["bush cherry", "sweet cherry", "tart cherry", "montmorency-cherry", "stella-cherry", "north-star-cherry", "rainier-cherry", "bing-cherry", "blackgold-cherry", "balaton-cherry", "carmine-jewel-cherry", "romeo-bush-cherry", "nanking-cherry"],
     "position": "center",
     "plateBg": "linear-gradient(145deg, #e8d7c4, #fbf0df)"
   },
