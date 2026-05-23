@@ -164,12 +164,8 @@ button {
 .brand-mark {
   width: 28px;
   height: 28px;
-  border: 2px solid var(--leaf);
-  border-radius: 50% 50% 50% 8px;
-  background:
-    linear-gradient(135deg, transparent 45%, rgba(39, 88, 58, 0.7) 47% 53%, transparent 55%),
-    var(--sage);
-  transform: rotate(-24deg);
+  display: block;
+  object-fit: contain;
 }
 
 h1,
