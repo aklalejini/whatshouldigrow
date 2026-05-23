@@ -277,6 +277,12 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         if (identity.includes("blackberry")) return "blackberry";
         if (identity.includes("raspberry")) return "raspberry";
         if (identity.includes("fig")) return "fig";
+        if (identity.includes("aronia") || identity.includes("chokeberry")) return "aronia";
+        if (identity.includes("blueberry")) return "blueberry";
+        if (identity.includes("elderberry")) return "elderberry";
+        if (identity.includes("persimmon")) return "persimmon";
+        if (identity.includes("plum")) return "plum";
+        if (identity.includes("serviceberry")) return "serviceberry";
         if (
           identity.includes("bush cherry") ||
           identity.includes("carmine-jewel-cherry") ||
@@ -289,10 +295,16 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
       function plantImage(plant) {
         const art = plantArt(plant);
         const images = {
+          aronia: "/plant-art/aronia.webp",
           blackberry: "/plant-art/blackberry.webp",
+          blueberry: "/plant-art/blueberry.webp",
           bushcherry: "/plant-art/bush-cherry.webp",
+          elderberry: "/plant-art/elderberry.webp",
           fig: "/plant-art/fig.webp",
+          persimmon: "/plant-art/persimmon.webp",
+          plum: "/plant-art/plum.webp",
           raspberry: "/plant-art/raspberry.webp",
+          serviceberry: "/plant-art/serviceberry.webp",
         };
         return images[art] ?? "";
       }

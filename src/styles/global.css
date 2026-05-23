@@ -615,8 +615,32 @@ fieldset:nth-of-type(2) .segmented {
   --plate-bg: linear-gradient(145deg, #d8ddd0, #f8f1e4);
 }
 
+.plant-visual.aronia {
+  --plate-bg: linear-gradient(145deg, #d7dfcb, #f7efe0);
+}
+
+.plant-visual.blueberry {
+  --plate-bg: linear-gradient(145deg, #d6dde1, #f7efe0);
+}
+
 .plant-visual.fig {
   --plate-bg: linear-gradient(145deg, #d7dfcb, #f7efe0);
+}
+
+.plant-visual.elderberry {
+  --plate-bg: linear-gradient(145deg, #d9e3c8, #f7efe0);
+}
+
+.plant-visual.persimmon {
+  --plate-bg: linear-gradient(145deg, #f3d4b7, #f7efe0);
+}
+
+.plant-visual.plum {
+  --plate-bg: linear-gradient(145deg, #ded7e3, #f7efe0);
+}
+
+.plant-visual.serviceberry {
+  --plate-bg: linear-gradient(145deg, #d8ddd0, #f7efe0);
 }
 
 .plant-visual.bushcherry {
@@ -628,18 +652,44 @@ fieldset:nth-of-type(2) .segmented {
 }
 
 .plant-visual.blackberry::after,
+.plant-visual.aronia::after,
+.plant-visual.blueberry::after,
+.plant-visual.elderberry::after,
 .plant-visual.fig::after,
+.plant-visual.persimmon::after,
+.plant-visual.plum::after,
 .plant-visual.bushcherry::after,
-.plant-visual.raspberry::after {
+.plant-visual.raspberry::after,
+.plant-visual.serviceberry::after {
   display: none;
+}
+
+.plant-visual.aronia {
+  --photo-position: 58% 54%;
 }
 
 .plant-visual.blackberry {
   --photo-position: 68% 58%;
 }
 
+.plant-visual.blueberry {
+  --photo-position: 56% 46%;
+}
+
+.plant-visual.elderberry {
+  --photo-position: 46% 56%;
+}
+
 .plant-visual.fig {
   --photo-position: 48% 56%;
+}
+
+.plant-visual.persimmon {
+  --photo-position: 52% 48%;
+}
+
+.plant-visual.plum {
+  --photo-position: 60% 54%;
 }
 
 .plant-visual.bushcherry {
@@ -648,6 +698,10 @@ fieldset:nth-of-type(2) .segmented {
 
 .plant-visual.raspberry {
   --photo-position: 42% 56%;
+}
+
+.plant-visual.serviceberry {
+  --photo-position: 62% 56%;
 }
 
 .rank {
