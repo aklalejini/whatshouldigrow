@@ -219,11 +219,6 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
       let zoneLookupTimer = null;
 
       const waterRank = { low: 1, medium: 2, high: 3 };
-      const waterCopy = {
-        low: "it can coast through dry spells once established",
-        medium: "normal garden watering is plenty",
-        high: "it appreciates steady moisture"
-      };
       const goalLabels = {
         fruit: "fruit",
         "vegetables-herbs": "vegetables & herbs",
@@ -506,25 +501,111 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         return { percent, label, tone };
       }
 
+      function joinHumanList(values) {
+        if (values.length <= 1) return values[0] ?? "";
+        if (values.length === 2) return `${values[0]} and ${values[1]}`;
+        return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
+      }
+
+      function conditionWins(plant, inputs) {
+        const wins = [];
+        const userZone = zoneToNumber(inputs.zone);
+        if (userZone >= zoneToNumber(plant.zones[0]) && userZone <= zoneToNumber(plant.zones[1])) {
+          wins.push(`hardy in zone ${inputs.zone}`);
+        }
+        if (plant.sun.includes(inputs.sun)) {
+          wins.push(inputs.sun === "full" ? "happy in full sun" : `comfortable in ${inputs.sun} sun`);
+        }
+        if (plant.soils.includes(inputs.soil)) wins.push(`not fussy about ${inputs.soil} soil`);
+        if (plant.water === inputs.water) wins.push(`${inputs.water} water is enough`);
+        return wins;
+      }
+
+      function articleFor(text) {
+        return /^[aeiou]/i.test(text) ? "an" : "a";
+      }
+
+      function traitPhrase(trait) {
+        const tangibleWords = ["fruit", "berries", "berry", "nut", "nuts", "flowers", "foliage", "bloom", "color", "flavor", "texture", "arils", "stems", "spears", "pods", "leaves", "roots", "tubers", "calyces"];
+        return tangibleWords.some((word) => trait.includes(word))
+          ? `its ${trait}`
+          : `being ${articleFor(trait)} ${trait}`;
+      }
+
+      function goalLead(plant, inputs) {
+        const trait = plant.traits[0];
+        const wins = conditionWins(plant, inputs);
+        const fit = wins.length ? `; it is ${joinHumanList(wins.slice(0, 2))}` : "";
+        if (inputs.goal === "privacy-screening") {
+          return `${plant.name} has the bones for screening: ${trait}${fit}.`;
+        }
+        if (inputs.goal === "pollinators-wildlife") {
+          return `${plant.name} earns its place for habitat first: ${trait}${fit}.`;
+        }
+        if (inputs.goal === "curb-appeal") {
+          return `${plant.name} is here because it looks intentional, not just useful: ${trait}${fit}.`;
+        }
+        if (inputs.goal === "vegetables-herbs") {
+          return `${plant.name} is a kitchen-garden pick with a real reason to grow it: ${trait}${fit}.`;
+        }
+        if (inputs.goal === "low-maintenance-natives") {
+          return `${plant.name} fits the low-fuss lane: ${trait}${fit}.`;
+        }
+        return `${plant.name} earns its slot for ${traitPhrase(trait)}${fit}.`;
+      }
+
+      function payoffPhrase(plant) {
+        const replacements = [
+          [/^ripens in /, "fruit in "],
+          [/^ripens from /, "fruit from "],
+          [/^often produces /, ""],
+          [/^drops ripe fruit in /, "ripe fruit in "],
+          [/^bears over /, "fruit over "],
+          [/^berries ripen in /, "berries in "],
+          [/^berries ripen /, "berries "],
+          [/^fruit ripens in /, "fruit in "],
+          [/^nuts mature in /, "nuts in "],
+          [/^nuts drop in /, "nuts in "],
+          [/^spears harvest in /, "spears in "],
+          [/^stalks harvest in /, "stalks in "],
+          [/^buds form in /, "buds in "],
+          [/^edible pads and fruit in /, "pads and fruit in "],
+          [/^green onions and bulbils /, "green onions and bulbils "]
+        ];
+        return replacements.reduce((text, [pattern, replacement]) => text.replace(pattern, replacement), plant.harvest);
+      }
+
+      function payoffSentence(plant, inputs) {
+        const trait = plant.traits[1] ?? plant.traits[0];
+        const payoff = payoffPhrase(plant);
+        if (inputs.goal === "pollinators-wildlife") {
+          return `The payoff is ${payoff}, plus the movement of bees, birds, or butterflies around it.`;
+        }
+        if (inputs.goal === "curb-appeal") {
+          return `The payoff is ${payoff}, with ${trait} carrying the look.`;
+        }
+        if (inputs.goal === "vegetables-herbs") {
+          return `The payoff is ${payoff}, the kind of harvest that makes the kitchen notice.`;
+        }
+        if (inputs.goal === "privacy-screening") {
+          return `The payoff is ${payoff}, while the plant earns its keep as living structure.`;
+        }
+        return `The payoff is ${payoff}, with ${trait}.`;
+      }
+
       function explainPlant(plant, inputs) {
-        const soilLine = plant.soils.includes(inputs.soil)
-          ? `${sentenceCase(inputs.soil)} soil is fine`
-          : `Best in ${plant.soils.join(" or ")} soil`;
-        const sunLine = plant.sun.includes(inputs.sun)
-          ? inputs.sun === "full" ? "give it sun" : `${inputs.sun} sun works`
-          : `It would rather have ${formatList(plant.sun)} sun`;
-        return `Easy in zone ${inputs.zone}. ${soilLine}; ${waterCopy[plant.water]}; ${sunLine}. ${sentenceCase(plant.harvest)}.`;
+        if (plant.id === "mango-pawpaw") {
+          return "One of the few large fruits that genuinely handles part shade - perfect for clay-heavy yards where peaches and plums struggle. Slow to fruit (4-6 years), worth the wait. The fruit ripens in early fall with a custardy texture and a flavor between mango and banana; nothing else in a Southern orchard tastes like it.";
+        }
+        return `${goalLead(plant, inputs)} ${plant.notes} ${payoffSentence(plant, inputs)}`;
       }
 
       function whyThisWon(plant, inputs) {
-        const reasons = [];
-        if (plant.goals.includes(inputs.goal)) reasons.push(`it matches your ${formatGoal(inputs.goal)} goal`);
-        if (plant.sun.includes(inputs.sun)) reasons.push(`${inputs.sun} sun suits it`);
-        if (plant.soils.includes(inputs.soil)) reasons.push(`${inputs.soil} soil works`);
-        if (plant.water === inputs.water) reasons.push(`${inputs.water} watering is right`);
-        return reasons.length
-          ? `Why this won: ${reasons.slice(0, 3).join(", ")}.`
-          : "Why this won: it has the strongest zone and condition fit in this search.";
+        const wins = conditionWins(plant, inputs).slice(0, 2);
+        const trait = plant.traits[0];
+        return wins.length
+          ? `Why it rose: ${sentenceCase(joinHumanList(wins))}, and ${trait}.`
+          : `Why it rose: ${sentenceCase(trait)} gives it the strongest read in this search.`;
       }
 
       function renderFitRows(details) {
