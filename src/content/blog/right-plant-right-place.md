@@ -10,7 +10,7 @@ tags:
   - soil
   - plant selection
 pubDate: 2026-05-23
-heroImage: "/blog/right-plant-right-place-hero.jpg"
+heroImage: "/blog/garden-beds-hero.jpg"
 heroAlt: "Raised vegetable garden beds with leafy greens, tomatoes, herbs, and trellised plants."
 ---
 
