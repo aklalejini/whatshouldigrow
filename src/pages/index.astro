@@ -43,9 +43,21 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
             <span class="hero-frame" style="--hero-image: url('/plant-art/persimmon.webp'); --i: 2"></span>
             <span class="hero-frame" style="--hero-image: url('/plant-art/plum.webp'); --i: 3"></span>
             <span class="hero-frame" style="--hero-image: url('/plant-art/elderberry.webp'); --i: 4"></span>
-            <span class="hero-specimen hero-specimen-a"></span>
-            <span class="hero-specimen hero-specimen-b"></span>
-            <span class="hero-specimen hero-specimen-c"></span>
+            <span class="hero-specimen hero-specimen-a is-first" style="--specimen-image: url('/plant-art/serviceberry.webp'); --i: 0"></span>
+            <span class="hero-specimen hero-specimen-b is-first" style="--specimen-image: url('/plant-art/raspberry.webp'); --i: 0"></span>
+            <span class="hero-specimen hero-specimen-c is-first" style="--specimen-image: url('/plant-art/generic-vine.webp'); --i: 0"></span>
+            <span class="hero-specimen hero-specimen-a" style="--specimen-image: url('/plant-art/grape.webp'); --i: 1"></span>
+            <span class="hero-specimen hero-specimen-b" style="--specimen-image: url('/plant-art/hardy-kiwi.webp'); --i: 1"></span>
+            <span class="hero-specimen hero-specimen-c" style="--specimen-image: url('/plant-art/gooseberry.webp'); --i: 1"></span>
+            <span class="hero-specimen hero-specimen-a" style="--specimen-image: url('/plant-art/plum.webp'); --i: 2"></span>
+            <span class="hero-specimen hero-specimen-b" style="--specimen-image: url('/plant-art/maypop-passionfruit.webp'); --i: 2"></span>
+            <span class="hero-specimen hero-specimen-c" style="--specimen-image: url('/plant-art/aronia.webp'); --i: 2"></span>
+            <span class="hero-specimen hero-specimen-a" style="--specimen-image: url('/plant-art/blackberry.webp'); --i: 3"></span>
+            <span class="hero-specimen hero-specimen-b" style="--specimen-image: url('/plant-art/blueberry.webp'); --i: 3"></span>
+            <span class="hero-specimen hero-specimen-c" style="--specimen-image: url('/plant-art/elderberry.webp'); --i: 3"></span>
+            <span class="hero-specimen hero-specimen-a" style="--specimen-image: url('/plant-art/fig.webp'); --i: 4"></span>
+            <span class="hero-specimen hero-specimen-b" style="--specimen-image: url('/plant-art/persimmon.webp'); --i: 4"></span>
+            <span class="hero-specimen hero-specimen-c" style="--specimen-image: url('/plant-art/generic-flower-herb.webp'); --i: 4"></span>
           </figure>
         </div>
 
@@ -284,6 +296,10 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
         if (identity.includes("blackberry")) return "blackberry";
         if (identity.includes("raspberry")) return "raspberry";
         if (identity.includes("fig")) return "fig";
+        if (identity.includes("gooseberry")) return "gooseberry";
+        if (identity.includes("grape")) return "grape";
+        if (identity.includes("kiwi")) return "hardy-kiwi";
+        if (identity.includes("maypop") || identity.includes("passionfruit") || identity.includes("passion fruit")) return "maypop-passionfruit";
         if (identity.includes("aronia") || identity.includes("chokeberry")) return "aronia";
         if (identity.includes("blueberry")) return "blueberry";
         if (identity.includes("elderberry")) return "elderberry";
@@ -317,11 +333,15 @@ const plantCount = Array.isArray(plants) ? plants.length : 0;
           bushcherry: "/plant-art/bush-cherry.webp",
           elderberry: "/plant-art/elderberry.webp",
           fig: "/plant-art/fig.webp",
+          gooseberry: "/plant-art/gooseberry.webp",
+          grape: "/plant-art/grape.webp",
           "generic-flower-herb": "/plant-art/generic-flower-herb.webp",
           "generic-fruit": "/plant-art/generic-fruit.webp",
           "generic-tree": "/plant-art/generic-tree.webp",
           "generic-vegetable": "/plant-art/generic-vegetable.webp",
           "generic-vine": "/plant-art/generic-vine.webp",
+          "hardy-kiwi": "/plant-art/hardy-kiwi.webp",
+          "maypop-passionfruit": "/plant-art/maypop-passionfruit.webp",
           persimmon: "/plant-art/persimmon.webp",
           plum: "/plant-art/plum.webp",
           raspberry: "/plant-art/raspberry.webp",
