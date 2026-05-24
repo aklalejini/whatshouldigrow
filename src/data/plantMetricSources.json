@@ -1,0 +1,107 @@
+{
+  "uga-vegetable-days-spacing": {
+    "title": "UGA Extension - Growing Vegetables Organically",
+    "url": "https://fieldreport.caes.uga.edu/publications/B1011/growing-vegetables-organically/",
+    "note": "Vegetable hardiness, days to maturity, and row-by-plant spacing tables."
+  },
+  "cornell-vegetable-yield": {
+    "title": "Cornell Cooperative Extension - Recommended Spacing and Expected Yield for Garden Vegetables",
+    "url": "https://gardening.cals.cornell.edu/files/Recommended-spacing-and-expected-yield-for-garden-vegetables-in-New-York-1iozy2c.pdf",
+    "note": "Home garden vegetable spacing and yield estimates per plant or per row."
+  },
+  "umaine-vegetable-yield": {
+    "title": "University of Maine Extension - Planting Chart for the Home Vegetable Garden",
+    "url": "https://extension.umaine.edu/gardening/manual/vegetables/planting-chart/",
+    "note": "Home vegetable average yields, spacing, and planting chart."
+  },
+  "purdue-midwest-fruit": {
+    "title": "Midwest Home Fruit Production Guide",
+    "url": "https://extension.purdue.edu/county/vigo/_docs/Midwest-Home-Fruit-Production-Guide_B940.pdf",
+    "note": "Fruit crop spacing, expected yield, years to bearing, useful life, and risk notes."
+  },
+  "psu-pome-spacing-yield": {
+    "title": "Penn State Extension - Apple and Pear Tree Spacings",
+    "url": "https://extension.psu.edu/home-orchards-table-4-3-apple-and-pear-tree-spacings-on-various-rootstocks",
+    "note": "Apple and pear spacing and probable yield by rootstock."
+  },
+  "psu-stone-spacing-yield": {
+    "title": "Penn State Extension - Stone Fruit Spacing and Probable Yield",
+    "url": "https://extension.psu.edu/home-orchards-table-5-1-stone-fruit-spacing-and-probable-yield/",
+    "note": "Stone fruit spacing and probable yield for mature trees."
+  },
+  "umn-stone-fruit": {
+    "title": "University of Minnesota Extension - Growing Stone Fruits in the Home Garden",
+    "url": "https://extension.umn.edu/fruit/growing-stone-fruits-home-garden",
+    "note": "Stone fruit spacing and first-fruit timing guidance."
+  },
+  "umn-blueberry": {
+    "title": "University of Minnesota Extension - Growing Blueberries in the Home Garden",
+    "url": "https://extension.umn.edu/fruit/growing-blueberries-home-garden",
+    "note": "Blueberry establishment, pollination, full-size timing, and care guidance."
+  },
+  "osu-blueberry": {
+    "title": "Oregon State Extension - Growing Blueberries in Your Home Garden",
+    "url": "https://extension.oregonstate.edu/catalog/ec-1304-growing-blueberries-your-home-garden",
+    "note": "Blueberry mature yield and establishment progression."
+  },
+  "uga-blueberry": {
+    "title": "UGA Extension - Home Garden Blueberries",
+    "url": "https://extension.uga.edu/publications/detail.html?number=C946&title=home-garden-blueberries",
+    "note": "Rabbiteye blueberry spacing, first fruit timing, and mature yield guidance."
+  },
+  "okstate-grape": {
+    "title": "Oklahoma State Extension - Growing Grapes in the Home Garden",
+    "url": "https://extension.okstate.edu/fact-sheets/growing-grapes-in-the-home-garden-2",
+    "note": "Grape spacing, yield range, and first harvest timing."
+  },
+  "umd-brambles": {
+    "title": "University of Maryland Extension - Growing Raspberries and Blackberries in a Home Garden",
+    "url": "https://extension.umd.edu/resource/growing-raspberries-and-blackberries-home-garden",
+    "note": "Bramble spacing, trellis, and pruning guidance."
+  },
+  "umn-strawberry": {
+    "title": "University of Minnesota Extension - Growing Strawberries in the Home Garden",
+    "url": "https://extension.umn.edu/fruit/growing-strawberries-home-garden",
+    "note": "Strawberry types, spacing, runners, and harvest timing."
+  },
+  "usu-strawberry-yield": {
+    "title": "Utah State Extension - How to Grow Strawberries in Your Garden",
+    "url": "https://extension.usu.edu/yardandgarden/research/strawberries-in-the-garden",
+    "note": "Expected strawberry bed yield and productive season length."
+  },
+  "osu-elderberry": {
+    "title": "Ohio State Extension - Elderberry Production in Ohio",
+    "url": "https://ohioline.osu.edu/factsheet/anr-0110",
+    "note": "Elderberry spacing and establishment considerations."
+  },
+  "stark-elderberry-yield": {
+    "title": "Stark Bro's - Harvesting Elderberry Plants",
+    "url": "https://www.starkbros.com/growing-guide/how-to-grow/berry-plants/elderberry-plants/harvesting",
+    "note": "Retail nursery harvest timing and yield estimate for elderberry."
+  },
+  "umd-aronia": {
+    "title": "University of Maryland Extension - Aronia",
+    "url": "https://extension.umd.edu/programs/agriculture-food-systems/program-areas/fruit-vegetable-production/alternative-crops/aronia",
+    "note": "Aronia first-fruit timing and mature plant yield."
+  },
+  "osu-lingonberry": {
+    "title": "Oregon State Extension - Lingonberry Production Guide",
+    "url": "https://extension.oregonstate.edu/catalog/pnw-583-lingonberry-production-guide-pacific-northwest",
+    "note": "Lingonberry productivity and useful life guidance."
+  },
+  "ncsu-plant-toolbox": {
+    "title": "NC State Extension Gardener Plant Toolbox",
+    "url": "https://plants.ces.ncsu.edu/",
+    "note": "Reference basis for ornamental plant size, function, and right-plant-right-place screening."
+  },
+  "mobot-plant-finder": {
+    "title": "Missouri Botanical Garden Plant Finder",
+    "url": "https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderSearch.aspx",
+    "note": "Reference basis for horticultural height, spread, bloom, and cultural ranges."
+  },
+  "kstate-herbaceous-spacing": {
+    "title": "K-State Extension Master Gardener Handbook - Herbaceous Plants",
+    "url": "https://www.meadowlark.k-state.edu/docs/lawn_garden/extension-master-gardener/handouts/EMG%20Handbook%20chapter%208%20Herbaceous%20Plants.pdf",
+    "note": "Herbaceous spacing method based on mature plant form and height."
+  }
+}

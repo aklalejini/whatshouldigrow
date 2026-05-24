@@ -2,6 +2,8 @@
 import plants from "../../data/plants.json";
 import partners from "../../data/affiliatePartners.json";
 import plantArtEntries from "../../data/plantArt.json";
+import plantMetricSources from "../../data/plantMetricSources.json";
+import plantMetrics from "../../data/plantMetrics.json";
 import plantRelationships from "../../data/plantRelationships.json";
 import {
   DEFAULT_SOCIAL_IMAGE,
@@ -33,6 +35,11 @@ export function getStaticPaths() {
 }
 
 const { plant } = Astro.props;
+const metrics = plantMetrics[plant.id] ?? {};
+const metricDisplay = metrics.display ?? {};
+const metricSources = (metrics.sourceKeys ?? [])
+  .map((key) => ({ key, ...(plantMetricSources[key] ?? {}) }))
+  .filter((source) => source.title && source.url);
 const artEntry = plantArtEntry(plant, plantArtEntries);
 const artId = artEntry?.id ?? "generic-fruit";
 const kind = plantKind(plant);
@@ -40,7 +47,10 @@ const hasImage = Boolean(artEntry?.image);
 const photoStyle = plantPhotoStyle(artEntry);
 const canonicalUrl = siteUrl(plantUrl(plant));
 const socialImageUrl = hasImage ? siteUrl(`/plant-art/${artEntry.image}`) : siteUrl(DEFAULT_SOCIAL_IMAGE);
-const description = `${plant.name} growing profile for ${SITE_NAME}: zones ${plant.zones[0]}-${plant.zones[1]}, ${formatList(plant.sun)} light, ${formatList(plant.soils)} soil, ${plant.water} water, and practical plant pairings.`;
+const metricDescription = metricDisplay.output
+  ? ` Planning metrics include ${metricDisplay.output}, ${metricDisplay.spacing}, and ${metricDisplay.firstOutput}.`
+  : "";
+const description = `${plant.name} growing profile for ${SITE_NAME}: zones ${plant.zones[0]}-${plant.zones[1]}, ${formatList(plant.sun)} light, ${formatList(plant.soils)} soil, ${plant.water} water, and practical plant pairings.${metricDescription}`;
 const allRelationshipEntries = relationshipEntriesForPlant(plant, plantRelationships, plants);
 const relationshipEntries = allRelationshipEntries.slice(0, 5);
 const relatedPlantCount = new Set(allRelationshipEntries.flatMap(({ relatedPlants }) => relatedPlants.map((relatedPlant) => relatedPlant.id))).size;
@@ -106,8 +116,14 @@ function planningNotesForPlant(entry) {
   const notes = [
     `Match the site first: ${formatList(entry.sun)} light, ${formatList(entry.soils)} soil, and ${entry.water} water.`
   ];
+  if (metricDisplay.spacing) {
+    notes.push(`Use ${metricDisplay.spacing} as the first spacing model; adjust for hedges, trellises, containers, or local guidance.`);
+  }
+  if (metricDisplay.matureSize) {
+    notes.push(`Plan around mature size: ${metricDisplay.matureSize}.`);
+  }
   if (hasEdibleGoal) {
-    notes.push(`For harvest planning, treat "${entry.harvest}" as a timing cue, not a yield guarantee.`);
+    notes.push(`For harvest planning, treat "${entry.harvest}" and ${metricDisplay.output ?? "the listed output range"} as planning ranges, not guarantees.`);
   }
   if (/another|pair|pollinator|compatible|self-fertile|nearby/i.test(`${entry.notes} ${entry.traits.join(" ")}`)) {
     notes.push("Plan pollination or companion context before planting; nearby varieties can matter for fruit set.");
@@ -118,6 +134,9 @@ function planningNotesForPlant(entry) {
   if (hasNativeGoal) {
     notes.push("Native and low-maintenance cues are starting points; confirm regional nativity and local invasive guidance.");
   }
+  if (metrics.dataConfidence === "low") {
+    notes.push("Quantitative data quality is low for this record; verify before buying or planting at scale.");
+  }
   notes.push("Local drainage, pests, chill hours, wildlife pressure, and microclimates can change the result.");
   return Array.from(new Set(notes)).slice(0, 5);
 }
@@ -126,9 +145,9 @@ const partnerSearchUrl = partnerSearchHref(partner, plant.query);
 const planningNotes = planningNotesForPlant(plant);
 const heroFacts = [
   { label: "Zones", value: `${plant.zones[0]}-${plant.zones[1]}` },
-  { label: "Goals", value: `${plant.goals.length}/${totalGoalCount}` },
-  { label: "Pairings", value: String(relatedPlantCount) },
-  { label: "Source", value: partnerName }
+  { label: "First output", value: metricDisplay.firstOutput ?? "Needs source" },
+  { label: "Spacing", value: metricDisplay.spacing ?? "Needs source" },
+  { label: "Output", value: metricDisplay.output ?? "Needs source" }
 ];
 const plantJsonLd = {
   "@context": "https://schema.org",
@@ -244,7 +263,9 @@ const plantJsonLd = {
             <h2>Harvest & Use</h2>
             <dl class="plant-page-stats compact">
               <div><dt>Window</dt><dd>{plant.harvest}</dd></div>
-              <div><dt>Best for</dt><dd>{formatGoalList(plant.goals.slice(0, 3))}</dd></div>
+              <div><dt>Output</dt><dd>{metricDisplay.output ?? "Needs source"}</dd></div>
+              <div><dt>First output</dt><dd>{metricDisplay.firstOutput ?? "Needs source"}</dd></div>
+              <div><dt>Best for</dt><dd class="plant-page-chip-list">{plant.goals.map((goal) => <span>{formatGoal(goal)}</span>)}</dd></div>
             </dl>
             <p>
               Use this profile to compare {plant.type}s by site fit, harvest timing,
@@ -260,6 +281,23 @@ const plantJsonLd = {
                 <span class="nursery-placeholder">Source search coming soon</span>
               )}
             </div>
+          </section>
+
+          <section class="detail-panel plant-page-panel">
+            <h2>Quantitative Profile</h2>
+            <dl class="plant-page-stats compact">
+              <div><dt>Full output</dt><dd>{metricDisplay.fullOutput ?? "Needs source"}</dd></div>
+              <div><dt>Mature size</dt><dd>{metricDisplay.matureSize ?? "Needs source"}</dd></div>
+              <div><dt>Spacing</dt><dd>{metricDisplay.spacing ?? "Needs source"}</dd></div>
+              <div><dt>Productive life</dt><dd>{metricDisplay.lifespan ?? "Needs source"}</dd></div>
+              <div><dt>Difficulty</dt><dd>{metricDisplay.difficulty ?? "-"} difficulty, {metricDisplay.reliability ?? "-"} reliability</dd></div>
+              <div><dt>Data quality</dt><dd>{metricDisplay.confidence ?? "Needs review"} confidence</dd></div>
+            </dl>
+            <p>
+              These are planning ranges for comparing plants, not guarantees. Cultivar,
+              rootstock, climate, soil, pruning, pest pressure, and wildlife can move
+              actual results.
+            </p>
           </section>
 
           <section class="detail-panel plant-page-panel">
@@ -285,20 +323,23 @@ const plantJsonLd = {
               <div class="plant-comparison-table" role="table" aria-label={`Comparable plants for ${plant.name}`}>
                 <div class="plant-comparison-row is-head" role="row">
                   <span role="columnheader">Plant</span>
-                  <span role="columnheader">Type</span>
                   <span role="columnheader">Zones</span>
-                  <span role="columnheader">Water</span>
-                  <span role="columnheader">Shared goals</span>
+                  <span role="columnheader">First output</span>
+                  <span role="columnheader">Output</span>
+                  <span role="columnheader">Difficulty</span>
                 </div>
-                {comparablePlants.map(({ candidate, sharedGoals }) => (
-                  <a class="plant-comparison-row" href={plantUrl(candidate)} role="row">
-                    <span role="cell"><strong>{candidate.name}</strong></span>
-                    <span role="cell" data-label="Type">{candidate.type}</span>
-                    <span role="cell" data-label="Zones">{candidate.zones[0]}-{candidate.zones[1]}</span>
-                    <span role="cell" data-label="Water">{sentenceCase(candidate.water)}</span>
-                    <span role="cell" data-label="Shared goals">{sharedGoals}/{totalGoalCount}</span>
-                  </a>
-                ))}
+                {comparablePlants.map(({ candidate }) => {
+                  const candidateMetrics = plantMetrics[candidate.id]?.display ?? {};
+                  return (
+                    <a class="plant-comparison-row" href={plantUrl(candidate)} role="row">
+                      <span role="cell"><strong>{candidate.name}</strong></span>
+                      <span role="cell" data-label="Zones">{candidate.zones[0]}-{candidate.zones[1]}</span>
+                      <span role="cell" data-label="First output">{candidateMetrics.firstOutput ?? "Needs source"}</span>
+                      <span role="cell" data-label="Output">{candidateMetrics.output ?? "Needs source"}</span>
+                      <span role="cell" data-label="Difficulty">{candidateMetrics.difficulty ?? "-"}</span>
+                    </a>
+                  );
+                })}
               </div>
             </section>
           )}
@@ -334,12 +375,26 @@ const plantJsonLd = {
             <h2>Sources & Methodology</h2>
             <p>
               This profile is generated from the Plant by ZIP database: hardiness range,
-              light, soil, water, harvest timing, traits, source listing, and relationship
-              rules. Pairings are term-based and reviewed to avoid obvious false positives.
+              light, soil, water, harvest timing, traits, source listing, relationship
+              rules, and quantitative planning metrics. Pairings are term-based and reviewed
+              to avoid obvious false positives.
             </p>
             <p>
+              Quantitative values use extension and botanical-reference ranges where available,
+              then crop-family templates when cultivar-level data is not defensible. Ranges are
+              intentionally broad to avoid false precision.
+            </p>
+            {metricSources.length > 0 && (
+              <p class="plant-page-source-links">
+                <span>Quantitative sources:</span>
+                {metricSources.slice(0, 5).map((source) => (
+                  <a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>
+                ))}
+              </p>
+            )}
+            <p>
               Source listing: {partnerName}. Nursery search links are not paid placements
-              unless explicitly marked. Last reviewed: May 2026.
+              unless explicitly marked. Last reviewed: {metrics.lastReviewed ?? "May 2026"}.
             </p>
           </section>
         </div>

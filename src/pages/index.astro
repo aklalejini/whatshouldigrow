@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import plants from "../data/plants.json";
 import partners from "../data/affiliatePartners.json";
 import plantArtEntries from "../data/plantArt.json";
+import plantMetrics from "../data/plantMetrics.json";
 import plantRelationships from "../data/plantRelationships.json";
 import {
   DEFAULT_SOCIAL_IMAGE,
@@ -14,6 +15,8 @@ import {
 import "../styles/global.css";
 
 const plantCount = Array.isArray(plants) ? plants.length : 0;
+const plantMetricEntries = Object.values(plantMetrics);
+const outputMetricCount = plantMetricEntries.filter((metric) => metric.outputMin !== null && metric.outputMax !== null).length;
 const blogEntries = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
@@ -366,6 +369,10 @@ const webAppJsonLd = {
                 <span>plant types</span>
               </div>
               <div>
+                <strong>{outputMetricCount}</strong>
+                <span>with outputs</span>
+              </div>
+              <div>
                 <strong id="screener-relation-count">0</strong>
                 <span>with pairings</span>
               </div>
@@ -387,6 +394,17 @@ const webAppJsonLd = {
               <span>Zone fit</span>
               <select id="screener-zone">
                 <option value="">Any zone</option>
+              </select>
+            </label>
+            <label class="screener-field" for="screener-horizon">
+              <span>Time horizon</span>
+              <select id="screener-horizon">
+                <option value="">Any horizon</option>
+                <option value="quick">Quick harvest</option>
+                <option value="seasonal">Seasonal annual</option>
+                <option value="fast-perennial">Fast perennial</option>
+                <option value="medium">Medium horizon</option>
+                <option value="long">Long horizon</option>
               </select>
             </label>
             <label class="screener-field" for="screener-sun">
@@ -437,6 +455,14 @@ const webAppJsonLd = {
                 <option value="">Any source</option>
               </select>
             </label>
+            <label class="screener-field" for="screener-confidence">
+              <span>Data</span>
+              <select id="screener-confidence">
+                <option value="">Any data quality</option>
+                <option value="medium">Medium+</option>
+                <option value="low">Low only</option>
+              </select>
+            </label>
           </section>
 
           <div class="screener-toolbar">
@@ -455,6 +481,10 @@ const webAppJsonLd = {
                   <th scope="col" aria-sort="ascending"><button type="button" data-screener-sort="name">Name <span class="sort-indicator">&uarr; A-Z</span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="type">Type/form <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="zone">Zone range <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="firstOutput">First output <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="spacing">Spacing <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="output">Yield/output <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="difficulty">Difficulty <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="sun">Sun <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="soil">Soil <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="water">Water <span class="sort-indicator"></span></button></th>
@@ -523,12 +553,14 @@ const webAppJsonLd = {
     <script is:inline type="application/json" id="plant-data" set:html={JSON.stringify(plants)}></script>
     <script is:inline type="application/json" id="partner-data" set:html={JSON.stringify(partners)}></script>
     <script is:inline type="application/json" id="plant-art-data" set:html={JSON.stringify(plantArtEntries)}></script>
+    <script is:inline type="application/json" id="plant-metrics-data" set:html={JSON.stringify(plantMetrics)}></script>
     <script is:inline type="application/json" id="plant-relationship-data" set:html={JSON.stringify(plantRelationships)}></script>
     <script is:inline type="application/json" id="blog-search-data" set:html={JSON.stringify(blogSearchData)}></script>
     <script is:inline>
       const plants = JSON.parse(document.getElementById("plant-data").textContent);
       const partners = JSON.parse(document.getElementById("partner-data").textContent);
       const plantArtEntries = JSON.parse(document.getElementById("plant-art-data").textContent);
+      const plantMetrics = JSON.parse(document.getElementById("plant-metrics-data").textContent);
       const plantRelationships = JSON.parse(document.getElementById("plant-relationship-data").textContent);
       const blogSearchData = JSON.parse(document.getElementById("blog-search-data").textContent);
       const plantArtById = Object.fromEntries(plantArtEntries.map((entry) => [entry.id, entry]));
@@ -549,12 +581,14 @@ const webAppJsonLd = {
       const screenerSearchEl = document.getElementById("screener-search");
       const screenerTypeEl = document.getElementById("screener-type");
       const screenerZoneEl = document.getElementById("screener-zone");
+      const screenerHorizonEl = document.getElementById("screener-horizon");
       const screenerSunEl = document.getElementById("screener-sun");
       const screenerSoilEl = document.getElementById("screener-soil");
       const screenerWaterEl = document.getElementById("screener-water");
       const screenerGoalEl = document.getElementById("screener-goal");
       const screenerFlagEl = document.getElementById("screener-flag");
       const screenerPartnerEl = document.getElementById("screener-partner");
+      const screenerConfidenceEl = document.getElementById("screener-confidence");
       const screenerResetEl = document.getElementById("screener-reset");
       const screenerMoreEl = document.getElementById("screener-more");
       const screenerBodyEl = document.getElementById("screener-body");
@@ -569,12 +603,14 @@ const webAppJsonLd = {
         screenerSearchEl,
         screenerTypeEl,
         screenerZoneEl,
+        screenerHorizonEl,
         screenerSunEl,
         screenerSoilEl,
         screenerWaterEl,
         screenerGoalEl,
         screenerFlagEl,
-        screenerPartnerEl
+        screenerPartnerEl,
+        screenerConfidenceEl
       ];
       let currentRanked = [];
       let currentInputs = null;
@@ -588,16 +624,19 @@ const webAppJsonLd = {
         sq: screenerSearchEl,
         stype: screenerTypeEl,
         szone: screenerZoneEl,
+        shorizon: screenerHorizonEl,
         ssun: screenerSunEl,
         ssoil: screenerSoilEl,
         swater: screenerWaterEl,
         sgoal: screenerGoalEl,
         sattr: screenerFlagEl,
-        ssource: screenerPartnerEl
+        ssource: screenerPartnerEl,
+        sdata: screenerConfidenceEl
       };
       const screenerParamKeys = [...Object.keys(screenerParamMap), "ssort", "sdir"];
 
       const waterRank = { low: 1, medium: 2, high: 3 };
+      const confidenceRank = { low: 1, medium: 2, high: 3 };
       const goalLabels = {
         fruit: "fruit",
         "vegetables-herbs": "vegetables & herbs",
@@ -886,6 +925,25 @@ const webAppJsonLd = {
         return partners[value]?.name ?? sentenceCase(String(value ?? "").replaceAll("-", " "));
       }
 
+      function metricFor(plant) {
+        return plantMetrics[plant.id] ?? {};
+      }
+
+      function firstOutputSortValue(metrics) {
+        if (metrics.firstYieldYearsMax === 0) return (metrics.daysToMaturityMax ?? 365) / 365;
+        return metrics.firstYieldYearsMax ?? 999;
+      }
+
+      function spacingSortValue(metrics) {
+        const plantSpacing = metrics.spacingPlantFtMax ?? metrics.spacingPlantFtMin ?? 999;
+        const rowSpacing = metrics.spacingRowFtMax ?? metrics.spacingRowFtMin ?? plantSpacing;
+        return plantSpacing * rowSpacing;
+      }
+
+      function outputSortValue(metrics) {
+        return metrics.outputMax ?? -1;
+      }
+
       function hasNativeCue(plant) {
         const text = [plant.name, plant.type, plant.notes, plant.query, ...(plant.traits ?? [])]
           .join(" ")
@@ -919,6 +977,7 @@ const webAppJsonLd = {
       }
 
       function screenerSearchText(plant) {
+        const metrics = metricFor(plant);
         return [
           plant.name,
           plant.type,
@@ -930,12 +989,25 @@ const webAppJsonLd = {
           plant.notes,
           plant.query,
           partnerName(plant.partner),
+          metrics.horizonLabel,
+          metrics.dataMethod,
+          metrics.display?.firstOutput,
+          metrics.display?.fullOutput,
+          metrics.display?.spacing,
+          metrics.display?.matureSize,
+          metrics.display?.output,
+          metrics.display?.lifespan,
+          metrics.display?.harvestWindow,
+          metrics.display?.difficulty,
+          metrics.display?.reliability,
+          metrics.display?.confidence,
           ...plant.goals.map(formatGoal),
           ...plant.traits
         ].join(" ").toLowerCase();
       }
 
       function plantMatchesScreener(plant) {
+        const metrics = metricFor(plant);
         const query = screenerSearchEl.value.trim().toLowerCase();
         const zone = screenerZoneEl.value;
         const flag = screenerFlagEl.value;
@@ -950,6 +1022,9 @@ const webAppJsonLd = {
         if (screenerSoilEl.value && !plant.soils.includes(screenerSoilEl.value)) return false;
         if (screenerWaterEl.value && plant.water !== screenerWaterEl.value) return false;
         if (screenerGoalEl.value && !plant.goals.includes(screenerGoalEl.value)) return false;
+        if (screenerHorizonEl.value && metrics.horizonKey !== screenerHorizonEl.value) return false;
+        if (screenerConfidenceEl.value === "medium" && (confidenceRank[metrics.dataConfidence] ?? 0) < 2) return false;
+        if (screenerConfidenceEl.value === "low" && metrics.dataConfidence !== "low") return false;
         if (screenerPartnerEl.value && plant.partner !== screenerPartnerEl.value) return false;
         if (flag === "native" && !hasNativeCue(plant)) return false;
         if (flag === "low-maintenance" && !hasLowMaintenanceGoal(plant)) return false;
@@ -958,9 +1033,14 @@ const webAppJsonLd = {
       }
 
       function screenerSortValue(plant, key) {
+        const metrics = metricFor(plant);
         if (key === "name") return plant.name.toLowerCase();
         if (key === "type") return plant.type.toLowerCase();
         if (key === "zone") return zoneToNumber(plant.zones[0]);
+        if (key === "firstOutput") return firstOutputSortValue(metrics);
+        if (key === "spacing") return spacingSortValue(metrics);
+        if (key === "output") return outputSortValue(metrics);
+        if (key === "difficulty") return metrics.difficultyScore ?? 0;
         if (key === "sun") return plant.sun.join(", ");
         if (key === "soil") return plant.soils.join(", ");
         if (key === "water") return waterRank[plant.water] ?? 0;
@@ -975,13 +1055,15 @@ const webAppJsonLd = {
       }
 
       function defaultScreenerDirection(key) {
-        return ["goals", "native", "lowMaintenance", "pairings"].includes(key) ? "desc" : "asc";
+        return ["goals", "native", "lowMaintenance", "pairings", "output"].includes(key) ? "desc" : "asc";
       }
 
       function screenerSortIndicator(key, direction) {
         if (["name", "type", "harvest", "traits", "partner", "sun", "soil"].includes(key)) {
           return direction === "asc" ? "↑ A-Z" : "↓ Z-A";
         }
+        if (key === "firstOutput") return direction === "asc" ? "↑ Fast" : "↓ Slow";
+        if (key === "difficulty") return direction === "asc" ? "↑ Easy" : "↓ Hard";
         return direction === "asc" ? "↑ Low" : "↓ High";
       }
 
@@ -1008,9 +1090,15 @@ const webAppJsonLd = {
       }
 
       function renderScreenerRow(plant) {
+        const metrics = metricFor(plant);
         const pairings = relationshipCount(plant);
         const native = hasNativeCue(plant);
         const lowMaintenance = hasLowMaintenanceGoal(plant);
+        const difficultyTone = metrics.riskLevel === "lower"
+          ? "is-positive"
+          : metrics.riskLevel === "elevated"
+            ? "is-warning"
+            : "";
         return `
           <tr>
             <td class="screener-name-cell" data-label="Name">
@@ -1019,6 +1107,22 @@ const webAppJsonLd = {
             </td>
             <td data-label="Type/form">${escapeHtml(plant.type)}</td>
             <td data-label="Zone range"><strong>${escapeHtml(plant.zones[0])}-${escapeHtml(plant.zones[1])}</strong></td>
+            <td data-label="First output">
+              <span class="screener-pill">${escapeHtml(metrics.display?.firstOutput ?? "Needs source")}</span>
+              <span class="screener-metric-note">${escapeHtml(metrics.horizonLabel ?? "")}</span>
+            </td>
+            <td data-label="Spacing">
+              ${escapeHtml(metrics.display?.spacing ?? "Needs source")}
+              <span class="screener-metric-note">${escapeHtml(metrics.display?.matureSize ?? "")}</span>
+            </td>
+            <td data-label="Yield/output">
+              <strong>${escapeHtml(metrics.display?.output ?? "Needs source")}</strong>
+              <span class="screener-metric-note">${escapeHtml(metrics.display?.harvestWindow ?? "")}</span>
+            </td>
+            <td data-label="Difficulty">
+              <span class="screener-pill ${difficultyTone}">${escapeHtml(metrics.display?.difficulty ?? "-")}</span>
+              <span class="screener-metric-note">${escapeHtml(metrics.display?.confidence ?? "")} data</span>
+            </td>
             <td data-label="Sun">${renderScreenerPills(plant.sun, sentenceCase)}</td>
             <td data-label="Soil">${renderScreenerPills(plant.soils, sentenceCase)}</td>
             <td data-label="Water"><span class="screener-pill water-${escapeHtml(plant.water)}">${escapeHtml(sentenceCase(plant.water))}</span></td>
@@ -1426,6 +1530,7 @@ const webAppJsonLd = {
 
       function createResultItem(entry, index, inputs) {
         const { plant, score } = entry;
+        const metrics = metricFor(plant);
         const item = document.createElement("li");
         const kind = plantKind(plant);
         const artEntry = plantArtEntry(plant);
@@ -1486,6 +1591,9 @@ const webAppJsonLd = {
                   <div><dt>Sun</dt><dd>${formatList(plant.sun)}</dd></div>
                   <div><dt>Soil</dt><dd>${formatList(plant.soils)}</dd></div>
                   <div><dt>Water</dt><dd>${plant.water}</dd></div>
+                  <div><dt>First output</dt><dd>${escapeHtml(metrics.display?.firstOutput ?? "Needs source")}</dd></div>
+                  <div><dt>Spacing</dt><dd>${escapeHtml(metrics.display?.spacing ?? "Needs source")}</dd></div>
+                  <div><dt>Output</dt><dd>${escapeHtml(metrics.display?.output ?? "Needs source")}</dd></div>
                   <div><dt>Goals</dt><dd>${formatGoalList(plant.goals)}</dd></div>
                 </dl>
               </div>
