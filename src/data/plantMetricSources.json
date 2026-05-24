@@ -128,5 +128,30 @@
     "title": "K-State Extension Master Gardener Handbook - Herbaceous Plants",
     "url": "https://www.meadowlark.k-state.edu/docs/lawn_garden/extension-master-gardener/handouts/EMG%20Handbook%20chapter%208%20Herbaceous%20Plants.pdf",
     "note": "Herbaceous spacing method based on mature plant form and height."
+  },
+  "umd-container-sizes": {
+    "title": "University of Maryland Extension - Types of Containers for Growing Vegetables",
+    "url": "https://extension.umd.edu/resource/types-containers-growing-vegetables/",
+    "note": "Container volume guidance, including large vegetables and 25-30 gallon dwarf fruit tree containers."
+  },
+  "illinois-container-vegetables": {
+    "title": "Illinois Extension - Growing Vegetables in Containers",
+    "url": "https://extension.illinois.edu/container-gardens/growing-vegetables-containers",
+    "note": "Container vegetable guidance for matching container size, rooting depth, and plant density."
+  },
+  "umd-tree-shrub-planting": {
+    "title": "University of Maryland Extension - Planting a Tree or Shrub",
+    "url": "https://extension.umd.edu/resource/planting-tree-or-shrub",
+    "note": "Tree and shrub planting depth guidance, especially keeping the root flare at soil level."
+  },
+  "umd-home-fruit-planting": {
+    "title": "University of Maryland Extension - Starting a Home Fruit Garden",
+    "url": "https://www.extension.umd.edu/resource/starting-home-fruit-garden",
+    "note": "Fruit tree graft union, root flare, and small fruit crown placement guidance."
+  },
+  "umn-strawberry-planting": {
+    "title": "University of Minnesota Extension - Growing Strawberries in the Home Garden",
+    "url": "https://extension.umn.edu/fruit/growing-strawberries-home-garden",
+    "note": "Strawberry crown planting depth guidance."
   }
 }

@@ -375,6 +375,8 @@ const plantJsonLd = {
                 <dt>Water</dt>
                 <dd class="plant-page-chip-list"><span>{sentenceCase(plant.water)}</span></dd>
               </div>
+              <div><dt>Planting depth</dt><dd>{metricDisplay.plantingDepth ?? "Needs source"}</dd></div>
+              <div><dt>Container min</dt><dd>{metricDisplay.containerMin ?? "Needs source"}</dd></div>
               <div>
                 <dt>Goals</dt>
                 <dd class="plant-page-chip-list">{plant.goals.map((goal) => <span>{formatGoal(goal)}</span>)}</dd>
@@ -411,6 +413,8 @@ const plantJsonLd = {
               <div><dt>Full output</dt><dd>{metricDisplay.fullOutput ?? "Needs source"}</dd></div>
               <div><dt>Mature size</dt><dd>{metricDisplay.matureSize ?? "Needs source"}</dd></div>
               <div><dt>Spacing</dt><dd>{metricDisplay.spacing ?? "Needs source"}</dd></div>
+              <div><dt>Planting depth</dt><dd>{metricDisplay.plantingDepth ?? "Needs source"}</dd></div>
+              <div><dt>Container min</dt><dd>{metricDisplay.containerMin ?? "Needs source"}</dd></div>
               <div><dt>Productive life</dt><dd>{metricDisplay.lifespan ?? "Needs source"}</dd></div>
               <div><dt>Difficulty</dt><dd>{metricDisplay.difficulty ?? "Needs source"}</dd></div>
               <div><dt>Reliability</dt><dd>{metricDisplay.reliability ?? "Needs source"}</dd></div>
@@ -490,6 +494,8 @@ const plantJsonLd = {
           <section class="detail-panel plant-page-panel">
             <h2>Planting Strategy</h2>
             <ul class="plant-page-list">
+              {metricDisplay.plantingDepth && <li>Planting depth: {metricDisplay.plantingDepth}</li>}
+              {metricDisplay.containerMin && <li>Container minimum: {metricDisplay.containerMin}. {metricDisplay.containerNote}</li>}
               <li>Start with one plant when testing fit in a new bed or container.</li>
               {hasEdibleGoal && <li>Plant more than one when harvest volume or pollination is the main goal.</li>}
               {plant.goals.includes("privacy-screening") && <li>For screening, repeat compatible plants and confirm mature spacing before buying.</li>}

@@ -407,6 +407,18 @@ const webAppJsonLd = {
                 <option value="long">Long horizon</option>
               </select>
             </label>
+            <label class="screener-field" for="screener-container">
+              <span>Container min</span>
+              <select id="screener-container">
+                <option value="">Any container</option>
+                <option value="1">1 gal or less</option>
+                <option value="2">2 gal or less</option>
+                <option value="5">5 gal or less</option>
+                <option value="10">10 gal or less</option>
+                <option value="15">15 gal or less</option>
+                <option value="25">25 gal or less</option>
+              </select>
+            </label>
             <label class="screener-field" for="screener-sun">
               <span>Sun</span>
               <select id="screener-sun">
@@ -468,6 +480,7 @@ const webAppJsonLd = {
           <div class="screener-toolbar">
             <p id="screener-summary">Showing all plants.</p>
             <div>
+              <button id="screener-group-type" type="button" aria-pressed="false">Group by type</button>
               <a href="/exports/plants.csv">CSV export</a>
               <button id="screener-more" type="button" hidden>Show more</button>
               <button id="screener-reset" type="button">Reset filters</button>
@@ -483,6 +496,8 @@ const webAppJsonLd = {
                   <th scope="col"><button type="button" data-screener-sort="zone">Zone range <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="firstOutput">First output <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="spacing">Spacing <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="plantingDepth">Planting depth <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="container">Container min <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="output">Yield (lbs) <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="difficulty">Difficulty <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="sun">Sun <span class="sort-indicator"></span></button></th>
@@ -582,6 +597,7 @@ const webAppJsonLd = {
       const screenerTypeEl = document.getElementById("screener-type");
       const screenerZoneEl = document.getElementById("screener-zone");
       const screenerHorizonEl = document.getElementById("screener-horizon");
+      const screenerContainerEl = document.getElementById("screener-container");
       const screenerSunEl = document.getElementById("screener-sun");
       const screenerSoilEl = document.getElementById("screener-soil");
       const screenerWaterEl = document.getElementById("screener-water");
@@ -589,6 +605,7 @@ const webAppJsonLd = {
       const screenerFlagEl = document.getElementById("screener-flag");
       const screenerPartnerEl = document.getElementById("screener-partner");
       const screenerConfidenceEl = document.getElementById("screener-confidence");
+      const screenerGroupTypeEl = document.getElementById("screener-group-type");
       const screenerResetEl = document.getElementById("screener-reset");
       const screenerMoreEl = document.getElementById("screener-more");
       const screenerBodyEl = document.getElementById("screener-body");
@@ -604,6 +621,7 @@ const webAppJsonLd = {
         screenerTypeEl,
         screenerZoneEl,
         screenerHorizonEl,
+        screenerContainerEl,
         screenerSunEl,
         screenerSoilEl,
         screenerWaterEl,
@@ -616,8 +634,10 @@ const webAppJsonLd = {
       let currentInputs = null;
       let visibleCount = 12;
       let screenerSort = { key: "name", direction: "asc" };
+      let screenerGroupedByType = false;
       let screenerVisibleLimit = 120;
       const screenerPageSize = 120;
+      const screenerColumnCount = 20;
       const zoneCache = new Map();
       let zoneLookupTimer = null;
       const screenerParamMap = {
@@ -625,6 +645,7 @@ const webAppJsonLd = {
         stype: screenerTypeEl,
         szone: screenerZoneEl,
         shorizon: screenerHorizonEl,
+        scontainer: screenerContainerEl,
         ssun: screenerSunEl,
         ssoil: screenerSoilEl,
         swater: screenerWaterEl,
@@ -633,7 +654,7 @@ const webAppJsonLd = {
         ssource: screenerPartnerEl,
         sdata: screenerConfidenceEl
       };
-      const screenerParamKeys = [...Object.keys(screenerParamMap), "ssort", "sdir"];
+      const screenerParamKeys = [...Object.keys(screenerParamMap), "ssort", "sdir", "sgroup"];
 
       const waterRank = { low: 1, medium: 2, high: 3 };
       const confidenceRank = { low: 1, medium: 2, high: 3 };
@@ -655,6 +676,46 @@ const webAppJsonLd = {
         fruiting: ["fruiting plant", "fruiting plants"]
       };
       const formOrder = ["tree", "shrub", "vine", "vegetable", "flowerHerb", "cactus", "fruiting"];
+      const plantGroupTerms = [
+        { label: "Tomatoes", terms: ["tomato"] },
+        { label: "Peppers", terms: ["pepper", "habanero", "jalapeno", "poblano", "shishito", "aji amarillo"] },
+        { label: "Eggplants", terms: ["eggplant"] },
+        { label: "Apples", terms: ["apple"] },
+        { label: "Pears", terms: ["pear"] },
+        { label: "Peaches", terms: ["peach", "nectarine"] },
+        { label: "Plums", terms: ["plum"] },
+        { label: "Cherries", terms: ["cherry"] },
+        { label: "Figs", terms: ["fig"] },
+        { label: "Persimmons", terms: ["persimmon"] },
+        { label: "Pawpaws", terms: ["pawpaw"] },
+        { label: "Prickly pears", terms: ["prickly pear"] },
+        { label: "Blueberries", terms: ["blueberry"] },
+        { label: "Blackberries", terms: ["blackberry"] },
+        { label: "Raspberries", terms: ["raspberry"] },
+        { label: "Strawberries", terms: ["strawberry"] },
+        { label: "Currants", terms: ["currant"] },
+        { label: "Gooseberries", terms: ["gooseberry"] },
+        { label: "Grapes", terms: ["grape", "muscadine"] },
+        { label: "Kiwi vines", terms: ["kiwi"] },
+        { label: "Beans", terms: ["bean"] },
+        { label: "Peas", terms: ["pea", "cowpea"] },
+        { label: "Leafy greens", terms: ["lettuce", "spinach", "kale", "collards", "chard", "arugula", "mizuna", "miner"] },
+        { label: "Root crops", terms: ["carrot", "beet", "radish", "turnip", "daikon"] },
+        { label: "Onions & garlic", terms: ["onion", "garlic", "leek"] },
+        { label: "Squash & zucchini", terms: ["squash", "zucchini"] },
+        { label: "Melons", terms: ["melon", "cantaloupe", "watermelon"] },
+        { label: "Cucumbers", terms: ["cucumber"] },
+        { label: "Potatoes", terms: ["potato"] },
+        { label: "Basil", terms: ["basil"] },
+        { label: "Mint", terms: ["mint"] },
+        { label: "Culinary herbs", terms: ["rosemary", "thyme", "parsley", "cilantro", "dill", "sage", "oregano", "lavender"] },
+        { label: "Milkweeds", terms: ["milkweed"] },
+        { label: "Coneflowers", terms: ["coneflower", "echinacea"] },
+        { label: "Hydrangeas", terms: ["hydrangea"] },
+        { label: "Hollies", terms: ["holly"] },
+        { label: "Maples", terms: ["maple"] },
+        { label: "Oaks", terms: ["oak"] }
+      ];
 
       function setActiveView(view) {
         tabButtons.forEach((button) => {
@@ -921,6 +982,53 @@ const webAppJsonLd = {
         return relationshipCountCache.get(plant.id);
       }
 
+      const fruitGroupLabels = new Set([
+        "Apples",
+        "Pears",
+        "Peaches",
+        "Plums",
+        "Cherries",
+        "Figs",
+        "Persimmons",
+        "Pawpaws",
+        "Blueberries",
+        "Blackberries",
+        "Raspberries",
+        "Strawberries",
+        "Currants",
+        "Gooseberries",
+        "Grapes",
+        "Kiwi vines",
+        "Prickly pears"
+      ]);
+
+      function pluralTypeLabel(type) {
+        const label = sentenceCase(type);
+        if (label.endsWith("s")) return label;
+        if (label.endsWith("y")) return `${label.slice(0, -1)}ies`;
+        return `${label}s`;
+      }
+
+      function plantGroupLabel(plant) {
+        const identity = relationshipIdentity(plant);
+        const type = plant.type.toLowerCase();
+        const matchedGroups = plantGroupTerms
+          .filter((group) => group.terms.some((term) => termMatchesIdentity(identity, term)))
+          .filter((group) => {
+            if (!fruitGroupLabels.has(group.label)) return true;
+            return /fruit|berry|grape|citrus|nut/.test(type);
+          });
+        if (matchedGroups.length) {
+          return matchedGroups
+            .sort((a, b) => {
+              const aLength = Math.max(...a.terms.map((term) => String(term).length));
+              const bLength = Math.max(...b.terms.map((term) => String(term).length));
+              return bLength - aLength || a.label.localeCompare(b.label);
+            })[0].label;
+        }
+        return pluralTypeLabel(plant.type);
+      }
+
       function partnerName(value) {
         return partners[value]?.name ?? sentenceCase(String(value ?? "").replaceAll("-", " "));
       }
@@ -989,11 +1097,16 @@ function outputSortValue(metrics) {
           plant.notes,
           plant.query,
           partnerName(plant.partner),
+          plantGroupLabel(plant),
           metrics.horizonLabel,
           metrics.dataMethod,
           metrics.display?.firstOutput,
           metrics.display?.fullOutput,
           metrics.display?.spacing,
+          metrics.display?.plantingDepth,
+          metrics.display?.plantingDepthNote,
+          metrics.display?.containerMin,
+          metrics.display?.containerNote,
           metrics.display?.matureSize,
           metrics.display?.output,
           metrics.display?.yieldLbs,
@@ -1026,6 +1139,10 @@ function outputSortValue(metrics) {
         if (screenerWaterEl.value && plant.water !== screenerWaterEl.value) return false;
         if (screenerGoalEl.value && !plant.goals.includes(screenerGoalEl.value)) return false;
         if (screenerHorizonEl.value && metrics.horizonKey !== screenerHorizonEl.value) return false;
+        if (screenerContainerEl.value) {
+          const maxContainer = Number(screenerContainerEl.value);
+          if (!Number.isFinite(metrics.containerMinGallons) || metrics.containerMinGallons > maxContainer) return false;
+        }
         if (screenerConfidenceEl.value === "medium" && (confidenceRank[metrics.dataConfidence] ?? 0) < 2) return false;
         if (screenerConfidenceEl.value === "low" && metrics.dataConfidence !== "low") return false;
         if (screenerPartnerEl.value && plant.partner !== screenerPartnerEl.value) return false;
@@ -1042,6 +1159,8 @@ function outputSortValue(metrics) {
         if (key === "zone") return zoneToNumber(plant.zones[0]);
         if (key === "firstOutput") return firstOutputSortValue(metrics);
         if (key === "spacing") return spacingSortValue(metrics);
+        if (key === "plantingDepth") return metrics.plantingDepthInMax ?? metrics.plantingDepthInMin ?? 999;
+        if (key === "container") return metrics.containerMinGallons ?? 999;
         if (key === "output") return outputSortValue(metrics);
         if (key === "difficulty") return metrics.difficultyScore ?? 0;
         if (key === "sun") return plant.sun.join(", ");
@@ -1067,6 +1186,8 @@ function outputSortValue(metrics) {
         }
         if (key === "firstOutput") return direction === "asc" ? "↑ Fast" : "↓ Slow";
         if (key === "difficulty") return direction === "asc" ? "↑ Easy" : "↓ Hard";
+        if (key === "container") return direction === "asc" ? "↑ Small" : "↓ Large";
+        if (key === "plantingDepth") return direction === "asc" ? "↑ Shallow" : "↓ Deep";
         return direction === "asc" ? "↑ Low" : "↓ High";
       }
 
@@ -1080,6 +1201,36 @@ function outputSortValue(metrics) {
           }
           return String(aValue).localeCompare(String(bValue)) * direction || a.name.localeCompare(b.name);
         });
+      }
+
+      function groupCounts(entries) {
+        return entries.reduce((counts, plant) => {
+          const label = plantGroupLabel(plant);
+          counts.set(label, (counts.get(label) ?? 0) + 1);
+          return counts;
+        }, new Map());
+      }
+
+      function sortGroupedScreenerPlants(entries) {
+        return [...entries].sort((a, b) => {
+          const aGroup = plantGroupLabel(a);
+          const bGroup = plantGroupLabel(b);
+          const groupCompare = aGroup.localeCompare(bGroup);
+          if (groupCompare !== 0) return groupCompare;
+          return sortScreenerPlants([a, b])[0].id === a.id ? -1 : 1;
+        });
+      }
+
+      function renderScreenerGroupedRows(entries, counts) {
+        let currentGroup = "";
+        return entries.map((plant) => {
+          const group = plantGroupLabel(plant);
+          const heading = group === currentGroup
+            ? ""
+            : `<tr class="screener-group-row"><td colspan="${screenerColumnCount}"><strong>${escapeHtml(group)}</strong><span>${counts.get(group) ?? 0} ${(counts.get(group) ?? 0) === 1 ? "variety" : "varieties"}</span></td></tr>`;
+          currentGroup = group;
+          return `${heading}${renderScreenerRow(plant)}`;
+        }).join("");
       }
 
       function updateScreenerSortUI() {
@@ -1118,6 +1269,14 @@ function outputSortValue(metrics) {
               ${escapeHtml(metrics.display?.spacing ?? "Needs source")}
               <span class="screener-metric-note">${escapeHtml(metrics.display?.matureSize ?? "")}</span>
             </td>
+            <td data-label="Planting depth">
+              ${escapeHtml(metrics.display?.plantingDepth ?? "Needs source")}
+              <span class="screener-metric-note">${escapeHtml(metrics.display?.plantingDepthNote ?? "")}</span>
+            </td>
+            <td data-label="Container min">
+              <span class="screener-pill">${escapeHtml(metrics.display?.containerMin ?? "Needs source")}</span>
+              <span class="screener-metric-note">${escapeHtml(metrics.display?.containerNote ?? "")}</span>
+            </td>
             <td data-label="Yield (lbs)">
               <strong>${escapeHtml(metrics.display?.yieldLbs ?? "Needs source")}</strong>
               <span class="screener-metric-note">${escapeHtml(metrics.display?.harvestWindow ?? "")}</span>
@@ -1142,16 +1301,28 @@ function outputSortValue(metrics) {
       }
 
       function renderScreener() {
-        const filtered = sortScreenerPlants(plants.filter(plantMatchesScreener));
+        const matchingPlants = plants.filter(plantMatchesScreener);
+        const filtered = screenerGroupedByType
+          ? sortGroupedScreenerPlants(matchingPlants)
+          : sortScreenerPlants(matchingPlants);
         const visible = filtered.slice(0, screenerVisibleLimit);
-        screenerBodyEl.innerHTML = visible.map(renderScreenerRow).join("");
+        const counts = groupCounts(filtered);
+        screenerBodyEl.innerHTML = screenerGroupedByType
+          ? renderScreenerGroupedRows(visible, counts)
+          : visible.map(renderScreenerRow).join("");
         screenerVisibleCountEl.textContent = String(filtered.length);
+        screenerGroupTypeEl.classList.toggle("is-active", screenerGroupedByType);
+        screenerGroupTypeEl.setAttribute("aria-pressed", String(screenerGroupedByType));
         if (filtered.length === 0) {
           screenerSummaryEl.textContent = "No plants match those filters.";
         } else if (filtered.length === plants.length && visible.length === filtered.length) {
-          screenerSummaryEl.textContent = `Showing all ${plants.length} plants.`;
+          screenerSummaryEl.textContent = screenerGroupedByType
+            ? `Showing all ${plants.length} plants in ${counts.size} type groups.`
+            : `Showing all ${plants.length} plants.`;
         } else {
-          screenerSummaryEl.textContent = `Showing ${visible.length} of ${filtered.length} matching plants.`;
+          screenerSummaryEl.textContent = screenerGroupedByType
+            ? `Showing ${visible.length} of ${filtered.length} matching plants in ${counts.size} type groups.`
+            : `Showing ${visible.length} of ${filtered.length} matching plants.`;
         }
         if (filtered.length > visible.length) {
           const remaining = filtered.length - visible.length;
@@ -1185,6 +1356,7 @@ function outputSortValue(metrics) {
             direction: requestedDirection === "desc" ? "desc" : "asc"
           };
         }
+        screenerGroupedByType = initialParams.get("sgroup") === "type";
       }
 
       function writeScreenerUrl() {
@@ -1198,6 +1370,9 @@ function outputSortValue(metrics) {
           params.set("ssort", screenerSort.key);
           params.set("sdir", screenerSort.direction);
         }
+        if (screenerGroupedByType) {
+          params.set("sgroup", "type");
+        }
         const query = params.toString();
         history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}#screener`);
       }
@@ -1209,9 +1384,13 @@ function outputSortValue(metrics) {
       }
 
       function initializeScreener() {
-        [...new Set(plants.map((plant) => plant.type))]
+        const typeCounts = plants.reduce((counts, plant) => {
+          counts.set(plant.type, (counts.get(plant.type) ?? 0) + 1);
+          return counts;
+        }, new Map());
+        [...typeCounts.keys()]
           .sort((a, b) => a.localeCompare(b))
-          .forEach((type) => addSelectOption(screenerTypeEl, type, sentenceCase(type)));
+          .forEach((type) => addSelectOption(screenerTypeEl, type, `${sentenceCase(type)} (${typeCounts.get(type)})`));
         Object.entries(goalLabels).forEach(([value, label]) => addSelectOption(screenerGoalEl, value, sentenceCase(label)));
         for (let zone = 2; zone <= 11; zone += 1) {
           ["a", "b"].forEach((suffix) => addSelectOption(screenerZoneEl, `${zone}${suffix}`, `Zone ${zone}${suffix}`));
@@ -1224,6 +1403,12 @@ function outputSortValue(metrics) {
         screenerTypeCountEl.textContent = String(new Set(plants.map((plant) => plant.type)).size);
         screenerRelationCountEl.textContent = String(plants.filter((plant) => relationshipCount(plant) > 0).length);
         screenerFilterEls.forEach((control) => control.addEventListener("input", handleScreenerFilterChange));
+        screenerGroupTypeEl.addEventListener("click", () => {
+          screenerGroupedByType = !screenerGroupedByType;
+          screenerVisibleLimit = screenerPageSize;
+          writeScreenerUrl();
+          renderScreener();
+        });
         screenerMoreEl.addEventListener("click", () => {
           screenerVisibleLimit += screenerPageSize;
           renderScreener();
@@ -1233,6 +1418,7 @@ function outputSortValue(metrics) {
             control.value = "";
           });
           screenerSort = { key: "name", direction: "asc" };
+          screenerGroupedByType = false;
           screenerVisibleLimit = screenerPageSize;
           if (screenerTableWrapEl) screenerTableWrapEl.scrollLeft = 0;
           writeScreenerUrl();

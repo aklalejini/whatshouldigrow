@@ -142,6 +142,31 @@ const metricSources = {
     title: "K-State Extension Master Gardener Handbook - Herbaceous Plants",
     url: "https://www.meadowlark.k-state.edu/docs/lawn_garden/extension-master-gardener/handouts/EMG%20Handbook%20chapter%208%20Herbaceous%20Plants.pdf",
     note: "Herbaceous spacing method based on mature plant form and height."
+  },
+  "umd-container-sizes": {
+    title: "University of Maryland Extension - Types of Containers for Growing Vegetables",
+    url: "https://extension.umd.edu/resource/types-containers-growing-vegetables/",
+    note: "Container volume guidance, including large vegetables and 25-30 gallon dwarf fruit tree containers."
+  },
+  "illinois-container-vegetables": {
+    title: "Illinois Extension - Growing Vegetables in Containers",
+    url: "https://extension.illinois.edu/container-gardens/growing-vegetables-containers",
+    note: "Container vegetable guidance for matching container size, rooting depth, and plant density."
+  },
+  "umd-tree-shrub-planting": {
+    title: "University of Maryland Extension - Planting a Tree or Shrub",
+    url: "https://extension.umd.edu/resource/planting-tree-or-shrub",
+    note: "Tree and shrub planting depth guidance, especially keeping the root flare at soil level."
+  },
+  "umd-home-fruit-planting": {
+    title: "University of Maryland Extension - Starting a Home Fruit Garden",
+    url: "https://www.extension.umd.edu/resource/starting-home-fruit-garden",
+    note: "Fruit tree graft union, root flare, and small fruit crown placement guidance."
+  },
+  "umn-strawberry-planting": {
+    title: "University of Minnesota Extension - Growing Strawberries in the Home Garden",
+    url: "https://extension.umn.edu/fruit/growing-strawberries-home-garden",
+    note: "Strawberry crown planting depth guidance."
   }
 };
 
@@ -2469,6 +2494,231 @@ const yieldConversionRules = [
   })
 ];
 
+const plantingDepthRules = [
+  rule(["tomato"], {
+    plantingDepthInMin: null,
+    plantingDepthInMax: null,
+    plantingDepthKind: "deep transplant",
+    plantingDepthNote: "Transplant deep, burying the stem up to the lowest healthy leaves.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["uga-vegetable-days-spacing"]
+  }),
+  rule(["strawberry"], {
+    plantingDepthInMin: 0,
+    plantingDepthInMax: 0,
+    plantingDepthKind: "crown",
+    plantingDepthNote: "Set the crown at soil level; burying the crown can rot the plant.",
+    plantingDepthConfidence: "high",
+    sourceKeys: ["umn-strawberry-planting"]
+  }),
+  rule(["asparagus"], {
+    plantingDepthInMin: 6,
+    plantingDepthInMax: 8,
+    plantingDepthKind: "crown trench",
+    plantingDepthNote: "Set crowns in a trench, then fill gradually as spears grow.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["uga-vegetable-days-spacing"]
+  }),
+  rule(["rhubarb"], {
+    plantingDepthInMin: 1,
+    plantingDepthInMax: 2,
+    plantingDepthKind: "crown",
+    plantingDepthNote: "Set crown buds just below the soil surface.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["ncsu-plant-toolbox"]
+  }),
+  rule(["peony"], {
+    plantingDepthInMin: 1,
+    plantingDepthInMax: 2,
+    plantingDepthKind: "crown",
+    plantingDepthNote: "Keep eyes shallow; deep planting can reduce flowering.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["ncsu-plant-toolbox", "mobot-plant-finder"]
+  }),
+  rule(["iris"], {
+    plantingDepthInMin: 0,
+    plantingDepthInMax: 1,
+    plantingDepthKind: "rhizome",
+    plantingDepthNote: "Keep rhizomes at or just below the soil surface; avoid deep planting.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["ncsu-plant-toolbox", "mobot-plant-finder"]
+  }),
+  rule(["daylily"], {
+    plantingDepthInMin: 0,
+    plantingDepthInMax: 1,
+    plantingDepthKind: "crown",
+    plantingDepthNote: "Set the crown at or slightly below the soil surface.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["ncsu-plant-toolbox", "mobot-plant-finder"]
+  }),
+  rule(["garlic"], {
+    plantingDepthInMin: 1,
+    plantingDepthInMax: 2,
+    plantingDepthKind: "clove",
+    plantingDepthNote: "Plant cloves pointed end up.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["uga-vegetable-days-spacing"]
+  }),
+  rule(["onion", "leek"], {
+    plantingDepthInMin: 0.5,
+    plantingDepthInMax: 1,
+    plantingDepthKind: "set or transplant",
+    plantingDepthNote: "Set shallow; keep the growing point above the soil.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["uga-vegetable-days-spacing"]
+  }),
+  rule(["potato"], {
+    plantingDepthInMin: 3,
+    plantingDepthInMax: 5,
+    plantingDepthKind: "seed piece",
+    plantingDepthNote: "Plant seed pieces in a trench and hill soil as shoots grow.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["uga-vegetable-days-spacing"]
+  }),
+  rule(["sweet potato"], {
+    plantingDepthInMin: 3,
+    plantingDepthInMax: 4,
+    plantingDepthKind: "slip",
+    plantingDepthNote: "Bury slips to cover the roots and lower nodes.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["uga-vegetable-days-spacing"]
+  }),
+  rule(["bean", "corn", "pea", "cowpea"], {
+    plantingDepthInMin: 1,
+    plantingDepthInMax: 2,
+    plantingDepthKind: "seed",
+    plantingDepthNote: "Sow seed into warm, workable soil at the packet depth.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["uga-vegetable-days-spacing"]
+  }),
+  rule(["cucumber", "squash", "zucchini", "melon", "cantaloupe", "watermelon", "pumpkin", "okra"], {
+    plantingDepthInMin: 0.5,
+    plantingDepthInMax: 1,
+    plantingDepthKind: "seed or transplant",
+    plantingDepthNote: "Sow seed shallow or set transplants at nursery depth.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["uga-vegetable-days-spacing"]
+  }),
+  rule(["carrot", "lettuce", "arugula", "spinach", "mizuna", "miner"], {
+    plantingDepthInMin: 0.125,
+    plantingDepthInMax: 0.25,
+    plantingDepthKind: "seed",
+    plantingDepthNote: "Sow shallow and keep the seedbed evenly moist.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["uga-vegetable-days-spacing"]
+  }),
+  rule(["radish", "beet", "turnip", "daikon"], {
+    plantingDepthInMin: 0.25,
+    plantingDepthInMax: 0.5,
+    plantingDepthKind: "seed",
+    plantingDepthNote: "Sow directly and thin promptly for root sizing.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["uga-vegetable-days-spacing"]
+  }),
+  rule(["broccoli", "cauliflower", "kale", "collards", "chard", "pepper", "eggplant", "artichoke"], {
+    plantingDepthInMin: 0,
+    plantingDepthInMax: 0,
+    plantingDepthKind: "transplant",
+    plantingDepthNote: "Set transplants at the same depth as the nursery pot.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["uga-vegetable-days-spacing"]
+  })
+];
+
+const containerRules = [
+  rule(["tomato"], {
+    containerMinGallons: 5,
+    containerSuitability: "good",
+    containerNote: "5+ gal per plant; 10+ gal is better for full-size indeterminate varieties.",
+    containerConfidence: "medium",
+    sourceKeys: ["umd-container-sizes", "illinois-container-vegetables"]
+  }),
+  rule(["pepper", "eggplant", "okra"], {
+    containerMinGallons: 5,
+    containerSuitability: "good",
+    containerNote: "Use one plant per 5+ gal container.",
+    containerConfidence: "medium",
+    sourceKeys: ["umd-container-sizes", "illinois-container-vegetables"]
+  }),
+  rule(["cucumber", "zucchini", "squash", "melon", "cantaloupe"], {
+    containerMinGallons: 10,
+    containerSuitability: "workable",
+    containerNote: "Use 10+ gal with a trellis or room for vines.",
+    containerConfidence: "medium",
+    sourceKeys: ["umd-container-sizes", "illinois-container-vegetables"]
+  }),
+  rule(["watermelon", "pumpkin"], {
+    containerMinGallons: 15,
+    containerSuitability: "limited",
+    containerNote: "Use 15+ gal and compact varieties; large vines are better in-ground.",
+    containerConfidence: "medium",
+    sourceKeys: ["umd-container-sizes", "illinois-container-vegetables"]
+  }),
+  rule(["lettuce", "arugula", "spinach", "mizuna", "radish", "basil", "parsley", "cilantro", "dill", "thyme", "oregano", "herb"], {
+    containerMinGallons: 1,
+    containerSuitability: "good",
+    containerNote: "Small herbs, leafy crops, and radishes work in 1+ gal pots or wider shallow planters.",
+    containerConfidence: "medium",
+    sourceKeys: ["umd-container-sizes", "illinois-container-vegetables"]
+  }),
+  rule(["bean", "pea", "carrot", "beet", "turnip", "daikon", "onion", "garlic"], {
+    containerMinGallons: 2,
+    containerSuitability: "good",
+    containerNote: "Shallow to medium containers work when depth matches the root crop.",
+    containerConfidence: "medium",
+    sourceKeys: ["umd-container-sizes", "illinois-container-vegetables"]
+  }),
+  rule(["strawberry"], {
+    containerMinGallons: 2,
+    containerSuitability: "good",
+    containerNote: "Use 2+ gal per plant or a wider trough with crowns at soil level.",
+    containerConfidence: "medium",
+    sourceKeys: ["umd-container-sizes", "umn-strawberry-planting"]
+  }),
+  rule(["blueberry"], {
+    containerMinGallons: 10,
+    containerSuitability: "workable",
+    containerNote: "Use 10+ gal with acidic potting mix; larger containers are better at maturity.",
+    containerConfidence: "medium",
+    sourceKeys: ["umd-container-sizes", "umn-blueberry", "osu-blueberry"]
+  }),
+  rule(["fig"], {
+    containerMinGallons: 25,
+    containerSuitability: "good",
+    containerNote: "Use 25+ gal for mature container figs and plan winter protection in cold zones.",
+    containerConfidence: "medium",
+    sourceKeys: ["umd-container-sizes"]
+  }),
+  rule(["citrus", "lemon", "satsuma", "kumquat", "yuzu", "calamondin", "finger lime"], {
+    containerMinGallons: 15,
+    containerSuitability: "good",
+    containerNote: "Use 15+ gal with excellent drainage and move indoors where winters are cold.",
+    containerConfidence: "medium",
+    sourceKeys: ["umd-container-sizes", "lsu-citrus-yield"]
+  }),
+  rule(["nut tree", "pecan", "chestnut", "oak", "maple", "birch", "cypress", "tupelo", "magnolia"], {
+    containerMinGallons: 45,
+    containerSuitability: "in-ground preferred",
+    containerNote: "Large trees can be started in containers but are not practical long-term patio crops.",
+    containerConfidence: "low",
+    sourceKeys: ["umd-container-sizes", "umd-tree-shrub-planting"]
+  }),
+  rule(["grape", "kiwi", "passionfruit"], {
+    containerMinGallons: 15,
+    containerSuitability: "workable",
+    containerNote: "Use 15+ gal plus a sturdy trellis.",
+    containerConfidence: "medium",
+    sourceKeys: ["umd-container-sizes"]
+  }),
+  rule(["blackberry", "raspberry", "currant", "gooseberry", "elderberry", "aronia", "honeyberry", "seaberry", "goumi"], {
+    containerMinGallons: 10,
+    containerSuitability: "workable",
+    containerNote: "Use 10+ gal; larger containers stabilize moisture and yield.",
+    containerConfidence: "medium",
+    sourceKeys: ["umd-container-sizes"]
+  })
+];
+
 function rule(terms, values) {
   return { terms, values };
 }
@@ -2507,6 +2757,14 @@ function matchingRules(plant) {
     if (isEdiblePlantType(plant) && isOrnamentalRule(values)) return false;
     return terms.some((term) => termMatches(text, term));
   }).sort((a, b) => matchSpecificity(text, a) - matchSpecificity(text, b));
+}
+
+function bestMatchingRule(plant, rules) {
+  const text = plantText(plant);
+  return rules
+    .filter(({ terms }) => terms.some((term) => termMatches(text, term)))
+    .sort((a, b) => matchSpecificity(text, a) - matchSpecificity(text, b))
+    .at(-1) ?? null;
 }
 
 function termMatches(text, term) {
@@ -2644,6 +2902,25 @@ function spacingLabel(metrics) {
   return `${inRow} in-row x ${row} rows`;
 }
 
+function plantingDepthLabel(metrics) {
+  if (metrics.plantingDepthNote && metrics.plantingDepthInMin === null && metrics.plantingDepthInMax === null) {
+    return metrics.plantingDepthNote;
+  }
+  if (metrics.plantingDepthInMin === 0 && metrics.plantingDepthInMax === 0) {
+    return metrics.plantingDepthNote ?? "Set crown/rootball at soil level";
+  }
+  const depth = rangeLabel(metrics.plantingDepthInMin, metrics.plantingDepthInMax, " in");
+  if (depth === "Needs source") return metrics.plantingDepthNote ?? "Needs source";
+  const verb = metrics.plantingDepthKind === "seed" ? "Sow" : "Plant";
+  return `${verb} ${depth} deep`;
+}
+
+function containerLabel(metrics) {
+  if (metrics.containerMinGallons === null || metrics.containerMinGallons === undefined) return "Needs source";
+  const size = `${formatNumber(metrics.containerMinGallons)}+ gal`;
+  return metrics.containerSuitability ? `${size} (${metrics.containerSuitability})` : size;
+}
+
 function matureSizeLabel(metrics) {
   const height = rangeLabel(metrics.matureHeightFtMin, metrics.matureHeightFtMax, " ft");
   const spread = rangeLabel(metrics.matureSpreadFtMin, metrics.matureSpreadFtMax, " ft");
@@ -2739,6 +3016,140 @@ function cumulativeYield(curve, field) {
   return round(curve.reduce((total, point) => total + (point[field] ?? 0), 0), 1);
 }
 
+function defaultPlantingDepth(plant) {
+  const type = plant.type.toLowerCase();
+  if (type.includes("tree")) {
+    return {
+      plantingDepthInMin: 0,
+      plantingDepthInMax: 0,
+      plantingDepthKind: "root flare",
+      plantingDepthNote: "Keep the root flare at soil level; graft unions stay above grade.",
+      plantingDepthConfidence: "medium",
+      sourceKeys: ["umd-tree-shrub-planting", "umd-home-fruit-planting"]
+    };
+  }
+  if (type.includes("shrub") || type.includes("cane") || type.includes("vine")) {
+    return {
+      plantingDepthInMin: 0,
+      plantingDepthInMax: 0,
+      plantingDepthKind: "root crown",
+      plantingDepthNote: "Set the crown or top of root ball level with the surrounding soil.",
+      plantingDepthConfidence: "medium",
+      sourceKeys: ["umd-tree-shrub-planting", "umd-home-fruit-planting"]
+    };
+  }
+  if (type.includes("flower") || type.includes("grass") || type.includes("perennial")) {
+    return {
+      plantingDepthInMin: 0,
+      plantingDepthInMax: 0,
+      plantingDepthKind: "crown",
+      plantingDepthNote: "Set the crown at the same level it grew in the nursery pot.",
+      plantingDepthConfidence: "medium",
+      sourceKeys: ["ncsu-plant-toolbox", "kstate-herbaceous-spacing"]
+    };
+  }
+  return {
+    plantingDepthInMin: 0,
+    plantingDepthInMax: 0,
+    plantingDepthKind: "transplant",
+    plantingDepthNote: "Set transplants at nursery depth or follow seed-packet depth for direct sowing.",
+    plantingDepthConfidence: "medium",
+    sourceKeys: ["uga-vegetable-days-spacing"]
+  };
+}
+
+function defaultContainerSpec(plant) {
+  const type = plant.type.toLowerCase();
+  if (type.includes("tree")) {
+    return {
+      containerMinGallons: type.includes("fruit") || type.includes("citrus") ? 25 : 45,
+      containerSuitability: type.includes("fruit") || type.includes("citrus") ? "limited" : "in-ground preferred",
+      containerNote: type.includes("fruit") || type.includes("citrus")
+        ? "Use dwarf/root-pruned culture for long-term containers; in-ground usually performs better."
+        : "Large trees can be started in containers but are not practical long-term patio crops.",
+      containerConfidence: "low",
+      sourceKeys: ["umd-container-sizes", "umd-tree-shrub-planting"]
+    };
+  }
+  if (type.includes("shrub") || type.includes("cane")) {
+    return {
+      containerMinGallons: 10,
+      containerSuitability: "workable",
+      containerNote: "Use 10+ gal; larger containers improve moisture buffering at maturity.",
+      containerConfidence: "medium",
+      sourceKeys: ["umd-container-sizes"]
+    };
+  }
+  if (type.includes("vine")) {
+    return {
+      containerMinGallons: 10,
+      containerSuitability: "workable",
+      containerNote: "Use 10+ gal and provide a trellis or room for vines.",
+      containerConfidence: "medium",
+      sourceKeys: ["umd-container-sizes"]
+    };
+  }
+  if (type.includes("vegetable")) {
+    return {
+      containerMinGallons: 5,
+      containerSuitability: "workable",
+      containerNote: "Use 5+ gal for most single vegetable plants; smaller leafy/root crops can use less.",
+      containerConfidence: "medium",
+      sourceKeys: ["umd-container-sizes", "illinois-container-vegetables"]
+    };
+  }
+  if (type.includes("herb") || type.includes("flower")) {
+    return {
+      containerMinGallons: 2,
+      containerSuitability: "good",
+      containerNote: "Use 2+ gal per plant, or wider mixed containers with similar water needs.",
+      containerConfidence: "medium",
+      sourceKeys: ["umd-container-sizes", "illinois-container-vegetables"]
+    };
+  }
+  if (type.includes("grass") || type.includes("perennial")) {
+    return {
+      containerMinGallons: 3,
+      containerSuitability: "workable",
+      containerNote: "Use 3+ gal for establishment and size up as clumps mature.",
+      containerConfidence: "medium",
+      sourceKeys: ["umd-container-sizes", "kstate-herbaceous-spacing"]
+    };
+  }
+  return {
+    containerMinGallons: 5,
+    containerSuitability: "workable",
+    containerNote: "Use at least a medium container and size up for mature spread.",
+    containerConfidence: "low",
+    sourceKeys: ["umd-container-sizes"]
+  };
+}
+
+function applyDepthAndContainerGuidance(plant, metrics) {
+  const plantingDefault = defaultPlantingDepth(plant);
+  const { sourceKeys: plantingDefaultSources, ...plantingDefaultValues } = plantingDefault;
+  const plantingRule = bestMatchingRule(plant, plantingDepthRules);
+  const { sourceKeys: plantingRuleSources, ...plantingRuleValues } = plantingRule?.values ?? {};
+  Object.assign(metrics, plantingDefaultValues, plantingRuleValues);
+  metrics.sourceKeys = unique([
+    ...(metrics.sourceKeys ?? []),
+    ...(plantingDefaultSources ?? []),
+    ...(plantingRuleSources ?? [])
+  ]);
+
+  const containerDefault = defaultContainerSpec(plant);
+  const { sourceKeys: containerDefaultSources, ...containerDefaultValues } = containerDefault;
+  const containerRule = bestMatchingRule(plant, containerRules);
+  const { sourceKeys: containerRuleSources, ...containerRuleValues } = containerRule?.values ?? {};
+  Object.assign(metrics, containerDefaultValues, containerRuleValues);
+  metrics.sourceKeys = unique([
+    ...(metrics.sourceKeys ?? []),
+    ...(containerDefaultSources ?? []),
+    ...(containerRuleSources ?? [])
+  ]);
+  return metrics;
+}
+
 function makeNotes(plant, metrics) {
   const notes = [];
   if (metrics.dataConfidence === "low") {
@@ -2783,6 +3194,7 @@ function buildMetrics(plant) {
   metrics.plantsPer100SqFtMax = densityMax;
   metrics.multiUseScore = Math.min(5, Math.max(1, Math.round((plant.goals.length / 6) * 5)));
   metrics.lastReviewed = lastReviewed;
+  applyDepthAndContainerGuidance(plant, metrics);
   metrics.sourceKeys = unique(metrics.sourceKeys);
   applyYieldLbs(plant, metrics);
   metrics.yieldCurve = yieldCurve(metrics);
@@ -2793,6 +3205,10 @@ function buildMetrics(plant) {
     firstOutput: firstOutputLabel(metrics),
     fullOutput: fullOutputLabel(metrics),
     spacing: spacingLabel(metrics),
+    plantingDepth: plantingDepthLabel(metrics),
+    plantingDepthNote: metrics.plantingDepthNote,
+    containerMin: containerLabel(metrics),
+    containerNote: metrics.containerNote,
     matureSize: matureSizeLabel(metrics),
     output: outputLabel(metrics),
     yieldLbs: rangeLabel(metrics.yieldLbsMin, metrics.yieldLbsMax, ` ${metrics.yieldLbsUnit ?? ""}`),
@@ -2851,6 +3267,15 @@ const csvColumns = [
   "spacing_row_ft_max",
   "plants_per_100_sqft_min",
   "plants_per_100_sqft_max",
+  "planting_depth_in_min",
+  "planting_depth_in_max",
+  "planting_depth_kind",
+  "planting_depth_note",
+  "planting_depth_confidence",
+  "container_min_gallons",
+  "container_suitability",
+  "container_note",
+  "container_confidence",
   "output_kind",
   "output_unit",
   "output_min",
@@ -2913,6 +3338,15 @@ const csvRows = plants.map((plant) => {
     spacing_row_ft_max: metrics.spacingRowFtMax,
     plants_per_100_sqft_min: metrics.plantsPer100SqFtMin,
     plants_per_100_sqft_max: metrics.plantsPer100SqFtMax,
+    planting_depth_in_min: metrics.plantingDepthInMin,
+    planting_depth_in_max: metrics.plantingDepthInMax,
+    planting_depth_kind: metrics.plantingDepthKind,
+    planting_depth_note: metrics.plantingDepthNote,
+    planting_depth_confidence: metrics.plantingDepthConfidence,
+    container_min_gallons: metrics.containerMinGallons,
+    container_suitability: metrics.containerSuitability,
+    container_note: metrics.containerNote,
+    container_confidence: metrics.containerConfidence,
     output_kind: metrics.outputKind,
     output_unit: metrics.outputUnit,
     output_min: metrics.outputMin,
