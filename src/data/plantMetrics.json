@@ -11236,7 +11236,7 @@
     "reliabilityScore": 3,
     "maintenanceScore": 3,
     "dataConfidence": "medium",
-    "dataMethod": "crop-specific vegetable template",
+    "dataMethod": "annual fruiting-vine crop template",
     "sourceKeys": [
       "umn-vegetable-field-planning",
       "lsu-vegetable-yields"
@@ -11246,7 +11246,7 @@
     "riskLevel": "moderate",
     "plantsPer100SqFtMin": 4.2,
     "plantsPer100SqFtMax": 6.7,
-    "multiUseScore": 1,
+    "multiUseScore": 2,
     "lastReviewed": "2026-05-24",
     "yieldLbsMin": 3,
     "yieldLbsMax": 10,
@@ -11362,7 +11362,7 @@
     "reliabilityScore": 3,
     "maintenanceScore": 3,
     "dataConfidence": "medium",
-    "dataMethod": "crop-specific vegetable template",
+    "dataMethod": "annual fruiting-vine crop template",
     "sourceKeys": [
       "umn-vegetable-field-planning",
       "lsu-vegetable-yields"
@@ -11372,7 +11372,7 @@
     "riskLevel": "moderate",
     "plantsPer100SqFtMin": 5.6,
     "plantsPer100SqFtMax": 13.3,
-    "multiUseScore": 1,
+    "multiUseScore": 2,
     "lastReviewed": "2026-05-24",
     "yieldLbsMin": 4,
     "yieldLbsMax": 7,
@@ -38068,7 +38068,7 @@
     "reliabilityScore": 3,
     "maintenanceScore": 3,
     "dataConfidence": "medium",
-    "dataMethod": "crop-specific vegetable template",
+    "dataMethod": "annual fruiting-vine crop template",
     "sourceKeys": [
       "umn-vegetable-field-planning",
       "lsu-vegetable-yields"
@@ -38078,7 +38078,7 @@
     "riskLevel": "moderate",
     "plantsPer100SqFtMin": 5.6,
     "plantsPer100SqFtMax": 13.3,
-    "multiUseScore": 1,
+    "multiUseScore": 2,
     "lastReviewed": "2026-05-24",
     "yieldLbsMin": 4,
     "yieldLbsMax": 7,
@@ -38194,7 +38194,7 @@
     "reliabilityScore": 3,
     "maintenanceScore": 3,
     "dataConfidence": "medium",
-    "dataMethod": "crop-specific vegetable template",
+    "dataMethod": "annual fruiting-vine crop template",
     "sourceKeys": [
       "umn-vegetable-field-planning",
       "lsu-vegetable-yields"
@@ -38204,7 +38204,7 @@
     "riskLevel": "moderate",
     "plantsPer100SqFtMin": 5.6,
     "plantsPer100SqFtMax": 13.3,
-    "multiUseScore": 1,
+    "multiUseScore": 2,
     "lastReviewed": "2026-05-24",
     "yieldLbsMin": 4,
     "yieldLbsMax": 7,
@@ -38320,7 +38320,7 @@
     "reliabilityScore": 3,
     "maintenanceScore": 3,
     "dataConfidence": "medium",
-    "dataMethod": "crop-specific vegetable template",
+    "dataMethod": "annual fruiting-vine crop template",
     "sourceKeys": [
       "umn-vegetable-field-planning",
       "lsu-vegetable-yields"
@@ -38330,7 +38330,7 @@
     "riskLevel": "moderate",
     "plantsPer100SqFtMin": 4.2,
     "plantsPer100SqFtMax": 6.7,
-    "multiUseScore": 1,
+    "multiUseScore": 2,
     "lastReviewed": "2026-05-24",
     "yieldLbsMin": 3,
     "yieldLbsMax": 10,
@@ -38446,7 +38446,7 @@
     "reliabilityScore": 3,
     "maintenanceScore": 3,
     "dataConfidence": "medium",
-    "dataMethod": "crop-specific vegetable template",
+    "dataMethod": "annual fruiting-vine crop template",
     "sourceKeys": [
       "umn-vegetable-field-planning",
       "lsu-vegetable-yields"
@@ -38456,7 +38456,7 @@
     "riskLevel": "moderate",
     "plantsPer100SqFtMin": 4.2,
     "plantsPer100SqFtMax": 6.7,
-    "multiUseScore": 1,
+    "multiUseScore": 2,
     "lastReviewed": "2026-05-24",
     "yieldLbsMin": 3,
     "yieldLbsMax": 10,

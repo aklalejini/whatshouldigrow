@@ -830,6 +830,11 @@ const baseByType = {
   }
 };
 
+baseByType["annual fruit vine"] = {
+  ...baseByType["annual vegetable"],
+  dataMethod: "annual fruiting-vine crop template"
+};
+
 const cropRules = [
   rule(["cherry tomato", "sungold"], {
     daysToMaturityMin: 60,
