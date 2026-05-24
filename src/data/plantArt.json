@@ -120,6 +120,22 @@
     "plateBg": "linear-gradient(145deg, #d8e0bd, #f7efe0)"
   },
   {
+    "id": "arugula",
+    "image": "arugula.webp",
+    "source": "Arugula.png",
+    "match": ["arugula"],
+    "position": "50% 54%",
+    "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
+  },
+  {
+    "id": "carrot",
+    "image": "carrot.webp",
+    "source": "Carrot.png",
+    "match": ["carrot"],
+    "position": "50% 54%",
+    "plateBg": "linear-gradient(145deg, #e6c489, #f7efe0)"
+  },
+  {
     "id": "mint",
     "image": "mint.webp",
     "source": "Mint.png",
@@ -209,6 +225,15 @@
     "plateBg": "linear-gradient(145deg, #d6dde1, #f7efe0)"
   },
   {
+    "id": "strawberry",
+    "image": "strawberry.webp",
+    "source": "Strawberry.png",
+    "match": ["strawberry"],
+    "exclude": ["strawberry guava", "strawberry-guava"],
+    "position": "52% 54%",
+    "plateBg": "linear-gradient(145deg, #e4d6bd, #f7efe0)"
+  },
+  {
     "id": "elderberry",
     "image": "elderberry.webp",
     "source": "Elderberry.png",
@@ -231,6 +256,15 @@
     "match": ["peach"],
     "position": "56% 52%",
     "plateBg": "linear-gradient(145deg, #f1c7ab, #f7efe0)"
+  },
+  {
+    "id": "apple",
+    "image": "apple.webp",
+    "source": "Apple.png",
+    "match": ["-apple", "apple tree", "williams pride apple"],
+    "exclude": ["pineapple", "mayapple", "custard-apple"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #e5d4b3, #f7efe0)"
   },
   {
     "id": "pear",
