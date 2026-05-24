@@ -96,6 +96,14 @@
     "plateBg": "linear-gradient(145deg, #ead39b, #f7efe0)"
   },
   {
+    "id": "cantaloupe",
+    "image": "cantaloupe.webp",
+    "source": "Cantaloupe.png",
+    "match": ["cantaloupe", "muskmelon", "charentais melon", "charentais-melon"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
+  },
+  {
     "id": "onion",
     "image": "onion.webp",
     "source": "Onion.png",
@@ -134,6 +142,15 @@
     "match": ["carrot"],
     "position": "50% 54%",
     "plateBg": "linear-gradient(145deg, #e6c489, #f7efe0)"
+  },
+  {
+    "id": "radish",
+    "image": "radish.webp",
+    "source": "Radish.png",
+    "match": ["radish"],
+    "exclude": ["horseradish"],
+    "position": "50% 54%",
+    "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
   },
   {
     "id": "mint",
