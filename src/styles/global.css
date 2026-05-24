@@ -1146,6 +1146,17 @@ fieldset:nth-of-type(2) .segmented {
   line-height: 1.5;
 }
 
+.relationship-item .relationship-action {
+  margin-top: -2px;
+  padding: 8px 10px;
+  border-left: 3px solid rgba(223, 123, 79, 0.42);
+  background: #fbf8ef;
+}
+
+.relationship-action strong {
+  color: var(--leaf-dark);
+}
+
 .relationship-tags {
   display: flex;
   flex-wrap: wrap;

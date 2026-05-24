@@ -166,7 +166,7 @@ function planningNotesForPlant(entry) {
     notes.push("For screens and hedges, confirm mature size and spacing with the nursery label or local extension guidance.");
   }
   if (hasNativeGoal) {
-    notes.push("Native and low-maintenance cues are starting points; confirm regional nativity and local invasive guidance.");
+    notes.push("Native-plant cues are starting points; confirm regional nativity, straight-species versus cultivar status, and local invasive guidance.");
   }
   if (metrics.dataConfidence === "low") {
     notes.push("Quantitative data quality is low for this record; verify before buying or planting at scale.");
@@ -554,6 +554,9 @@ const plantJsonLd = {
                         <strong>{sentenceCase(relationship.strength ?? "noted")}</strong>
                       </div>
                       <p>{relationship.note}</p>
+                      {relationship.placement && (
+                        <p class="relationship-action"><strong>Use it:</strong> {relationship.placement}</p>
+                      )}
                       <div class="relationship-tags">
                         {visiblePlants.map((relatedPlant) => (
                           <a href={plantUrl(relatedPlant)}>{relatedPlant.name}</a>
@@ -574,6 +577,9 @@ const plantJsonLd = {
                         <strong>{sentenceCase(relationship.strength ?? "noted")}</strong>
                       </div>
                       <p>{relationship.note}</p>
+                      {relationship.placement && (
+                        <p class="relationship-action"><strong>Use it:</strong> {relationship.placement}</p>
+                      )}
                       <div class="relationship-tags">
                         {visiblePlants.map((relatedPlant) => (
                           <a href={plantUrl(relatedPlant)}>{relatedPlant.name}</a>

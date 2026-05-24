@@ -279,8 +279,8 @@ const webAppJsonLd = {
                 <span class="option-card"><span class="option-label">Privacy &amp; screening</span><span class="option-help">Screens &amp; buffers</span></span>
               </label>
               <label>
-                <input type="radio" name="goal" value="low-maintenance-natives" />
-                <span class="option-card"><span class="option-label">Low-maintenance natives</span><span class="option-help">Tough local picks</span></span>
+                <input type="radio" name="goal" value="native-plants" />
+                <span class="option-card"><span class="option-label">Native plants</span><span class="option-help">Habitat &amp; region fit</span></span>
               </label>
             </div>
           </fieldset>
@@ -453,11 +453,11 @@ const webAppJsonLd = {
               </select>
             </label>
             <label class="screener-field" for="screener-flag">
-              <span title="Filter by native cues, low-maintenance goals, or plant pairings.">Attribute</span>
+              <span title="Filter by native cues, low-water needs, or plant pairings.">Attribute</span>
               <select id="screener-flag">
                 <option value="">Any attribute</option>
                 <option value="native">Native cue</option>
-                <option value="low-maintenance">Low-maintenance goal</option>
+                <option value="low-water">Low water need</option>
                 <option value="pairings">Has pairings</option>
               </select>
             </label>
@@ -507,7 +507,7 @@ const webAppJsonLd = {
                   <th scope="col"><button type="button" data-screener-sort="harvest">Harvest/season <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="traits">Traits <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="native" title="Derived from current plant notes and goals, not a full native-range database.">Native cue <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="lowMaintenance" title="Plants tagged with the low-maintenance natives goal.">Low-maint. <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="lowMaintenance" title="Plants with low water needs.">Low water <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="pairings" title="Companion or placement pairing rules connected to this plant.">Pairings <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="partner">Source <span class="sort-indicator"></span></button></th>
                   <th class="screener-action-head" scope="col">Profile</th>
@@ -664,7 +664,10 @@ const webAppJsonLd = {
         "pollinators-wildlife": "pollinators & wildlife",
         "curb-appeal": "curb appeal & color",
         "privacy-screening": "privacy & screening",
-        "low-maintenance-natives": "low-maintenance natives"
+        "native-plants": "native plants"
+      };
+      const legacyGoalLabels = {
+        "low-maintenance-natives": "native plants"
       };
       const formLabels = {
         tree: ["tree", "trees"],
@@ -791,7 +794,7 @@ const webAppJsonLd = {
       }
 
       function formatGoal(value) {
-        return goalLabels[value] ?? value.replaceAll("-", " ");
+        return goalLabels[value] ?? legacyGoalLabels[value] ?? value.replaceAll("-", " ");
       }
 
       function formatGoalList(values) {
@@ -855,7 +858,9 @@ const webAppJsonLd = {
       const relationshipTypeLabels = {
         companion: "Companion",
         guild: "Plant guild",
-        understory: "Understory"
+        understory: "Understory",
+        pollination: "Pollination",
+        succession: "Succession"
       };
 
       function relationshipEntriesForPlant(plant) {
@@ -884,6 +889,7 @@ const webAppJsonLd = {
                       <strong>${sentenceCase(relationship.strength ?? "noted")}</strong>
                     </div>
                     <p>${relationship.note}</p>
+                    ${relationship.placement ? `<p class="relationship-action"><strong>Use it:</strong> ${relationship.placement}</p>` : ""}
                     <div class="relationship-tags">
                       ${visiblePlants.map((relatedPlant) => `<a href="${plantPagePath(relatedPlant)}">${relatedPlant.name}</a>`).join("")}
                       ${moreCount > 0 ? `<span>+${moreCount} more</span>` : ""}
@@ -1060,8 +1066,13 @@ function outputSortValue(metrics) {
           || (/\bnative\b/.test(text) && !/\bnon[-\s]?native\b/.test(text));
       }
 
-      function hasLowMaintenanceGoal(plant) {
-        return plant.goals.includes("low-maintenance-natives");
+      function hasLowWaterCue(plant) {
+        return plant.water === "low";
+      }
+
+      function goalMatchesPlant(plant, goal) {
+        if (goal === "native-plants") return hasNativeCue(plant);
+        return plant.goals.includes(goal);
       }
 
       function escapeHtml(value) {
@@ -1137,7 +1148,7 @@ function outputSortValue(metrics) {
         if (screenerSunEl.value && !plant.sun.includes(screenerSunEl.value)) return false;
         if (screenerSoilEl.value && !plant.soils.includes(screenerSoilEl.value)) return false;
         if (screenerWaterEl.value && plant.water !== screenerWaterEl.value) return false;
-        if (screenerGoalEl.value && !plant.goals.includes(screenerGoalEl.value)) return false;
+        if (screenerGoalEl.value && !goalMatchesPlant(plant, screenerGoalEl.value)) return false;
         if (screenerHorizonEl.value && metrics.horizonKey !== screenerHorizonEl.value) return false;
         if (screenerContainerEl.value) {
           const maxContainer = Number(screenerContainerEl.value);
@@ -1147,7 +1158,7 @@ function outputSortValue(metrics) {
         if (screenerConfidenceEl.value === "low" && metrics.dataConfidence !== "low") return false;
         if (screenerPartnerEl.value && plant.partner !== screenerPartnerEl.value) return false;
         if (flag === "native" && !hasNativeCue(plant)) return false;
-        if (flag === "low-maintenance" && !hasLowMaintenanceGoal(plant)) return false;
+        if ((flag === "low-water" || flag === "low-maintenance") && !hasLowWaterCue(plant)) return false;
         if (flag === "pairings" && relationshipCount(plant) === 0) return false;
         return true;
       }
@@ -1170,7 +1181,7 @@ function outputSortValue(metrics) {
         if (key === "harvest") return plant.harvest.toLowerCase();
         if (key === "traits") return plant.traits.join(", ").toLowerCase();
         if (key === "native") return hasNativeCue(plant) ? 1 : 0;
-        if (key === "lowMaintenance") return hasLowMaintenanceGoal(plant) ? 1 : 0;
+        if (key === "lowMaintenance") return hasLowWaterCue(plant) ? 1 : 0;
         if (key === "pairings") return relationshipCount(plant);
         if (key === "partner") return partnerName(plant.partner).toLowerCase();
         return plant.name.toLowerCase();
@@ -1247,7 +1258,7 @@ function outputSortValue(metrics) {
         const metrics = metricFor(plant);
         const pairings = relationshipCount(plant);
         const native = hasNativeCue(plant);
-        const lowMaintenance = hasLowMaintenanceGoal(plant);
+        const lowWater = hasLowWaterCue(plant);
         const difficultyTone = metrics.riskLevel === "lower"
           ? "is-positive"
           : metrics.riskLevel === "elevated"
@@ -1292,7 +1303,7 @@ function outputSortValue(metrics) {
             <td data-label="Harvest">${escapeHtml(plant.harvest)}</td>
             <td data-label="Traits">${renderScreenerPills(plant.traits, (value) => value, 2)}</td>
             <td data-label="Native cue"><span class="screener-pill ${native ? "is-positive" : "is-muted"}">${native ? "Yes" : "-"}</span></td>
-            <td data-label="Low-maint."><span class="screener-pill ${lowMaintenance ? "is-positive" : "is-muted"}">${lowMaintenance ? "Goal" : "-"}</span></td>
+            <td data-label="Low water"><span class="screener-pill ${lowWater ? "is-positive" : "is-muted"}">${lowWater ? "Yes" : "-"}</span></td>
             <td data-label="Pairings"><span class="screener-count" title="${pairings} plant ${pairings === 1 ? "pairing" : "pairings"}">${pairings}</span></td>
             <td data-label="Source">${escapeHtml(partnerName(plant.partner))}</td>
             <td class="screener-profile-cell" data-label="Profile"><a class="screener-profile-link" href="${plantPagePath(plant)}">View profile</a></td>
@@ -1463,7 +1474,7 @@ function outputSortValue(metrics) {
         }
         details.push({ label: "Hardiness", value: zoneFit, score: zoneScore, note: `${plant.zones[0]}-${plant.zones[1]} (${zoneLabel})` });
 
-        const goalFit = plant.goals.includes(inputs.goal);
+        const goalFit = goalMatchesPlant(plant, inputs.goal);
         details.push({
           label: "Goal",
           value: goalFit ? 100 : 0,
@@ -1520,7 +1531,7 @@ function outputSortValue(metrics) {
         if (plant.type.includes("fruit") && inputs.goal === "fruit") bonus += 6;
         if (plant.type.includes("perennial") && inputs.goal === "pollinators-wildlife") bonus += 5;
         if ((plant.type.includes("shrub") || plant.type.includes("vine") || plant.type.includes("grass")) && inputs.goal === "privacy-screening") bonus += 6;
-        if (plant.water === "low" && inputs.goal === "low-maintenance-natives") bonus += 5;
+        if (inputs.goal === "native-plants" && hasNativeCue(plant)) bonus += 5;
         if (bonus > 0) details.push({ label: "Use case", value: 100, score: bonus, note: "extra practical fit" });
 
         const score = details.reduce((sum, detail) => sum + detail.score, 0);
@@ -1543,7 +1554,9 @@ function outputSortValue(metrics) {
           (plant.sun.includes(inputs.sun) ? 0.28 : 0) +
           (plant.soils.includes(inputs.soil) ? 0.2 : 0) +
           (plant.water === inputs.water ? 0.2 : plant.water === "low" && inputs.water !== "low" ? 0.08 : 0);
-        const goalSpecificity = plant.goals[0] === inputs.goal ? 0.18 : plant.goals.includes(inputs.goal) ? 0.1 : 0;
+        const goalSpecificity = inputs.goal === "native-plants"
+          ? (hasNativeCue(plant) ? (plant.goals.includes("low-maintenance-natives") ? 0.18 : 0.1) : 0)
+          : plant.goals[0] === inputs.goal ? 0.18 : plant.goals.includes(inputs.goal) ? 0.1 : 0;
         return base + clamp(edgeMargin, -4, 4) * 0.7 - centerPenalty + conditionFit + goalSpecificity;
       }
 
@@ -1614,8 +1627,8 @@ function outputSortValue(metrics) {
         if (inputs.goal === "vegetables-herbs") {
           return `${plant.name} is a kitchen-garden pick with a real reason to grow it: ${trait}${fit}.`;
         }
-        if (inputs.goal === "low-maintenance-natives") {
-          return `${plant.name} fits the low-fuss lane: ${trait}${fit}.`;
+        if (inputs.goal === "native-plants") {
+          return `${plant.name} fits the native-plant lane: ${trait}${fit}.`;
         }
         return `${plant.name} earns its slot for ${traitPhrase(trait)}${fit}.`;
       }
@@ -1655,6 +1668,9 @@ function outputSortValue(metrics) {
         }
         if (inputs.goal === "privacy-screening") {
           return `The payoff is ${payoff}, while the plant earns its keep as living structure.`;
+        }
+        if (inputs.goal === "native-plants") {
+          return `The payoff is ${payoff}, with habitat value and local ecology in the decision.`;
         }
         return `The payoff is ${payoff}, with ${trait}.`;
       }
@@ -1814,7 +1830,7 @@ function outputSortValue(metrics) {
       }
 
       function renderResults(zoneData, inputs) {
-        const candidates = plants.filter((plant) => plant.goals.includes(inputs.goal));
+        const candidates = plants.filter((plant) => goalMatchesPlant(plant, inputs.goal));
         const ranked = candidates
           .map((plant) => ({ plant, score: scorePlant(plant, inputs), rankScore: rankingScore(plant, inputs) }))
           .sort((a, b) => b.rankScore - a.rankScore || b.score - a.score || a.plant.name.localeCompare(b.plant.name));

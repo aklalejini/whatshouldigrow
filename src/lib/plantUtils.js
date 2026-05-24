@@ -4,13 +4,15 @@ export const goalLabels = {
   "pollinators-wildlife": "Pollinators & wildlife",
   "curb-appeal": "Curb appeal & color",
   "privacy-screening": "Privacy & screening",
-  "low-maintenance-natives": "Low-maintenance natives"
+  "low-maintenance-natives": "Native plants"
 };
 
 export const relationshipTypeLabels = {
   companion: "Companion",
   guild: "Plant guild",
-  understory: "Understory"
+  understory: "Understory",
+  pollination: "Pollination",
+  succession: "Succession"
 };
 
 export function plantUrl(plantOrId) {
