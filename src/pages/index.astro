@@ -359,15 +359,15 @@ const webAppJsonLd = {
             <div class="screener-metrics" aria-label="Screener database summary">
               <div>
                 <strong id="screener-visible-count">{plantCount}</strong>
-                <span>visible</span>
+                <span>matches</span>
               </div>
               <div>
-                <strong id="screener-art-count">0</strong>
-                <span>specific art</span>
+                <strong id="screener-type-count">0</strong>
+                <span>plant types</span>
               </div>
               <div>
                 <strong id="screener-relation-count">0</strong>
-                <span>with relationships</span>
+                <span>with pairings</span>
               </div>
             </div>
           </header>
@@ -423,13 +423,12 @@ const webAppJsonLd = {
               </select>
             </label>
             <label class="screener-field" for="screener-flag">
-              <span>Signal</span>
+              <span title="Filter by native cues, low-maintenance goals, or plant pairings.">Attribute</span>
               <select id="screener-flag">
-                <option value="">Any signal</option>
-                <option value="low-maintenance-natives">Low-maintenance native goal</option>
-                <option value="native-text">Native mentioned</option>
-                <option value="specific-art">Specific art</option>
-                <option value="relationships">Has relationships</option>
+                <option value="">Any attribute</option>
+                <option value="native">Native cue</option>
+                <option value="low-maintenance">Low-maintenance goal</option>
+                <option value="pairings">Has pairings</option>
               </select>
             </label>
             <label class="screener-field" for="screener-partner">
@@ -444,6 +443,7 @@ const webAppJsonLd = {
             <p id="screener-summary">Showing all plants.</p>
             <div>
               <a href="/exports/plants.csv">CSV export</a>
+              <button id="screener-more" type="button" hidden>Show more</button>
               <button id="screener-reset" type="button">Reset filters</button>
             </div>
           </div>
@@ -452,7 +452,7 @@ const webAppJsonLd = {
             <table class="screener-table">
               <thead>
                 <tr>
-                  <th scope="col" aria-sort="ascending"><button type="button" data-screener-sort="name">Name <span class="sort-indicator">A-Z</span></button></th>
+                  <th scope="col" aria-sort="ascending"><button type="button" data-screener-sort="name">Name <span class="sort-indicator">&uarr; A-Z</span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="type">Type/form <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="zone">Zone range <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="sun">Sun <span class="sort-indicator"></span></button></th>
@@ -461,10 +461,11 @@ const webAppJsonLd = {
                   <th scope="col"><button type="button" data-screener-sort="goals">Goals <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="harvest">Harvest/season <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="traits">Traits <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="native">Native/low-maint. <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="relationships">Rels. <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="art">Art <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="native" title="Derived from current plant notes and goals, not a full native-range database.">Native cue <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="lowMaintenance" title="Plants tagged with the low-maintenance natives goal.">Low-maint. <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="pairings" title="Companion or placement pairing rules connected to this plant.">Pairings <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="partner">Source <span class="sort-indicator"></span></button></th>
+                  <th class="screener-action-head" scope="col">Profile</th>
                 </tr>
               </thead>
               <tbody id="screener-body"></tbody>
@@ -555,12 +556,13 @@ const webAppJsonLd = {
       const screenerFlagEl = document.getElementById("screener-flag");
       const screenerPartnerEl = document.getElementById("screener-partner");
       const screenerResetEl = document.getElementById("screener-reset");
+      const screenerMoreEl = document.getElementById("screener-more");
       const screenerBodyEl = document.getElementById("screener-body");
       const screenerTableWrapEl = document.querySelector(".screener-table-wrap");
       const screenerSummaryEl = document.getElementById("screener-summary");
       const screenerEmptyEl = document.getElementById("screener-empty");
       const screenerVisibleCountEl = document.getElementById("screener-visible-count");
-      const screenerArtCountEl = document.getElementById("screener-art-count");
+      const screenerTypeCountEl = document.getElementById("screener-type-count");
       const screenerRelationCountEl = document.getElementById("screener-relation-count");
       const screenerSortButtons = Array.from(document.querySelectorAll("[data-screener-sort]"));
       const screenerFilterEls = [
@@ -578,8 +580,22 @@ const webAppJsonLd = {
       let currentInputs = null;
       let visibleCount = 12;
       let screenerSort = { key: "name", direction: "asc" };
+      let screenerVisibleLimit = 120;
+      const screenerPageSize = 120;
       const zoneCache = new Map();
       let zoneLookupTimer = null;
+      const screenerParamMap = {
+        sq: screenerSearchEl,
+        stype: screenerTypeEl,
+        szone: screenerZoneEl,
+        ssun: screenerSunEl,
+        ssoil: screenerSoilEl,
+        swater: screenerWaterEl,
+        sgoal: screenerGoalEl,
+        sattr: screenerFlagEl,
+        ssource: screenerPartnerEl
+      };
+      const screenerParamKeys = [...Object.keys(screenerParamMap), "ssort", "sdir"];
 
       const waterRank = { low: 1, medium: 2, high: 3 };
       const goalLabels = {
@@ -638,14 +654,16 @@ const webAppJsonLd = {
       articleSearchEl.addEventListener("input", filterArticles);
       const initialParams = new URLSearchParams(window.location.search);
       const initialBlogQuery = initialParams.get("q");
+      const hasInitialScreenerQuery = screenerParamKeys.some((key) => initialParams.has(key));
+      const initialWantsScreener = hasInitialScreenerQuery || window.location.hash === "#screener" || window.location.hash === "#screener-view";
       if (initialBlogQuery) {
         articleSearchEl.value = initialBlogQuery;
         filterArticles();
       }
-      if (initialBlogQuery || window.location.hash === "#blog" || window.location.hash === "#blog-view") {
-        setActiveView("blog");
-      } else if (window.location.hash === "#screener" || window.location.hash === "#screener-view") {
+      if (initialWantsScreener) {
         setActiveView("screener");
+      } else if (initialBlogQuery || window.location.hash === "#blog" || window.location.hash === "#blog-view") {
+        setActiveView("blog");
       }
 
       function zoneToNumber(zone) {
@@ -845,15 +863,6 @@ const webAppJsonLd = {
           ?? null;
       }
 
-      function specificArtEntry(plant) {
-        const identity = plantIdentity(plant);
-        return plantArtEntries.find((entry) => (entry.match ?? []).length > 0 && matchesArtEntry(identity, entry)) ?? null;
-      }
-
-      function hasSpecificArt(plant) {
-        return Boolean(specificArtEntry(plant)?.image);
-      }
-
       function plantPhotoStyle(entry) {
         if (!entry?.image) return "";
         const styles = [
@@ -877,13 +886,16 @@ const webAppJsonLd = {
         return partners[value]?.name ?? sentenceCase(String(value ?? "").replaceAll("-", " "));
       }
 
-      function nativeSignal(plant) {
+      function hasNativeCue(plant) {
         const text = [plant.name, plant.type, plant.notes, plant.query, ...(plant.traits ?? [])]
           .join(" ")
           .toLowerCase();
-        if (plant.goals.includes("low-maintenance-natives")) return { label: "Low-maint.", strength: 2 };
-        if (/\bnative\b/.test(text) && !/\bnon[-\s]?native\b/.test(text)) return { label: "Native note", strength: 1 };
-        return { label: "-", strength: 0 };
+        return plant.goals.includes("low-maintenance-natives")
+          || (/\bnative\b/.test(text) && !/\bnon[-\s]?native\b/.test(text));
+      }
+
+      function hasLowMaintenanceGoal(plant) {
+        return plant.goals.includes("low-maintenance-natives");
       }
 
       function escapeHtml(value) {
@@ -939,10 +951,9 @@ const webAppJsonLd = {
         if (screenerWaterEl.value && plant.water !== screenerWaterEl.value) return false;
         if (screenerGoalEl.value && !plant.goals.includes(screenerGoalEl.value)) return false;
         if (screenerPartnerEl.value && plant.partner !== screenerPartnerEl.value) return false;
-        if (flag === "low-maintenance-natives" && !plant.goals.includes("low-maintenance-natives")) return false;
-        if (flag === "native-text" && nativeSignal(plant).strength === 0) return false;
-        if (flag === "specific-art" && !hasSpecificArt(plant)) return false;
-        if (flag === "relationships" && relationshipCount(plant) === 0) return false;
+        if (flag === "native" && !hasNativeCue(plant)) return false;
+        if (flag === "low-maintenance" && !hasLowMaintenanceGoal(plant)) return false;
+        if (flag === "pairings" && relationshipCount(plant) === 0) return false;
         return true;
       }
 
@@ -956,22 +967,22 @@ const webAppJsonLd = {
         if (key === "goals") return plant.goals.length;
         if (key === "harvest") return plant.harvest.toLowerCase();
         if (key === "traits") return plant.traits.join(", ").toLowerCase();
-        if (key === "native") return nativeSignal(plant).strength;
-        if (key === "relationships") return relationshipCount(plant);
-        if (key === "art") return hasSpecificArt(plant) ? 1 : 0;
+        if (key === "native") return hasNativeCue(plant) ? 1 : 0;
+        if (key === "lowMaintenance") return hasLowMaintenanceGoal(plant) ? 1 : 0;
+        if (key === "pairings") return relationshipCount(plant);
         if (key === "partner") return partnerName(plant.partner).toLowerCase();
         return plant.name.toLowerCase();
       }
 
       function defaultScreenerDirection(key) {
-        return ["art", "goals", "native", "relationships"].includes(key) ? "desc" : "asc";
+        return ["goals", "native", "lowMaintenance", "pairings"].includes(key) ? "desc" : "asc";
       }
 
       function screenerSortIndicator(key, direction) {
         if (["name", "type", "harvest", "traits", "partner", "sun", "soil"].includes(key)) {
-          return direction === "asc" ? "A-Z" : "Z-A";
+          return direction === "asc" ? "↑ A-Z" : "↓ Z-A";
         }
-        return direction === "asc" ? "Low" : "High";
+        return direction === "asc" ? "↑ Low" : "↓ High";
       }
 
       function sortScreenerPlants(entries) {
@@ -997,38 +1008,51 @@ const webAppJsonLd = {
       }
 
       function renderScreenerRow(plant) {
-        const rels = relationshipCount(plant);
-        const specificArt = hasSpecificArt(plant);
-        const native = nativeSignal(plant);
+        const pairings = relationshipCount(plant);
+        const native = hasNativeCue(plant);
+        const lowMaintenance = hasLowMaintenanceGoal(plant);
         return `
           <tr>
-            <td class="screener-name-cell">
+            <td class="screener-name-cell" data-label="Name">
               <a class="screener-plant-link" href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a>
               <span>${escapeHtml(plant.query ?? plant.id)}</span>
             </td>
-            <td>${escapeHtml(plant.type)}</td>
-            <td><strong>${escapeHtml(plant.zones[0])}-${escapeHtml(plant.zones[1])}</strong></td>
-            <td>${renderScreenerPills(plant.sun, sentenceCase)}</td>
-            <td>${renderScreenerPills(plant.soils, sentenceCase)}</td>
-            <td><span class="screener-pill water-${escapeHtml(plant.water)}">${escapeHtml(sentenceCase(plant.water))}</span></td>
-            <td>${renderScreenerPills(plant.goals, formatGoal, 2)}</td>
-            <td>${escapeHtml(plant.harvest)}</td>
-            <td>${renderScreenerPills(plant.traits, (value) => value, 2)}</td>
-            <td><span class="screener-pill ${native.strength > 0 ? "is-positive" : "is-muted"}">${escapeHtml(native.label)}</span></td>
-            <td><span class="screener-count">${rels}</span></td>
-            <td><span class="screener-pill ${specificArt ? "is-positive" : "is-muted"}">${specificArt ? "Specific" : "Generic"}</span></td>
-            <td>${escapeHtml(partnerName(plant.partner))}</td>
+            <td data-label="Type/form">${escapeHtml(plant.type)}</td>
+            <td data-label="Zone range"><strong>${escapeHtml(plant.zones[0])}-${escapeHtml(plant.zones[1])}</strong></td>
+            <td data-label="Sun">${renderScreenerPills(plant.sun, sentenceCase)}</td>
+            <td data-label="Soil">${renderScreenerPills(plant.soils, sentenceCase)}</td>
+            <td data-label="Water"><span class="screener-pill water-${escapeHtml(plant.water)}">${escapeHtml(sentenceCase(plant.water))}</span></td>
+            <td data-label="Goals">${renderScreenerPills(plant.goals, formatGoal, 2)}</td>
+            <td data-label="Harvest">${escapeHtml(plant.harvest)}</td>
+            <td data-label="Traits">${renderScreenerPills(plant.traits, (value) => value, 2)}</td>
+            <td data-label="Native cue"><span class="screener-pill ${native ? "is-positive" : "is-muted"}">${native ? "Yes" : "-"}</span></td>
+            <td data-label="Low-maint."><span class="screener-pill ${lowMaintenance ? "is-positive" : "is-muted"}">${lowMaintenance ? "Goal" : "-"}</span></td>
+            <td data-label="Pairings"><span class="screener-count" title="${pairings} plant ${pairings === 1 ? "pairing" : "pairings"}">${pairings}</span></td>
+            <td data-label="Source">${escapeHtml(partnerName(plant.partner))}</td>
+            <td class="screener-profile-cell" data-label="Profile"><a class="screener-profile-link" href="${plantPagePath(plant)}">View profile</a></td>
           </tr>
         `;
       }
 
       function renderScreener() {
         const filtered = sortScreenerPlants(plants.filter(plantMatchesScreener));
-        screenerBodyEl.innerHTML = filtered.map(renderScreenerRow).join("");
+        const visible = filtered.slice(0, screenerVisibleLimit);
+        screenerBodyEl.innerHTML = visible.map(renderScreenerRow).join("");
         screenerVisibleCountEl.textContent = String(filtered.length);
-        screenerSummaryEl.textContent = filtered.length === plants.length
-          ? `Showing all ${plants.length} plants.`
-          : `Showing ${filtered.length} of ${plants.length} plants.`;
+        if (filtered.length === 0) {
+          screenerSummaryEl.textContent = "No plants match those filters.";
+        } else if (filtered.length === plants.length && visible.length === filtered.length) {
+          screenerSummaryEl.textContent = `Showing all ${plants.length} plants.`;
+        } else {
+          screenerSummaryEl.textContent = `Showing ${visible.length} of ${filtered.length} matching plants.`;
+        }
+        if (filtered.length > visible.length) {
+          const remaining = filtered.length - visible.length;
+          screenerMoreEl.hidden = false;
+          screenerMoreEl.textContent = `Show more (${remaining} left)`;
+        } else {
+          screenerMoreEl.hidden = true;
+        }
         screenerEmptyEl.hidden = filtered.length > 0;
         updateScreenerSortUI();
       }
@@ -1038,6 +1062,43 @@ const webAppJsonLd = {
         option.value = value;
         option.textContent = label;
         select.append(option);
+      }
+
+      function applyInitialScreenerState() {
+        Object.entries(screenerParamMap).forEach(([key, control]) => {
+          const value = initialParams.get(key);
+          if (value !== null) control.value = value;
+        });
+        const requestedSort = initialParams.get("ssort");
+        const requestedDirection = initialParams.get("sdir");
+        const sortKeys = new Set(screenerSortButtons.map((button) => button.dataset.screenerSort));
+        if (requestedSort && sortKeys.has(requestedSort)) {
+          screenerSort = {
+            key: requestedSort,
+            direction: requestedDirection === "desc" ? "desc" : "asc"
+          };
+        }
+      }
+
+      function writeScreenerUrl() {
+        const params = new URLSearchParams(window.location.search);
+        screenerParamKeys.forEach((key) => params.delete(key));
+        params.delete("q");
+        Object.entries(screenerParamMap).forEach(([key, control]) => {
+          if (control.value) params.set(key, control.value);
+        });
+        if (screenerSort.key !== "name" || screenerSort.direction !== "asc") {
+          params.set("ssort", screenerSort.key);
+          params.set("sdir", screenerSort.direction);
+        }
+        const query = params.toString();
+        history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}#screener`);
+      }
+
+      function handleScreenerFilterChange() {
+        screenerVisibleLimit = screenerPageSize;
+        writeScreenerUrl();
+        renderScreener();
       }
 
       function initializeScreener() {
@@ -1052,15 +1113,22 @@ const webAppJsonLd = {
           .sort((a, b) => partnerName(a[0]).localeCompare(partnerName(b[0])))
           .forEach(([value]) => addSelectOption(screenerPartnerEl, value, partnerName(value)));
 
-        screenerArtCountEl.textContent = String(plants.filter(hasSpecificArt).length);
+        applyInitialScreenerState();
+        screenerTypeCountEl.textContent = String(new Set(plants.map((plant) => plant.type)).size);
         screenerRelationCountEl.textContent = String(plants.filter((plant) => relationshipCount(plant) > 0).length);
-        screenerFilterEls.forEach((control) => control.addEventListener("input", renderScreener));
+        screenerFilterEls.forEach((control) => control.addEventListener("input", handleScreenerFilterChange));
+        screenerMoreEl.addEventListener("click", () => {
+          screenerVisibleLimit += screenerPageSize;
+          renderScreener();
+        });
         screenerResetEl.addEventListener("click", () => {
           screenerFilterEls.forEach((control) => {
             control.value = "";
           });
           screenerSort = { key: "name", direction: "asc" };
+          screenerVisibleLimit = screenerPageSize;
           if (screenerTableWrapEl) screenerTableWrapEl.scrollLeft = 0;
+          writeScreenerUrl();
           renderScreener();
         });
         screenerSortButtons.forEach((button) => {
@@ -1072,6 +1140,7 @@ const webAppJsonLd = {
                 ? (screenerSort.direction === "asc" ? "desc" : "asc")
                 : defaultScreenerDirection(key)
             };
+            writeScreenerUrl();
             renderScreener();
           });
         });
