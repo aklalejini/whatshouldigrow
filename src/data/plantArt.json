@@ -172,6 +172,7 @@
     "image": "pepper.webp",
     "source": "Pepper.png",
     "match": ["pepper"],
+    "exclude": ["peppermint"],
     "position": "52% 52%",
     "plateBg": "linear-gradient(145deg, #d6dfc5, #f7efe0)"
   },
@@ -343,6 +344,23 @@
     "match": ["holly", "yaupon"],
     "position": "52% 52%",
     "plateBg": "linear-gradient(145deg, #d1dcc8, #f7efe0)"
+  },
+  {
+    "id": "pine-conifer",
+    "image": "pine.webp",
+    "source": "Pine.png",
+    "match": ["pine", "cedar", "arborvitae", "cryptomeria", "thuja", "yew"],
+    "exclude": ["pineapple"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d2dbc5, #f7efe0)"
+  },
+  {
+    "id": "bamboo",
+    "image": "bamboo.webp",
+    "source": "Bamboo.png",
+    "match": ["bamboo", "fargesia"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d8dfbd, #f7efe0)"
   },
   {
     "id": "generic-flower-herb",
