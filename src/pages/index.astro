@@ -118,6 +118,16 @@ const webAppJsonLd = {
           type="button"
           role="tab"
           aria-selected="false"
+          aria-controls="screener-view"
+          data-view="screener"
+        >
+          Screener
+        </button>
+        <button
+          class="site-tab"
+          type="button"
+          role="tab"
+          aria-selected="false"
           aria-controls="blog-view"
           data-view="blog"
         >
@@ -329,6 +339,142 @@ const webAppJsonLd = {
       </div>
 
       <section
+        id="screener-view"
+        class="view-panel screener-view"
+        role="tabpanel"
+        data-view-panel="screener"
+        aria-labelledby="screener-title"
+        hidden
+      >
+        <div class="screener-shell">
+          <header class="screener-header">
+            <div>
+              <p class="eyebrow">Plant research table</p>
+              <h1 id="screener-title">Plant Screener</h1>
+              <p>
+                Screen the full Plant by ZIP database like a compact market table:
+                filter by growing needs, sort by useful signals, and jump into any plant profile.
+              </p>
+            </div>
+            <div class="screener-metrics" aria-label="Screener database summary">
+              <div>
+                <strong id="screener-visible-count">{plantCount}</strong>
+                <span>visible</span>
+              </div>
+              <div>
+                <strong id="screener-art-count">0</strong>
+                <span>specific art</span>
+              </div>
+              <div>
+                <strong id="screener-relation-count">0</strong>
+                <span>with relationships</span>
+              </div>
+            </div>
+          </header>
+
+          <section class="screener-controls" aria-label="Plant screener filters">
+            <div class="screener-search">
+              <label for="screener-search">Search</label>
+              <input id="screener-search" type="search" placeholder="Name, trait, harvest, source" />
+            </div>
+            <label class="screener-field" for="screener-type">
+              <span>Type/form</span>
+              <select id="screener-type">
+                <option value="">Any type/form</option>
+              </select>
+            </label>
+            <label class="screener-field" for="screener-zone">
+              <span>Zone fit</span>
+              <select id="screener-zone">
+                <option value="">Any zone</option>
+              </select>
+            </label>
+            <label class="screener-field" for="screener-sun">
+              <span>Sun</span>
+              <select id="screener-sun">
+                <option value="">Any sun</option>
+                <option value="full">Full</option>
+                <option value="partial">Partial</option>
+                <option value="shade">Shade</option>
+              </select>
+            </label>
+            <label class="screener-field" for="screener-soil">
+              <span>Soil</span>
+              <select id="screener-soil">
+                <option value="">Any soil</option>
+                <option value="clay">Clay</option>
+                <option value="loam">Loam</option>
+                <option value="sandy">Sandy</option>
+              </select>
+            </label>
+            <label class="screener-field" for="screener-water">
+              <span>Water</span>
+              <select id="screener-water">
+                <option value="">Any water</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </label>
+            <label class="screener-field" for="screener-goal">
+              <span>Goal</span>
+              <select id="screener-goal">
+                <option value="">Any goal</option>
+              </select>
+            </label>
+            <label class="screener-field" for="screener-flag">
+              <span>Signal</span>
+              <select id="screener-flag">
+                <option value="">Any signal</option>
+                <option value="low-maintenance-natives">Low-maintenance native goal</option>
+                <option value="native-text">Native mentioned</option>
+                <option value="specific-art">Specific art</option>
+                <option value="relationships">Has relationships</option>
+              </select>
+            </label>
+            <label class="screener-field" for="screener-partner">
+              <span>Source</span>
+              <select id="screener-partner">
+                <option value="">Any source</option>
+              </select>
+            </label>
+          </section>
+
+          <div class="screener-toolbar">
+            <p id="screener-summary">Showing all plants.</p>
+            <div>
+              <a href="/exports/plants.csv">CSV export</a>
+              <button id="screener-reset" type="button">Reset filters</button>
+            </div>
+          </div>
+
+          <div class="screener-table-wrap" role="region" aria-label="Plant screener results" tabindex="0">
+            <table class="screener-table">
+              <thead>
+                <tr>
+                  <th scope="col" aria-sort="ascending"><button type="button" data-screener-sort="name">Name <span class="sort-indicator">A-Z</span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="type">Type/form <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="zone">Zone range <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="sun">Sun <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="soil">Soil <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="water">Water <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="goals">Goals <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="harvest">Harvest/season <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="traits">Traits <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="native">Native/low-maint. <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="relationships">Rels. <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="art">Art <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="partner">Source <span class="sort-indicator"></span></button></th>
+                </tr>
+              </thead>
+              <tbody id="screener-body"></tbody>
+            </table>
+          </div>
+          <p id="screener-empty" class="screener-empty" hidden>No plants match those filters.</p>
+        </div>
+      </section>
+
+      <section
         id="blog-view"
         class="view-panel blog-view"
         role="tabpanel"
@@ -399,9 +545,39 @@ const webAppJsonLd = {
       const articleSearchEl = document.getElementById("article-search");
       const blogEmptyEl = document.getElementById("blog-empty");
       const articleCards = Array.from(document.querySelectorAll("[data-article-slug]"));
+      const screenerSearchEl = document.getElementById("screener-search");
+      const screenerTypeEl = document.getElementById("screener-type");
+      const screenerZoneEl = document.getElementById("screener-zone");
+      const screenerSunEl = document.getElementById("screener-sun");
+      const screenerSoilEl = document.getElementById("screener-soil");
+      const screenerWaterEl = document.getElementById("screener-water");
+      const screenerGoalEl = document.getElementById("screener-goal");
+      const screenerFlagEl = document.getElementById("screener-flag");
+      const screenerPartnerEl = document.getElementById("screener-partner");
+      const screenerResetEl = document.getElementById("screener-reset");
+      const screenerBodyEl = document.getElementById("screener-body");
+      const screenerTableWrapEl = document.querySelector(".screener-table-wrap");
+      const screenerSummaryEl = document.getElementById("screener-summary");
+      const screenerEmptyEl = document.getElementById("screener-empty");
+      const screenerVisibleCountEl = document.getElementById("screener-visible-count");
+      const screenerArtCountEl = document.getElementById("screener-art-count");
+      const screenerRelationCountEl = document.getElementById("screener-relation-count");
+      const screenerSortButtons = Array.from(document.querySelectorAll("[data-screener-sort]"));
+      const screenerFilterEls = [
+        screenerSearchEl,
+        screenerTypeEl,
+        screenerZoneEl,
+        screenerSunEl,
+        screenerSoilEl,
+        screenerWaterEl,
+        screenerGoalEl,
+        screenerFlagEl,
+        screenerPartnerEl
+      ];
       let currentRanked = [];
       let currentInputs = null;
       let visibleCount = 12;
+      let screenerSort = { key: "name", direction: "asc" };
       const zoneCache = new Map();
       let zoneLookupTimer = null;
 
@@ -454,7 +630,8 @@ const webAppJsonLd = {
         button.addEventListener("click", () => {
           const view = button.dataset.view;
           setActiveView(view);
-          history.replaceState(null, "", view === "blog" ? "#blog" : window.location.pathname);
+          const hash = view === "blog" ? "#blog" : view === "screener" ? "#screener" : window.location.pathname;
+          history.replaceState(null, "", hash);
         });
       });
 
@@ -465,8 +642,10 @@ const webAppJsonLd = {
         articleSearchEl.value = initialBlogQuery;
         filterArticles();
       }
-      if (window.location.hash === "#blog" || window.location.hash === "#blog-view" || initialBlogQuery) {
+      if (initialBlogQuery || window.location.hash === "#blog" || window.location.hash === "#blog-view") {
         setActiveView("blog");
+      } else if (window.location.hash === "#screener" || window.location.hash === "#screener-view") {
+        setActiveView("screener");
       }
 
       function zoneToNumber(zone) {
@@ -666,6 +845,15 @@ const webAppJsonLd = {
           ?? null;
       }
 
+      function specificArtEntry(plant) {
+        const identity = plantIdentity(plant);
+        return plantArtEntries.find((entry) => (entry.match ?? []).length > 0 && matchesArtEntry(identity, entry)) ?? null;
+      }
+
+      function hasSpecificArt(plant) {
+        return Boolean(specificArtEntry(plant)?.image);
+      }
+
       function plantPhotoStyle(entry) {
         if (!entry?.image) return "";
         const styles = [
@@ -675,6 +863,222 @@ const webAppJsonLd = {
         ].filter(Boolean);
         return ` style="${styles.join("; ")}"`;
       }
+
+      const relationshipCountCache = new Map();
+
+      function relationshipCount(plant) {
+        if (!relationshipCountCache.has(plant.id)) {
+          relationshipCountCache.set(plant.id, relationshipEntriesForPlant(plant).length);
+        }
+        return relationshipCountCache.get(plant.id);
+      }
+
+      function partnerName(value) {
+        return partners[value]?.name ?? sentenceCase(String(value ?? "").replaceAll("-", " "));
+      }
+
+      function nativeSignal(plant) {
+        const text = [plant.name, plant.type, plant.notes, plant.query, ...(plant.traits ?? [])]
+          .join(" ")
+          .toLowerCase();
+        if (plant.goals.includes("low-maintenance-natives")) return { label: "Low-maint.", strength: 2 };
+        if (/\bnative\b/.test(text) && !/\bnon[-\s]?native\b/.test(text)) return { label: "Native note", strength: 1 };
+        return { label: "-", strength: 0 };
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function renderScreenerPills(values, formatter = (value) => value, limit = 3) {
+        const visible = values.slice(0, limit);
+        const hiddenCount = values.length - visible.length;
+        return `
+          <span class="screener-pill-row">
+            ${visible.map((value) => `<span class="screener-pill">${escapeHtml(formatter(value))}</span>`).join("")}
+            ${hiddenCount > 0 ? `<span class="screener-pill is-muted">+${hiddenCount}</span>` : ""}
+          </span>
+        `;
+      }
+
+      function screenerSearchText(plant) {
+        return [
+          plant.name,
+          plant.type,
+          plant.zones.join(" "),
+          plant.sun.join(" "),
+          plant.soils.join(" "),
+          plant.water,
+          plant.harvest,
+          plant.notes,
+          plant.query,
+          partnerName(plant.partner),
+          ...plant.goals.map(formatGoal),
+          ...plant.traits
+        ].join(" ").toLowerCase();
+      }
+
+      function plantMatchesScreener(plant) {
+        const query = screenerSearchEl.value.trim().toLowerCase();
+        const zone = screenerZoneEl.value;
+        const flag = screenerFlagEl.value;
+
+        if (query && !screenerSearchText(plant).includes(query)) return false;
+        if (screenerTypeEl.value && plant.type !== screenerTypeEl.value) return false;
+        if (zone) {
+          const zoneValue = zoneToNumber(zone);
+          if (zoneValue < zoneToNumber(plant.zones[0]) || zoneValue > zoneToNumber(plant.zones[1])) return false;
+        }
+        if (screenerSunEl.value && !plant.sun.includes(screenerSunEl.value)) return false;
+        if (screenerSoilEl.value && !plant.soils.includes(screenerSoilEl.value)) return false;
+        if (screenerWaterEl.value && plant.water !== screenerWaterEl.value) return false;
+        if (screenerGoalEl.value && !plant.goals.includes(screenerGoalEl.value)) return false;
+        if (screenerPartnerEl.value && plant.partner !== screenerPartnerEl.value) return false;
+        if (flag === "low-maintenance-natives" && !plant.goals.includes("low-maintenance-natives")) return false;
+        if (flag === "native-text" && nativeSignal(plant).strength === 0) return false;
+        if (flag === "specific-art" && !hasSpecificArt(plant)) return false;
+        if (flag === "relationships" && relationshipCount(plant) === 0) return false;
+        return true;
+      }
+
+      function screenerSortValue(plant, key) {
+        if (key === "name") return plant.name.toLowerCase();
+        if (key === "type") return plant.type.toLowerCase();
+        if (key === "zone") return zoneToNumber(plant.zones[0]);
+        if (key === "sun") return plant.sun.join(", ");
+        if (key === "soil") return plant.soils.join(", ");
+        if (key === "water") return waterRank[plant.water] ?? 0;
+        if (key === "goals") return plant.goals.length;
+        if (key === "harvest") return plant.harvest.toLowerCase();
+        if (key === "traits") return plant.traits.join(", ").toLowerCase();
+        if (key === "native") return nativeSignal(plant).strength;
+        if (key === "relationships") return relationshipCount(plant);
+        if (key === "art") return hasSpecificArt(plant) ? 1 : 0;
+        if (key === "partner") return partnerName(plant.partner).toLowerCase();
+        return plant.name.toLowerCase();
+      }
+
+      function defaultScreenerDirection(key) {
+        return ["art", "goals", "native", "relationships"].includes(key) ? "desc" : "asc";
+      }
+
+      function screenerSortIndicator(key, direction) {
+        if (["name", "type", "harvest", "traits", "partner", "sun", "soil"].includes(key)) {
+          return direction === "asc" ? "A-Z" : "Z-A";
+        }
+        return direction === "asc" ? "Low" : "High";
+      }
+
+      function sortScreenerPlants(entries) {
+        return entries.sort((a, b) => {
+          const aValue = screenerSortValue(a, screenerSort.key);
+          const bValue = screenerSortValue(b, screenerSort.key);
+          const direction = screenerSort.direction === "asc" ? 1 : -1;
+          if (typeof aValue === "number" && typeof bValue === "number") {
+            return (aValue - bValue) * direction || a.name.localeCompare(b.name);
+          }
+          return String(aValue).localeCompare(String(bValue)) * direction || a.name.localeCompare(b.name);
+        });
+      }
+
+      function updateScreenerSortUI() {
+        screenerSortButtons.forEach((button) => {
+          const isActive = button.dataset.screenerSort === screenerSort.key;
+          const indicator = button.querySelector(".sort-indicator");
+          const header = button.closest("th");
+          if (indicator) indicator.textContent = isActive ? screenerSortIndicator(screenerSort.key, screenerSort.direction) : "";
+          if (header) header.setAttribute("aria-sort", isActive ? (screenerSort.direction === "asc" ? "ascending" : "descending") : "none");
+        });
+      }
+
+      function renderScreenerRow(plant) {
+        const rels = relationshipCount(plant);
+        const specificArt = hasSpecificArt(plant);
+        const native = nativeSignal(plant);
+        return `
+          <tr>
+            <td class="screener-name-cell">
+              <a class="screener-plant-link" href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a>
+              <span>${escapeHtml(plant.query ?? plant.id)}</span>
+            </td>
+            <td>${escapeHtml(plant.type)}</td>
+            <td><strong>${escapeHtml(plant.zones[0])}-${escapeHtml(plant.zones[1])}</strong></td>
+            <td>${renderScreenerPills(plant.sun, sentenceCase)}</td>
+            <td>${renderScreenerPills(plant.soils, sentenceCase)}</td>
+            <td><span class="screener-pill water-${escapeHtml(plant.water)}">${escapeHtml(sentenceCase(plant.water))}</span></td>
+            <td>${renderScreenerPills(plant.goals, formatGoal, 2)}</td>
+            <td>${escapeHtml(plant.harvest)}</td>
+            <td>${renderScreenerPills(plant.traits, (value) => value, 2)}</td>
+            <td><span class="screener-pill ${native.strength > 0 ? "is-positive" : "is-muted"}">${escapeHtml(native.label)}</span></td>
+            <td><span class="screener-count">${rels}</span></td>
+            <td><span class="screener-pill ${specificArt ? "is-positive" : "is-muted"}">${specificArt ? "Specific" : "Generic"}</span></td>
+            <td>${escapeHtml(partnerName(plant.partner))}</td>
+          </tr>
+        `;
+      }
+
+      function renderScreener() {
+        const filtered = sortScreenerPlants(plants.filter(plantMatchesScreener));
+        screenerBodyEl.innerHTML = filtered.map(renderScreenerRow).join("");
+        screenerVisibleCountEl.textContent = String(filtered.length);
+        screenerSummaryEl.textContent = filtered.length === plants.length
+          ? `Showing all ${plants.length} plants.`
+          : `Showing ${filtered.length} of ${plants.length} plants.`;
+        screenerEmptyEl.hidden = filtered.length > 0;
+        updateScreenerSortUI();
+      }
+
+      function addSelectOption(select, value, label) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = label;
+        select.append(option);
+      }
+
+      function initializeScreener() {
+        [...new Set(plants.map((plant) => plant.type))]
+          .sort((a, b) => a.localeCompare(b))
+          .forEach((type) => addSelectOption(screenerTypeEl, type, sentenceCase(type)));
+        Object.entries(goalLabels).forEach(([value, label]) => addSelectOption(screenerGoalEl, value, sentenceCase(label)));
+        for (let zone = 2; zone <= 11; zone += 1) {
+          ["a", "b"].forEach((suffix) => addSelectOption(screenerZoneEl, `${zone}${suffix}`, `Zone ${zone}${suffix}`));
+        }
+        Object.entries(partners)
+          .sort((a, b) => partnerName(a[0]).localeCompare(partnerName(b[0])))
+          .forEach(([value]) => addSelectOption(screenerPartnerEl, value, partnerName(value)));
+
+        screenerArtCountEl.textContent = String(plants.filter(hasSpecificArt).length);
+        screenerRelationCountEl.textContent = String(plants.filter((plant) => relationshipCount(plant) > 0).length);
+        screenerFilterEls.forEach((control) => control.addEventListener("input", renderScreener));
+        screenerResetEl.addEventListener("click", () => {
+          screenerFilterEls.forEach((control) => {
+            control.value = "";
+          });
+          screenerSort = { key: "name", direction: "asc" };
+          if (screenerTableWrapEl) screenerTableWrapEl.scrollLeft = 0;
+          renderScreener();
+        });
+        screenerSortButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const key = button.dataset.screenerSort;
+            screenerSort = {
+              key,
+              direction: screenerSort.key === key
+                ? (screenerSort.direction === "asc" ? "desc" : "asc")
+                : defaultScreenerDirection(key)
+            };
+            renderScreener();
+          });
+        });
+        renderScreener();
+      }
+
+      initializeScreener();
 
       function scoreBreakdown(plant, inputs) {
         const userZone = zoneToNumber(inputs.zone);
