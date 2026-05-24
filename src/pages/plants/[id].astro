@@ -1,5 +1,6 @@
 ---
 import plants from "../../data/plants.json";
+import partners from "../../data/affiliatePartners.json";
 import plantArtEntries from "../../data/plantArt.json";
 import plantRelationships from "../../data/plantRelationships.json";
 import {
@@ -10,8 +11,10 @@ import {
   siteUrl
 } from "../../lib/site";
 import {
+  formatGoal,
   formatGoalList,
   formatList,
+  goalLabels,
   plantArtEntry,
   plantKind,
   plantPhotoStyle,
@@ -37,8 +40,96 @@ const hasImage = Boolean(artEntry?.image);
 const photoStyle = plantPhotoStyle(artEntry);
 const canonicalUrl = siteUrl(plantUrl(plant));
 const socialImageUrl = hasImage ? siteUrl(`/plant-art/${artEntry.image}`) : siteUrl(DEFAULT_SOCIAL_IMAGE);
-const description = `${plant.name} growing profile for ${SITE_NAME}: zones ${plant.zones[0]}-${plant.zones[1]}, ${formatList(plant.sun)} light, ${formatList(plant.soils)} soil, ${plant.water} water, and practical plant relationships.`;
-const relationshipEntries = relationshipEntriesForPlant(plant, plantRelationships, plants).slice(0, 5);
+const description = `${plant.name} growing profile for ${SITE_NAME}: zones ${plant.zones[0]}-${plant.zones[1]}, ${formatList(plant.sun)} light, ${formatList(plant.soils)} soil, ${plant.water} water, and practical plant pairings.`;
+const allRelationshipEntries = relationshipEntriesForPlant(plant, plantRelationships, plants);
+const relationshipEntries = allRelationshipEntries.slice(0, 5);
+const relatedPlantCount = new Set(allRelationshipEntries.flatMap(({ relatedPlants }) => relatedPlants.map((relatedPlant) => relatedPlant.id))).size;
+const partner = partners[plant.partner] ?? null;
+const partnerName = partner?.name ?? sentenceCase(String(plant.partner ?? "source").replaceAll("-", " "));
+const totalGoalCount = Object.keys(goalLabels).length;
+const hasEdibleGoal = plant.goals.includes("fruit") || plant.goals.includes("vegetables-herbs");
+const hasNativeGoal = plant.goals.includes("low-maintenance-natives")
+  || plant.traits.some((trait) => /\bnative\b/i.test(trait))
+  || /\bnative\b/i.test(plant.notes);
+
+function partnerSearchHref(source, query) {
+  if (!source?.searchUrl || !query) return "";
+  const url = source.searchUrl.replace("{query}", encodeURIComponent(query));
+  const affiliateParam = source.affiliateParam?.replace(/^[?&]/, "");
+  if (!affiliateParam) return url;
+  return `${url}${url.includes("?") ? "&" : "?"}${affiliateParam}`;
+}
+
+function zoneToNumber(zone) {
+  const [, number = "0", suffix = ""] = String(zone).match(/^(\d+)([ab])?$/) ?? [];
+  return Number(number) + (suffix === "b" ? 0.5 : 0);
+}
+
+function rangesOverlap(first, second) {
+  return zoneToNumber(first.zones[0]) <= zoneToNumber(second.zones[1])
+    && zoneToNumber(second.zones[0]) <= zoneToNumber(first.zones[1]);
+}
+
+const tokenStopWords = new Set(["plant", "tree", "shrub", "bush", "fruit", "hardy", "common", "dwarf", "american"]);
+
+function comparisonTokens(entry) {
+  return new Set(`${entry.name} ${entry.query ?? ""}`
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .split(" ")
+    .filter((token) => token.length > 3 && !tokenStopWords.has(token)));
+}
+
+const plantTokens = comparisonTokens(plant);
+const comparablePlants = plants
+  .filter((candidate) => candidate.id !== plant.id)
+  .map((candidate) => {
+    const candidateTokens = comparisonTokens(candidate);
+    const sharedNameTokens = Array.from(plantTokens).filter((token) => candidateTokens.has(token)).length;
+    const sharedGoals = candidate.goals.filter((goal) => plant.goals.includes(goal)).length;
+    const sharedSun = candidate.sun.filter((sun) => plant.sun.includes(sun)).length;
+    const sharedSoils = candidate.soils.filter((soil) => plant.soils.includes(soil)).length;
+    const score = (candidate.type === plant.type ? 4 : 0)
+      + sharedNameTokens * 4
+      + sharedGoals * 1.8
+      + sharedSun
+      + sharedSoils
+      + (candidate.water === plant.water ? 1.2 : 0)
+      + (rangesOverlap(plant, candidate) ? 1 : 0);
+    return { candidate, score, sharedGoals };
+  })
+  .filter(({ score }) => score > 3)
+  .sort((a, b) => b.score - a.score || a.candidate.name.localeCompare(b.candidate.name))
+  .slice(0, 4);
+
+function planningNotesForPlant(entry) {
+  const notes = [
+    `Match the site first: ${formatList(entry.sun)} light, ${formatList(entry.soils)} soil, and ${entry.water} water.`
+  ];
+  if (hasEdibleGoal) {
+    notes.push(`For harvest planning, treat "${entry.harvest}" as a timing cue, not a yield guarantee.`);
+  }
+  if (/another|pair|pollinator|compatible|self-fertile|nearby/i.test(`${entry.notes} ${entry.traits.join(" ")}`)) {
+    notes.push("Plan pollination or companion context before planting; nearby varieties can matter for fruit set.");
+  }
+  if (entry.goals.includes("privacy-screening")) {
+    notes.push("For screens and hedges, confirm mature size and spacing with the nursery label or local extension guidance.");
+  }
+  if (hasNativeGoal) {
+    notes.push("Native and low-maintenance cues are starting points; confirm regional nativity and local invasive guidance.");
+  }
+  notes.push("Local drainage, pests, chill hours, wildlife pressure, and microclimates can change the result.");
+  return Array.from(new Set(notes)).slice(0, 5);
+}
+
+const partnerSearchUrl = partnerSearchHref(partner, plant.query);
+const planningNotes = planningNotesForPlant(plant);
+const heroFacts = [
+  { label: "Zones", value: `${plant.zones[0]}-${plant.zones[1]}` },
+  { label: "Goals", value: `${plant.goals.length}/${totalGoalCount}` },
+  { label: "Pairings", value: String(relatedPlantCount) },
+  { label: "Source", value: partnerName }
+];
 const plantJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -92,6 +183,7 @@ const plantJsonLd = {
     <main class="app-shell">
       <nav class="site-tabs" aria-label="Primary sections">
         <a class="site-tab is-active" href="/">Plant matcher</a>
+        <a class="site-tab" href="/#screener">Screener</a>
         <a class="site-tab" href="/blog/">Blog</a>
       </nav>
 
@@ -110,6 +202,14 @@ const plantJsonLd = {
             <p class="eyebrow">{plant.type}</p>
             <h1>{plant.name}</h1>
             <p class="plant-page-dek">{plant.notes}</p>
+            <div class="plant-page-key-stats" aria-label="Plant research snapshot">
+              {heroFacts.map((fact) => (
+                <div>
+                  <span>{fact.label}</span>
+                  <strong>{fact.value}</strong>
+                </div>
+              ))}
+            </div>
             <div class="plant-page-tags" aria-label="Plant traits">
               {plant.traits.map((trait) => <span>{trait}</span>)}
             </div>
@@ -121,22 +221,91 @@ const plantJsonLd = {
             <h2>Growing Profile</h2>
             <dl class="plant-page-stats">
               <div><dt>Hardiness</dt><dd>Zones {plant.zones[0]}-{plant.zones[1]}</dd></div>
-              <div><dt>Sun</dt><dd>{formatList(plant.sun)}</dd></div>
-              <div><dt>Soil</dt><dd>{formatList(plant.soils)}</dd></div>
-              <div><dt>Water</dt><dd>{plant.water}</dd></div>
-              <div><dt>Goals</dt><dd>{formatGoalList(plant.goals)}</dd></div>
+              <div>
+                <dt>Sun</dt>
+                <dd class="plant-page-chip-list">{plant.sun.map((value) => <span>{sentenceCase(value)}</span>)}</dd>
+              </div>
+              <div>
+                <dt>Soil</dt>
+                <dd class="plant-page-chip-list">{plant.soils.map((value) => <span>{sentenceCase(value)}</span>)}</dd>
+              </div>
+              <div>
+                <dt>Water</dt>
+                <dd class="plant-page-chip-list"><span>{sentenceCase(plant.water)}</span></dd>
+              </div>
+              <div>
+                <dt>Goals</dt>
+                <dd class="plant-page-chip-list">{plant.goals.map((goal) => <span>{formatGoal(goal)}</span>)}</dd>
+              </div>
             </dl>
           </section>
 
           <section class="detail-panel plant-page-panel">
             <h2>Harvest & Use</h2>
-            <p>{plant.harvest}</p>
-            <p>{plant.query ? `Useful search phrase: ${plant.query}.` : "Nursery links are coming soon."}</p>
+            <dl class="plant-page-stats compact">
+              <div><dt>Window</dt><dd>{plant.harvest}</dd></div>
+              <div><dt>Best for</dt><dd>{formatGoalList(plant.goals.slice(0, 3))}</dd></div>
+            </dl>
+            <p>
+              Use this profile to compare {plant.type}s by site fit, harvest timing,
+              trait value, and partner/source availability.
+            </p>
+            <div class="plant-page-source-action">
+              <span>Source listing: {partnerName}</span>
+              {partnerSearchUrl ? (
+                <a class="plant-page-action" href={partnerSearchUrl} target="_blank" rel="noopener noreferrer">
+                  Search {partnerName}
+                </a>
+              ) : (
+                <span class="nursery-placeholder">Source search coming soon</span>
+              )}
+            </div>
           </section>
+
+          <section class="detail-panel plant-page-panel">
+            <h2>Planting Strategy</h2>
+            <ul class="plant-page-list">
+              <li>Start with one plant when testing fit in a new bed or container.</li>
+              {hasEdibleGoal && <li>Plant more than one when harvest volume or pollination is the main goal.</li>}
+              {plant.goals.includes("privacy-screening") && <li>For screening, repeat compatible plants and confirm mature spacing before buying.</li>}
+              {relatedPlantCount > 0 && <li>Use the pairing map below to choose nearby companions or compatible varieties.</li>}
+            </ul>
+          </section>
+
+          <section class="detail-panel plant-page-panel">
+            <h2>Risk Factors</h2>
+            <ul class="plant-page-list">
+              {planningNotes.map((note) => <li>{note}</li>)}
+            </ul>
+          </section>
+
+          {comparablePlants.length > 0 && (
+            <section class="detail-panel plant-page-comparables">
+              <h2>Comparable Plants</h2>
+              <div class="plant-comparison-table" role="table" aria-label={`Comparable plants for ${plant.name}`}>
+                <div class="plant-comparison-row is-head" role="row">
+                  <span role="columnheader">Plant</span>
+                  <span role="columnheader">Type</span>
+                  <span role="columnheader">Zones</span>
+                  <span role="columnheader">Water</span>
+                  <span role="columnheader">Shared goals</span>
+                </div>
+                {comparablePlants.map(({ candidate, sharedGoals }) => (
+                  <a class="plant-comparison-row" href={plantUrl(candidate)} role="row">
+                    <span role="cell"><strong>{candidate.name}</strong></span>
+                    <span role="cell" data-label="Type">{candidate.type}</span>
+                    <span role="cell" data-label="Zones">{candidate.zones[0]}-{candidate.zones[1]}</span>
+                    <span role="cell" data-label="Water">{sentenceCase(candidate.water)}</span>
+                    <span role="cell" data-label="Shared goals">{sharedGoals}/{totalGoalCount}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
 
           {relationshipEntries.length > 0 && (
             <section class="detail-panel relationship-panel plant-page-relationships">
-              <h2>Plant Relationships</h2>
+              <h2>Companion Plants & Pairings</h2>
               <div class="relationship-list">
                 {relationshipEntries.map(({ relationship, relatedPlants }) => {
                   const visiblePlants = relatedPlants.slice(0, 8);
@@ -160,6 +329,19 @@ const plantJsonLd = {
               </div>
             </section>
           )}
+
+          <section class="detail-panel plant-page-methodology">
+            <h2>Sources & Methodology</h2>
+            <p>
+              This profile is generated from the Plant by ZIP database: hardiness range,
+              light, soil, water, harvest timing, traits, source listing, and relationship
+              rules. Pairings are term-based and reviewed to avoid obvious false positives.
+            </p>
+            <p>
+              Source listing: {partnerName}. Nursery search links are not paid placements
+              unless explicitly marked. Last reviewed: May 2026.
+            </p>
+          </section>
         </div>
       </article>
     </main>

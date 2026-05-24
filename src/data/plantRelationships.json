@@ -65,6 +65,13 @@
     "note": "These crops all prefer acidic soil, making them natural candidates for the same managed acid bed or container mix."
   },
   {
+    "id": "elderberry-pollination-hedge",
+    "type": "companion",
+    "strength": "high",
+    "plantMatch": ["elderberry"],
+    "note": "Elderberries generally fruit better when more than one compatible cultivar flowers nearby, and they fit naturally as a moist-site edible hedge."
+  },
+  {
     "id": "brassica-beneficial-insect-strip",
     "type": "companion",
     "strength": "medium",

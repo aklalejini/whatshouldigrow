@@ -2132,6 +2132,40 @@ fieldset:nth-of-type(2) .segmented {
   line-height: 1.65;
 }
 
+.plant-page-key-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
+.plant-page-key-stats div {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #dfe7d8;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.plant-page-key-stats span {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--terracotta);
+  font-size: 0.66rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.plant-page-key-stats strong {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--leaf-dark);
+  font-size: 0.86rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
 .plant-page-tags {
   display: flex;
   flex-wrap: wrap;
@@ -2161,7 +2195,9 @@ fieldset:nth-of-type(2) .segmented {
 }
 
 .plant-page-panel h2,
-.plant-page-relationships h2 {
+.plant-page-relationships h2,
+.plant-page-comparables h2,
+.plant-page-methodology h2 {
   margin: 0 0 12px;
   color: #24352a;
   font-size: 0.76rem;
@@ -2184,6 +2220,10 @@ fieldset:nth-of-type(2) .segmented {
   display: grid;
   gap: 10px;
   margin: 0;
+}
+
+.plant-page-stats.compact {
+  margin-bottom: 12px;
 }
 
 .plant-page-stats div {
@@ -2212,8 +2252,124 @@ fieldset:nth-of-type(2) .segmented {
   font-weight: 700;
 }
 
-.plant-page-relationships {
+.plant-page-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.plant-page-chip-list span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 4px 9px;
+  border: 1px solid #dfe7d8;
+  border-radius: 999px;
+  color: #4d5c50;
+  background: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.plant-page-source-action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.plant-page-source-action > span:not(.nursery-placeholder) {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.plant-page-list {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plant-page-list li {
+  position: relative;
+  padding-left: 16px;
+  color: #3f4d43;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.plant-page-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.7em;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--terracotta);
+}
+
+.plant-page-relationships,
+.plant-page-comparables,
+.plant-page-methodology {
   grid-column: 1 / -1;
+}
+
+.plant-comparison-table {
+  display: grid;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid #e2e8dc;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.plant-comparison-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.25fr) minmax(130px, 0.9fr) minmax(84px, 0.55fr) minmax(78px, 0.55fr) minmax(92px, 0.65fr);
+  gap: 10px;
+  align-items: center;
+  padding: 11px 12px;
+  border-top: 1px solid #edf1e9;
+  color: #2f3e34;
+  font-size: 0.84rem;
+  text-decoration: none;
+}
+
+.plant-comparison-row:first-child {
+  border-top: 0;
+}
+
+.plant-comparison-row:not(.is-head):hover {
+  background: #f4f8ef;
+}
+
+.plant-comparison-row.is-head {
+  color: var(--muted);
+  background: #f3f8ee;
+  font-size: 0.68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.plant-comparison-row strong {
+  color: var(--leaf-dark);
+}
+
+.plant-page-methodology p {
+  max-width: 900px;
+  margin: 0 0 10px;
+  color: #3f4d43;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.plant-page-methodology p:last-child {
+  margin-bottom: 0;
 }
 
 .article-reader {
@@ -2407,6 +2563,34 @@ fieldset:nth-of-type(2) .segmented {
 
   .screener-controls {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .plant-page-key-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .plant-comparison-row {
+    grid-template-columns: minmax(0, 1fr) minmax(78px, auto);
+    gap: 6px 12px;
+  }
+
+  .plant-comparison-row.is-head {
+    display: none;
+  }
+
+  .plant-comparison-row span:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .plant-comparison-row span:not(:first-child)::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    color: var(--muted);
+    font-size: 0.62rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
 
   .screener-search {
@@ -2631,6 +2815,10 @@ fieldset:nth-of-type(2) .segmented {
   .plant-page-copy h1,
   .article-full h1 {
     font-size: 2.1rem;
+  }
+
+  .plant-page-key-stats {
+    grid-template-columns: 1fr;
   }
 
   .intro-panel {
