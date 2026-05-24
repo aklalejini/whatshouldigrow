@@ -47,8 +47,8 @@ const hasImage = Boolean(artEntry?.image);
 const photoStyle = plantPhotoStyle(artEntry);
 const canonicalUrl = siteUrl(plantUrl(plant));
 const socialImageUrl = hasImage ? siteUrl(`/plant-art/${artEntry.image}`) : siteUrl(DEFAULT_SOCIAL_IMAGE);
-const metricDescription = metricDisplay.output
-  ? ` Planning metrics include ${metricDisplay.output}, ${metricDisplay.spacing}, and ${metricDisplay.firstOutput}.`
+const metricDescription = metrics.yieldLbsMin !== null && metricDisplay.yieldLbs
+  ? ` Planning metrics include ${metricDisplay.yieldLbs}, ${metricDisplay.spacing}, and ${metricDisplay.firstOutput}.`
   : "";
 const description = `${plant.name} growing profile for ${SITE_NAME}: zones ${plant.zones[0]}-${plant.zones[1]}, ${formatList(plant.sun)} light, ${formatList(plant.soils)} soil, ${plant.water} water, and practical plant pairings.${metricDescription}`;
 const allRelationshipEntries = relationshipEntriesForPlant(plant, plantRelationships, plants);
@@ -141,13 +141,70 @@ function planningNotesForPlant(entry) {
   return Array.from(new Set(notes)).slice(0, 5);
 }
 
+function metricNumber(value) {
+  if (value === null || value === undefined) return "";
+  return Number.isInteger(value) ? String(value) : String(Math.round(value * 10) / 10);
+}
+
+function metricRange(min, max, suffix = "", fallback = "Needs source") {
+  if (min === null || min === undefined || max === null || max === undefined) return fallback;
+  if (min === max) return `${metricNumber(min)}${suffix}`;
+  return `${metricNumber(min)}-${metricNumber(max)}${suffix}`;
+}
+
+function buildYieldChart(curve) {
+  const width = 640;
+  const height = 260;
+  const left = 48;
+  const right = 20;
+  const top = 20;
+  const bottom = 42;
+  const plotWidth = width - left - right;
+  const plotHeight = height - top - bottom;
+  const maxYield = Math.max(1, ...curve.map((point) => point.max ?? 0));
+  const xFor = (index) => left + (plotWidth * index) / Math.max(1, curve.length - 1);
+  const yFor = (value) => top + plotHeight - (plotHeight * value) / maxYield;
+  const highPoints = curve.map((point, index) => `${xFor(index)},${yFor(point.max)}`);
+  const lowPoints = [...curve].reverse().map((point, reverseIndex) => {
+    const index = curve.length - 1 - reverseIndex;
+    return `${xFor(index)},${yFor(point.min)}`;
+  });
+  return {
+    viewBox: `0 0 ${width} ${height}`,
+    bandPoints: [...highPoints, ...lowPoints].join(" "),
+    linePoints: curve.map((point, index) => `${xFor(index)},${yFor(point.mid)}`).join(" "),
+    points: curve.map((point, index) => ({
+      ...point,
+      x: xFor(index),
+      y: yFor(point.mid),
+      label: metricRange(point.min, point.max, " lb")
+    })),
+    ticks: [0, 0.25, 0.5, 0.75, 1].map((ratio) => ({
+      y: top + plotHeight - plotHeight * ratio,
+      label: `${metricNumber(maxYield * ratio)} lb`
+    }))
+  };
+}
+
 const partnerSearchUrl = partnerSearchHref(partner, plant.query);
 const planningNotes = planningNotesForPlant(plant);
+const yieldCurve = metrics.yieldCurve ?? [];
+const hasYieldChart = yieldCurve.length > 0 && metrics.yieldLbsMin !== null && metrics.yieldLbsMax !== null;
+const yieldChart = hasYieldChart ? buildYieldChart(yieldCurve) : null;
+const hasPoundYield = metrics.yieldLbsMin !== null && metrics.yieldLbsMax !== null;
+const primaryReturnLabel = hasPoundYield ? "Yield return" : "Output";
+const primaryReturnValue = hasPoundYield ? metricDisplay.yieldLbs : metricDisplay.output;
+const yieldConfidenceLabel = metrics.yieldLbsConfidence
+  ? `${metrics.yieldLbsConfidence.charAt(0).toUpperCase()}${metrics.yieldLbsConfidence.slice(1)} yield confidence`
+  : "No pound-yield source";
+const yieldYearOne = yieldCurve.find((point) => point.year === 1);
+const yieldYearFive = yieldCurve.find((point) => point.year === 5);
+const yieldYearTen = yieldCurve.find((point) => point.year === 10);
 const heroFacts = [
   { label: "Zones", value: `${plant.zones[0]}-${plant.zones[1]}` },
   { label: "First output", value: metricDisplay.firstOutput ?? "Needs source" },
   { label: "Spacing", value: metricDisplay.spacing ?? "Needs source" },
-  { label: "Output", value: metricDisplay.output ?? "Needs source" }
+  { label: primaryReturnLabel, value: primaryReturnValue ?? "Needs source" }
 ];
 const plantJsonLd = {
   "@context": "https://schema.org",
@@ -263,7 +320,7 @@ const plantJsonLd = {
             <h2>Harvest & Use</h2>
             <dl class="plant-page-stats compact">
               <div><dt>Window</dt><dd>{plant.harvest}</dd></div>
-              <div><dt>Output</dt><dd>{metricDisplay.output ?? "Needs source"}</dd></div>
+              <div><dt>{primaryReturnLabel}</dt><dd>{primaryReturnValue ?? "Needs source"}</dd></div>
               <div><dt>First output</dt><dd>{metricDisplay.firstOutput ?? "Needs source"}</dd></div>
               <div><dt>Best for</dt><dd class="plant-page-chip-list">{plant.goals.map((goal) => <span>{formatGoal(goal)}</span>)}</dd></div>
             </dl>
@@ -286,19 +343,73 @@ const plantJsonLd = {
           <section class="detail-panel plant-page-panel">
             <h2>Quantitative Profile</h2>
             <dl class="plant-page-stats compact">
+              <div><dt>Pound return</dt><dd>{metricDisplay.yieldLbs ?? "Needs source"}</dd></div>
+              <div><dt>10-year return</dt><dd>{metricDisplay.tenYearYieldLbs ?? "Needs source"}</dd></div>
               <div><dt>Full output</dt><dd>{metricDisplay.fullOutput ?? "Needs source"}</dd></div>
               <div><dt>Mature size</dt><dd>{metricDisplay.matureSize ?? "Needs source"}</dd></div>
               <div><dt>Spacing</dt><dd>{metricDisplay.spacing ?? "Needs source"}</dd></div>
               <div><dt>Productive life</dt><dd>{metricDisplay.lifespan ?? "Needs source"}</dd></div>
               <div><dt>Difficulty</dt><dd>{metricDisplay.difficulty ?? "-"} difficulty, {metricDisplay.reliability ?? "-"} reliability</dd></div>
-              <div><dt>Data quality</dt><dd>{metricDisplay.confidence ?? "Needs review"} confidence</dd></div>
+              <div><dt>Data quality</dt><dd>{metricDisplay.confidence ?? "Needs review"} profile, {yieldConfidenceLabel}</dd></div>
             </dl>
             <p>
-              These are planning ranges for comparing plants, not guarantees. Cultivar,
+              Pound return is the stock-style yield metric. These are planning ranges for comparing plants, not guarantees. Cultivar,
               rootstock, climate, soil, pruning, pest pressure, and wildlife can move
               actual results.
             </p>
           </section>
+
+          {hasYieldChart && yieldChart && (
+            <section class="detail-panel plant-page-yield-chart">
+              <div class="yield-chart-head">
+                <div>
+                  <p class="eyebrow">Yield curve</p>
+                  <h2>Estimated Pound Return</h2>
+                  <p>
+                    Projected annual yield ramp from establishment to full production,
+                    using the current sourced range for {plant.name}.
+                  </p>
+                </div>
+                <span>{yieldConfidenceLabel}</span>
+              </div>
+              <div class="yield-chart-layout">
+                <div class="yield-chart-frame">
+                  <svg viewBox={yieldChart.viewBox} role="img" aria-label={`${plant.name} estimated yield curve in pounds`}>
+                    <defs>
+                      <linearGradient id="yield-line-gradient" x1="0" x2="1" y1="0" y2="0">
+                        <stop offset="0%" stop-color="#27583a" />
+                        <stop offset="100%" stop-color="#df7b4f" />
+                      </linearGradient>
+                    </defs>
+                    {yieldChart.ticks.map((tick) => (
+                      <g class="yield-chart-gridline">
+                        <line x1="48" x2="620" y1={tick.y} y2={tick.y}></line>
+                        <text x="8" y={tick.y + 4}>{tick.label}</text>
+                      </g>
+                    ))}
+                    <polygon class="yield-chart-band" points={yieldChart.bandPoints}></polygon>
+                    <polyline class="yield-chart-line" points={yieldChart.linePoints}></polyline>
+                    {yieldChart.points.map((point) => (
+                      <g class="yield-chart-point">
+                        <circle cx={point.x} cy={point.y} r="3.8"></circle>
+                        <text x={point.x} y="244">Y{point.year}</text>
+                      </g>
+                    ))}
+                  </svg>
+                </div>
+                <dl class="yield-chart-stats">
+                  <div><dt>Year 1</dt><dd>{yieldYearOne ? metricRange(yieldYearOne.min, yieldYearOne.max, " lb") : "Needs source"}</dd></div>
+                  <div><dt>Year 5</dt><dd>{yieldYearFive ? metricRange(yieldYearFive.min, yieldYearFive.max, " lb") : "Needs source"}</dd></div>
+                  <div><dt>Year 10</dt><dd>{yieldYearTen ? metricRange(yieldYearTen.min, yieldYearTen.max, " lb") : "Needs source"}</dd></div>
+                  <div><dt>10-year total</dt><dd>{metricDisplay.tenYearYieldLbs ?? "Needs source"}</dd></div>
+                </dl>
+              </div>
+              <p class="yield-chart-method">
+                Method: {metrics.yieldLbsMethod}. Annual crops assume one comparable planting per year;
+                perennial crops ramp from first bearing to full production.
+              </p>
+            </section>
+          )}
 
           <section class="detail-panel plant-page-panel">
             <h2>Planting Strategy</h2>
@@ -325,7 +436,7 @@ const plantJsonLd = {
                   <span role="columnheader">Plant</span>
                   <span role="columnheader">Zones</span>
                   <span role="columnheader">First output</span>
-                  <span role="columnheader">Output</span>
+                  <span role="columnheader">Yield (lbs)</span>
                   <span role="columnheader">Difficulty</span>
                 </div>
                 {comparablePlants.map(({ candidate }) => {
@@ -335,7 +446,7 @@ const plantJsonLd = {
                       <span role="cell"><strong>{candidate.name}</strong></span>
                       <span role="cell" data-label="Zones">{candidate.zones[0]}-{candidate.zones[1]}</span>
                       <span role="cell" data-label="First output">{candidateMetrics.firstOutput ?? "Needs source"}</span>
-                      <span role="cell" data-label="Output">{candidateMetrics.output ?? "Needs source"}</span>
+                      <span role="cell" data-label="Yield (lbs)">{candidateMetrics.yieldLbs ?? "Needs source"}</span>
                       <span role="cell" data-label="Difficulty">{candidateMetrics.difficulty ?? "-"}</span>
                     </a>
                   );

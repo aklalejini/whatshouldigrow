@@ -14,6 +14,31 @@
     "url": "https://extension.umaine.edu/gardening/manual/vegetables/planting-chart/",
     "note": "Home vegetable average yields, spacing, and planting chart."
   },
+  "umn-vegetable-field-planning": {
+    "title": "University of Minnesota Extension - Crop and Field Planning Tools for Vegetable Farmers",
+    "url": "https://extension.umn.edu/vegetable-growing-guides-farmers/crop-and-field-planning-tools-vegetable-farmers",
+    "note": "Expected vegetable yield per plant, per 100-foot bed, spacing, days to harvest, and harvest windows."
+  },
+  "lsu-vegetable-yields": {
+    "title": "LSU AgCenter - Expected Vegetable Garden Yields",
+    "url": "https://www.lsuagcenter.com/topics/lawn_garden/home_gardening/vegetables/expected-vegetable-garden-yields",
+    "note": "Home garden vegetable yields by 100-foot row; used as a regional cross-check for pound-return ranges."
+  },
+  "lsu-citrus-yield": {
+    "title": "LSU AgCenter - Sustainable Gardening for School and Home Gardens: Citrus",
+    "url": "https://www.lsuagcenter.com/~/media/system/b/7/2/4/b7241310f6e89ae9b1097d8e54a3028d/p3761l_sustgardcitrus_rh0721pdf.pdf",
+    "note": "Citrus spacing, years to harvest, and annual yield per mature tree."
+  },
+  "uga-pomegranate-production": {
+    "title": "UGA Extension - Pomegranate Production",
+    "url": "https://fieldreport.caes.uga.edu/publications/C997/pomegranate-production/",
+    "note": "Pomegranate spacing, first harvest, full production timing, and yield caveats for the Southeast."
+  },
+  "usu-tomatillo": {
+    "title": "Utah State Extension - How to Grow Tomatillos in Your Garden",
+    "url": "https://extension.usu.edu/yardandgarden/research/tomatillos-in-the-garden",
+    "note": "Tomatillo spacing and pounds of fruit per plant."
+  },
   "purdue-midwest-fruit": {
     "title": "Midwest Home Fruit Production Guide",
     "url": "https://extension.purdue.edu/county/vigo/_docs/Midwest-Home-Fruit-Production-Guide_B940.pdf",

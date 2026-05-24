@@ -28,6 +28,31 @@ const metricSources = {
     url: "https://extension.umaine.edu/gardening/manual/vegetables/planting-chart/",
     note: "Home vegetable average yields, spacing, and planting chart."
   },
+  "umn-vegetable-field-planning": {
+    title: "University of Minnesota Extension - Crop and Field Planning Tools for Vegetable Farmers",
+    url: "https://extension.umn.edu/vegetable-growing-guides-farmers/crop-and-field-planning-tools-vegetable-farmers",
+    note: "Expected vegetable yield per plant, per 100-foot bed, spacing, days to harvest, and harvest windows."
+  },
+  "lsu-vegetable-yields": {
+    title: "LSU AgCenter - Expected Vegetable Garden Yields",
+    url: "https://www.lsuagcenter.com/topics/lawn_garden/home_gardening/vegetables/expected-vegetable-garden-yields",
+    note: "Home garden vegetable yields by 100-foot row; used as a regional cross-check for pound-return ranges."
+  },
+  "lsu-citrus-yield": {
+    title: "LSU AgCenter - Sustainable Gardening for School and Home Gardens: Citrus",
+    url: "https://www.lsuagcenter.com/~/media/system/b/7/2/4/b7241310f6e89ae9b1097d8e54a3028d/p3761l_sustgardcitrus_rh0721pdf.pdf",
+    note: "Citrus spacing, years to harvest, and annual yield per mature tree."
+  },
+  "uga-pomegranate-production": {
+    title: "UGA Extension - Pomegranate Production",
+    url: "https://fieldreport.caes.uga.edu/publications/C997/pomegranate-production/",
+    note: "Pomegranate spacing, first harvest, full production timing, and yield caveats for the Southeast."
+  },
+  "usu-tomatillo": {
+    title: "Utah State Extension - How to Grow Tomatillos in Your Garden",
+    url: "https://extension.usu.edu/yardandgarden/research/tomatillos-in-the-garden",
+    note: "Tomatillo spacing and pounds of fruit per plant."
+  },
   "purdue-midwest-fruit": {
     title: "Midwest Home Fruit Production Guide",
     url: "https://extension.purdue.edu/county/vigo/_docs/Midwest-Home-Fruit-Production-Guide_B940.pdf",
@@ -1089,12 +1114,13 @@ const cropRules = [
     spacingPlantFtMax: 4,
     spacingRowFtMin: 2,
     spacingRowFtMax: 6,
-    outputMin: 4,
-    outputMax: 10,
-    outputUnit: "fruit/plant/season",
+    outputMin: 3,
+    outputMax: 5,
+    outputUnit: "lb/plant/season",
     harvestWindowWeeksMin: 4,
     harvestWindowWeeksMax: 8,
-    reliabilityScore: 4
+    reliabilityScore: 4,
+    sourceKeys: ["umn-vegetable-field-planning", "umaine-vegetable-yield", "lsu-vegetable-yields"]
   }),
   rule(["zucchini", "summer squash", "crookneck"], {
     daysToMaturityMin: 40,
@@ -1107,12 +1133,13 @@ const cropRules = [
     spacingPlantFtMax: 4,
     spacingRowFtMin: 3,
     spacingRowFtMax: 4,
-    outputMin: 4,
-    outputMax: 10,
-    outputUnit: "fruit/plant/season",
+    outputMin: 3,
+    outputMax: 8,
+    outputUnit: "lb/plant/season",
     harvestWindowWeeksMin: 5,
     harvestWindowWeeksMax: 10,
-    reliabilityScore: 4
+    reliabilityScore: 4,
+    sourceKeys: ["umn-vegetable-field-planning", "umaine-vegetable-yield", "lsu-vegetable-yields"]
   }),
   rule(["butternut", "winter squash", "delicata", "kabocha", "pumpkin"], {
     daysToMaturityMin: 85,
@@ -1142,10 +1169,11 @@ const cropRules = [
     spacingPlantFtMax: 4,
     spacingRowFtMin: 5,
     spacingRowFtMax: 6,
-    outputMin: 2,
-    outputMax: 3,
-    outputUnit: "melons/plant/season",
-    difficultyScore: 3
+    outputMin: 3,
+    outputMax: 10,
+    outputUnit: "lb/plant/season",
+    difficultyScore: 3,
+    sourceKeys: ["umn-vegetable-field-planning", "lsu-vegetable-yields"]
   }),
   rule(["cantaloupe", "melon"], {
     daysToMaturityMin: 80,
@@ -1158,10 +1186,11 @@ const cropRules = [
     spacingPlantFtMax: 3,
     spacingRowFtMin: 5,
     spacingRowFtMax: 6,
-    outputMin: 3,
-    outputMax: 5,
-    outputUnit: "melons/plant/season",
-    difficultyScore: 3
+    outputMin: 4,
+    outputMax: 7,
+    outputUnit: "lb/plant/season",
+    difficultyScore: 3,
+    sourceKeys: ["umn-vegetable-field-planning", "lsu-vegetable-yields"]
   }),
   rule(["corn"], {
     daysToMaturityMin: 65,
@@ -1209,7 +1238,24 @@ const cropRules = [
     outputMax: 3,
     outputUnit: "lb/plant/season"
   }),
-  rule(["onion", "garlic", "leek"], {
+  rule(["garlic"], {
+    daysToMaturityMin: 240,
+    daysToMaturityMax: 300,
+    matureHeightFtMin: 1,
+    matureHeightFtMax: 2,
+    matureSpreadFtMin: 0.25,
+    matureSpreadFtMax: 0.5,
+    spacingPlantFtMin: 0.5,
+    spacingPlantFtMax: 0.67,
+    spacingRowFtMin: 1,
+    spacingRowFtMax: 1.5,
+    outputMin: 0.05,
+    outputMax: 0.2,
+    outputUnit: "lb/plant/season",
+    reliabilityScore: 4,
+    sourceKeys: ["umn-vegetable-field-planning", "umaine-vegetable-yield"]
+  }),
+  rule(["onion"], {
     daysToMaturityMin: 90,
     daysToMaturityMax: 120,
     matureHeightFtMin: 1,
@@ -1220,10 +1266,29 @@ const cropRules = [
     spacingPlantFtMax: 0.5,
     spacingRowFtMin: 1,
     spacingRowFtMax: 1.5,
-    outputMin: 1,
-    outputMax: 1,
-    outputUnit: "bulb or stalk/plant/season",
-    reliabilityScore: 4
+    outputMin: 0.25,
+    outputMax: 0.5,
+    outputUnit: "lb/plant/season",
+    reliabilityScore: 4,
+    sourceKeys: ["umn-vegetable-field-planning", "umaine-vegetable-yield", "lsu-vegetable-yields"]
+  }),
+  rule(["leek"], {
+    daysToMaturityMin: 90,
+    daysToMaturityMax: 120,
+    matureHeightFtMin: 1,
+    matureHeightFtMax: 2,
+    matureSpreadFtMin: 0.25,
+    matureSpreadFtMax: 0.5,
+    spacingPlantFtMin: 0.25,
+    spacingPlantFtMax: 0.5,
+    spacingRowFtMin: 1,
+    spacingRowFtMax: 1.5,
+    outputMin: 0.25,
+    outputMax: 0.75,
+    outputUnit: "lb/plant/season",
+    reliabilityScore: 4,
+    dataConfidence: "low",
+    sourceKeys: ["umaine-vegetable-yield", "lsu-vegetable-yields"]
   }),
   rule(["apple"], {
     firstYieldYearsMin: 2,
@@ -1617,20 +1682,23 @@ const cropRules = [
     dataConfidence: "low"
   }),
   rule(["pomegranate"], {
-    firstYieldYearsMin: 2,
-    firstYieldYearsMax: 4,
-    fullYieldYearsMin: 4,
+    firstYieldYearsMin: 3,
+    firstYieldYearsMax: 3,
+    fullYieldYearsMin: 5,
     fullYieldYearsMax: 6,
     matureHeightFtMin: 6,
     matureHeightFtMax: 12,
     matureSpreadFtMin: 6,
     matureSpreadFtMax: 10,
-    spacingPlantFtMin: 6,
-    spacingPlantFtMax: 10,
+    spacingPlantFtMin: 14,
+    spacingPlantFtMax: 18,
+    spacingRowFtMin: 18,
+    spacingRowFtMax: 18,
     outputMin: 20,
     outputMax: 50,
     outputUnit: "fruit/plant/year",
-    dataConfidence: "low"
+    dataConfidence: "low",
+    sourceKeys: ["uga-pomegranate-production"]
   }),
   rule(["loquat"], {
     firstYieldYearsMin: 3,
@@ -1683,7 +1751,24 @@ const cropRules = [
     dataConfidence: "low",
     sourceKeys: ["ncsu-plant-toolbox", "mobot-plant-finder"]
   }),
-  rule(["citrus", "meyer lemon", "satsuma", "kumquat", "calamondin", "finger lime", "yuzu", "hardy orange"], {
+  rule(["satsuma", "mandarin"], {
+    firstYieldYearsMin: 3,
+    firstYieldYearsMax: 4,
+    fullYieldYearsMin: 5,
+    fullYieldYearsMax: 8,
+    matureHeightFtMin: 8,
+    matureHeightFtMax: 20,
+    matureSpreadFtMin: 6,
+    matureSpreadFtMax: 15,
+    spacingPlantFtMin: 20,
+    spacingPlantFtMax: 30,
+    outputMin: 80,
+    outputMax: 250,
+    outputUnit: "lb/plant/year",
+    difficultyScore: 3,
+    sourceKeys: ["lsu-citrus-yield"]
+  }),
+  rule(["citrus", "meyer lemon", "kumquat", "calamondin", "finger lime", "yuzu", "hardy orange"], {
     firstYieldYearsMin: 2,
     firstYieldYearsMax: 4,
     fullYieldYearsMin: 4,
@@ -1694,12 +1779,11 @@ const cropRules = [
     matureSpreadFtMax: 12,
     spacingPlantFtMin: 8,
     spacingPlantFtMax: 15,
-    outputMin: 20,
-    outputMax: 150,
-    outputUnit: "fruit/plant/year",
+    outputMin: 40,
+    outputMax: 100,
+    outputUnit: "lb/plant/year",
     difficultyScore: 3,
-    dataConfidence: "low",
-    sourceKeys: ["ncsu-plant-toolbox", "mobot-plant-finder"]
+    sourceKeys: ["lsu-citrus-yield"]
   }),
   rule(["kiwi"], {
     firstYieldYearsMin: 3,
@@ -2305,6 +2389,81 @@ const cropRules = [
   })
 ];
 
+const yieldConversionRules = [
+  rule(["pomegranate"], {
+    conversionMin: 0.45,
+    conversionMax: 0.9,
+    conversionUnit: "lb/fruit",
+    yieldLbsConfidence: "low",
+    yieldLbsMethod: "fruit-count range converted with conservative per-fruit weight; UGA supports timing and spacing but not a direct home-garden pounds-per-plant value",
+    sourceKeys: ["uga-pomegranate-production"]
+  }),
+  rule(["passionfruit", "maypop"], {
+    conversionMin: 0.08,
+    conversionMax: 0.18,
+    conversionUnit: "lb/fruit",
+    yieldLbsConfidence: "low",
+    yieldLbsMethod: "fruit-count range converted with conservative small-fruit weights",
+    sourceKeys: ["ncsu-plant-toolbox", "mobot-plant-finder"]
+  }),
+  rule(["jaboticaba", "starfruit", "white sapote", "sapodilla", "cherimoya", "atemoya", "custard apple"], {
+    conversionMin: 0.4,
+    conversionMax: 1,
+    conversionUnit: "lb/fruit",
+    yieldLbsConfidence: "low",
+    yieldLbsMethod: "fruit-count range converted with broad tropical-fruit weight assumptions",
+    sourceKeys: ["ncsu-plant-toolbox", "mobot-plant-finder"]
+  }),
+  rule(["dragon fruit"], {
+    conversionMin: 0.5,
+    conversionMax: 1,
+    conversionUnit: "lb/fruit",
+    yieldLbsConfidence: "low",
+    yieldLbsMethod: "fruit-count range converted with broad dragon-fruit weight assumptions",
+    sourceKeys: ["ncsu-plant-toolbox", "mobot-plant-finder"]
+  }),
+  rule(["corn"], {
+    conversionMin: 0.33,
+    conversionMax: 0.5,
+    conversionUnit: "lb/ear",
+    yieldLbsConfidence: "low",
+    yieldLbsMethod: "ear-count range converted to pounds for stock-style return comparison",
+    sourceKeys: ["umaine-vegetable-yield", "lsu-vegetable-yields"]
+  }),
+  rule(["lettuce"], {
+    conversionMin: 0.5,
+    conversionMax: 1,
+    conversionUnit: "lb/head",
+    yieldLbsConfidence: "low",
+    yieldLbsMethod: "head-count range converted to pounds for return comparison",
+    sourceKeys: ["umn-vegetable-field-planning", "lsu-vegetable-yields"]
+  }),
+  rule(["radish"], {
+    conversionMin: 0.04,
+    conversionMax: 0.12,
+    conversionUnit: "lb/root",
+    yieldLbsConfidence: "low",
+    yieldLbsMethod: "root-count range converted to pounds for return comparison",
+    sourceKeys: ["umn-vegetable-field-planning", "lsu-vegetable-yields"]
+  }),
+  rule(["artichoke"], {
+    conversionMin: 0.3,
+    conversionMax: 0.7,
+    conversionUnit: "lb/bud",
+    yieldLbsConfidence: "low",
+    yieldLbsMethod: "bud-count range converted to pounds for return comparison",
+    sourceKeys: ["ncsu-plant-toolbox", "mobot-plant-finder"]
+  }),
+  rule(["prickly pear"], {
+    conversionMin: 0.2,
+    conversionMax: 0.5,
+    conversionUnit: "lb/fruit or pad",
+    yieldLbsConfidence: "low",
+    yieldLbsMethod: "fruit-or-pad count converted to pounds for return comparison",
+    sourceKeys: ["ncsu-plant-toolbox", "mobot-plant-finder"]
+  })
+];
+
 function rule(terms, values) {
   return { terms, values };
 }
@@ -2342,13 +2501,19 @@ function matchingRules(plant) {
   return cropRules.filter(({ terms, values }) => {
     if (isEdiblePlantType(plant) && isOrnamentalRule(values)) return false;
     return terms.some((term) => termMatches(text, term));
-  });
+  }).sort((a, b) => matchSpecificity(text, a) - matchSpecificity(text, b));
 }
 
 function termMatches(text, term) {
   const normalizedTerm = String(term).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
   if (!normalizedTerm) return false;
   return new RegExp(`(^|\\s)${escapeRegExp(normalizedTerm)}(\\s|$)`).test(text);
+}
+
+function matchSpecificity(text, { terms }) {
+  return Math.max(...terms
+    .filter((term) => termMatches(text, term))
+    .map((term) => String(term).split(/\s+/).filter(Boolean).join("").length));
 }
 
 function escapeRegExp(value) {
@@ -2390,9 +2555,12 @@ function confidenceFromSources(metrics) {
   const cropSpecificSources = [
     "uga-vegetable-days-spacing",
     "cornell-vegetable-yield",
+    "umn-vegetable-field-planning",
+    "lsu-vegetable-yields",
     "purdue-midwest-fruit",
     "psu-pome-spacing-yield",
     "psu-stone-spacing-yield",
+    "lsu-citrus-yield",
     "osu-blueberry",
     "uga-blueberry",
     "okstate-grape",
@@ -2401,7 +2569,8 @@ function confidenceFromSources(metrics) {
     "usu-strawberry-yield",
     "osu-elderberry",
     "umd-aronia",
-    "osu-lingonberry"
+    "osu-lingonberry",
+    "usu-tomatillo"
   ];
   const hasCropSpecific = metrics.sourceKeys?.some((key) => cropSpecificSources.includes(key));
   if (hasCropSpecific && metrics.outputMin !== null && metrics.outputMax !== null) {
@@ -2484,6 +2653,87 @@ function plantsPer100SqFt(metrics) {
   return [round(100 / maxArea, 1), round(100 / minArea, 1)];
 }
 
+function matchingYieldConversion(plant) {
+  const text = plantText(plant);
+  return yieldConversionRules.find(({ terms }) => terms.some((term) => termMatches(text, term)))?.values ?? null;
+}
+
+function directPoundYield(metrics) {
+  if (!/^lb\b/.test(String(metrics.outputUnit ?? ""))) return null;
+  if (metrics.outputMin === null || metrics.outputMax === null) return null;
+  return {
+    yieldLbsMin: metrics.outputMin,
+    yieldLbsMax: metrics.outputMax,
+    yieldLbsUnit: metrics.outputUnit,
+    yieldLbsConfidence: metrics.dataConfidence,
+    yieldLbsMethod: "direct pound yield from crop metric source"
+  };
+}
+
+function convertedPoundYield(plant, metrics) {
+  if (metrics.outputMin === null || metrics.outputMax === null) return null;
+  if (!/fruit|melon|ear|head|root|bud|bulb|stalk|pad/i.test(String(metrics.outputUnit ?? ""))) return null;
+  const conversion = matchingYieldConversion(plant);
+  if (!conversion) return null;
+  return {
+    yieldLbsMin: round(metrics.outputMin * conversion.conversionMin, 1),
+    yieldLbsMax: round(metrics.outputMax * conversion.conversionMax, 1),
+    yieldLbsUnit: String(metrics.outputUnit).includes("/year") ? "lb/plant/year" : "lb/plant/season",
+    yieldLbsConfidence: conversion.yieldLbsConfidence ?? "low",
+    yieldLbsMethod: conversion.yieldLbsMethod,
+    yieldLbsConversionUnit: conversion.conversionUnit,
+    yieldLbsSourceKeys: conversion.sourceKeys ?? []
+  };
+}
+
+function applyYieldLbs(plant, metrics) {
+  const yieldLbs = directPoundYield(metrics) ?? convertedPoundYield(plant, metrics);
+  if (!yieldLbs) {
+    metrics.yieldLbsMin = null;
+    metrics.yieldLbsMax = null;
+    metrics.yieldLbsUnit = null;
+    metrics.yieldLbsConfidence = null;
+    metrics.yieldLbsMethod = metrics.outputKind === "ornamental"
+      ? "ornamental output is tracked as display weeks, not pound yield"
+      : "no defensible pound-yield source encoded yet";
+    metrics.yieldLbsConversionUnit = null;
+    return metrics;
+  }
+  Object.assign(metrics, yieldLbs);
+  metrics.sourceKeys = unique([...(metrics.sourceKeys ?? []), ...(yieldLbs.yieldLbsSourceKeys ?? [])]);
+  return metrics;
+}
+
+function rampValue(year, firstYear, fullYear, matureValue) {
+  if (matureValue === null || matureValue === undefined) return null;
+  if (year < firstYear) return 0;
+  if (fullYear <= firstYear || year >= fullYear) return matureValue;
+  const progress = (year - firstYear + 1) / (fullYear - firstYear + 1);
+  return matureValue * Math.min(1, Math.max(0.2, progress));
+}
+
+function yieldCurve(metrics, years = 10) {
+  if (metrics.yieldLbsMin === null || metrics.yieldLbsMax === null) return null;
+  const firstYear = metrics.firstYieldYearsMax === 0 ? 1 : Math.max(1, metrics.firstYieldYearsMin ?? 1);
+  const fullYear = metrics.fullYieldYearsMax === 0 ? 1 : Math.max(firstYear, metrics.fullYieldYearsMax ?? firstYear);
+  return Array.from({ length: years }, (_, index) => {
+    const year = index + 1;
+    const min = round(rampValue(year, firstYear, fullYear, metrics.yieldLbsMin), 1);
+    const max = round(rampValue(year, firstYear, fullYear, metrics.yieldLbsMax), 1);
+    return {
+      year,
+      min,
+      max,
+      mid: round((min + max) / 2, 1)
+    };
+  });
+}
+
+function cumulativeYield(curve, field) {
+  if (!curve?.length) return null;
+  return round(curve.reduce((total, point) => total + (point[field] ?? 0), 0), 1);
+}
+
 function makeNotes(plant, metrics) {
   const notes = [];
   if (metrics.dataConfidence === "low") {
@@ -2503,6 +2753,9 @@ function makeNotes(plant, metrics) {
   }
   if (metrics.outputKind === "ornamental") {
     notes.push("Output is expressed as ornamental display weeks, not edible yield.");
+  }
+  if (metrics.yieldLbsConfidence === "low" && metrics.yieldLbsMin !== null) {
+    notes.push("Pound-return values are estimated ranges; source quality and unit conversions are flagged separately from basic growing data.");
   }
   return notes;
 }
@@ -2526,6 +2779,10 @@ function buildMetrics(plant) {
   metrics.multiUseScore = Math.min(5, Math.max(1, Math.round((plant.goals.length / 6) * 5)));
   metrics.lastReviewed = lastReviewed;
   metrics.sourceKeys = unique(metrics.sourceKeys);
+  applyYieldLbs(plant, metrics);
+  metrics.yieldCurve = yieldCurve(metrics);
+  metrics.tenYearYieldLbsMin = cumulativeYield(metrics.yieldCurve, "min");
+  metrics.tenYearYieldLbsMax = cumulativeYield(metrics.yieldCurve, "max");
   metrics.notes = makeNotes(plant, metrics);
   metrics.display = {
     firstOutput: firstOutputLabel(metrics),
@@ -2533,6 +2790,8 @@ function buildMetrics(plant) {
     spacing: spacingLabel(metrics),
     matureSize: matureSizeLabel(metrics),
     output: outputLabel(metrics),
+    yieldLbs: rangeLabel(metrics.yieldLbsMin, metrics.yieldLbsMax, ` ${metrics.yieldLbsUnit ?? ""}`),
+    tenYearYieldLbs: rangeLabel(metrics.tenYearYieldLbsMin, metrics.tenYearYieldLbsMax, " lb/10 yrs"),
     lifespan: rangeLabel(metrics.productiveLifespanYearsMin, metrics.productiveLifespanYearsMax, " yrs"),
     harvestWindow: rangeLabel(metrics.harvestWindowWeeksMin, metrics.harvestWindowWeeksMax, " weeks"),
     difficulty: `${metrics.difficultyScore}/5`,
@@ -2591,6 +2850,13 @@ const csvColumns = [
   "output_unit",
   "output_min",
   "output_max",
+  "yield_lbs_unit",
+  "yield_lbs_min",
+  "yield_lbs_max",
+  "yield_lbs_confidence",
+  "yield_lbs_method",
+  "ten_year_yield_lbs_min",
+  "ten_year_yield_lbs_max",
   "harvest_window_weeks_min",
   "harvest_window_weeks_max",
   "difficulty_score",
@@ -2646,6 +2912,13 @@ const csvRows = plants.map((plant) => {
     output_unit: metrics.outputUnit,
     output_min: metrics.outputMin,
     output_max: metrics.outputMax,
+    yield_lbs_unit: metrics.yieldLbsUnit,
+    yield_lbs_min: metrics.yieldLbsMin,
+    yield_lbs_max: metrics.yieldLbsMax,
+    yield_lbs_confidence: metrics.yieldLbsConfidence,
+    yield_lbs_method: metrics.yieldLbsMethod,
+    ten_year_yield_lbs_min: metrics.tenYearYieldLbsMin,
+    ten_year_yield_lbs_max: metrics.tenYearYieldLbsMax,
     harvest_window_weeks_min: metrics.harvestWindowWeeksMin,
     harvest_window_weeks_max: metrics.harvestWindowWeeksMax,
     difficulty_score: metrics.difficultyScore,
@@ -2673,3 +2946,4 @@ const confidenceCounts = Object.values(metricsByPlant).reduce((counts, metrics) 
 
 console.log(`Generated metrics for ${Object.keys(metricsByPlant).length} plants.`);
 console.log(`Confidence counts: ${JSON.stringify(confidenceCounts)}`);
+console.log(`Pound-yield records: ${Object.values(metricsByPlant).filter((metrics) => metrics.yieldLbsMin !== null && metrics.yieldLbsMax !== null).length}`);

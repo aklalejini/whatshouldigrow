@@ -16,7 +16,7 @@ import "../styles/global.css";
 
 const plantCount = Array.isArray(plants) ? plants.length : 0;
 const plantMetricEntries = Object.values(plantMetrics);
-const outputMetricCount = plantMetricEntries.filter((metric) => metric.outputMin !== null && metric.outputMax !== null).length;
+const poundYieldMetricCount = plantMetricEntries.filter((metric) => metric.yieldLbsMin !== null && metric.yieldLbsMax !== null).length;
 const blogEntries = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
@@ -369,8 +369,8 @@ const webAppJsonLd = {
                 <span>plant types</span>
               </div>
               <div>
-                <strong>{outputMetricCount}</strong>
-                <span>with outputs</span>
+                <strong>{poundYieldMetricCount}</strong>
+                <span>lb returns</span>
               </div>
               <div>
                 <strong id="screener-relation-count">0</strong>
@@ -483,7 +483,7 @@ const webAppJsonLd = {
                   <th scope="col"><button type="button" data-screener-sort="zone">Zone range <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="firstOutput">First output <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="spacing">Spacing <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="output">Yield/output <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="output">Yield (lbs) <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="difficulty">Difficulty <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="sun">Sun <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="soil">Soil <span class="sort-indicator"></span></button></th>
@@ -940,8 +940,8 @@ const webAppJsonLd = {
         return plantSpacing * rowSpacing;
       }
 
-      function outputSortValue(metrics) {
-        return metrics.outputMax ?? -1;
+function outputSortValue(metrics) {
+        return metrics.yieldLbsMax ?? metrics.outputMax ?? -1;
       }
 
       function hasNativeCue(plant) {
@@ -996,6 +996,9 @@ const webAppJsonLd = {
           metrics.display?.spacing,
           metrics.display?.matureSize,
           metrics.display?.output,
+          metrics.display?.yieldLbs,
+          metrics.display?.tenYearYieldLbs,
+          metrics.yieldLbsMethod,
           metrics.display?.lifespan,
           metrics.display?.harvestWindow,
           metrics.display?.difficulty,
@@ -1115,8 +1118,8 @@ const webAppJsonLd = {
               ${escapeHtml(metrics.display?.spacing ?? "Needs source")}
               <span class="screener-metric-note">${escapeHtml(metrics.display?.matureSize ?? "")}</span>
             </td>
-            <td data-label="Yield/output">
-              <strong>${escapeHtml(metrics.display?.output ?? "Needs source")}</strong>
+            <td data-label="Yield (lbs)">
+              <strong>${escapeHtml(metrics.display?.yieldLbs ?? "Needs source")}</strong>
               <span class="screener-metric-note">${escapeHtml(metrics.display?.harvestWindow ?? "")}</span>
             </td>
             <td data-label="Difficulty">
@@ -1593,7 +1596,7 @@ const webAppJsonLd = {
                   <div><dt>Water</dt><dd>${plant.water}</dd></div>
                   <div><dt>First output</dt><dd>${escapeHtml(metrics.display?.firstOutput ?? "Needs source")}</dd></div>
                   <div><dt>Spacing</dt><dd>${escapeHtml(metrics.display?.spacing ?? "Needs source")}</dd></div>
-                  <div><dt>Output</dt><dd>${escapeHtml(metrics.display?.output ?? "Needs source")}</dd></div>
+                  <div><dt>Yield return</dt><dd>${escapeHtml(metrics.display?.yieldLbs ?? "Needs source")}</dd></div>
                   <div><dt>Goals</dt><dd>${formatGoalList(plant.goals)}</dd></div>
                 </dl>
               </div>

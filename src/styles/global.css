@@ -2209,6 +2209,7 @@ fieldset:nth-of-type(2) .segmented {
 }
 
 .plant-page-panel h2,
+.plant-page-yield-chart h2,
 .plant-page-relationships h2,
 .plant-page-comparables h2,
 .plant-page-methodology h2 {
@@ -2327,9 +2328,140 @@ fieldset:nth-of-type(2) .segmented {
 }
 
 .plant-page-relationships,
+.plant-page-yield-chart,
 .plant-page-comparables,
 .plant-page-methodology {
   grid-column: 1 / -1;
+}
+
+.plant-page-yield-chart {
+  display: grid;
+  gap: 16px;
+  border-radius: 8px;
+}
+
+.yield-chart-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.yield-chart-head h2 {
+  margin-bottom: 8px;
+}
+
+.yield-chart-head p:not(.eyebrow) {
+  max-width: 720px;
+  margin: 0;
+  color: #3f4d43;
+  line-height: 1.6;
+}
+
+.yield-chart-head > span {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border: 1px solid #dfe7d8;
+  border-radius: 999px;
+  color: var(--leaf-dark);
+  background: #fff;
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.yield-chart-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.32fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.yield-chart-frame {
+  overflow: hidden;
+  min-height: 260px;
+  border: 1px solid #dfe7d8;
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.95), rgba(244, 248, 239, 0.88));
+}
+
+.yield-chart-frame svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+}
+
+.yield-chart-gridline line {
+  stroke: #e0e8d9;
+  stroke-width: 1;
+}
+
+.yield-chart-gridline text,
+.yield-chart-point text {
+  fill: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 800;
+}
+
+.yield-chart-band {
+  fill: rgba(223, 123, 79, 0.16);
+  stroke: rgba(223, 123, 79, 0.24);
+  stroke-width: 1;
+}
+
+.yield-chart-line {
+  fill: none;
+  stroke: url("#yield-line-gradient");
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.yield-chart-point circle {
+  fill: #fffdf8;
+  stroke: var(--leaf-dark);
+  stroke-width: 2;
+}
+
+.yield-chart-stats {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.yield-chart-stats div {
+  padding: 11px;
+  border: 1px solid #dfe7d8;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.yield-chart-stats dt {
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.yield-chart-stats dd {
+  margin: 0;
+  color: var(--leaf-dark);
+  font-family: var(--font-display);
+  font-size: 1.18rem;
+  font-weight: 750;
+  line-height: 1.1;
+}
+
+.yield-chart-method {
+  margin: 0;
+  color: #536255;
+  font-size: 0.82rem;
+  line-height: 1.55;
 }
 
 .plant-comparison-table {
@@ -2636,6 +2768,14 @@ fieldset:nth-of-type(2) .segmented {
     font-weight: 850;
     text-transform: uppercase;
     letter-spacing: 0.06em;
+  }
+
+  .yield-chart-head {
+    flex-direction: column;
+  }
+
+  .yield-chart-layout {
+    grid-template-columns: 1fr;
   }
 
   .screener-search {
