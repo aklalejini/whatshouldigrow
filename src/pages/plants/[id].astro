@@ -91,6 +91,36 @@ function comparisonTokens(entry) {
 }
 
 const plantTokens = comparisonTokens(plant);
+
+function peerReasonForPlant(candidate, context) {
+  const candidateMetrics = plantMetrics[candidate.id] ?? {};
+  const candidateYield = candidateMetrics.yieldLbsMax;
+  const plantYield = metrics.yieldLbsMax;
+  if (context.sharedNameTokens > 0) {
+    return "Same crop family or cultivar set; compare yield, spacing, and source availability.";
+  }
+  if (candidateYield !== null && candidateYield !== undefined && plantYield !== null && plantYield !== undefined) {
+    if (candidateYield > plantYield * 1.2) return "Higher sourced pound-return range with similar planning context.";
+    if (candidateYield < plantYield * 0.8) return "Lower pound-return range, but may win on fit, flavor, or form.";
+  }
+  if (
+    candidateMetrics.matureSpreadFtMax !== null
+    && candidateMetrics.matureSpreadFtMax !== undefined
+    && metrics.matureSpreadFtMax !== null
+    && metrics.matureSpreadFtMax !== undefined
+    && candidateMetrics.matureSpreadFtMax < metrics.matureSpreadFtMax * 0.75
+  ) {
+    return "Smaller mature footprint for tighter beds or mixed plantings.";
+  }
+  if (candidate.type === plant.type && context.sharedGoals > 0) {
+    return `Same form with ${context.sharedGoals} overlapping goal${context.sharedGoals === 1 ? "" : "s"}.`;
+  }
+  if (context.sharedSun > 0 && context.sharedSoils > 0) {
+    return "Similar light and soil needs; practical substitute in the same site.";
+  }
+  return "Comparable database profile; check site fit before choosing.";
+}
+
 const comparablePlants = plants
   .filter((candidate) => candidate.id !== plant.id)
   .map((candidate) => {
@@ -106,7 +136,11 @@ const comparablePlants = plants
       + sharedSoils
       + (candidate.water === plant.water ? 1.2 : 0)
       + (rangesOverlap(plant, candidate) ? 1 : 0);
-    return { candidate, score, sharedGoals };
+    return {
+      candidate,
+      score,
+      reason: peerReasonForPlant(candidate, { sharedGoals, sharedNameTokens, sharedSun, sharedSoils })
+    };
   })
   .filter(({ score }) => score > 3)
   .sort((a, b) => b.score - a.score || a.candidate.name.localeCompare(b.candidate.name))
@@ -179,6 +213,14 @@ function buildYieldChart(curve) {
       y: yFor(point.mid),
       label: metricRange(point.min, point.max, " lb")
     })),
+    bandLabel: { x: left + 10, y: top + 18 },
+    lineLabel: {
+      x: Math.max(left + 8, Math.min(width - 150, xFor(curve.length - 1) - 138)),
+      y: Math.max(top + 18, yFor(curve[curve.length - 1].mid) - 10)
+    },
+    establishmentLabel: curve[0]?.max === 0
+      ? { x: left + 8, y: top + plotHeight - 12 }
+      : null,
     ticks: [0, 0.25, 0.5, 0.75, 1].map((ratio) => ({
       y: top + plotHeight - plotHeight * ratio,
       label: `${metricNumber(maxYield * ratio)} lb`
@@ -200,12 +242,26 @@ const yieldConfidenceLabel = metrics.yieldLbsConfidence
 const yieldYearOne = yieldCurve.find((point) => point.year === 1);
 const yieldYearFive = yieldCurve.find((point) => point.year === 5);
 const yieldYearTen = yieldCurve.find((point) => point.year === 10);
-const heroFacts = [
+const yieldYearOneNote = yieldYearOne?.max === 0
+  ? "Establishment year: focus on roots before harvest."
+  : "First-year estimate from the sourced curve.";
+const harvestInsight = hasPoundYield
+  ? `Harvest window: ${plant.harvest}. Once established, the current pound-return model uses ${metricDisplay.yieldLbs ?? "the sourced yield range"} with a harvest window of ${metricDisplay.harvestWindow ?? "seasonal timing"}.`
+  : `Timing: ${plant.harvest}. This profile tracks ${metricDisplay.output ?? "the listed output range"} with a harvest or display window of ${metricDisplay.harvestWindow ?? "seasonal timing"} where defensible.`;
+const returnFact = { label: primaryReturnLabel, value: primaryReturnValue ?? "Needs source", featured: hasPoundYield };
+const supportingHeroFacts = [
   { label: "Zones", value: `${plant.zones[0]}-${plant.zones[1]}` },
   { label: "First output", value: metricDisplay.firstOutput ?? "Needs source" },
-  { label: "Spacing", value: metricDisplay.spacing ?? "Needs source" },
-  { label: primaryReturnLabel, value: primaryReturnValue ?? "Needs source" }
+  { label: "Spacing", value: metricDisplay.spacing ?? "Needs source" }
 ];
+const heroFacts = hasPoundYield
+  ? [returnFact, ...supportingHeroFacts]
+  : [...supportingHeroFacts, returnFact];
+const cultivarRelationshipEntries = relationshipEntries.filter(({ relationship }) => (
+  /pollinat|cultivar|compatible|fruit set|another/i.test(`${relationship.id} ${relationship.note}`)
+));
+const cultivarRelationshipIds = new Set(cultivarRelationshipEntries.map(({ relationship }) => relationship.id));
+const nearbyRelationshipEntries = relationshipEntries.filter(({ relationship }) => !cultivarRelationshipIds.has(relationship.id));
 const plantJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -264,7 +320,7 @@ const plantJsonLd = {
       </nav>
 
       <article class="plant-page">
-        <a class="back-link" href="/">Back to plant matcher</a>
+        <a class="back-link" href="/#screener">Browse all plants</a>
 
         <header class="plant-page-hero">
           <figure
@@ -280,11 +336,21 @@ const plantJsonLd = {
             <p class="plant-page-dek">{plant.notes}</p>
             <div class="plant-page-key-stats" aria-label="Plant research snapshot">
               {heroFacts.map((fact) => (
-                <div>
+                <div class={fact.featured ? "is-primary" : ""}>
                   <span>{fact.label}</span>
                   <strong>{fact.value}</strong>
                 </div>
               ))}
+            </div>
+            <div class="plant-page-hero-actions">
+              {partnerSearchUrl && (
+                <a class="plant-page-action is-primary" href={partnerSearchUrl} target="_blank" rel="noopener noreferrer">
+                  Check {partnerName}
+                </a>
+              )}
+              <button class="plant-page-action is-secondary" type="button" data-print-profile>
+                Print profile
+              </button>
             </div>
             <div class="plant-page-tags" aria-label="Plant traits">
               {plant.traits.map((trait) => <span>{trait}</span>)}
@@ -324,10 +390,7 @@ const plantJsonLd = {
               <div><dt>First output</dt><dd>{metricDisplay.firstOutput ?? "Needs source"}</dd></div>
               <div><dt>Best for</dt><dd class="plant-page-chip-list">{plant.goals.map((goal) => <span>{formatGoal(goal)}</span>)}</dd></div>
             </dl>
-            <p>
-              Use this profile to compare {plant.type}s by site fit, harvest timing,
-              trait value, and partner/source availability.
-            </p>
+            <p>{harvestInsight}</p>
             <div class="plant-page-source-action">
               <span>Source listing: {partnerName}</span>
               {partnerSearchUrl ? (
@@ -349,7 +412,8 @@ const plantJsonLd = {
               <div><dt>Mature size</dt><dd>{metricDisplay.matureSize ?? "Needs source"}</dd></div>
               <div><dt>Spacing</dt><dd>{metricDisplay.spacing ?? "Needs source"}</dd></div>
               <div><dt>Productive life</dt><dd>{metricDisplay.lifespan ?? "Needs source"}</dd></div>
-              <div><dt>Difficulty</dt><dd>{metricDisplay.difficulty ?? "-"} difficulty, {metricDisplay.reliability ?? "-"} reliability</dd></div>
+              <div><dt>Difficulty</dt><dd>{metricDisplay.difficulty ?? "Needs source"}</dd></div>
+              <div><dt>Reliability</dt><dd>{metricDisplay.reliability ?? "Needs source"}</dd></div>
               <div><dt>Data quality</dt><dd>{metricDisplay.confidence ?? "Needs review"} profile, {yieldConfidenceLabel}</dd></div>
             </dl>
             <p>
@@ -388,7 +452,12 @@ const plantJsonLd = {
                       </g>
                     ))}
                     <polygon class="yield-chart-band" points={yieldChart.bandPoints}></polygon>
+                    <text class="yield-chart-band-label" x={yieldChart.bandLabel.x} y={yieldChart.bandLabel.y}>Source range</text>
                     <polyline class="yield-chart-line" points={yieldChart.linePoints}></polyline>
+                    <text class="yield-chart-line-label" x={yieldChart.lineLabel.x} y={yieldChart.lineLabel.y}>Expected midpoint</text>
+                    {yieldChart.establishmentLabel && (
+                      <text class="yield-chart-annotation" x={yieldChart.establishmentLabel.x} y={yieldChart.establishmentLabel.y}>Y1 establishment</text>
+                    )}
                     {yieldChart.points.map((point) => (
                       <g class="yield-chart-point">
                         <circle cx={point.x} cy={point.y} r="3.8"></circle>
@@ -398,12 +467,19 @@ const plantJsonLd = {
                   </svg>
                 </div>
                 <dl class="yield-chart-stats">
-                  <div><dt>Year 1</dt><dd>{yieldYearOne ? metricRange(yieldYearOne.min, yieldYearOne.max, " lb") : "Needs source"}</dd></div>
+                  <div>
+                    <dt>Year 1</dt>
+                    <dd>{yieldYearOne ? metricRange(yieldYearOne.min, yieldYearOne.max, " lb") : "Needs source"}</dd>
+                    {yieldYearOne && <small>{yieldYearOneNote}</small>}
+                  </div>
                   <div><dt>Year 5</dt><dd>{yieldYearFive ? metricRange(yieldYearFive.min, yieldYearFive.max, " lb") : "Needs source"}</dd></div>
                   <div><dt>Year 10</dt><dd>{yieldYearTen ? metricRange(yieldYearTen.min, yieldYearTen.max, " lb") : "Needs source"}</dd></div>
                   <div><dt>10-year total</dt><dd>{metricDisplay.tenYearYieldLbs ?? "Needs source"}</dd></div>
                 </dl>
               </div>
+              <p class="yield-chart-caption">
+                Shaded band shows the sourced low-to-high pound-yield range. The line tracks the midpoint for quick comparison.
+              </p>
               <p class="yield-chart-method">
                 Method: {metrics.yieldLbsMethod}. Annual crops assume one comparable planting per year;
                 perennial crops ramp from first bearing to full production.
@@ -438,8 +514,9 @@ const plantJsonLd = {
                   <span role="columnheader">First output</span>
                   <span role="columnheader">Yield (lbs)</span>
                   <span role="columnheader">Difficulty</span>
+                  <span role="columnheader">Why it is a peer</span>
                 </div>
-                {comparablePlants.map(({ candidate }) => {
+                {comparablePlants.map(({ candidate, reason }) => {
                   const candidateMetrics = plantMetrics[candidate.id]?.display ?? {};
                   return (
                     <a class="plant-comparison-row" href={plantUrl(candidate)} role="row">
@@ -448,6 +525,7 @@ const plantJsonLd = {
                       <span role="cell" data-label="First output">{candidateMetrics.firstOutput ?? "Needs source"}</span>
                       <span role="cell" data-label="Yield (lbs)">{candidateMetrics.yieldLbs ?? "Needs source"}</span>
                       <span role="cell" data-label="Difficulty">{candidateMetrics.difficulty ?? "-"}</span>
+                      <span role="cell" data-label="Why peer">{reason}</span>
                     </a>
                   );
                 })}
@@ -459,7 +537,28 @@ const plantJsonLd = {
             <section class="detail-panel relationship-panel plant-page-relationships">
               <h2>Companion Plants & Pairings</h2>
               <div class="relationship-list">
-                {relationshipEntries.map(({ relationship, relatedPlants }) => {
+                {cultivarRelationshipEntries.length > 0 && <h3>Compatible Cultivars</h3>}
+                {cultivarRelationshipEntries.map(({ relationship, relatedPlants }) => {
+                  const visiblePlants = relatedPlants.slice(0, 8);
+                  const moreCount = relatedPlants.length - visiblePlants.length;
+                  return (
+                    <article class="relationship-item">
+                      <div class="relationship-head">
+                        <span>{relationshipTypeLabels[relationship.type] ?? sentenceCase(relationship.type)}</span>
+                        <strong>{sentenceCase(relationship.strength ?? "noted")}</strong>
+                      </div>
+                      <p>{relationship.note}</p>
+                      <div class="relationship-tags">
+                        {visiblePlants.map((relatedPlant) => (
+                          <a href={plantUrl(relatedPlant)}>{relatedPlant.name}</a>
+                        ))}
+                        {moreCount > 0 && <span>+{moreCount} more</span>}
+                      </div>
+                    </article>
+                  );
+                })}
+                {nearbyRelationshipEntries.length > 0 && <h3>Plant Nearby</h3>}
+                {nearbyRelationshipEntries.map(({ relationship, relatedPlants }) => {
                   const visiblePlants = relatedPlants.slice(0, 8);
                   const moreCount = relatedPlants.length - visiblePlants.length;
                   return (
@@ -511,5 +610,10 @@ const plantJsonLd = {
         </div>
       </article>
     </main>
+    <script>
+      document.querySelectorAll("[data-print-profile]").forEach((button) => {
+        button.addEventListener("click", () => window.print());
+      });
+    </script>
   </body>
 </html>
