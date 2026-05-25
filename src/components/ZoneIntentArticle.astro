@@ -1,0 +1,140 @@
+---
+import plantArtEntries from "../data/plantArt.json";
+import {
+  plantArtEntry,
+  plantKind,
+  plantPhotoStyle,
+  plantUrl,
+  sentenceCase
+} from "../lib/plantUtils";
+import {
+  zonePageAdvice,
+  zonePageStats,
+  zonePlantSummary
+} from "../lib/zonePageData";
+
+const { target, entries, relatedTargets = [] } = Astro.props;
+const featuredEntries = entries.slice(0, 24);
+const stats = zonePageStats(entries);
+const advice = zonePageAdvice(target);
+const familyPath = target.family === "what-to-plant-now" ? target.path : `/${target.family}/`;
+---
+
+<article class="hub-page zone-intent-page">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Plant by ZIP</a>
+    <span aria-hidden="true">/</span>
+    <a href={familyPath}>{target.family.replaceAll("-", " ")}</a>
+    <span aria-hidden="true">/</span>
+    <span>{target.zone.toUpperCase()}</span>
+  </nav>
+
+  <header class="hub-hero zone-intent-hero">
+    <div>
+      <p class="eyebrow">{target.eyebrow}</p>
+      <h1>{target.title}</h1>
+      <p>{target.summary}</p>
+      <div class="hub-actions">
+        <a class="plant-page-action is-primary" href={target.ctaHref}>{target.ctaLabel}</a>
+        <a class="plant-page-action is-secondary" href="/#screener">Open plant screener</a>
+      </div>
+    </div>
+    <dl class="hub-stats" aria-label={`${target.shortTitle} collection stats`}>
+      <div>
+        <dt>Zone fits</dt>
+        <dd>{stats.matches}</dd>
+      </div>
+      <div>
+        <dt>Plant forms</dt>
+        <dd>{stats.types}</dd>
+      </div>
+      <div>
+        <dt>Timing cues</dt>
+        <dd>{stats.sourced}</dd>
+      </div>
+      <div>
+        <dt>Low water</dt>
+        <dd>{stats.lowWater}</dd>
+      </div>
+    </dl>
+  </header>
+
+  <section class="hub-section" aria-labelledby="zone-advice-title">
+    <div class="hub-section-head">
+      <div>
+        <p class="eyebrow">How to use this page</p>
+        <h2 id="zone-advice-title">Start here, then verify your exact ZIP.</h2>
+      </div>
+      <p>
+        These pages are generated from Plant by ZIP's plant database and metric fields. They are meant to be useful
+        zone-level guides, not duplicate pages for every ZIP code.
+      </p>
+    </div>
+    <div class="zone-advice-grid">
+      {advice.map((item) => (
+        <article>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="hub-section" aria-labelledby="zone-featured-title">
+    <div class="hub-section-head">
+      <div>
+        <p class="eyebrow">Database-backed picks</p>
+        <h2 id="zone-featured-title">{featuredEntries.length} useful options for {target.zone.toUpperCase()}</h2>
+      </div>
+      <p>
+        Sorted by hardiness fit, sourced planning data, water practicality, and relevance to this page's intent.
+      </p>
+    </div>
+
+    <div class="hub-card-grid">
+      {featuredEntries.map(({ plant, metrics, timing }) => {
+        const artEntry = plantArtEntry(plant, plantArtEntries);
+        const hasImage = Boolean(artEntry?.image);
+        const kind = plantKind(plant);
+        return (
+          <a class="hub-plant-card zone-plant-card" href={plantUrl(plant)}>
+            <figure
+              class={`plant-visual hub-plant-visual ${kind} ${artEntry?.id ?? "generic-fruit"} ${hasImage ? "photo-plate" : ""}`}
+              aria-label={`${plant.name} botanical plate`}
+              style={plantPhotoStyle(artEntry)}
+            >
+              {!hasImage && <span class="plant-visual-icon"></span>}
+            </figure>
+            <div>
+              <span>{sentenceCase(plant.type)}</span>
+              <h3>{plant.name}</h3>
+              <p>{zonePlantSummary(plant, metrics, timing)}</p>
+              <div class="hub-card-tags">
+                <span>{plant.harvest}</span>
+                <span>{plant.sun.map(sentenceCase).join("/")}</span>
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="hub-section hub-crosslinks" aria-labelledby="zone-crosslinks-title">
+    <div class="hub-section-head">
+      <div>
+        <p class="eyebrow">Related zone guides</p>
+        <h2 id="zone-crosslinks-title">More crawlable planning paths</h2>
+      </div>
+      <p>These pages expose high-intent zone and season collections without creating thin ZIP-code permutations.</p>
+    </div>
+    <div class="home-hub-grid">
+      {relatedTargets.map((link) => (
+        <a href={link.path}>
+          <span>{link.shortTitle}</span>
+          <strong>{link.description}</strong>
+        </a>
+      ))}
+    </div>
+  </section>
+</article>

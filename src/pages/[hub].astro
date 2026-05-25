@@ -1,4 +1,5 @@
 ---
+import AnalyticsEvents from "../components/AnalyticsEvents.astro";
 import plantArtEntries from "../data/plantArt.json";
 import plantMetrics from "../data/plantMetrics.json";
 import plants from "../data/plants.json";
@@ -24,6 +25,7 @@ import {
   plantUrl,
   sentenceCase
 } from "../lib/plantUtils";
+import { featuredZoneInternalLinks } from "../lib/zonePageData";
 import "../styles/global.css";
 
 export function getStaticPaths() {
@@ -41,6 +43,7 @@ const featuredEntries = hubEntries.slice(0, 24);
 const sourcedYieldCount = hubEntries.filter(({ metrics }) => isSourcedValue(metrics.display?.yieldLbs)).length;
 const sourceReadyCount = hubEntries.filter(({ metrics }) => isSourcedValue(metrics.display?.firstOutput)).length;
 const hubLinks = hubInternalLinks().filter((link) => link.href !== hub.path);
+const zoneGuideLinks = featuredZoneInternalLinks();
 const isCalendarHub = hub.slug === "planting-calendar";
 const matcherTabClass = isCalendarHub ? "site-tab" : "site-tab is-active";
 const calendarTabClass = isCalendarHub ? "site-tab is-active" : "site-tab";
@@ -203,8 +206,17 @@ const itemListJsonLd = {
               </a>
             ))}
           </div>
+          <div class="home-hub-grid">
+            {zoneGuideLinks.map((link) => (
+              <a href={link.href}>
+                <span>{link.title}</span>
+                <strong>{link.description}</strong>
+              </a>
+            ))}
+          </div>
         </section>
       </article>
     </main>
+    <AnalyticsEvents pageType="hub" topic={hub.slug} />
   </body>
 </html>

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import ArticleShare from "../../components/ArticleShare.astro";
+import AnalyticsEvents from "../../components/AnalyticsEvents.astro";
 import {
   DEFAULT_SOCIAL_IMAGE,
   SITE_DESCRIPTION,
@@ -117,5 +118,6 @@ const articleJsonLd = {
         />
       </article>
     </main>
+    <AnalyticsEvents pageType="blog_article" topic={post.data.slug} />
   </body>
 </html>

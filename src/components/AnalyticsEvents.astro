@@ -1,0 +1,108 @@
+---
+const {
+  pageType = "",
+  plantId = "",
+  plantName = "",
+  topic = "",
+  zone = ""
+} = Astro.props;
+
+const pageContext = {
+  page_type: pageType,
+  plant_id: plantId,
+  plant_name: plantName,
+  topic,
+  zone
+};
+---
+
+<script define:vars={{ pageContext }}>
+  (function () {
+    function compact(value) {
+      return value === null || value === undefined || value === "" ? undefined : value;
+    }
+
+    function safeParams(params) {
+      var cleaned = {};
+      Object.keys(params || {}).forEach(function (key) {
+        if (/email|zip|postal/i.test(key)) return;
+        var value = compact(params[key]);
+        if (value === undefined) return;
+        cleaned[key] = value;
+      });
+      return cleaned;
+    }
+
+    function track(name, params) {
+      if (!name) return;
+      var payload = safeParams(Object.assign({}, window.__plantByZipPageContext || {}, params || {}));
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(Object.assign({ event: name }, payload));
+      window.__plantByZipEvents = window.__plantByZipEvents || [];
+      window.__plantByZipEvents.push({ name, event: name, params: payload });
+      if (typeof window.gtag === "function") {
+        window.gtag("event", name, payload);
+      }
+    }
+
+    window.__plantByZipPageContext = safeParams(pageContext || {});
+    window.plantByZipTrack = track;
+
+    if (!window.__plantByZipAnalyticsReady) {
+      window.__plantByZipAnalyticsReady = true;
+      document.addEventListener("click", function (event) {
+        var target = event.target;
+        if (!target || !target.closest) return;
+
+        var printButton = target.closest("[data-print-profile]");
+        if (printButton) {
+          track("print_profile", {
+            plant_id: printButton.getAttribute("data-plant-id") || "",
+            placement: "plant_profile"
+          });
+        }
+
+        var shareButton = target.closest("[data-native-share], [data-copy-share]");
+        if (shareButton) {
+          track("share_click", {
+            method: shareButton.hasAttribute("data-native-share") ? "native" : "copy",
+            placement: shareButton.closest("[data-share-root]") ? "article" : "tool"
+          });
+        }
+
+        var link = target.closest("a[href]");
+        if (!link) return;
+
+        if (link.closest("[data-share-root]")) {
+          track("share_click", {
+            method: (link.textContent || "link").trim().toLowerCase(),
+            placement: "article"
+          });
+        }
+
+        var href = link.getAttribute("href") || "";
+        var url;
+        try {
+          url = new URL(href, window.location.href);
+        } catch (error) {
+          return;
+        }
+
+        if (url.origin !== window.location.origin || /\bsponsored\b/i.test(link.getAttribute("rel") || "")) {
+          track("outbound_partner_click", {
+            link_host: url.host,
+            placement: link.getAttribute("data-partner-placement") || (link.closest(".plant-checklist-item") ? "plant_checklist" : "site"),
+            link_text: (link.textContent || "").trim().slice(0, 80)
+          });
+        }
+      });
+    }
+
+    if (pageContext && pageContext.page_type === "plant_profile") {
+      track("plant_profile_view", {
+        plant_id: pageContext.plant_id,
+        plant_name: pageContext.plant_name
+      });
+    }
+  })();
+</script>

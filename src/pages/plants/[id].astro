@@ -1,4 +1,5 @@
 ---
+import AnalyticsEvents from "../../components/AnalyticsEvents.astro";
 import plants from "../../data/plants.json";
 import partners from "../../data/affiliatePartners.json";
 import plantArtEntries from "../../data/plantArt.json";
@@ -402,11 +403,14 @@ const breadcrumbJsonLd = {
             </div>
             <div class="plant-page-hero-actions">
               {partnerSearchUrl && (
-                <a class="plant-page-action is-primary" href={partnerSearchUrl} target="_blank" rel={partnerLinkRel}>
+                <a class="plant-page-action is-primary" href={partnerSearchUrl} target="_blank" rel={partnerLinkRel} data-partner-placement="plant_profile_hero">
                   {partnerActionLabel}
                 </a>
               )}
-              <button class="plant-page-action is-secondary" type="button" data-print-profile>
+              <button class="plant-page-action is-secondary" type="button" data-save-plant data-plant-id={plant.id} data-plant-name={plant.name} data-plant-url={plantUrl(plant)}>
+                Save plant
+              </button>
+              <button class="plant-page-action is-secondary" type="button" data-print-profile data-plant-id={plant.id}>
                 Print profile
               </button>
             </div>
@@ -454,7 +458,7 @@ const breadcrumbJsonLd = {
             <div class="plant-page-source-action">
               <span>{partnerSourceLabel}: {partnerName}</span>
               {partnerSearchUrl ? (
-                <a class="plant-page-action" href={partnerSearchUrl} target="_blank" rel={partnerLinkRel}>
+                <a class="plant-page-action" href={partnerSearchUrl} target="_blank" rel={partnerLinkRel} data-partner-placement="plant_profile_harvest">
                   {partnerActionLabel}
                 </a>
               ) : (
@@ -495,7 +499,7 @@ const breadcrumbJsonLd = {
                     <p>{item.use}</p>
                   </div>
                   {item.affiliateUrl ? (
-                    <a class="plant-checklist-link" href={item.affiliateUrl} target="_blank" rel="sponsored noopener noreferrer" aria-label={`View ${item.name}`}>
+                    <a class="plant-checklist-link" href={item.affiliateUrl} target="_blank" rel="sponsored noopener noreferrer" aria-label={`View ${item.name}`} data-partner-placement="plant_checklist">
                       View
                     </a>
                   ) : (
@@ -715,7 +719,52 @@ const breadcrumbJsonLd = {
         </div>
       </article>
     </main>
+    <AnalyticsEvents pageType="plant_profile" plantId={plant.id} plantName={plant.name} />
     <script>
+      const savedPlantsKey = "plantbyzip.savedPlants.v1";
+
+      function savedPlantEntries() {
+        try {
+          return JSON.parse(window.localStorage?.getItem(savedPlantsKey) || "[]");
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function writeSavedPlantEntries(entries) {
+        try {
+          window.localStorage?.setItem(savedPlantsKey, JSON.stringify(entries));
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      document.querySelectorAll("[data-save-plant]").forEach((button) => {
+        const plantId = button.getAttribute("data-plant-id");
+        const isAlreadySaved = savedPlantEntries().some((entry) => entry.id === plantId);
+        if (isAlreadySaved) button.textContent = "Plant saved";
+
+        button.addEventListener("click", () => {
+          const existing = savedPlantEntries().filter((entry) => entry.id !== plantId);
+          const entry = {
+            id: plantId,
+            name: button.getAttribute("data-plant-name") || document.title,
+            url: button.getAttribute("data-plant-url") || window.location.pathname,
+            savedAt: new Date().toISOString()
+          };
+          const saved = writeSavedPlantEntries([entry, ...existing].slice(0, 50));
+          button.textContent = "Plant saved";
+          if (typeof window.plantByZipTrack === "function") {
+            window.plantByZipTrack("save_plan", {
+              action: "save_profile_plant",
+              plant_id: entry.id,
+              storage_available: saved
+            });
+          }
+        });
+      });
+
       document.querySelectorAll("[data-print-profile]").forEach((button) => {
         button.addEventListener("click", () => window.print());
       });

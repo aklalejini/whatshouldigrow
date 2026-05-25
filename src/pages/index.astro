@@ -1,11 +1,13 @@
 ---
 import { getCollection } from "astro:content";
+import AnalyticsEvents from "../components/AnalyticsEvents.astro";
 import plants from "../data/plants.json";
 import partners from "../data/affiliatePartners.json";
 import plantArtEntries from "../data/plantArt.json";
 import plantMetrics from "../data/plantMetrics.json";
 import plantRelationships from "../data/plantRelationships.json";
 import { hubInternalLinks } from "../lib/hubData";
+import { featuredZoneInternalLinks } from "../lib/zonePageData";
 import {
   DEFAULT_SOCIAL_IMAGE,
   SITE_DESCRIPTION,
@@ -17,6 +19,7 @@ import "../styles/global.css";
 
 const plantCount = Array.isArray(plants) ? plants.length : 0;
 const hubLinks = hubInternalLinks();
+const zoneGuideLinks = featuredZoneInternalLinks();
 const cleanClientPlantMetrics = (value) => {
   if (Array.isArray(value)) return value.map(cleanClientPlantMetrics);
   if (value && typeof value === "object") {
@@ -338,10 +341,39 @@ const webAppJsonLd = {
         <div id="climate-panel" class="climate-panel" hidden></div>
         <ol id="results" class="results-grid"></ol>
         <div class="results-actions">
-          <button id="save-list" class="save-list-button" type="button" hidden>Save this list</button>
+          <button id="save-list" class="save-list-button" type="button" hidden>Save plan</button>
           <button id="share-plan" class="share-plan-button" type="button" hidden>Share plan</button>
           <button id="see-more" class="see-more-button" type="button" hidden>See more results</button>
         </div>
+        <section id="saved-plan-panel" class="saved-plan-panel" aria-live="polite" hidden>
+          <div class="saved-plan-head">
+            <div>
+              <p class="eyebrow">Saved garden plan</p>
+              <h3 id="saved-plan-title">Your saved list</h3>
+              <p id="saved-plan-meta">Saved locally in this browser.</p>
+            </div>
+            <span id="saved-plan-count">0 plants</span>
+          </div>
+          <ol id="saved-plan-list" class="saved-plan-list"></ol>
+          <form id="email-plan-form" class="email-plan-form" data-email-endpoint="">
+            <div>
+              <label for="email-plan-input">Email this plan</label>
+              <p>Opens your mail app now; a provider endpoint can be connected later for automatic delivery.</p>
+            </div>
+            <input id="email-plan-input" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
+            <label class="email-consent">
+              <input id="email-plan-consent" type="checkbox" />
+              <span>Use this address only for this saved plan request.</span>
+            </label>
+            <button class="plant-page-action is-primary" type="submit">Email plan</button>
+            <p id="email-plan-status" class="email-plan-status" role="status" aria-live="polite"></p>
+          </form>
+          <div class="saved-plan-actions">
+            <button id="saved-plan-download" type="button">Download .txt</button>
+            <button id="saved-plan-print" type="button">Print</button>
+            <button id="saved-plan-clear" type="button">Clear saved plan</button>
+          </div>
+        </section>
       </section>
 
       <section class="public-notes" aria-labelledby="public-notes-title">
@@ -360,8 +392,8 @@ const webAppJsonLd = {
           <article>
             <h3>Privacy basics</h3>
             <p>
-              The matcher does not ask for an account or save a garden profile. ZIP codes are used
-              in the browser to look up a USDA hardiness zone for the current search.
+              Saved plans stay in this browser and store zone, conditions, and plant IDs. ZIP codes are used
+              for lookup and are not saved in local plan storage.
             </p>
           </article>
           <article>
@@ -387,6 +419,14 @@ const webAppJsonLd = {
         </div>
         <div class="home-hub-grid">
           {hubLinks.map((link) => (
+            <a href={link.href}>
+              <span>{link.title}</span>
+              <strong>{link.description}</strong>
+            </a>
+          ))}
+        </div>
+        <div class="home-hub-grid">
+          {zoneGuideLinks.map((link) => (
             <a href={link.href}>
               <span>{link.title}</span>
               <strong>{link.description}</strong>
@@ -1081,6 +1121,7 @@ const webAppJsonLd = {
       </section>
     </main>
 
+    <AnalyticsEvents pageType="home" />
     <script is:inline type="application/json" id="plant-data" set:html={JSON.stringify(plants)}></script>
     <script is:inline type="application/json" id="partner-data" set:html={JSON.stringify(partners)}></script>
     <script is:inline type="application/json" id="plant-art-data" set:html={JSON.stringify(plantArtEntries)}></script>
@@ -1105,6 +1146,18 @@ const webAppJsonLd = {
       const seeMoreEl = document.getElementById("see-more");
       const saveListEl = document.getElementById("save-list");
       const sharePlanEl = document.getElementById("share-plan");
+      const savedPlanPanelEl = document.getElementById("saved-plan-panel");
+      const savedPlanTitleEl = document.getElementById("saved-plan-title");
+      const savedPlanMetaEl = document.getElementById("saved-plan-meta");
+      const savedPlanCountEl = document.getElementById("saved-plan-count");
+      const savedPlanListEl = document.getElementById("saved-plan-list");
+      const savedPlanDownloadEl = document.getElementById("saved-plan-download");
+      const savedPlanPrintEl = document.getElementById("saved-plan-print");
+      const savedPlanClearEl = document.getElementById("saved-plan-clear");
+      const emailPlanFormEl = document.getElementById("email-plan-form");
+      const emailPlanInputEl = document.getElementById("email-plan-input");
+      const emailPlanConsentEl = document.getElementById("email-plan-consent");
+      const emailPlanStatusEl = document.getElementById("email-plan-status");
       const zipEl = document.getElementById("zip");
       const zonePreviewEl = document.getElementById("zone-preview");
       const tabButtons = Array.from(document.querySelectorAll("[data-view]"));
@@ -1234,6 +1287,7 @@ const webAppJsonLd = {
       let currentRanked = [];
       let currentInputs = null;
       let currentPlanParams = null;
+      let savedPlan = null;
       let visibleCount = 12;
       let screenerSort = { key: "name", direction: "asc" };
       let screenerGroupedByType = false;
@@ -1266,6 +1320,7 @@ const webAppJsonLd = {
       };
       const screenerParamKeys = [...Object.keys(screenerParamMap), "ssort", "sdir", "sgroup"];
       const matcherParamKeys = ["zip", "sun", "soil", "water", "goal"];
+      const savedPlanStorageKey = "plantbyzip.savedPlan.v1";
       const matcherDefaults = {
         zip: "",
         sun: "full",
@@ -1548,6 +1603,12 @@ const webAppJsonLd = {
         { label: "Sedge", plural: "Sedges", terms: ["sedge"] }
       ];
 
+      function trackEvent(name, params = {}) {
+        if (typeof window.plantByZipTrack === "function") {
+          window.plantByZipTrack(name, params);
+        }
+      }
+
       function setLandingStarted(started = true) {
         appShellEl?.classList.toggle("has-started", started);
       }
@@ -1588,6 +1649,7 @@ const webAppJsonLd = {
           const viewHash = { blog: "#blog", calendar: "#calendar", screener: "#screener", "zone-map": "#zone-map" };
           const hash = viewHash[view] ?? window.location.pathname;
           history.replaceState(null, "", hash);
+          trackEvent(view === "calendar" ? "calendar_view" : "tool_tab_view", { tool: view, source: "tab" });
         });
       });
 
@@ -2067,6 +2129,199 @@ const webAppJsonLd = {
           return "Copied";
         }
         return "Copy this URL from the address bar";
+      }
+
+      function downloadTextFile(text, filename) {
+        const blob = new Blob([text], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function safeStorageGet(key) {
+        try {
+          return window.localStorage?.getItem(key) ?? null;
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function safeStorageSet(key, value) {
+        try {
+          window.localStorage?.setItem(key, value);
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      function safeStorageRemove(key) {
+        try {
+          window.localStorage?.removeItem(key);
+        } catch (error) {
+          // Local storage can be unavailable in private browsing; clearing is best-effort.
+        }
+      }
+
+      function savedPlanDateLabel(value) {
+        const date = value ? new Date(value) : new Date();
+        if (Number.isNaN(date.valueOf())) return "just now";
+        return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+      }
+
+      function savedPlanFileName(plan) {
+        const zone = String(plan?.zone ?? "zone").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        return `plant-by-zip-${zone}-plan.txt`;
+      }
+
+      function currentPlanSnapshot() {
+        if (!currentInputs || currentRanked.length === 0) return null;
+        return {
+          id: `plan-${Date.now()}`,
+          savedAt: new Date().toISOString(),
+          zone: currentInputs.zone,
+          goal: currentInputs.goal,
+          sun: currentInputs.sun,
+          soil: currentInputs.soil,
+          water: currentInputs.water,
+          plantCount: currentRanked.length,
+          visibleCount,
+          plants: currentRanked.slice(0, visibleCount).map((entry, index) => {
+            const fit = overallFit(entry.score);
+            return {
+              id: entry.plant.id,
+              name: entry.plant.name,
+              type: entry.plant.type,
+              fitPercent: fit.percent,
+              fitLabel: fit.label,
+              url: plantPagePath(entry.plant),
+              note: explainPlant(entry.plant, currentInputs)
+            };
+          })
+        };
+      }
+
+      function savedPlanText(plan) {
+        if (!plan) return "";
+        const header = [
+          "Plant by ZIP saved garden plan",
+          `Zone ${plan.zone} | ${formatGoal(plan.goal)} | ${sentenceCase(plan.sun)} sun | ${sentenceCase(plan.soil)} soil | ${sentenceCase(plan.water)} water`,
+          `Saved ${savedPlanDateLabel(plan.savedAt)}`,
+          "",
+          "Top plants"
+        ];
+        const plantLines = (plan.plants ?? []).map((plant, index) => (
+          `${index + 1}. ${plant.name} (${plant.fitPercent}% ${plant.fitLabel}) - ${plant.note}`
+        ));
+        return [...header, ...plantLines, "", "Use Plant by ZIP to refresh this plan with your latest ZIP and filters."].join("\n");
+      }
+
+      function renderSavedPlanPanel(plan) {
+        savedPlan = plan;
+        if (!plan) {
+          savedPlanPanelEl.hidden = true;
+          return;
+        }
+        const plantsForDisplay = plan.plants ?? [];
+        savedPlanPanelEl.hidden = false;
+        savedPlanTitleEl.textContent = `${formatGoal(plan.goal)} plan for zone ${plan.zone}`;
+        savedPlanMetaEl.textContent = `Saved ${savedPlanDateLabel(plan.savedAt)} in this browser. ZIP is not stored.`;
+        savedPlanCountEl.textContent = `${plantsForDisplay.length} ${plantsForDisplay.length === 1 ? "plant" : "plants"}`;
+        savedPlanListEl.innerHTML = plantsForDisplay.slice(0, 8).map((plant, index) => `
+          <li>
+            <span>${index + 1}</span>
+            <div>
+              <a href="${escapeHtml(plant.url)}">${escapeHtml(plant.name)}</a>
+              <p>${escapeHtml(plant.fitPercent)}% ${escapeHtml(plant.fitLabel)} / ${escapeHtml(plant.type)}</p>
+            </div>
+          </li>
+        `).join("");
+        emailPlanStatusEl.textContent = "";
+      }
+
+      function loadSavedPlan() {
+        const rawPlan = safeStorageGet(savedPlanStorageKey);
+        if (!rawPlan) return null;
+        try {
+          return JSON.parse(rawPlan);
+        } catch (error) {
+          safeStorageRemove(savedPlanStorageKey);
+          return null;
+        }
+      }
+
+      function saveCurrentPlan() {
+        const plan = currentPlanSnapshot();
+        if (!plan) return false;
+        const saved = safeStorageSet(savedPlanStorageKey, JSON.stringify(plan));
+        renderSavedPlanPanel(plan);
+        trackEvent("save_plan", {
+          zone: plan.zone,
+          goal: plan.goal,
+          plant_count: plan.plantCount,
+          visible_count: plan.visibleCount,
+          storage_available: saved
+        });
+        return saved;
+      }
+
+      async function submitEmailPlan(event) {
+        event.preventDefault();
+        const plan = savedPlan ?? currentPlanSnapshot();
+        if (!plan) {
+          emailPlanStatusEl.textContent = "Save a plan first.";
+          return;
+        }
+        const email = emailPlanInputEl.value.trim();
+        if (!emailPlanInputEl.checkValidity() || !email) {
+          emailPlanStatusEl.textContent = "Enter a valid email address.";
+          emailPlanInputEl.focus();
+          return;
+        }
+        if (!emailPlanConsentEl.checked) {
+          emailPlanStatusEl.textContent = "Confirm this address is only for this plan request.";
+          emailPlanConsentEl.focus();
+          return;
+        }
+
+        const endpoint = emailPlanFormEl.dataset.emailEndpoint?.trim();
+        const payload = {
+          email,
+          plan
+        };
+        trackEvent("email_signup", {
+          source: "saved_plan",
+          zone: plan.zone,
+          goal: plan.goal,
+          provider: endpoint ? "endpoint" : "mailto"
+        });
+
+        if (endpoint) {
+          emailPlanStatusEl.textContent = "Sending...";
+          try {
+            const response = await fetch(endpoint, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            });
+            if (!response.ok) throw new Error("Email endpoint failed");
+            emailPlanStatusEl.textContent = "Plan sent.";
+            emailPlanInputEl.value = "";
+            emailPlanConsentEl.checked = false;
+          } catch (error) {
+            emailPlanStatusEl.textContent = "Email service did not respond. Download or print this plan instead.";
+          }
+          return;
+        }
+
+        const mailto = new URL(`mailto:${email}`);
+        mailto.searchParams.set("subject", `Plant by ZIP plan for zone ${plan.zone}`);
+        mailto.searchParams.set("body", savedPlanText(plan));
+        window.location.href = mailto.toString();
+        emailPlanStatusEl.textContent = "Opened your mail app. Automatic delivery can be connected once an email provider is chosen.";
       }
 
       function metricFor(plant) {
@@ -2928,6 +3183,10 @@ function outputSortValue(metrics) {
         try {
           const zoneData = await lookupZone(zip);
           renderZoneMapForLookup(zoneData, zip);
+          trackEvent("zip_submit", {
+            tool: "zone_map",
+            zone: zoneData.zone
+          });
           return true;
         } catch (error) {
           zoneMapStatusEl.textContent = "The zone lookup did not respond. Try again in a moment.";
@@ -3879,6 +4138,11 @@ function outputSortValue(metrics) {
         calendarMonthFilter = month;
         calendarSeasonEl.value = "all";
         renderCalendar();
+        trackEvent("filter_apply", {
+          tool: "calendar",
+          action: month === "" ? "show_all_months" : "month_select",
+          month: month === "" ? "all" : calendarMonthLabels[Number(month)]
+        });
         const target = calendarCompactView() ? ".calendar-mobile-plan" : ".calendar-timeline";
         document.querySelector(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
       }
@@ -4211,6 +4475,15 @@ function outputSortValue(metrics) {
           calendarMonthFilter = "";
           calendarStatusEl.textContent = `Zone ${calendarZoneData.zone} calendar ready. Use preset views, plant groups, and varieties to narrow the timeline.`;
           renderCalendar();
+          trackEvent("zip_submit", {
+            tool: "calendar",
+            zone: calendarZoneData.zone
+          });
+          trackEvent("calendar_view", {
+            source: "zip_submit",
+            zone: calendarZoneData.zone,
+            event_count: calendarEvents.length
+          });
         } catch (error) {
           calendarZoneData = null;
           calendarFrost = null;
@@ -4260,10 +4533,20 @@ function outputSortValue(metrics) {
           calendarExpandVarietiesEl.checked = false;
           calendarMonthFilter = "";
           renderCalendar();
+          trackEvent("filter_apply", {
+            tool: "calendar",
+            action: "plant_group",
+            value: calendarPlantClassEl.value
+          });
         };
         const handleCalendarVarietyChange = () => {
           calendarMonthFilter = "";
           renderCalendar();
+          trackEvent("filter_apply", {
+            tool: "calendar",
+            action: "variety",
+            value: calendarVarietyEl.value === "all" ? "all" : "selected"
+          });
         };
         calendarPlantClassEl.addEventListener("input", handleCalendarPlantGroupChange);
         calendarPlantClassEl.addEventListener("change", handleCalendarPlantGroupChange);
@@ -4271,12 +4554,26 @@ function outputSortValue(metrics) {
         calendarVarietyEl.addEventListener("change", handleCalendarVarietyChange);
         calendarExpandVarietiesEl.addEventListener("input", () => {
           renderCalendar();
+          trackEvent("filter_apply", {
+            tool: "calendar",
+            action: calendarExpandVarietiesEl.checked ? "expand_varieties" : "collapse_varieties"
+          });
         });
-        calendarPrintEl.addEventListener("click", () => window.print());
+        calendarPrintEl.addEventListener("click", () => {
+          trackEvent("print_calendar", {
+            zone: calendarZoneData?.zone
+          });
+          window.print();
+        });
         [calendarSeasonEl, calendarMethodEl].forEach((control) => {
           control.addEventListener("input", () => {
             calendarMonthFilter = "";
             renderCalendar();
+            trackEvent("filter_apply", {
+              tool: "calendar",
+              action: control === calendarSeasonEl ? "season" : "method",
+              value: control.value
+            });
           });
         });
         window.addEventListener("resize", () => {
@@ -4591,10 +4888,19 @@ function outputSortValue(metrics) {
         history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}#screener`);
       }
 
+      function activeScreenerFilterCount() {
+        return screenerFilterEls.filter((control) => control.value).length;
+      }
+
       function handleScreenerFilterChange() {
         screenerVisibleLimit = screenerPageSize;
         writeScreenerUrl();
         renderScreener();
+        trackEvent("filter_apply", {
+          tool: "screener",
+          action: "filter_change",
+          filter_count: activeScreenerFilterCount()
+        });
       }
 
       function initializeScreener() {
@@ -4622,10 +4928,20 @@ function outputSortValue(metrics) {
           screenerVisibleLimit = screenerPageSize;
           writeScreenerUrl();
           renderScreener();
+          trackEvent("filter_apply", {
+            tool: "screener",
+            action: screenerGroupedByType ? "group_by_type" : "ungroup",
+            filter_count: activeScreenerFilterCount()
+          });
         });
         screenerMoreEl.addEventListener("click", () => {
           screenerVisibleLimit += screenerPageSize;
           renderScreener();
+          trackEvent("filter_apply", {
+            tool: "screener",
+            action: "show_more",
+            visible_count: screenerVisibleLimit
+          });
         });
         screenerResetEl.addEventListener("click", () => {
           screenerFilterEls.forEach((control) => {
@@ -4637,6 +4953,11 @@ function outputSortValue(metrics) {
           if (screenerTableWrapEl) screenerTableWrapEl.scrollLeft = 0;
           writeScreenerUrl();
           renderScreener();
+          trackEvent("filter_apply", {
+            tool: "screener",
+            action: "reset",
+            filter_count: 0
+          });
         });
         screenerSortButtons.forEach((button) => {
           button.addEventListener("click", () => {
@@ -4649,6 +4970,12 @@ function outputSortValue(metrics) {
             };
             writeScreenerUrl();
             renderScreener();
+            trackEvent("filter_apply", {
+              tool: "screener",
+              action: "sort",
+              sort_key: screenerSort.key,
+              sort_direction: screenerSort.direction
+            });
           });
         });
         renderScreener();
@@ -5077,11 +5404,25 @@ function outputSortValue(metrics) {
         saveListEl.hidden = false;
         sharePlanEl.hidden = false;
         renderVisibleResults();
+        trackEvent("tool_result_view", {
+          tool: "matcher",
+          zone: inputs.zone,
+          goal: inputs.goal,
+          sun: inputs.sun,
+          soil: inputs.soil,
+          water: inputs.water,
+          result_count: ranked.length
+        });
       }
 
       seeMoreEl.addEventListener("click", () => {
         visibleCount = Math.min(visibleCount + 12, currentRanked.length);
         renderVisibleResults();
+        trackEvent("filter_apply", {
+          tool: "matcher",
+          action: "show_more",
+          visible_count: visibleCount
+        });
       });
 
       resultsEl.addEventListener("toggle", (event) => {
@@ -5094,22 +5435,38 @@ function outputSortValue(metrics) {
 
       saveListEl.addEventListener("click", () => {
         if (!currentInputs || currentRanked.length === 0) return;
-        const lines = [
-          `Plant by ZIP - picks for ${currentInputs.zip} / zone ${currentInputs.zone}`,
-          "",
-          ...currentRanked.slice(0, visibleCount).map((entry, index) => {
-            const fit = overallFit(entry.score);
-            return `${index + 1}. ${entry.plant.name} (${fit.percent}% ${fit.label}) - ${explainPlant(entry.plant, currentInputs)}`;
-          })
-        ];
-        const blob = new Blob([lines.join("\n")], { type: "text/plain" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `plant-by-zip-${currentInputs.zip}.txt`;
-        link.click();
-        URL.revokeObjectURL(url);
+        saveCurrentPlan();
+        saveListEl.textContent = "Plan saved";
+        window.setTimeout(() => {
+          saveListEl.textContent = "Save plan";
+        }, 1800);
       });
+
+      savedPlanDownloadEl.addEventListener("click", () => {
+        if (!savedPlan) return;
+        downloadTextFile(savedPlanText(savedPlan), savedPlanFileName(savedPlan));
+        trackEvent("save_plan_download", {
+          zone: savedPlan.zone,
+          goal: savedPlan.goal
+        });
+      });
+
+      savedPlanPrintEl.addEventListener("click", () => {
+        if (!savedPlan) return;
+        trackEvent("print_saved_plan", {
+          zone: savedPlan.zone,
+          goal: savedPlan.goal
+        });
+        window.print();
+      });
+
+      savedPlanClearEl.addEventListener("click", () => {
+        safeStorageRemove(savedPlanStorageKey);
+        renderSavedPlanPanel(null);
+        trackEvent("save_plan_clear", {});
+      });
+
+      emailPlanFormEl.addEventListener("submit", submitEmailPlan);
 
       zipEl.addEventListener("input", () => {
         const zip = zipEl.value.trim();
@@ -5163,6 +5520,14 @@ function outputSortValue(metrics) {
           zonePreviewEl.textContent = `Zone ${zoneData.zone} detected`;
           const inputs = normalizedMatcherInputs(zoneData, planParams);
           currentPlanParams = planParams;
+          trackEvent("zip_submit", {
+            tool: "matcher",
+            zone: inputs.zone,
+            goal: inputs.goal,
+            sun: inputs.sun,
+            soil: inputs.soil,
+            water: inputs.water
+          });
           statusEl.textContent = planParams.soil === "not-sure" ? "Soil set to loam because you selected not sure." : "";
           if (writeUrl) writeMatcherUrl(planParams);
           renderResults(zoneData, inputs);
@@ -5185,6 +5550,12 @@ function outputSortValue(metrics) {
         if (!currentPlanParams) return;
         const originalText = sharePlanEl.textContent;
         const url = matcherUrlForPlan(currentPlanParams).toString();
+        trackEvent("share_click", {
+          method: "copy",
+          placement: "matcher_plan",
+          zone: currentInputs?.zone,
+          goal: currentInputs?.goal
+        });
         try {
           const status = await copyShareText(url);
           if (status) {
@@ -5205,6 +5576,8 @@ function outputSortValue(metrics) {
         event.preventDefault();
         runMatcher({ writeUrl: true, scrollToResults: true });
       });
+
+      renderSavedPlanPanel(loadSavedPlan());
 
       if (initialWantsMatcher) {
         applyMatcherPlanParams({

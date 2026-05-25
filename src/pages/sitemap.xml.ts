@@ -3,6 +3,7 @@ import plants from "../data/plants.json";
 import { HUB_PAGES, TRUST_PAGES } from "../lib/hubData";
 import { siteUrl } from "../lib/site";
 import { plantUrl } from "../lib/plantUtils";
+import { ZONE_PAGE_TARGETS } from "../lib/zonePageData";
 
 export async function GET() {
   const posts = await getCollection("blog");
@@ -11,6 +12,10 @@ export async function GET() {
     ...HUB_PAGES.map((hub) => ({
       loc: siteUrl(hub.path),
       priority: hub.slug === "planting-calendar" ? "0.9" : "0.85"
+    })),
+    ...ZONE_PAGE_TARGETS.map((page) => ({
+      loc: siteUrl(page.path),
+      priority: "0.82"
     })),
     ...TRUST_PAGES.map((page) => ({
       loc: siteUrl(page.path),
