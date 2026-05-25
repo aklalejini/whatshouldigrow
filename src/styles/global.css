@@ -2570,6 +2570,53 @@ fieldset:nth-of-type(2) .segmented {
   clip: rect(0, 0, 0, 0);
 }
 
+.calendar-mobile-plan {
+  display: none;
+}
+
+.calendar-mobile-empty {
+  margin: 0;
+  padding: 14px;
+  border: 1px solid #edf1e8;
+  border-radius: 12px;
+  color: var(--muted);
+  background: #fbfcf8;
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+
+.calendar-gantt-mobile-details {
+  display: grid;
+  gap: 10px;
+}
+
+.calendar-gantt-mobile-details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #dfe6d8;
+  border-radius: 12px;
+  color: var(--leaf-dark);
+  background: #fbfcf8;
+  font-size: 0.84rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.calendar-gantt-mobile-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.calendar-gantt-mobile-details summary strong {
+  color: var(--terracotta);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
 .calendar-layout {
   display: grid;
   grid-template-columns: minmax(240px, 0.34fr) minmax(0, 1fr);
@@ -4004,11 +4051,119 @@ fieldset:nth-of-type(2) .segmented {
   }
 
   .calendar-set-tabs {
+    flex-wrap: nowrap;
     justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+  }
+
+  .calendar-set-tabs button {
+    flex: 0 0 auto;
   }
 
   .calendar-heatmap {
     grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .calendar-mobile-plan {
+    display: grid;
+    gap: 10px;
+  }
+
+  .calendar-mobile-focus-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px;
+    border: 1px solid #dfe6d8;
+    border-radius: 14px;
+    background: #f3f8ee;
+  }
+
+  .calendar-mobile-focus-head h3 {
+    margin: 0;
+    color: var(--leaf-dark);
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1.06;
+    letter-spacing: 0;
+  }
+
+  .calendar-mobile-focus-head p:not(.eyebrow) {
+    margin: 5px 0 0;
+    color: #405246;
+    font-size: 0.82rem;
+    font-weight: 750;
+    line-height: 1.4;
+  }
+
+  .calendar-mobile-focus-head button {
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 0 10px;
+    border: 1px solid var(--leaf);
+    border-radius: 999px;
+    color: #fff;
+    background: var(--leaf);
+    font-size: 0.72rem;
+    font-weight: 900;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .calendar-mobile-actions {
+    display: grid;
+    gap: 8px;
+  }
+
+  .calendar-mobile-action {
+    display: grid;
+    gap: 7px;
+    padding: 12px;
+    border: 1px solid #edf1e8;
+    border-left: 4px solid #cfdac8;
+    border-radius: 14px;
+    background: #fff;
+  }
+
+  .calendar-mobile-action > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .calendar-mobile-date {
+    color: var(--terracotta);
+    font-size: 0.76rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .calendar-mobile-action h4 {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0;
+    color: var(--leaf-dark);
+    font-size: 0.94rem;
+    line-height: 1.25;
+  }
+
+  .calendar-mobile-action h4 .calendar-form-dot {
+    flex: 0 0 auto;
+    margin-top: 0.24em;
+  }
+
+  .calendar-mobile-action p {
+    margin: 0;
+    color: #405246;
+    font-size: 0.84rem;
+    font-weight: 800;
+    line-height: 1.35;
   }
 
   .calendar-timeline-head {
@@ -4344,9 +4499,31 @@ fieldset:nth-of-type(2) .segmented {
     justify-self: start;
   }
 
-  .calendar-now-list,
-  .calendar-heatmap {
+  .calendar-now-list {
     grid-template-columns: 1fr;
+  }
+
+  .calendar-heatmap {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .calendar-heatmap-cell {
+    min-height: 52px;
+    padding: 7px;
+  }
+
+  .calendar-gantt-months,
+  .calendar-gantt-row {
+    grid-template-columns: 136px minmax(600px, 1fr);
+    min-width: 736px;
+  }
+
+  .calendar-gantt-label {
+    padding: 8px;
+  }
+
+  .calendar-gantt-label strong {
+    font-size: 0.76rem;
   }
 
   .calendar-event-badges {

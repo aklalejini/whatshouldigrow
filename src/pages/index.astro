@@ -422,6 +422,28 @@ const webAppJsonLd = {
             </div>
           </section>
 
+          <section class="calendar-controls" aria-label="Calendar detail filters">
+            <label class="calendar-field" for="calendar-season">
+              <span>Detail window</span>
+              <select id="calendar-season">
+                <option value="all">Full year</option>
+                <option value="next">Next 45 days</option>
+                <option value="spring">Spring</option>
+                <option value="fall">Fall</option>
+              </select>
+            </label>
+            <label class="calendar-field" for="calendar-method">
+              <span>Method</span>
+              <select id="calendar-method">
+                <option value="all">All methods</option>
+                <option value="indoors">Start indoors</option>
+                <option value="direct">Direct sow</option>
+                <option value="transplant">Transplant</option>
+                <option value="nursery">Plant nursery stock</option>
+              </select>
+            </label>
+          </section>
+
           <section class="calendar-visual" aria-label="Year at a glance">
             <div class="calendar-visual-head">
               <div>
@@ -464,29 +486,8 @@ const webAppJsonLd = {
             </div>
 
             <div id="calendar-heatmap" class="calendar-heatmap" aria-label="Monthly planting activity"></div>
+            <div id="calendar-mobile-plan" class="calendar-mobile-plan" aria-live="polite"></div>
             <div id="calendar-gantt" class="calendar-gantt" aria-label="Planting timeline rows"></div>
-          </section>
-
-          <section class="calendar-controls" aria-label="Calendar detail filters">
-            <label class="calendar-field" for="calendar-season">
-              <span>Detail window</span>
-              <select id="calendar-season">
-                <option value="all">Full year</option>
-                <option value="next">Next 45 days</option>
-                <option value="spring">Spring</option>
-                <option value="fall">Fall</option>
-              </select>
-            </label>
-            <label class="calendar-field" for="calendar-method">
-              <span>Method</span>
-              <select id="calendar-method">
-                <option value="all">All methods</option>
-                <option value="indoors">Start indoors</option>
-                <option value="direct">Direct sow</option>
-                <option value="transplant">Transplant</option>
-                <option value="nursery">Plant nursery stock</option>
-              </select>
-            </label>
           </section>
 
           <section class="calendar-layout" aria-label="Planting calendar results">
@@ -790,6 +791,7 @@ const webAppJsonLd = {
       const calendarNowListEl = document.getElementById("calendar-now-list");
       const calendarVisualSummaryEl = document.getElementById("calendar-visual-summary");
       const calendarHeatmapEl = document.getElementById("calendar-heatmap");
+      const calendarMobilePlanEl = document.getElementById("calendar-mobile-plan");
       const calendarGanttEl = document.getElementById("calendar-gantt");
       const calendarResultsTitleEl = document.getElementById("calendar-results-title");
       const calendarSummaryEl = document.getElementById("calendar-summary");
@@ -1751,6 +1753,32 @@ function outputSortValue(metrics) {
         return months;
       }
 
+      function calendarMonthRange(month) {
+        return {
+          start: startOfCalendarDay(new Date(calendarDisplayYear, month, 1)),
+          end: startOfCalendarDay(new Date(calendarDisplayYear, month + 1, 0))
+        };
+      }
+
+      function calendarGroupsForMonth(events, month) {
+        const { start, end } = calendarMonthRange(month);
+        return groupCalendarEvents(events.filter((event) => calendarRangeOverlaps(event.start, event.end, start, end)));
+      }
+
+      function calendarFocusMonth(events) {
+        if (calendarMonthFilter !== "") return Number(calendarMonthFilter);
+        const today = calendarToday();
+        const currentMonth = today.getFullYear() === calendarDisplayYear ? today.getMonth() : 0;
+        if (calendarGroupsForMonth(events, currentMonth).length > 0) return currentMonth;
+        const nextGroup = groupCalendarEvents(events).find((group) => group.end >= today);
+        if (nextGroup) return nextGroup.start.getMonth();
+        return currentMonth;
+      }
+
+      function calendarCompactView() {
+        return window.matchMedia("(max-width: 760px)").matches;
+      }
+
       function calendarFrostOverlayHtml() {
         if (!calendarFrost) return "";
         const last = calendarPercentForDate(calendarFrost.lastFrost);
@@ -1791,7 +1819,8 @@ function outputSortValue(metrics) {
         calendarMonthFilter = month;
         calendarSeasonEl.value = "all";
         renderCalendar();
-        document.querySelector(".calendar-timeline")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        const target = calendarCompactView() ? ".calendar-mobile-plan" : ".calendar-timeline";
+        document.querySelector(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
       function renderCalendarHeatmap(events) {
@@ -1837,13 +1866,15 @@ function outputSortValue(metrics) {
           return;
         }
         const rows = calendarTimelineRows(events);
-        const visibleRows = rows.slice(0, 44);
+        const compact = calendarCompactView();
+        const rowLimit = compact ? 18 : 44;
+        const visibleRows = rows.slice(0, rowLimit);
         if (!visibleRows.length) {
           calendarGanttEl.innerHTML = "<p class=\"calendar-gantt-empty\">No timeline rows match this plant set and method.</p>";
           return;
         }
         const frostOverlay = calendarFrostOverlayHtml();
-        calendarGanttEl.innerHTML = `
+        const chartMarkup = `
           <div class="calendar-gantt-scroll" role="region" aria-label="Year-long planting bars" tabindex="0">
             <div class="calendar-gantt-months" aria-hidden="true">
               <span></span>
@@ -1882,10 +1913,75 @@ function outputSortValue(metrics) {
           </div>
           ${rows.length > visibleRows.length ? `<p class="calendar-limit-note">Showing ${visibleRows.length} of ${rows.length} timeline rows. Narrow the plant set or method to see a tighter year view.</p>` : ""}
         `;
+        calendarGanttEl.innerHTML = compact
+          ? `<details class="calendar-gantt-mobile-details"><summary><span>Full year bars</span><strong>${visibleRows.length} rows</strong></summary>${chartMarkup}</details>`
+          : chartMarkup;
       }
 
-      function renderCalendarPlantLinks(plantsForGroup) {
-        const visiblePlants = plantsForGroup.slice(0, 4);
+      function renderCalendarMobilePlan(events) {
+        if (!calendarFrost) {
+          calendarMobilePlanEl.innerHTML = "<p class=\"calendar-mobile-empty\">Build a calendar to see a shorter month plan here.</p>";
+          return;
+        }
+        const focusMonth = calendarFocusMonth(events);
+        const groups = calendarGroupsForMonth(events, focusMonth);
+        const visibleGroups = groups.slice(0, 4);
+        const focusLabel = calendarMonthFilter === "" ? "Month focus" : "Selected month";
+        const monthName = calendarMonthLabels[focusMonth];
+        const clearButton = calendarMonthFilter === ""
+          ? ""
+          : "<button type=\"button\" data-calendar-mobile-clear>All months</button>";
+
+        if (!groups.length) {
+          calendarMobilePlanEl.innerHTML = `
+            <div class="calendar-mobile-focus-head">
+              <div>
+                <p class="eyebrow">${focusLabel}</p>
+                <h3>${monthName} tasks</h3>
+                <p>No grouped windows match this month and filter set.</p>
+              </div>
+              ${clearButton}
+            </div>
+          `;
+        } else {
+          calendarMobilePlanEl.innerHTML = `
+            <div class="calendar-mobile-focus-head">
+              <div>
+                <p class="eyebrow">${focusLabel}</p>
+                <h3>${monthName} tasks</h3>
+                <p>${groups.length} grouped ${groups.length === 1 ? "window" : "windows"} for the current plant set and method.</p>
+              </div>
+              ${clearButton}
+            </div>
+            <div class="calendar-mobile-actions">
+              ${visibleGroups.map((group) => {
+                const urgency = calendarUrgencyForRange(group.start, group.end);
+                return `
+                  <article class="calendar-mobile-action calendar-form-${escapeHtml(calendarGroupFormKey(group))} calendar-urgency-${escapeHtml(urgency)}">
+                    <div>
+                      <span class="calendar-mobile-date">${formatCalendarWindow(group.start, group.end)}</span>
+                      <span class="calendar-method calendar-method-${escapeHtml(group.method)}">${calendarMethodLabels[group.method]}</span>
+                    </div>
+                    <h4><span class="calendar-form-dot" aria-hidden="true"></span>${escapeHtml(group.action)}</h4>
+                    <p>${escapeHtml(group.group)} - ${group.plants.length} ${group.plants.length === 1 ? "plant" : "plants"}</p>
+                    ${renderCalendarPlantLinks(group.plants, 2)}
+                  </article>
+                `;
+              }).join("")}
+            </div>
+            ${groups.length > visibleGroups.length ? `<p class="calendar-limit-note">Showing ${visibleGroups.length} of ${groups.length} month windows. Use the detail list below for the full month.</p>` : ""}
+          `;
+        }
+
+        calendarMobilePlanEl.querySelector("[data-calendar-mobile-clear]")?.addEventListener("click", () => {
+          calendarMonthFilter = "";
+          renderCalendar();
+          calendarMobilePlanEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+
+      function renderCalendarPlantLinks(plantsForGroup, limit = 4) {
+        const visiblePlants = plantsForGroup.slice(0, limit);
         const hiddenCount = plantsForGroup.length - visiblePlants.length;
         return `
           <div class="calendar-plant-links">
@@ -2013,6 +2109,7 @@ function outputSortValue(metrics) {
           calendarMonthStripEl.innerHTML = "";
           calendarEventsEl.innerHTML = "";
           calendarHeatmapEl.innerHTML = "<p>Build a calendar to see monthly activity.</p>";
+          calendarMobilePlanEl.innerHTML = "<p class=\"calendar-mobile-empty\">Build a calendar to see a shorter month plan here.</p>";
           calendarGanttEl.innerHTML = "<p class=\"calendar-gantt-empty\">Build a calendar to see the year as planting bars.</p>";
           calendarVisualSummaryEl.textContent = "A horizontal view will appear after ZIP lookup.";
           calendarEmptyEl.hidden = true;
@@ -2027,6 +2124,7 @@ function outputSortValue(metrics) {
         calendarVisualSummaryEl.textContent = `${timelineRows.length} category rows and ${visualGroups.length} grouped windows for ${setLabel.toLowerCase()}, ${methodLabel.toLowerCase()}. Today, last frost, and first frost are marked on the year.`;
         renderCalendarNowPanel();
         renderCalendarHeatmap(visualEvents);
+        renderCalendarMobilePlan(visualEvents);
         renderCalendarGantt(visualEvents);
         const monthBaseEvents = filterCalendarEvents({ includeMonth: false });
         renderCalendarMonthStrip(monthBaseEvents);
@@ -2071,6 +2169,7 @@ function outputSortValue(metrics) {
       }
 
       function initializeCalendar() {
+        let calendarResizeTimer = null;
         calendarFormEl.addEventListener("submit", handleCalendarSubmit);
         calendarSetButtons.forEach((button) => {
           button.addEventListener("click", () => {
@@ -2084,6 +2183,11 @@ function outputSortValue(metrics) {
             calendarMonthFilter = "";
             renderCalendar();
           });
+        });
+        window.addEventListener("resize", () => {
+          if (!calendarFrost) return;
+          clearTimeout(calendarResizeTimer);
+          calendarResizeTimer = setTimeout(renderCalendar, 180);
         });
         renderCalendar();
       }
