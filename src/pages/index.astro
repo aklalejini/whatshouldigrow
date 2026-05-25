@@ -301,6 +301,7 @@ const webAppJsonLd = {
             </svg>
             Find plants
           </button>
+          <button id="sample-match-inline" class="sample-link-button" type="button">See a sample output</button>
         </form>
       </section>
 
@@ -313,9 +314,24 @@ const webAppJsonLd = {
           <p id="zone-note">Not sure about soil defaults to loam. Recommendations are practical starting points, not local extension advice.</p>
         </div>
         <div id="status" class="status"></div>
+        <div id="sample-preview" class="sample-preview">
+          <div>
+            <p class="eyebrow">Preview the tool</p>
+            <h3>Not ready to enter a ZIP?</h3>
+            <p>
+              Load a real sample for Atlanta, zone 8a, with full sun, loam soil, medium water,
+              and fruit as the goal.
+            </p>
+          </div>
+          <div class="sample-preview-actions">
+            <button id="sample-match" type="button">See sample results</button>
+            <button id="focus-zip" type="button">Use my ZIP</button>
+          </div>
+        </div>
         <ol id="results" class="results-grid"></ol>
         <div class="results-actions">
           <button id="save-list" class="save-list-button" type="button" hidden>Save this list</button>
+          <button id="share-plan" class="share-plan-button" type="button" hidden>Share plan</button>
           <button id="see-more" class="see-more-button" type="button" hidden>See more results</button>
         </div>
       </section>
@@ -330,7 +346,7 @@ const webAppJsonLd = {
             <h3>Local conditions still matter</h3>
             <p>
               Rankings use ZIP-based hardiness, light, soil, water, and goal fit. Microclimates,
-              drainage, pests, chill hours, and local invasive lists can change the final answer.
+              drainage, soil pH, heat, chill hours, and local invasive lists can change the final answer.
             </p>
           </article>
           <article>
@@ -341,10 +357,10 @@ const webAppJsonLd = {
             </p>
           </article>
           <article>
-            <h3>Nursery links</h3>
+            <h3>Source links</h3>
             <p>
-              Nursery search links are placeholders while Plant by ZIP is being tested. They are
-              not paid placements and do not affect the plant ranking.
+              Some seed and supply links may be affiliate links. Source links do not affect rankings,
+              and native cues are not yet a county-level native-range database.
             </p>
           </article>
         </div>
@@ -791,6 +807,11 @@ const webAppJsonLd = {
       const resultsEl = document.getElementById("results");
       const seeMoreEl = document.getElementById("see-more");
       const saveListEl = document.getElementById("save-list");
+      const sharePlanEl = document.getElementById("share-plan");
+      const samplePreviewEl = document.getElementById("sample-preview");
+      const sampleMatchEl = document.getElementById("sample-match");
+      const sampleMatchInlineEl = document.getElementById("sample-match-inline");
+      const focusZipEl = document.getElementById("focus-zip");
       const zipEl = document.getElementById("zip");
       const zonePreviewEl = document.getElementById("zone-preview");
       const tabButtons = Array.from(document.querySelectorAll("[data-view]"));
@@ -894,6 +915,7 @@ const webAppJsonLd = {
       ];
       let currentRanked = [];
       let currentInputs = null;
+      let currentPlanParams = null;
       let visibleCount = 12;
       let screenerSort = { key: "name", direction: "asc" };
       let screenerGroupedByType = false;
@@ -922,6 +944,21 @@ const webAppJsonLd = {
         sdata: screenerConfidenceEl
       };
       const screenerParamKeys = [...Object.keys(screenerParamMap), "ssort", "sdir", "sgroup"];
+      const matcherParamKeys = ["zip", "sun", "soil", "water", "goal"];
+      const matcherDefaults = {
+        zip: "",
+        sun: "full",
+        soil: "loam",
+        water: "medium",
+        goal: "fruit"
+      };
+      const samplePlan = {
+        zip: "30301",
+        sun: "full",
+        soil: "loam",
+        water: "medium",
+        goal: "fruit"
+      };
 
       const waterRank = { low: 1, medium: 2, high: 3 };
       const confidenceRank = { low: 1, medium: 2, high: 3 };
@@ -1237,8 +1274,11 @@ const webAppJsonLd = {
       const initialParams = new URLSearchParams(window.location.search);
       const initialBlogQuery = initialParams.get("q");
       const hasInitialScreenerQuery = screenerParamKeys.some((key) => initialParams.has(key));
+      const hasInitialMatcherQuery = matcherParamKeys.some((key) => initialParams.has(key));
       const initialWantsScreener = hasInitialScreenerQuery || window.location.hash === "#screener" || window.location.hash === "#screener-view";
       const initialWantsCalendar = window.location.hash === "#calendar" || window.location.hash === "#calendar-view";
+      const initialWantsBlog = Boolean(initialBlogQuery) || window.location.hash === "#blog" || window.location.hash === "#blog-view";
+      const initialWantsMatcher = hasInitialMatcherQuery && !initialWantsScreener && !initialWantsCalendar && !initialWantsBlog;
       if (initialBlogQuery) {
         articleSearchEl.value = initialBlogQuery;
         filterArticles();
@@ -1247,7 +1287,7 @@ const webAppJsonLd = {
         setActiveView("screener");
       } else if (initialWantsCalendar) {
         setActiveView("calendar");
-      } else if (initialBlogQuery || window.location.hash === "#blog" || window.location.hash === "#blog-view") {
+      } else if (initialWantsBlog) {
         setActiveView("blog");
       }
 
@@ -1613,6 +1653,91 @@ const webAppJsonLd = {
         return href
           ? { href, label: `Search ${name}`, rel: "noopener noreferrer" }
           : null;
+      }
+
+      function selectedRadioValue(name) {
+        return form.querySelector(`input[name="${name}"]:checked`)?.value ?? matcherDefaults[name] ?? "";
+      }
+
+      function setRadioValue(name, value) {
+        const fallback = matcherDefaults[name] ?? "";
+        const inputs = Array.from(form.querySelectorAll(`input[name="${name}"]`));
+        const requested = inputs.some((input) => input.value === value) ? value : fallback;
+        const input = inputs.find((entry) => entry.value === requested);
+        if (input) input.checked = true;
+      }
+
+      function matcherPlanParamsFromForm() {
+        return {
+          zip: zipEl.value.trim(),
+          sun: selectedRadioValue("sun"),
+          soil: selectedRadioValue("soil"),
+          water: selectedRadioValue("water"),
+          goal: selectedRadioValue("goal")
+        };
+      }
+
+      function normalizedMatcherInputs(zoneData, planParams) {
+        return {
+          zip: planParams.zip,
+          zone: zoneData.zone,
+          sun: planParams.sun,
+          soil: planParams.soil === "not-sure" ? "loam" : planParams.soil,
+          water: planParams.water,
+          goal: planParams.goal
+        };
+      }
+
+      function applyMatcherPlanParams(planParams) {
+        zipEl.value = planParams.zip ?? "";
+        setRadioValue("sun", planParams.sun ?? matcherDefaults.sun);
+        setRadioValue("soil", planParams.soil ?? matcherDefaults.soil);
+        setRadioValue("water", planParams.water ?? matcherDefaults.water);
+        setRadioValue("goal", planParams.goal ?? matcherDefaults.goal);
+      }
+
+      function matcherUrlForPlan(planParams) {
+        const url = new URL(window.location.href);
+        url.search = "";
+        matcherParamKeys.forEach((key) => {
+          const value = planParams[key];
+          if (value && value !== matcherDefaults[key]) url.searchParams.set(key, value);
+        });
+        if (planParams.zip) url.searchParams.set("zip", planParams.zip);
+        url.hash = "";
+        return url;
+      }
+
+      function writeMatcherUrl(planParams) {
+        const url = matcherUrlForPlan(planParams);
+        history.replaceState(null, "", `${url.pathname}${url.search}`);
+      }
+
+      function localRealityNote(zoneData, inputs) {
+        const base = zoneData.temperature_range
+          ? `USDA average annual extreme minimum: ${zoneData.temperature_range} F. Zone lookup returned coordinates near ${zoneData.coordinates.lat}, ${zoneData.coordinates.lon}.`
+          : "Zone lookup succeeded.";
+        const checks = ["Confirm drainage, soil pH, and any state invasive restrictions before buying."];
+        if (inputs.goal === "fruit") checks.push("For fruit, verify chill-hour needs and bloom frost risk by cultivar.");
+        if (inputs.goal === "native-plants") checks.push("Native scoring uses current database cues, not county-level native range yet.");
+        if (inputs.goal === "vegetables-herbs") checks.push("For direct sowing, soil temperature and the 10-day forecast still matter.");
+        return `${base} ${checks.join(" ")}`;
+      }
+
+      async function copyShareText(text) {
+        if (navigator.share) {
+          try {
+            await navigator.share({ title: "Plant by ZIP garden plan", url: text });
+            return "Shared";
+          } catch (error) {
+            if (error?.name === "AbortError") return "";
+          }
+        }
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(text);
+          return "Copied";
+        }
+        return "Copy this URL from the address bar";
       }
 
       function metricFor(plant) {
@@ -3711,13 +3836,14 @@ function outputSortValue(metrics) {
           .sort((a, b) => b.rankScore - a.rankScore || b.score - a.score || a.plant.name.localeCompare(b.plant.name));
 
         titleEl.textContent = `Best ${formatGoal(inputs.goal)} matches for zone ${inputs.zone}.`;
-        zoneNoteEl.textContent = zoneData.temperature_range
-          ? `USDA average annual extreme minimum: ${zoneData.temperature_range} F. Zone lookup returned coordinates near ${zoneData.coordinates.lat}, ${zoneData.coordinates.lon}.`
-          : "Zone lookup succeeded. Local microclimates, chill hours, pests, and drainage still matter.";
+        zoneNoteEl.textContent = localRealityNote(zoneData, inputs);
+        samplePreviewEl.hidden = true;
         if (ranked.length === 0) {
           statusEl.textContent = "No plants matched that goal. Try a broader goal or loosen one growing condition.";
           resultsEl.replaceChildren();
           seeMoreEl.hidden = true;
+          saveListEl.hidden = true;
+          sharePlanEl.hidden = true;
           return;
         }
 
@@ -3725,6 +3851,7 @@ function outputSortValue(metrics) {
         currentInputs = inputs;
         visibleCount = Math.min(12, currentRanked.length);
         saveListEl.hidden = false;
+        sharePlanEl.hidden = false;
         renderVisibleResults();
       }
 
@@ -3781,40 +3908,91 @@ function outputSortValue(metrics) {
         }, 350);
       });
 
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const formData = new FormData(form);
-        const zip = String(formData.get("zip") ?? "").trim();
-        const soilInput = String(formData.get("soil"));
+      async function runMatcher({ writeUrl = true, scrollToResults = false } = {}) {
+        const planParams = matcherPlanParamsFromForm();
+        const zip = planParams.zip;
 
         if (!/^\d{5}$/.test(zip)) {
           statusEl.textContent = "Enter a five-digit U.S. ZIP code.";
-          return;
+          zipEl.focus();
+          return false;
         }
 
         statusEl.textContent = "Looking up your USDA hardiness zone...";
         resultsEl.replaceChildren();
         seeMoreEl.hidden = true;
         saveListEl.hidden = true;
+        sharePlanEl.hidden = true;
+        samplePreviewEl.hidden = true;
 
         try {
           const zoneData = await lookupZone(zip);
-          const inputs = {
-            zip,
-            zone: zoneData.zone,
-            sun: String(formData.get("sun")),
-            soil: soilInput === "not-sure" ? "loam" : soilInput,
-            water: String(formData.get("water")),
-            goal: String(formData.get("goal"))
-          };
-          statusEl.textContent = soilInput === "not-sure" ? "Soil set to loam because you selected not sure." : "";
+          const inputs = normalizedMatcherInputs(zoneData, planParams);
+          currentPlanParams = planParams;
+          statusEl.textContent = planParams.soil === "not-sure" ? "Soil set to loam because you selected not sure." : "";
+          if (writeUrl) writeMatcherUrl(planParams);
           renderResults(zoneData, inputs);
+          if (scrollToResults) {
+            document.querySelector(".results-band")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+          return true;
         } catch (error) {
           titleEl.textContent = "The zone lookup did not respond.";
           zoneNoteEl.textContent = "Try again in a moment, or swap the lookup function to another USDA-zone provider.";
           statusEl.textContent = "No recommendations shown because hardiness zone is required for ranking.";
+          samplePreviewEl.hidden = false;
+          return false;
+        }
+      }
+
+      function loadSamplePlan() {
+        applyMatcherPlanParams(samplePlan);
+        zonePreviewEl.hidden = true;
+        runMatcher({ writeUrl: true, scrollToResults: true });
+      }
+
+      sampleMatchEl.addEventListener("click", loadSamplePlan);
+      sampleMatchInlineEl.addEventListener("click", loadSamplePlan);
+      focusZipEl.addEventListener("click", () => {
+        zipEl.focus();
+        zipEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+
+      sharePlanEl.addEventListener("click", async () => {
+        if (!currentPlanParams) return;
+        const originalText = sharePlanEl.textContent;
+        const url = matcherUrlForPlan(currentPlanParams).toString();
+        try {
+          const status = await copyShareText(url);
+          if (status) {
+            sharePlanEl.textContent = status;
+            setTimeout(() => {
+              sharePlanEl.textContent = originalText;
+            }, 1800);
+          }
+        } catch (error) {
+          sharePlanEl.textContent = "Copy failed";
+          setTimeout(() => {
+            sharePlanEl.textContent = originalText;
+          }, 1800);
         }
       });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        runMatcher({ writeUrl: true });
+      });
+
+      if (initialWantsMatcher) {
+        applyMatcherPlanParams({
+          zip: initialParams.get("zip") ?? matcherDefaults.zip,
+          sun: initialParams.get("sun") ?? matcherDefaults.sun,
+          soil: initialParams.get("soil") ?? matcherDefaults.soil,
+          water: initialParams.get("water") ?? matcherDefaults.water,
+          goal: initialParams.get("goal") ?? matcherDefaults.goal
+        });
+        runMatcher({ writeUrl: false });
+      }
     </script>
   </body>
 </html>

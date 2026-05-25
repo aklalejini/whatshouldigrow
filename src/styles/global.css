@@ -74,7 +74,9 @@ button {
 .article-full[hidden],
 .blog-empty[hidden],
 .calendar-empty[hidden],
-.screener-empty[hidden] {
+.screener-empty[hidden],
+.sample-preview[hidden],
+.share-plan-button[hidden] {
   display: none;
 }
 
@@ -560,6 +562,22 @@ fieldset:nth-of-type(2) .segmented {
   fill: currentColor;
 }
 
+.sample-link-button {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 10px;
+  border: 1px solid #cfdac8;
+  border-radius: 999px;
+  color: var(--leaf-dark);
+  background: rgba(255, 253, 248, 0.92);
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.sample-link-button:hover {
+  background: #f4f8ef;
+}
+
 .results-band {
   width: min(1180px, calc(100% - 40px));
   margin: 0 auto 44px;
@@ -586,6 +604,61 @@ fieldset:nth-of-type(2) .segmented {
 .status {
   padding-top: 16px;
   font-size: 0.94rem;
+}
+
+.sample-preview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px dashed rgba(39, 88, 58, 0.28);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(238, 244, 233, 0.84), rgba(255, 253, 248, 0.96));
+}
+
+.sample-preview h3 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  line-height: 1.08;
+}
+
+.sample-preview p:not(.eyebrow) {
+  max-width: 640px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.sample-preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.sample-preview-actions button {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid #cfdac8;
+  border-radius: 999px;
+  color: var(--leaf-dark);
+  background: #fff;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.sample-preview-actions button:first-child {
+  color: #fff;
+  border-color: var(--leaf);
+  background: var(--leaf);
+}
+
+.sample-preview-actions button:hover {
+  transform: translateY(-1px);
 }
 
 .results-grid {
@@ -1440,7 +1513,8 @@ fieldset:nth-of-type(2) .segmented {
 }
 
 .see-more-button,
-.save-list-button {
+.save-list-button,
+.share-plan-button {
   min-height: 44px;
   padding: 0 18px;
   border: 1px solid #cfdac8;
@@ -1451,19 +1525,22 @@ fieldset:nth-of-type(2) .segmented {
   cursor: pointer;
 }
 
-.save-list-button {
+.save-list-button,
+.share-plan-button {
   color: #fff;
   border-color: var(--terracotta);
   background: var(--terracotta);
 }
 
 .see-more-button:hover,
-.save-list-button:hover {
+.save-list-button:hover,
+.share-plan-button:hover {
   transform: translateY(-1px);
 }
 
 .see-more-button[hidden],
-.save-list-button[hidden] {
+.save-list-button[hidden],
+.share-plan-button[hidden] {
   display: none;
 }
 
@@ -4182,6 +4259,7 @@ input.calendar-filter-search[type="search"]:focus {
   .workspace,
   .results-grid,
   .results-head,
+  .sample-preview,
   .calendar-header,
   .calendar-layout,
   .screener-header,
@@ -4208,6 +4286,14 @@ input.calendar-filter-search[type="search"]:focus {
   .workspace {
     padding-top: 12px;
     gap: 14px;
+  }
+
+  .sample-preview-actions {
+    justify-content: stretch;
+  }
+
+  .sample-preview-actions button {
+    flex: 1 1 150px;
   }
 
   .intro-panel,
@@ -4548,6 +4634,21 @@ input.calendar-filter-search[type="search"]:focus {
     font-weight: 850;
     text-transform: uppercase;
     letter-spacing: 0.06em;
+  }
+
+  .screener-table td[data-label="Spacing"],
+  .screener-table td[data-label="Planting depth"],
+  .screener-table td[data-label="Container min"],
+  .screener-table td[data-label="Yield (lbs)"],
+  .screener-table td[data-label="Soil"],
+  .screener-table td[data-label="Water"],
+  .screener-table td[data-label="Harvest"],
+  .screener-table td[data-label="Traits"],
+  .screener-table td[data-label="Native cue"],
+  .screener-table td[data-label="Low water"],
+  .screener-table td[data-label="Pairings"],
+  .screener-table td[data-label="Source"] {
+    display: none;
   }
 
   .screener-name-cell {
