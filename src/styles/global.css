@@ -75,6 +75,7 @@ button {
 .blog-empty[hidden],
 .calendar-empty[hidden],
 .screener-empty[hidden],
+.climate-panel[hidden],
 .sample-preview[hidden],
 .share-plan-button[hidden] {
   display: none;
@@ -604,6 +605,71 @@ fieldset:nth-of-type(2) .segmented {
 .status {
   padding-top: 16px;
   font-size: 0.94rem;
+}
+
+.climate-panel {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.6fr);
+  gap: 16px;
+  align-items: stretch;
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid rgba(39, 88, 58, 0.18);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(246, 248, 241, 0.96), rgba(255, 253, 248, 0.98));
+}
+
+.climate-panel-copy h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.08;
+}
+
+.climate-panel-copy p:not(.eyebrow) {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.climate-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.climate-panel-grid article {
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid #e2e8dc;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.climate-panel-grid span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--terracotta);
+  font-size: 0.65rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.climate-panel-grid strong {
+  display: block;
+  color: var(--leaf-dark);
+  font-size: 0.96rem;
+  line-height: 1.1;
+}
+
+.climate-panel-grid p {
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.4;
 }
 
 .sample-preview {
@@ -1174,6 +1240,28 @@ fieldset:nth-of-type(2) .segmented {
 
 .relationship-panel {
   grid-column: 1 / -1;
+}
+
+.climate-detail {
+  grid-column: 1 / -1;
+}
+
+.climate-detail ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.climate-detail li {
+  padding: 9px 10px;
+  border-left: 3px solid rgba(191, 92, 63, 0.34);
+  border-radius: 8px;
+  color: #3f4d43;
+  background: #fbf8ef;
+  font-size: 0.84rem;
+  line-height: 1.45;
 }
 
 .relationship-list {
@@ -2457,8 +2545,9 @@ input.calendar-filter-search[type="search"]:focus {
 
 .calendar-dashboard small {
   color: #657062;
-  font-size: 0.76rem;
+  font-size: 0.68rem;
   font-weight: 750;
+  line-height: 1.25;
 }
 
 .calendar-now,
@@ -4259,6 +4348,7 @@ input.calendar-filter-search[type="search"]:focus {
   .workspace,
   .results-grid,
   .results-head,
+  .climate-panel,
   .sample-preview,
   .calendar-header,
   .calendar-layout,
@@ -4294,6 +4384,10 @@ input.calendar-filter-search[type="search"]:focus {
 
   .sample-preview-actions button {
     flex: 1 1 150px;
+  }
+
+  .climate-panel-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
   .intro-panel,
@@ -4793,6 +4887,7 @@ input.calendar-filter-search[type="search"]:focus {
     flex: 1 1 140px;
   }
 
+  .climate-panel-grid,
   .calendar-controls,
   .calendar-dashboard,
   .screener-metrics,

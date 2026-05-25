@@ -314,6 +314,7 @@ const webAppJsonLd = {
           <p id="zone-note">Not sure about soil defaults to loam. Recommendations are practical starting points, not local extension advice.</p>
         </div>
         <div id="status" class="status"></div>
+        <div id="climate-panel" class="climate-panel" hidden></div>
         <div id="sample-preview" class="sample-preview">
           <div>
             <p class="eyebrow">Preview the tool</p>
@@ -482,12 +483,12 @@ const webAppJsonLd = {
             <div>
               <span>Last frost</span>
               <strong id="calendar-last-frost">--</strong>
-              <small>spring estimate</small>
+              <small id="calendar-last-frost-note">spring estimate</small>
             </div>
             <div>
               <span>First frost</span>
               <strong id="calendar-first-frost">--</strong>
-              <small>fall estimate</small>
+              <small id="calendar-first-frost-note">fall estimate</small>
             </div>
             <div>
               <span>Growing season</span>
@@ -805,6 +806,7 @@ const webAppJsonLd = {
       const titleEl = document.getElementById("results-title");
       const zoneNoteEl = document.getElementById("zone-note");
       const resultsEl = document.getElementById("results");
+      const climatePanelEl = document.getElementById("climate-panel");
       const seeMoreEl = document.getElementById("see-more");
       const saveListEl = document.getElementById("save-list");
       const sharePlanEl = document.getElementById("share-plan");
@@ -862,7 +864,9 @@ const webAppJsonLd = {
       const calendarZoneValueEl = document.getElementById("calendar-zone-value");
       const calendarTempValueEl = document.getElementById("calendar-temp-value");
       const calendarLastFrostEl = document.getElementById("calendar-last-frost");
+      const calendarLastFrostNoteEl = document.getElementById("calendar-last-frost-note");
       const calendarFirstFrostEl = document.getElementById("calendar-first-frost");
+      const calendarFirstFrostNoteEl = document.getElementById("calendar-first-frost-note");
       const calendarSeasonLengthEl = document.getElementById("calendar-season-length");
       const calendarNowTitleEl = document.getElementById("calendar-now-title");
       const calendarNowSummaryEl = document.getElementById("calendar-now-summary");
@@ -1678,13 +1682,17 @@ const webAppJsonLd = {
       }
 
       function normalizedMatcherInputs(zoneData, planParams) {
+        const climate = estimateLocationClimate(zoneData);
+        const frost = estimateCalendarFrost(zoneData, new Date().getFullYear());
         return {
           zip: planParams.zip,
           zone: zoneData.zone,
           sun: planParams.sun,
           soil: planParams.soil === "not-sure" ? "loam" : planParams.soil,
           water: planParams.water,
-          goal: planParams.goal
+          goal: planParams.goal,
+          climate,
+          frost
         };
       }
 
@@ -1718,6 +1726,7 @@ const webAppJsonLd = {
           ? `USDA average annual extreme minimum: ${zoneData.temperature_range} F. Zone lookup returned coordinates near ${zoneData.coordinates.lat}, ${zoneData.coordinates.lon}.`
           : "Zone lookup succeeded.";
         const checks = ["Confirm drainage, soil pH, and any state invasive restrictions before buying."];
+        if (inputs.climate) checks.push(`${inputs.climate.heatZoneLabel} and ${inputs.climate.chillLabel.toLowerCase()} are planning estimates, not station normals.`);
         if (inputs.goal === "fruit") checks.push("For fruit, verify chill-hour needs and bloom frost risk by cultivar.");
         if (inputs.goal === "native-plants") checks.push("Native scoring uses current database cues, not county-level native range yet.");
         if (inputs.goal === "vegetables-herbs") checks.push("For direct sowing, soil temperature and the 10-day forecast still matter.");
@@ -1854,6 +1863,76 @@ function outputSortValue(metrics) {
         garlic: ["garlic"],
         tenderContainer: ["citrus", "lemon", "lime", "orange", "mandarin", "kumquat", "pineapple", "banana"]
       };
+      const heatZoneThresholds = [
+        { zone: 1, min: 0, max: 0 },
+        { zone: 2, min: 1, max: 7 },
+        { zone: 3, min: 8, max: 14 },
+        { zone: 4, min: 15, max: 30 },
+        { zone: 5, min: 31, max: 45 },
+        { zone: 6, min: 46, max: 60 },
+        { zone: 7, min: 61, max: 90 },
+        { zone: 8, min: 91, max: 120 },
+        { zone: 9, min: 121, max: 150 },
+        { zone: 10, min: 151, max: 180 },
+        { zone: 11, min: 181, max: 210 },
+        { zone: 12, min: 211, max: 366 }
+      ];
+      const climateHeatRuleSets = [
+        {
+          preference: "cool",
+          label: "cool-summer leaning",
+          terms: ["rhubarb", "honeycrisp", "cox orange", "montmorency", "bing cherry", "rainier", "sweet cherry", "tart cherry", "northern highbush", "duke blueberry", "bluecrop", "raspberry", "currant", "gooseberry", "honeyberry", "lilac", "hosta", "astilbe", "peony"],
+          excludes: ["cherry belle", "cornelian cherry", "cherry laurel", "miss kim"]
+        },
+        {
+          preference: "cool-season",
+          label: "cool-season crop",
+          terms: ["lettuce", "spinach", "arugula", "mizuna", "cilantro", "pea", "radish", "turnip", "kale", "collard", "broccoli", "cauliflower", "cabbage"]
+        },
+        {
+          preference: "hot",
+          label: "heat lover",
+          terms: ["fig", "pomegranate", "jujube", "persimmon", "okra", "sweet potato", "eggplant", "pepper", "watermelon", "cantaloupe", "melon", "muscadine", "citrus", "lemon", "lime", "kumquat", "satsuma", "calamondin", "prickly pear", "olive", "guava", "dragon fruit", "starfruit", "sapodilla"]
+        },
+        {
+          preference: "warm",
+          label: "warm-season crop",
+          terms: ["tomato", "bean", "corn", "cucumber", "squash", "zucchini", "basil", "zinnia", "sunflower", "crape myrtle", "vitex", "southern pear", "rabbiteye blueberry", "flordaking", "anna apple", "ein shemer", "dorsett golden"]
+        }
+      ];
+      const climateChillRuleSets = [
+        {
+          label: "very low chill",
+          min: 100,
+          max: 350,
+          terms: ["anna apple", "ein shemer", "dorsett golden", "flordaking", "sunshine blue", "beauty plum"],
+          note: "bred or selected for mild-winter fruiting"
+        },
+        {
+          label: "low to moderate chill",
+          min: 300,
+          max: 650,
+          terms: ["rabbiteye blueberry", "brightwell", "tifblue", "premier blueberry", "powderblue", "southern highbush", "kieffer pear", "ayers pear", "orient pear", "pineapple quince"],
+          note: "usually better in warm-winter fruit regions than northern cultivars"
+        },
+        {
+          label: "high chill",
+          min: 800,
+          max: 1200,
+          terms: ["honeycrisp", "cox orange", "duke northern highbush", "bluecrop", "montmorency", "bing cherry", "rainier", "balaton", "damson", "mount royal", "rhubarb", "lilac"],
+          excludes: ["miss kim"],
+          note: "needs a real winter to flower or crop reliably"
+        },
+        {
+          label: "moderate chill",
+          min: 500,
+          max: 900,
+          terms: ["apple", "pear", "peach", "plum", "cherry", "apricot", "nectarine", "blueberry"],
+          excludes: ["low chill", "rabbiteye", "southern highbush", "sunshine blue", "anna apple", "ein shemer", "dorsett golden", "flordaking", "beauty plum", "chickasaw", "prickly pear", "cornelian cherry", "cherry laurel", "cherry belle"],
+          note: "cultivar-specific chill matters"
+        }
+      ];
+      const humidDiseaseTerms = ["apple", "peach", "pear", "plum", "cherry", "apricot", "grape", "rose", "tomato", "blueberry"];
 
       function syncCalendarZipFromMatcher() {
         const suggestedZip = currentInputs?.zip ?? zipEl.value.trim();
@@ -1936,6 +2015,326 @@ function outputSortValue(metrics) {
         return calendarPercentForDate(today);
       }
 
+      function identityMatchesAny(identity, terms = [], excludes = []) {
+        return terms.some((term) => termMatchesIdentity(identity, term))
+          && !excludes.some((term) => termMatchesIdentity(identity, term));
+      }
+
+      function isPacificCoastal(lat, lon) {
+        return Number.isFinite(lat) && Number.isFinite(lon) && lon <= -117 && lat >= 32 && lat <= 49;
+      }
+
+      function isDesertSouthwest(lat, lon) {
+        return Number.isFinite(lat) && Number.isFinite(lon) && lon <= -103 && lat <= 38;
+      }
+
+      function heatZoneFromDays(days) {
+        return heatZoneThresholds.find((entry) => days >= entry.min && days <= entry.max)?.zone ?? 12;
+      }
+
+      function heatDaysRange(zoneNumber, lat, lon) {
+        let mid = 8 + Math.max(0, zoneNumber - 4) * 24;
+        if (lat < 32) mid += 18;
+        if (lat > 42) mid -= 18;
+        if (lat > 46) mid -= 14;
+        if (isDesertSouthwest(lat, lon)) mid += 42;
+        if (lon < -100 && lon >= -112 && lat < 38) mid += 16;
+        if (isPacificCoastal(lat, lon)) mid -= zoneNumber >= 9 ? 88 : 64;
+        if (lat < 31 && lon > -100 && lon < -75) mid += 34;
+        if (lat >= 32 && lat <= 37 && lon > -96 && lon < -75) mid += 12;
+        mid = clamp(Math.round(mid), 0, 230);
+        const spread = mid > 150 ? 26 : mid > 80 ? 20 : 14;
+        return {
+          min: clamp(mid - spread, 0, 230),
+          mid,
+          max: clamp(mid + spread, 0, 240)
+        };
+      }
+
+      function chillHoursRange(zoneNumber, lat, lon, heatDaysMid) {
+        let mid = 1620 - zoneNumber * 115;
+        if (zoneNumber >= 9.5) mid -= 80;
+        if (zoneNumber <= 6) mid += 120;
+        if (lat < 31) mid -= 140;
+        if (lat > 42) mid += 120;
+        if (isPacificCoastal(lat, lon)) mid -= 160;
+        if (isDesertSouthwest(lat, lon)) mid += 60;
+        if (heatDaysMid > 150) mid -= 80;
+        if (heatDaysMid > 200) mid -= 90;
+        mid = clamp(Math.round(mid), 80, 1500);
+        const spread = mid > 900 ? 220 : mid > 500 ? 170 : 120;
+        return {
+          min: clamp(mid - spread, 0, 1500),
+          mid,
+          max: clamp(mid + spread, 0, 1600)
+        };
+      }
+
+      function chillLevelForHours(hours) {
+        if (hours < 250) return "Very low chill";
+        if (hours < 500) return "Low chill";
+        if (hours < 800) return "Moderate chill";
+        if (hours < 1100) return "High chill";
+        return "Very high chill";
+      }
+
+      function moisturePatternFor(lat, lon) {
+        if (isDesertSouthwest(lat, lon)) {
+          return {
+            key: "arid",
+            label: "Arid / irrigated",
+            note: "Low-water plants still need establishment irrigation; high-water crops need a plan."
+          };
+        }
+        if (isPacificCoastal(lat, lon)) {
+          return {
+            key: "summer-dry",
+            label: "Summer-dry West",
+            note: "Winter rain and dry summers make irrigation timing as important as total rainfall."
+          };
+        }
+        if (lon < -100) {
+          return {
+            key: "semi-arid",
+            label: "Semi-arid interior",
+            note: "Rainfall is often seasonal or sparse; mulch and drip irrigation change the result."
+          };
+        }
+        if (lat < 31 && lon > -100 && lon < -75) {
+          return {
+            key: "humid-hot",
+            label: "Humid hot-season",
+            note: "Humidity and warm nights raise disease pressure even when water is available."
+          };
+        }
+        return {
+          key: "humid-mixed",
+          label: "Humid / mixed rainfall",
+          note: "Rain is usually not the whole water story; drainage and disease pressure still matter."
+        };
+      }
+
+      function regionLabelFor(lat, lon) {
+        if (isPacificCoastal(lat, lon)) return "Pacific/Sunset-style microclimate";
+        if (isDesertSouthwest(lat, lon)) return "Desert or interior West";
+        if (lon < -100) return "Interior West / Plains";
+        if (lat < 31 && lon > -100 && lon < -75) return "Gulf or subtropical South";
+        if (lat > 41 && lon > -100) return "Northern humid region";
+        return "Humid temperate region";
+      }
+
+      function estimateLocationClimate(zoneData) {
+        const zoneNumber = zoneToNumber(zoneData.zone);
+        const coordinates = zoneData.coordinates ?? {};
+        const lat = Number(coordinates.lat ?? coordinates.latitude ?? zoneData.latitude);
+        const lon = Number(coordinates.lon ?? coordinates.lng ?? coordinates.longitude ?? zoneData.longitude);
+        const heat = heatDaysRange(zoneNumber, lat, lon);
+        const chill = chillHoursRange(zoneNumber, lat, lon, heat.mid);
+        const heatZone = heatZoneFromDays(heat.mid);
+        const moisture = moisturePatternFor(lat, lon);
+        return {
+          zoneNumber,
+          lat,
+          lon,
+          regionLabel: regionLabelFor(lat, lon),
+          westernClimateCritical: Number.isFinite(lon) && lon <= -105,
+          heatDays: heat,
+          heatZone,
+          heatZoneLabel: `Estimated AHS heat zone ${heatZone}`,
+          chillHours: chill,
+          chillLabel: chillLevelForHours(chill.mid),
+          moistureKey: moisture.key,
+          moistureLabel: moisture.label,
+          moistureNote: moisture.note
+        };
+      }
+
+      function formatNumberRange(range, unit) {
+        return `${Math.round(range.min)}-${Math.round(range.max)} ${unit}`;
+      }
+
+      function frostUncertaintyDays(zoneData) {
+        const climate = estimateLocationClimate(zoneData);
+        let spread = 14;
+        if (climate.westernClimateCritical) spread += 6;
+        if (climate.moistureKey === "arid" || climate.moistureKey === "summer-dry") spread += 3;
+        if (climate.zoneNumber >= 10) spread += 5;
+        return spread;
+      }
+
+      function frostBandFor(date, spread) {
+        return {
+          p10: addCalendarDays(date, -spread),
+          p50: startOfCalendarDay(date),
+          p90: addCalendarDays(date, spread)
+        };
+      }
+
+      function formatFrostBand(band) {
+        return `10/50/90 ${formatCalendarDate(band.p10)} / ${formatCalendarDate(band.p50)} / ${formatCalendarDate(band.p90)}`;
+      }
+
+      function plantHeatPreference(plant) {
+        const identity = relationshipIdentity(plant);
+        return climateHeatRuleSets.find((rule) => identityMatchesAny(identity, rule.terms, rule.excludes ?? [])) ?? null;
+      }
+
+      function plantChillRequirement(plant) {
+        const identity = relationshipIdentity(plant);
+        return climateChillRuleSets.find((rule) => identityMatchesAny(identity, rule.terms, rule.excludes ?? [])) ?? null;
+      }
+
+      function isHumiditySensitive(plant) {
+        const identity = relationshipIdentity(plant);
+        return identityMatchesAny(identity, humidDiseaseTerms, ["cherry belle", "cornelian cherry", "cherry laurel"]);
+      }
+
+      function isWoodyOrPerennial(plant) {
+        const type = plant.type.toLowerCase();
+        return type.includes("tree") || type.includes("shrub") || type.includes("vine") || type.includes("perennial") || type.includes("grass");
+      }
+
+      function climateFitForPlant(plant, climate) {
+        if (!climate) return null;
+        const chill = plantChillRequirement(plant);
+        const heat = plantHeatPreference(plant);
+        let score = 6;
+        let value = 72;
+        let note = `${climate.regionLabel} estimate is workable; verify microclimates.`;
+
+        if (chill) {
+          if (climate.chillHours.max < chill.min) {
+            score -= 34;
+            value = 12;
+            note = `likely short on chill (${formatNumberRange(climate.chillHours, "hrs")} vs ${chill.min}-${chill.max} hrs)`;
+          } else if (climate.chillHours.mid < chill.min) {
+            score -= 18;
+            value = Math.min(value, 38);
+            note = `borderline chill fit; choose a lower-chill cultivar if possible`;
+          } else if (climate.chillHours.mid > chill.max + 150 && chill.max <= 500) {
+            score -= 14;
+            value = Math.min(value, 46);
+            note = `low-chill cultivar may bloom too early after mild winter warmups`;
+          } else {
+            score += 14;
+            value = Math.max(value, 88);
+            note = `chill signal fits ${chill.label} needs`;
+          }
+        }
+
+        if (heat?.preference === "cool" && climate.heatDays.mid >= 120) {
+          score -= 18;
+          value = Math.min(value, 30);
+          note = `summer heat likely limits performance (${formatNumberRange(climate.heatDays, "days >86F")})`;
+        } else if (heat?.preference === "cool" && climate.heatDays.mid >= 90) {
+          score -= 8;
+          value = Math.min(value, 58);
+          note = `watch heat stress in this warm-summer pattern`;
+        } else if (heat?.preference === "hot" && climate.heatDays.mid >= 75) {
+          score += 9;
+          value = Math.max(value, 86);
+          if (!chill) note = `heat load suits this ${heat.label}`;
+        } else if (heat?.preference === "hot" && climate.heatDays.mid < 35) {
+          score -= 8;
+          value = Math.min(value, 58);
+          note = `may need more summer heat than this location reliably provides`;
+        } else if (heat?.preference === "cool-season" && climate.heatDays.mid >= 110) {
+          score -= 4;
+          value = Math.min(value, 66);
+          note = "treat as a spring/fall crop; summer heat closes the window";
+        }
+
+        if ((climate.moistureKey === "arid" || climate.moistureKey === "semi-arid") && plant.water !== "low") {
+          score -= plant.water === "high" ? 10 : 5;
+          value = Math.min(value, plant.water === "high" ? 45 : 62);
+          note = plant.water === "high" ? "needs dependable irrigation in this dry pattern" : note;
+        }
+        if ((climate.moistureKey === "humid-hot" || climate.moistureKey === "humid-mixed") && isHumiditySensitive(plant)) {
+          score -= climate.moistureKey === "humid-hot" ? 7 : 4;
+          value = Math.min(value, climate.moistureKey === "humid-hot" ? 58 : 68);
+          if (!chill || value < 60) note = "humidity raises disease pressure; favor resistant cultivars and airflow";
+        }
+
+        return {
+          score: clamp(Math.round(score), -38, 24),
+          value: clamp(Math.round(value), 0, 100),
+          note
+        };
+      }
+
+      function climatePanelCard(label, value, note) {
+        return `
+          <article>
+            <span>${escapeHtml(label)}</span>
+            <strong>${escapeHtml(value)}</strong>
+            <p>${escapeHtml(note)}</p>
+          </article>
+        `;
+      }
+
+      function renderClimatePanel(inputs) {
+        const climate = inputs.climate;
+        const frost = inputs.frost;
+        if (!climate) return "";
+        const frostNote = !frost
+          ? "Frost bands appear after the hardiness lookup returns a usable zone."
+          : frost.isFrostFree
+          ? "Freeze events are uncommon; heat, water, and cultivar fit matter more than frost averages."
+          : `${formatFrostBand(frost.lastFrostBand)} last frost; ${formatFrostBand(frost.firstFrostBand)} first frost.`;
+        return `
+          <div class="climate-panel-copy">
+            <p class="eyebrow">Climate reality check</p>
+            <h3>Beyond the USDA zone</h3>
+            <p>These signals now influence the ranking. They are ZIP-coordinate estimates until station-normal, chill, and precipitation datasets are wired in.</p>
+          </div>
+          <div class="climate-panel-grid">
+            ${climatePanelCard("Heat load", climate.heatZoneLabel, `${formatNumberRange(climate.heatDays, "days above 86F")} per year, estimated.`)}
+            ${climatePanelCard("Fruit chill", climate.chillLabel, `${formatNumberRange(climate.chillHours, "winter chill hrs")} proxy; verify fruit cultivars.`)}
+            ${climatePanelCard("Frost window", !frost ? "Needs lookup" : frost.isFrostFree ? "Rare freeze" : `${formatCalendarDate(frost.lastFrost)} to ${formatCalendarDate(frost.firstFrost)}`, frostNote)}
+            ${climatePanelCard("Rainfall pattern", climate.moistureLabel, climate.moistureNote)}
+          </div>
+        `;
+      }
+
+      function plantClimateNotes(plant, inputs) {
+        const climate = inputs.climate;
+        if (!climate) return [];
+        const notes = [];
+        const chill = plantChillRequirement(plant);
+        const heat = plantHeatPreference(plant);
+        const fit = climateFitForPlant(plant, climate);
+        if (fit?.note) notes.push(fit.note);
+        if (chill) {
+          notes.push(`Chill target: roughly ${chill.min}-${chill.max} hours; ${chill.note}.`);
+        }
+        if (heat) {
+          notes.push(`Heat read: ${heat.label}; local afternoon shade, reflected heat, or airflow can change this.`);
+        }
+        if ((climate.moistureKey === "arid" || climate.moistureKey === "semi-arid") && plant.water !== "low") {
+          notes.push("Dry-region check: plan drip irrigation and mulch before counting this as low maintenance.");
+        }
+        if ((climate.moistureKey === "humid-hot" || climate.moistureKey === "humid-mixed") && isHumiditySensitive(plant)) {
+          notes.push("Humid-region check: disease-resistant cultivars and spacing matter as much as hardiness.");
+        }
+        if (climate.westernClimateCritical && isWoodyOrPerennial(plant)) {
+          notes.push("Western check: USDA zones miss marine, desert, elevation, and valley effects; verify Sunset-style microclimate fit.");
+        }
+        return Array.from(new Set(notes)).slice(0, 4);
+      }
+
+      function renderPlantClimateNotes(plant, inputs) {
+        const notes = plantClimateNotes(plant, inputs);
+        if (!notes.length) return "";
+        return `
+          <div class="detail-panel climate-detail">
+            <h4>Climate checks</h4>
+            <ul>
+              ${notes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")}
+            </ul>
+          </div>
+        `;
+      }
+
       function interpolateCalendarFrost(zoneNumber, key) {
         const anchors = calendarFrostAnchors;
         const lastAnchor = anchors[anchors.length - 1];
@@ -1976,7 +2375,18 @@ function outputSortValue(metrics) {
         const lastFrost = calendarDateFromDay(year, clamp(lastDay, 5, 180));
         const firstFrost = calendarDateFromDay(year, clamp(firstDay, 230, 365));
         const seasonLength = Math.max(0, Math.round((firstFrost - lastFrost) / calendarDayMs));
-        return { zoneNumber, lastFrost, firstFrost, seasonLength, isFrostFree, year };
+        const uncertaintyDays = frostUncertaintyDays(zoneData);
+        return {
+          zoneNumber,
+          lastFrost,
+          firstFrost,
+          lastFrostBand: frostBandFor(lastFrost, uncertaintyDays),
+          firstFrostBand: frostBandFor(firstFrost, uncertaintyDays),
+          seasonLength,
+          isFrostFree,
+          year,
+          uncertaintyDays
+        };
       }
 
       function calendarPlanningYear(zoneData) {
@@ -2972,14 +3382,18 @@ function outputSortValue(metrics) {
           calendarZoneValueEl.textContent = "--";
           calendarTempValueEl.textContent = "USDA hardiness";
           calendarLastFrostEl.textContent = "--";
+          calendarLastFrostNoteEl.textContent = "spring estimate";
           calendarFirstFrostEl.textContent = "--";
+          calendarFirstFrostNoteEl.textContent = "fall estimate";
           calendarSeasonLengthEl.textContent = "--";
           return;
         }
         calendarZoneValueEl.textContent = calendarZoneData.zone;
         calendarTempValueEl.textContent = calendarZoneData.temperature_range ?? "USDA hardiness";
         calendarLastFrostEl.textContent = formatCalendarDate(calendarFrost.lastFrost);
+        calendarLastFrostNoteEl.textContent = calendarFrost.isFrostFree ? "rare freeze" : formatFrostBand(calendarFrost.lastFrostBand);
         calendarFirstFrostEl.textContent = calendarFrost.isFrostFree ? "Rare" : formatCalendarDate(calendarFrost.firstFrost);
+        calendarFirstFrostNoteEl.textContent = calendarFrost.isFrostFree ? "rare freeze" : formatFrostBand(calendarFrost.firstFrostBand);
         calendarSeasonLengthEl.textContent = calendarFrost.isFrostFree ? "Most year" : `${calendarFrost.seasonLength} days`;
       }
 
@@ -3523,6 +3937,16 @@ function outputSortValue(metrics) {
         }
         details.push({ label: "Water", value: clamp(waterFit, 0, 100), score: waterScore, note: waterNote });
 
+        const climateFit = climateFitForPlant(plant, inputs.climate);
+        if (climateFit) {
+          details.push({
+            label: "Climate",
+            value: climateFit.value,
+            score: climateFit.score,
+            note: climateFit.note
+          });
+        }
+
         let bonus = 0;
         if (plant.type.includes("annual") && inputs.goal === "vegetables-herbs") bonus += 8;
         if (plant.type.includes("fruit") && inputs.goal === "fruit") bonus += 6;
@@ -3558,7 +3982,7 @@ function outputSortValue(metrics) {
       }
 
       function overallFit(score) {
-        const percent = clamp(Math.round((score / 180) * 100), 0, 100);
+        const percent = clamp(Math.round((score / 190) * 100), 0, 100);
         let label = "Weak";
         let tone = "weak";
         if (percent >= 92) {
@@ -3594,6 +4018,8 @@ function outputSortValue(metrics) {
         }
         if (plant.soils.includes(inputs.soil)) wins.push(`not fussy about ${inputs.soil} soil`);
         if (plant.water === inputs.water) wins.push(`${inputs.water} water is enough`);
+        const climateFit = climateFitForPlant(plant, inputs.climate);
+        if (climateFit?.score >= 14) wins.push("the heat/chill signal looks right");
         return wins;
       }
 
@@ -3749,6 +4175,7 @@ function outputSortValue(metrics) {
         const breakdown = scoreBreakdown(plant, inputs);
         const fit = overallFit(score);
         const sourceAction = sourceActionForPlant(plant);
+        const climateNotes = renderPlantClimateNotes(plant, inputs);
         item.innerHTML = `
           <figure class="plant-visual ${kind} ${art} ${hasImage ? "photo-plate" : ""}" aria-hidden="true"${photoStyle}>
             <span class="rank">${index + 1}</span>
@@ -3800,6 +4227,7 @@ function outputSortValue(metrics) {
                   <div><dt>Goals</dt><dd>${formatGoalList(plant.goals)}</dd></div>
                 </dl>
               </div>
+              ${climateNotes}
               ${renderRelationshipPanel(plant)}
               <p class="grow-note">${plant.notes}</p>
             </div>
@@ -3837,10 +4265,13 @@ function outputSortValue(metrics) {
 
         titleEl.textContent = `Best ${formatGoal(inputs.goal)} matches for zone ${inputs.zone}.`;
         zoneNoteEl.textContent = localRealityNote(zoneData, inputs);
+        climatePanelEl.innerHTML = renderClimatePanel(inputs);
+        climatePanelEl.hidden = false;
         samplePreviewEl.hidden = true;
         if (ranked.length === 0) {
           statusEl.textContent = "No plants matched that goal. Try a broader goal or loosen one growing condition.";
           resultsEl.replaceChildren();
+          climatePanelEl.hidden = true;
           seeMoreEl.hidden = true;
           saveListEl.hidden = true;
           sharePlanEl.hidden = true;
@@ -3920,6 +4351,7 @@ function outputSortValue(metrics) {
 
         statusEl.textContent = "Looking up your USDA hardiness zone...";
         resultsEl.replaceChildren();
+        climatePanelEl.hidden = true;
         seeMoreEl.hidden = true;
         saveListEl.hidden = true;
         sharePlanEl.hidden = true;
@@ -3940,6 +4372,7 @@ function outputSortValue(metrics) {
           titleEl.textContent = "The zone lookup did not respond.";
           zoneNoteEl.textContent = "Try again in a moment, or swap the lookup function to another USDA-zone provider.";
           statusEl.textContent = "No recommendations shown because hardiness zone is required for ranking.";
+          climatePanelEl.hidden = true;
           samplePreviewEl.hidden = false;
           return false;
         }
