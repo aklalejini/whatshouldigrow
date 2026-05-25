@@ -1,4 +1,5 @@
 ---
+import AnalyticsEvents from "../components/AnalyticsEvents.astro";
 import plantMetricSources from "../data/plantMetricSources.json";
 import {
   DEFAULT_SOCIAL_IMAGE,
@@ -64,6 +65,7 @@ const breadcrumbJsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
   </head>
   <body>
+    <AnalyticsEvents pageType="trust_page" topic="methodology" />
     <main class="app-shell">
       <nav class="site-tabs" aria-label="Primary sections">
         <a class="site-tab" href="/">Plant matcher</a>

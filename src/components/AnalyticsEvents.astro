@@ -14,10 +14,24 @@ const pageContext = {
   topic,
   zone
 };
+
+const gaMeasurementId = "G-9GSPS08EDD";
 ---
 
-<script define:vars={{ pageContext }}>
+<script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
+<script define:vars={{ gaMeasurementId, pageContext }}>
   (function () {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () {
+      window.dataLayer.push(arguments);
+    };
+
+    if (gaMeasurementId && !window.__plantByZipGaConfigured) {
+      window.__plantByZipGaConfigured = true;
+      window.gtag("js", new Date());
+      window.gtag("config", gaMeasurementId);
+    }
+
     function compact(value) {
       return value === null || value === undefined || value === "" ? undefined : value;
     }

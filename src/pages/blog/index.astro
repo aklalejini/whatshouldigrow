@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import AnalyticsEvents from "../../components/AnalyticsEvents.astro";
 import {
   DEFAULT_SOCIAL_IMAGE,
   SITE_DESCRIPTION,
@@ -66,6 +67,7 @@ const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
     <title>Blog | {SITE_NAME}</title>
   </head>
   <body>
+    <AnalyticsEvents pageType="blog_index" topic="blog" />
     <main class="app-shell">
       <nav class="site-tabs" aria-label="Primary sections">
         <a class="site-tab" href="/">Plant matcher</a>
