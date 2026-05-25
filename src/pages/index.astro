@@ -388,40 +388,6 @@ const webAppJsonLd = {
             </form>
           </header>
 
-          <section class="calendar-controls" aria-label="Calendar filters">
-            <label class="calendar-field" for="calendar-set">
-              <span>Plant set</span>
-              <select id="calendar-set">
-                <option value="all">All zone-fit plants</option>
-                <option value="kitchen">Kitchen garden</option>
-                <option value="fruit">Fruit and berries</option>
-                <option value="pollinator">Pollinator plants</option>
-                <option value="native">Native cues</option>
-                <option value="containers">Container-friendly</option>
-                <option value="quick">Quick payoff</option>
-              </select>
-            </label>
-            <label class="calendar-field" for="calendar-season">
-              <span>Window</span>
-              <select id="calendar-season">
-                <option value="all">Full year</option>
-                <option value="next">Next 45 days</option>
-                <option value="spring">Spring</option>
-                <option value="fall">Fall</option>
-              </select>
-            </label>
-            <label class="calendar-field" for="calendar-method">
-              <span>Method</span>
-              <select id="calendar-method">
-                <option value="all">All methods</option>
-                <option value="indoors">Start indoors</option>
-                <option value="direct">Direct sow</option>
-                <option value="transplant">Transplant</option>
-                <option value="nursery">Plant nursery stock</option>
-              </select>
-            </label>
-          </section>
-
           <section class="calendar-dashboard" aria-label="Calendar climate summary">
             <div>
               <span>Zone</span>
@@ -445,11 +411,89 @@ const webAppJsonLd = {
             </div>
           </section>
 
+          <section class="calendar-now" aria-label="Right now in this calendar">
+            <div class="calendar-now-copy">
+              <p class="eyebrow">Right now</p>
+              <h2 id="calendar-now-title">Today in your zone</h2>
+              <p id="calendar-now-summary">Build a calendar to see what overlaps this week.</p>
+            </div>
+            <div id="calendar-now-list" class="calendar-now-list">
+              <p>Current planting windows will appear here after lookup.</p>
+            </div>
+          </section>
+
+          <section class="calendar-visual" aria-label="Year at a glance">
+            <div class="calendar-visual-head">
+              <div>
+                <p class="eyebrow">Year at a glance</p>
+                <h2>Planting timeline</h2>
+              </div>
+              <p id="calendar-visual-summary">A horizontal view will appear after ZIP lookup.</p>
+            </div>
+
+            <div class="calendar-set-bar">
+              <div>
+                <p class="eyebrow">Plant set</p>
+                <h3>Focus the year</h3>
+              </div>
+              <div id="calendar-set-tabs" class="calendar-set-tabs" role="group" aria-label="Plant set">
+                <button type="button" class="is-active" data-calendar-set="all" aria-pressed="true">All</button>
+                <button type="button" data-calendar-set="kitchen" aria-pressed="false">Kitchen</button>
+                <button type="button" data-calendar-set="fruit" aria-pressed="false">Fruit</button>
+                <button type="button" data-calendar-set="pollinator" aria-pressed="false">Pollinators</button>
+                <button type="button" data-calendar-set="native" aria-pressed="false">Natives</button>
+                <button type="button" data-calendar-set="containers" aria-pressed="false">Containers</button>
+                <button type="button" data-calendar-set="quick" aria-pressed="false">Quick</button>
+              </div>
+              <select id="calendar-set" hidden aria-hidden="true">
+                <option value="all">All zone-fit plants</option>
+                <option value="kitchen">Kitchen garden</option>
+                <option value="fruit">Fruit and berries</option>
+                <option value="pollinator">Pollinator plants</option>
+                <option value="native">Native cues</option>
+                <option value="containers">Container-friendly</option>
+                <option value="quick">Quick payoff</option>
+              </select>
+            </div>
+
+            <div class="calendar-legend" aria-label="Timeline legend">
+              <span><i class="calendar-legend-swatch calendar-method-indoors"></i>Start indoors</span>
+              <span><i class="calendar-legend-swatch calendar-method-direct"></i>Direct sow</span>
+              <span><i class="calendar-legend-swatch calendar-method-transplant"></i>Transplant</span>
+              <span><i class="calendar-legend-swatch calendar-method-nursery"></i>Nursery stock</span>
+            </div>
+
+            <div id="calendar-heatmap" class="calendar-heatmap" aria-label="Monthly planting activity"></div>
+            <div id="calendar-gantt" class="calendar-gantt" aria-label="Planting timeline rows"></div>
+          </section>
+
+          <section class="calendar-controls" aria-label="Calendar detail filters">
+            <label class="calendar-field" for="calendar-season">
+              <span>Detail window</span>
+              <select id="calendar-season">
+                <option value="all">Full year</option>
+                <option value="next">Next 45 days</option>
+                <option value="spring">Spring</option>
+                <option value="fall">Fall</option>
+              </select>
+            </label>
+            <label class="calendar-field" for="calendar-method">
+              <span>Method</span>
+              <select id="calendar-method">
+                <option value="all">All methods</option>
+                <option value="indoors">Start indoors</option>
+                <option value="direct">Direct sow</option>
+                <option value="transplant">Transplant</option>
+                <option value="nursery">Plant nursery stock</option>
+              </select>
+            </label>
+          </section>
+
           <section class="calendar-layout" aria-label="Planting calendar results">
             <aside class="calendar-next">
               <div class="calendar-panel-head">
                 <p class="eyebrow">Next moves</p>
-                <h2>What to do soon</h2>
+                <h2>Coming up</h2>
               </div>
               <div id="calendar-next-list" class="calendar-next-list">
                 <p>Build a calendar to see near-term planting tasks.</p>
@@ -459,7 +503,7 @@ const webAppJsonLd = {
             <section class="calendar-timeline" aria-label="Planting window timeline">
               <div class="calendar-timeline-head">
                 <div>
-                  <p class="eyebrow">Calendar windows</p>
+                  <p class="eyebrow">Month detail</p>
                   <h2 id="calendar-results-title">Waiting on ZIP</h2>
                 </div>
                 <p id="calendar-summary">Frost-based windows will appear here after lookup.</p>
@@ -733,6 +777,7 @@ const webAppJsonLd = {
       const calendarZipEl = document.getElementById("calendar-zip");
       const calendarStatusEl = document.getElementById("calendar-status");
       const calendarSetEl = document.getElementById("calendar-set");
+      const calendarSetButtons = Array.from(document.querySelectorAll("[data-calendar-set]"));
       const calendarSeasonEl = document.getElementById("calendar-season");
       const calendarMethodEl = document.getElementById("calendar-method");
       const calendarZoneValueEl = document.getElementById("calendar-zone-value");
@@ -740,6 +785,12 @@ const webAppJsonLd = {
       const calendarLastFrostEl = document.getElementById("calendar-last-frost");
       const calendarFirstFrostEl = document.getElementById("calendar-first-frost");
       const calendarSeasonLengthEl = document.getElementById("calendar-season-length");
+      const calendarNowTitleEl = document.getElementById("calendar-now-title");
+      const calendarNowSummaryEl = document.getElementById("calendar-now-summary");
+      const calendarNowListEl = document.getElementById("calendar-now-list");
+      const calendarVisualSummaryEl = document.getElementById("calendar-visual-summary");
+      const calendarHeatmapEl = document.getElementById("calendar-heatmap");
+      const calendarGanttEl = document.getElementById("calendar-gantt");
       const calendarResultsTitleEl = document.getElementById("calendar-results-title");
       const calendarSummaryEl = document.getElementById("calendar-summary");
       const calendarMonthStripEl = document.getElementById("calendar-month-strip");
@@ -1256,6 +1307,21 @@ function outputSortValue(metrics) {
         nursery: "Nursery stock"
       };
       const calendarMethodOrder = { indoors: 1, direct: 2, transplant: 3, nursery: 4 };
+      const calendarUrgencyLabels = {
+        active: "This week",
+        week: "This week",
+        soon: "Next 30 days",
+        later: "Coming up"
+      };
+      const calendarFormLabels = {
+        tree: "Tree",
+        shrub: "Shrub",
+        vine: "Vine",
+        vegetable: "Veg",
+        flowerHerb: "Flower/herb",
+        cactus: "Cactus",
+        fruiting: "Fruit"
+      };
       const calendarFrostAnchors = [
         { zone: 2, last: 162, first: 248 },
         { zone: 3, last: 149, first: 262 },
@@ -1309,6 +1375,14 @@ function outputSortValue(metrics) {
         return date.toISOString().slice(0, 10);
       }
 
+      function calendarYearStart() {
+        return startOfCalendarDay(new Date(calendarDisplayYear, 0, 1));
+      }
+
+      function calendarYearEnd() {
+        return startOfCalendarDay(new Date(calendarDisplayYear, 11, 31));
+      }
+
       function formatCalendarDate(date) {
         return `${calendarMonthLabels[date.getMonth()]} ${date.getDate()}`;
       }
@@ -1322,6 +1396,35 @@ function outputSortValue(metrics) {
 
       function calendarRangeOverlaps(start, end, filterStart, filterEnd) {
         return start <= filterEnd && end >= filterStart;
+      }
+
+      function calendarPercentForDate(date) {
+        const yearStart = calendarYearStart();
+        const yearEnd = calendarYearEnd();
+        return clamp(((startOfCalendarDay(date) - yearStart) / (yearEnd - yearStart)) * 100, 0, 100);
+      }
+
+      function calendarBarGeometry(start, end) {
+        const yearStart = calendarYearStart();
+        const yearEnd = calendarYearEnd();
+        const clippedStart = start < yearStart ? yearStart : start;
+        const clippedEnd = end > yearEnd ? yearEnd : end;
+        const left = calendarPercentForDate(clippedStart);
+        const right = calendarPercentForDate(clippedEnd);
+        return {
+          left,
+          width: Math.max(1.2, right - left)
+        };
+      }
+
+      function calendarToday() {
+        return startOfCalendarDay(new Date());
+      }
+
+      function calendarTodayPercent() {
+        const today = calendarToday();
+        if (today < calendarYearStart() || today > calendarYearEnd()) return null;
+        return calendarPercentForDate(today);
       }
 
       function interpolateCalendarFrost(zoneNumber, key) {
@@ -1418,6 +1521,14 @@ function outputSortValue(metrics) {
           return ["quick", "seasonal", "fast-perennial"].includes(metrics.horizonKey) || (Number.isFinite(maturityDays) && maturityDays > 0 && maturityDays <= 75);
         }
         return true;
+      }
+
+      function updateCalendarSetTabs() {
+        calendarSetButtons.forEach((button) => {
+          const isActive = button.dataset.calendarSet === calendarSetEl.value;
+          button.classList.toggle("is-active", isActive);
+          button.setAttribute("aria-pressed", String(isActive));
+        });
       }
 
       function calendarWindow(frost, plant, action, method, season, anchor, startOffset, endOffset, note) {
@@ -1579,6 +1690,57 @@ function outputSortValue(metrics) {
           .sort((a, b) => a.start - b.start || calendarMethodOrder[a.method] - calendarMethodOrder[b.method] || a.group.localeCompare(b.group));
       }
 
+      function calendarVisualEvents() {
+        return filterCalendarEvents({ includeSeason: false, includeMonth: false });
+      }
+
+      function calendarUrgencyForRange(start, end) {
+        const today = calendarToday();
+        const weekEnd = addCalendarDays(today, 7);
+        const soonEnd = addCalendarDays(today, 30);
+        if (calendarRangeOverlaps(start, end, today, weekEnd)) return "active";
+        if (start > today && start <= weekEnd) return "week";
+        if (start > today && start <= soonEnd) return "soon";
+        return "later";
+      }
+
+      function calendarGroupFormKey(group) {
+        const counts = group.plants.reduce((summary, plant) => {
+          const key = plantFormKey(plant);
+          summary[key] = (summary[key] ?? 0) + 1;
+          return summary;
+        }, {});
+        return Object.entries(counts)
+          .sort((a, b) => b[1] - a[1] || formOrder.indexOf(a[0]) - formOrder.indexOf(b[0]))[0]?.[0] ?? "fruiting";
+      }
+
+      function calendarTimelineRows(events) {
+        const rows = new Map();
+        groupCalendarEvents(events).forEach((group) => {
+          if (!rows.has(group.group)) {
+            rows.set(group.group, {
+              label: group.group,
+              plants: new Map(),
+              bars: []
+            });
+          }
+          const row = rows.get(group.group);
+          group.plants.forEach((plant) => row.plants.set(plant.id, plant));
+          row.bars.push(group);
+        });
+        return Array.from(rows.values())
+          .map((row) => ({
+            ...row,
+            plants: Array.from(row.plants.values()).sort((a, b) => a.name.localeCompare(b.name)),
+            bars: row.bars.sort((a, b) => a.start - b.start || calendarMethodOrder[a.method] - calendarMethodOrder[b.method])
+          }))
+          .sort((a, b) => {
+            const aStart = a.bars[0]?.start ?? calendarYearEnd();
+            const bStart = b.bars[0]?.start ?? calendarYearEnd();
+            return aStart - bStart || a.label.localeCompare(b.label);
+          });
+      }
+
       function calendarMonthsTouched(start, end) {
         const months = [];
         for (let month = 0; month < 12; month += 1) {
@@ -1587,6 +1749,19 @@ function outputSortValue(metrics) {
           if (calendarRangeOverlaps(start, end, monthStart, monthEnd)) months.push(month);
         }
         return months;
+      }
+
+      function calendarFrostOverlayHtml() {
+        if (!calendarFrost) return "";
+        const last = calendarPercentForDate(calendarFrost.lastFrost);
+        const first = calendarPercentForDate(calendarFrost.firstFrost);
+        const today = calendarTodayPercent();
+        return `
+          <span class="calendar-frost-band" style="left: ${last}%; width: ${Math.max(1, first - last)}%;"></span>
+          <span class="calendar-frost-line calendar-frost-line-last" style="left: ${last}%;" title="Estimated last frost: ${formatCalendarDate(calendarFrost.lastFrost)}"></span>
+          ${calendarFrost.isFrostFree ? "" : `<span class="calendar-frost-line calendar-frost-line-first" style="left: ${first}%;" title="Estimated first frost: ${formatCalendarDate(calendarFrost.firstFrost)}"></span>`}
+          ${today === null ? "" : `<span class="calendar-today-line" style="left: ${today}%;" title="Today"></span>`}
+        `;
       }
 
       function renderCalendarMonthStrip(events) {
@@ -1607,10 +1782,106 @@ function outputSortValue(metrics) {
         ].join("");
         calendarMonthStripEl.querySelectorAll("[data-calendar-month]").forEach((button) => {
           button.addEventListener("click", () => {
-            calendarMonthFilter = button.dataset.calendarMonth ?? "";
-            renderCalendar();
+            handleCalendarMonthSelection(button.dataset.calendarMonth ?? "");
           });
         });
+      }
+
+      function handleCalendarMonthSelection(month) {
+        calendarMonthFilter = month;
+        calendarSeasonEl.value = "all";
+        renderCalendar();
+        document.querySelector(".calendar-timeline")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function renderCalendarHeatmap(events) {
+        if (!calendarFrost) {
+          calendarHeatmapEl.innerHTML = "<p>Build a calendar to see monthly activity.</p>";
+          return;
+        }
+        const groups = groupCalendarEvents(events);
+        const counts = new Array(12).fill(0);
+        groups.forEach((group) => {
+          calendarMonthsTouched(group.start, group.end).forEach((month) => {
+            counts[month] += 1;
+          });
+        });
+        const maxCount = Math.max(1, ...counts);
+        calendarHeatmapEl.innerHTML = calendarMonthLabels.map((label, index) => {
+          const count = counts[index];
+          const intensity = count / maxCount;
+          const isActive = calendarMonthFilter === String(index);
+          return `
+            <button
+              type="button"
+              class="calendar-heatmap-cell ${isActive ? "is-active" : ""}"
+              data-calendar-heat-month="${index}"
+              style="--activity: ${intensity.toFixed(3)}"
+              aria-pressed="${isActive}"
+            >
+              <span>${label}</span>
+              <strong>${count}</strong>
+            </button>
+          `;
+        }).join("");
+        calendarHeatmapEl.querySelectorAll("[data-calendar-heat-month]").forEach((button) => {
+          button.addEventListener("click", () => {
+            handleCalendarMonthSelection(button.dataset.calendarHeatMonth ?? "");
+          });
+        });
+      }
+
+      function renderCalendarGantt(events) {
+        if (!calendarFrost) {
+          calendarGanttEl.innerHTML = "<p class=\"calendar-gantt-empty\">Build a calendar to see the year as planting bars.</p>";
+          return;
+        }
+        const rows = calendarTimelineRows(events);
+        const visibleRows = rows.slice(0, 44);
+        if (!visibleRows.length) {
+          calendarGanttEl.innerHTML = "<p class=\"calendar-gantt-empty\">No timeline rows match this plant set and method.</p>";
+          return;
+        }
+        const frostOverlay = calendarFrostOverlayHtml();
+        calendarGanttEl.innerHTML = `
+          <div class="calendar-gantt-scroll" role="region" aria-label="Year-long planting bars" tabindex="0">
+            <div class="calendar-gantt-months" aria-hidden="true">
+              <span></span>
+              <div>${calendarMonthLabels.map((label) => `<b>${label}</b>`).join("")}</div>
+            </div>
+            <div class="calendar-gantt-rows">
+              ${visibleRows.map((row) => {
+                const formKey = calendarGroupFormKey({ plants: row.plants });
+                return `
+                  <article class="calendar-gantt-row calendar-form-${escapeHtml(formKey)}">
+                    <div class="calendar-gantt-label">
+                      <span class="calendar-form-dot" aria-hidden="true"></span>
+                      <strong>${escapeHtml(row.label)}</strong>
+                      <small>${row.plants.length} ${row.plants.length === 1 ? "plant" : "plants"} - ${calendarFormLabels[formKey] ?? "Plant"}</small>
+                    </div>
+                    <div class="calendar-gantt-track">
+                      ${frostOverlay}
+                      ${row.bars.map((bar) => {
+                        const geometry = calendarBarGeometry(bar.start, bar.end);
+                        const lane = Math.max(0, (calendarMethodOrder[bar.method] ?? 1) - 1);
+                        return `
+                          <span
+                            class="calendar-gantt-bar calendar-method-${escapeHtml(bar.method)}"
+                            style="left: ${geometry.left}%; width: ${geometry.width}%; --lane: ${lane};"
+                            title="${escapeHtml(`${formatCalendarWindow(bar.start, bar.end)} - ${bar.action} - ${bar.plants.length} ${bar.plants.length === 1 ? "plant" : "plants"}`)}"
+                          >
+                            <span>${escapeHtml(calendarMethodLabels[bar.method])}</span>
+                          </span>
+                        `;
+                      }).join("")}
+                    </div>
+                  </article>
+                `;
+              }).join("")}
+            </div>
+          </div>
+          ${rows.length > visibleRows.length ? `<p class="calendar-limit-note">Showing ${visibleRows.length} of ${rows.length} timeline rows. Narrow the plant set or method to see a tighter year view.</p>` : ""}
+        `;
       }
 
       function renderCalendarPlantLinks(plantsForGroup) {
@@ -1625,22 +1896,68 @@ function outputSortValue(metrics) {
       }
 
       function renderCalendarGroup(group) {
+        const urgency = calendarUrgencyForRange(group.start, group.end);
+        const formKey = calendarGroupFormKey(group);
         return `
-          <article class="calendar-event">
+          <article class="calendar-event calendar-form-${escapeHtml(formKey)} calendar-urgency-${escapeHtml(urgency)}">
             <div class="calendar-event-date">
               <strong>${formatCalendarWindow(group.start, group.end)}</strong>
               <span>${group.season === "fall" ? "Fall" : "Spring"}</span>
             </div>
             <div class="calendar-event-main">
               <div class="calendar-event-title">
-                <h3>${escapeHtml(group.action)}</h3>
-                <span class="calendar-method calendar-method-${escapeHtml(group.method)}">${calendarMethodLabels[group.method]}</span>
+                <h3><span class="calendar-form-dot" aria-hidden="true"></span>${escapeHtml(group.action)}</h3>
+                <div class="calendar-event-badges">
+                  <span class="calendar-urgency-badge calendar-urgency-badge-${escapeHtml(urgency)}">${calendarUrgencyLabels[urgency]}</span>
+                  <span class="calendar-method calendar-method-${escapeHtml(group.method)}">${calendarMethodLabels[group.method]}</span>
+                </div>
               </div>
               <p>${escapeHtml(group.group)} &middot; ${group.plants.length} ${group.plants.length === 1 ? "plant" : "plants"}</p>
               ${renderCalendarPlantLinks(group.plants)}
               <small>${escapeHtml(group.note)}</small>
             </div>
           </article>
+        `;
+      }
+
+      function renderCalendarNowPanel() {
+        if (!calendarFrost) {
+          calendarNowTitleEl.textContent = "Today in your zone";
+          calendarNowSummaryEl.textContent = "Build a calendar to see what overlaps this week.";
+          calendarNowListEl.innerHTML = "<p>Current planting windows will appear here after lookup.</p>";
+          return;
+        }
+        const today = calendarToday();
+        const weekEnd = addCalendarDays(today, 7);
+        const baseEvents = calendarVisualEvents();
+        const activeGroups = groupCalendarEvents(baseEvents.filter((event) => calendarRangeOverlaps(event.start, event.end, today, weekEnd)));
+        const upcomingGroups = groupCalendarEvents(baseEvents.filter((event) => event.start > weekEnd)).slice(0, 4);
+        const daysSinceLastFrost = Math.round((today - calendarFrost.lastFrost) / calendarDayMs);
+        const daysToFirstFrost = Math.round((calendarFrost.firstFrost - today) / calendarDayMs);
+        let frostNote = calendarFrost.isFrostFree
+          ? "Frost is uncommon in this zone; use heat, rainfall, and nursery directions as the main timing checks."
+          : `${daysSinceLastFrost >= 0 ? `${daysSinceLastFrost} days since estimated last frost` : `${Math.abs(daysSinceLastFrost)} days until estimated last frost`}; ${daysToFirstFrost >= 0 ? `${daysToFirstFrost} days until estimated first frost` : `${Math.abs(daysToFirstFrost)} days since estimated first frost`}.`;
+        calendarNowTitleEl.textContent = `${formatCalendarDate(today)} in zone ${calendarZoneData.zone}`;
+        calendarNowSummaryEl.textContent = activeGroups.length
+          ? `${activeGroups.length} grouped planting ${activeGroups.length === 1 ? "window overlaps" : "windows overlap"} this week. ${frostNote}`
+          : `No matching planting windows overlap this week. ${frostNote}`;
+        const groups = activeGroups.length ? activeGroups.slice(0, 6) : upcomingGroups;
+        if (!groups.length) {
+          calendarNowListEl.innerHTML = "<p>No current or upcoming windows match this plant set and method.</p>";
+          return;
+        }
+        calendarNowListEl.innerHTML = `
+          ${!activeGroups.length ? "<p>No current matches. Next up:</p>" : ""}
+          ${groups.map((group) => {
+            const urgency = calendarUrgencyForRange(group.start, group.end);
+            return `
+              <article class="calendar-now-item calendar-urgency-${escapeHtml(urgency)}">
+                <strong>${calendarUrgencyLabels[urgency]}</strong>
+                <span>${formatCalendarWindow(group.start, group.end)}</span>
+                <p>${escapeHtml(group.action)}: ${escapeHtml(group.group)}</p>
+              </article>
+            `;
+          }).join("")}
         `;
       }
 
@@ -1660,12 +1977,16 @@ function outputSortValue(metrics) {
         }
         calendarNextListEl.innerHTML = `
           ${intro}
-          ${groups.slice(0, 6).map((group) => `
-            <article class="calendar-next-item">
-              <strong>${formatCalendarWindow(group.start, group.end)}</strong>
-              <span>${escapeHtml(group.action)}: ${escapeHtml(group.group)}</span>
-            </article>
-          `).join("")}
+          ${groups.slice(0, 6).map((group) => {
+            const urgency = calendarUrgencyForRange(group.start, group.end);
+            return `
+              <article class="calendar-next-item calendar-urgency-${escapeHtml(urgency)}">
+                <span class="calendar-urgency-badge calendar-urgency-badge-${escapeHtml(urgency)}">${calendarUrgencyLabels[urgency]}</span>
+                <strong>${formatCalendarWindow(group.start, group.end)}</strong>
+                <span>${escapeHtml(group.action)}: ${escapeHtml(group.group)}</span>
+              </article>
+            `;
+          }).join("")}
         `;
       }
 
@@ -1686,21 +2007,35 @@ function outputSortValue(metrics) {
       }
 
       function renderCalendar() {
+        updateCalendarSetTabs();
         renderCalendarDashboard();
         if (!calendarFrost) {
           calendarMonthStripEl.innerHTML = "";
           calendarEventsEl.innerHTML = "";
+          calendarHeatmapEl.innerHTML = "<p>Build a calendar to see monthly activity.</p>";
+          calendarGanttEl.innerHTML = "<p class=\"calendar-gantt-empty\">Build a calendar to see the year as planting bars.</p>";
+          calendarVisualSummaryEl.textContent = "A horizontal view will appear after ZIP lookup.";
           calendarEmptyEl.hidden = true;
+          renderCalendarNowPanel();
           return;
         }
+        const visualEvents = calendarVisualEvents();
+        const timelineRows = calendarTimelineRows(visualEvents);
+        const visualGroups = groupCalendarEvents(visualEvents);
+        const setLabel = calendarSetEl.selectedOptions[0]?.textContent ?? "selected plants";
+        const methodLabel = calendarMethodEl.selectedOptions[0]?.textContent ?? "selected methods";
+        calendarVisualSummaryEl.textContent = `${timelineRows.length} category rows and ${visualGroups.length} grouped windows for ${setLabel.toLowerCase()}, ${methodLabel.toLowerCase()}. Today, last frost, and first frost are marked on the year.`;
+        renderCalendarNowPanel();
+        renderCalendarHeatmap(visualEvents);
+        renderCalendarGantt(visualEvents);
         const monthBaseEvents = filterCalendarEvents({ includeMonth: false });
         renderCalendarMonthStrip(monthBaseEvents);
         const groups = groupCalendarEvents(filterCalendarEvents());
         const visibleGroups = groups.slice(0, 72);
-        const setLabel = calendarSetEl.selectedOptions[0]?.textContent ?? "selected plants";
         const seasonLabel = calendarSeasonEl.selectedOptions[0]?.textContent ?? "selected window";
-        const methodLabel = calendarMethodEl.selectedOptions[0]?.textContent ?? "selected methods";
-        calendarResultsTitleEl.textContent = `${calendarDisplayYear} planting windows`;
+        calendarResultsTitleEl.textContent = calendarMonthFilter === ""
+          ? `${calendarDisplayYear} planting windows`
+          : `${calendarMonthLabels[Number(calendarMonthFilter)]} detail`;
         calendarSummaryEl.textContent = `Showing ${groups.length} grouped windows for ${setLabel.toLowerCase()}, ${seasonLabel.toLowerCase()}, ${methodLabel.toLowerCase()}.`;
         calendarEventsEl.innerHTML = visibleGroups.map(renderCalendarGroup).join("")
           + (groups.length > visibleGroups.length
@@ -1737,7 +2072,14 @@ function outputSortValue(metrics) {
 
       function initializeCalendar() {
         calendarFormEl.addEventListener("submit", handleCalendarSubmit);
-        [calendarSetEl, calendarSeasonEl, calendarMethodEl].forEach((control) => {
+        calendarSetButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            calendarSetEl.value = button.dataset.calendarSet ?? "all";
+            calendarMonthFilter = "";
+            renderCalendar();
+          });
+        });
+        [calendarSeasonEl, calendarMethodEl].forEach((control) => {
           control.addEventListener("input", () => {
             calendarMonthFilter = "";
             renderCalendar();
