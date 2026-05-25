@@ -1592,6 +1592,29 @@ const webAppJsonLd = {
         return partners[value]?.name ?? sentenceCase(String(value ?? "").replaceAll("-", " "));
       }
 
+      function partnerSearchHref(source, query) {
+        if (!source?.searchUrl || !query) return "";
+        const url = source.searchUrl.replace("{query}", encodeURIComponent(query));
+        const affiliateParam = source.affiliateParam?.replace(/^[?&]/, "");
+        if (!affiliateParam) return url;
+        return `${url}${url.includes("?") ? "&" : "?"}${affiliateParam}`;
+      }
+
+      function sourceActionForPlant(plant) {
+        const name = partnerName(plant.partner);
+        if (plant.affiliateUrl) {
+          return {
+            href: plant.affiliateUrl,
+            label: `Check ${name}`,
+            rel: "sponsored noopener noreferrer"
+          };
+        }
+        const href = partnerSearchHref(partners[plant.partner], plant.query);
+        return href
+          ? { href, label: `Search ${name}`, rel: "noopener noreferrer" }
+          : null;
+      }
+
       function metricFor(plant) {
         return plantMetrics[plant.id] ?? {};
       }
@@ -3600,6 +3623,7 @@ function outputSortValue(metrics) {
 
         const breakdown = scoreBreakdown(plant, inputs);
         const fit = overallFit(score);
+        const sourceAction = sourceActionForPlant(plant);
         item.innerHTML = `
           <figure class="plant-visual ${kind} ${art} ${hasImage ? "photo-plate" : ""}" aria-hidden="true"${photoStyle}>
             <span class="rank">${index + 1}</span>
@@ -3657,7 +3681,9 @@ function outputSortValue(metrics) {
           </details>
           <div class="card-actions">
             <a class="plant-page-action" href="${plantPagePath(plant)}">View plant page</a>
-            <span class="nursery-placeholder">Nursery links coming soon</span>
+            ${sourceAction
+              ? `<a class="plant-page-action" href="${escapeHtml(sourceAction.href)}" target="_blank" rel="${sourceAction.rel}">${escapeHtml(sourceAction.label)}</a>`
+              : `<span class="nursery-placeholder">Source link coming soon</span>`}
           </div>
         `;
         return item;
