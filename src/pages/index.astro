@@ -423,6 +423,18 @@ const webAppJsonLd = {
           </section>
 
           <section class="calendar-controls" aria-label="Calendar detail filters">
+            <label class="calendar-field" for="calendar-plant-class">
+              <span>Plant class</span>
+              <select id="calendar-plant-class">
+                <option value="all">All classes</option>
+              </select>
+            </label>
+            <label class="calendar-field" for="calendar-variety">
+              <span>Variety</span>
+              <select id="calendar-variety" disabled>
+                <option value="all">Choose a class first</option>
+              </select>
+            </label>
             <label class="calendar-field" for="calendar-season">
               <span>Detail window</span>
               <select id="calendar-season">
@@ -485,9 +497,9 @@ const webAppJsonLd = {
               <span><i class="calendar-legend-swatch calendar-method-nursery"></i>Nursery stock</span>
             </div>
 
+            <div id="calendar-gantt" class="calendar-gantt" aria-label="Planting timeline rows"></div>
             <div id="calendar-heatmap" class="calendar-heatmap" aria-label="Monthly planting activity"></div>
             <div id="calendar-mobile-plan" class="calendar-mobile-plan" aria-live="polite"></div>
-            <div id="calendar-gantt" class="calendar-gantt" aria-label="Planting timeline rows"></div>
           </section>
 
           <section class="calendar-layout" aria-label="Planting calendar results">
@@ -779,6 +791,8 @@ const webAppJsonLd = {
       const calendarStatusEl = document.getElementById("calendar-status");
       const calendarSetEl = document.getElementById("calendar-set");
       const calendarSetButtons = Array.from(document.querySelectorAll("[data-calendar-set]"));
+      const calendarPlantClassEl = document.getElementById("calendar-plant-class");
+      const calendarVarietyEl = document.getElementById("calendar-variety");
       const calendarSeasonEl = document.getElementById("calendar-season");
       const calendarMethodEl = document.getElementById("calendar-method");
       const calendarZoneValueEl = document.getElementById("calendar-zone-value");
@@ -929,6 +943,78 @@ const webAppJsonLd = {
         { label: "Hollies", terms: ["holly"] },
         { label: "Maples", terms: ["maple"] },
         { label: "Oaks", terms: ["oak"] }
+      ];
+      const calendarPlantClassTerms = [
+        { label: "Apple", plural: "Apples", terms: ["apple"] },
+        { label: "Pear", plural: "Pears", terms: ["pear"], excludes: ["prickly pear"] },
+        { label: "Peach", plural: "Peaches", terms: ["peach", "nectarine"] },
+        { label: "Plum", plural: "Plums", terms: ["plum"] },
+        { label: "Cherry", plural: "Cherries", terms: ["cherry"] },
+        { label: "Fig", plural: "Figs", terms: ["fig"] },
+        { label: "Persimmon", plural: "Persimmons", terms: ["persimmon"] },
+        { label: "Pawpaw", plural: "Pawpaws", terms: ["pawpaw"] },
+        { label: "Jujube", plural: "Jujubes", terms: ["jujube"] },
+        { label: "Pomegranate", plural: "Pomegranates", terms: ["pomegranate"] },
+        { label: "Loquat", plural: "Loquats", terms: ["loquat"] },
+        { label: "Mulberry", plural: "Mulberries", terms: ["mulberry"] },
+        { label: "Blueberry", plural: "Blueberries", terms: ["blueberry"] },
+        { label: "Blackberry", plural: "Blackberries", terms: ["blackberry"] },
+        { label: "Raspberry", plural: "Raspberries", terms: ["raspberry"] },
+        { label: "Strawberry", plural: "Strawberries", terms: ["strawberry"] },
+        { label: "Currant", plural: "Currants", terms: ["currant"] },
+        { label: "Gooseberry", plural: "Gooseberries", terms: ["gooseberry"] },
+        { label: "Grape", plural: "Grapes", terms: ["grape", "muscadine"] },
+        { label: "Kiwi", plural: "Kiwis", terms: ["kiwi"] },
+        { label: "Elderberry", plural: "Elderberries", terms: ["elderberry"] },
+        { label: "Hazelnut", plural: "Hazelnuts", terms: ["hazelnut"] },
+        { label: "Pecan", plural: "Pecans", terms: ["pecan"] },
+        { label: "Chestnut", plural: "Chestnuts", terms: ["chestnut"] },
+        { label: "Almond", plural: "Almonds", terms: ["almond"] },
+        { label: "Citrus", plural: "Citrus", terms: ["citrus", "lemon", "lime", "satsuma", "kumquat", "calamondin", "yuzu"], excludes: ["lemon balm"] },
+        { label: "Olive", plural: "Olives", terms: ["olive"] },
+        { label: "Prickly pear", plural: "Prickly pears", terms: ["prickly pear"] },
+        { label: "Tomato", plural: "Tomatoes", terms: ["tomato"] },
+        { label: "Pepper", plural: "Peppers", terms: ["pepper", "habanero", "jalapeno", "poblano", "shishito", "aji amarillo"] },
+        { label: "Eggplant", plural: "Eggplants", terms: ["eggplant"] },
+        { label: "Bean", plural: "Beans", terms: ["bean"] },
+        { label: "Pea", plural: "Peas", terms: ["pea", "cowpea"] },
+        { label: "Corn", plural: "Corn", terms: ["corn"] },
+        { label: "Lettuce", plural: "Lettuce", terms: ["lettuce"] },
+        { label: "Spinach", plural: "Spinach", terms: ["spinach"] },
+        { label: "Kale", plural: "Kale", terms: ["kale"] },
+        { label: "Collard", plural: "Collards", terms: ["collard"] },
+        { label: "Chard", plural: "Chard", terms: ["chard"] },
+        { label: "Arugula", plural: "Arugula", terms: ["arugula"] },
+        { label: "Carrot", plural: "Carrots", terms: ["carrot"] },
+        { label: "Beet", plural: "Beets", terms: ["beet"] },
+        { label: "Radish", plural: "Radishes", terms: ["radish", "daikon"] },
+        { label: "Turnip", plural: "Turnips", terms: ["turnip"] },
+        { label: "Onion", plural: "Onions", terms: ["onion"] },
+        { label: "Garlic", plural: "Garlic", terms: ["garlic"] },
+        { label: "Leek", plural: "Leeks", terms: ["leek"] },
+        { label: "Potato", plural: "Potatoes", terms: ["potato"], excludes: ["sweet potato"] },
+        { label: "Sweet potato", plural: "Sweet potatoes", terms: ["sweet potato"] },
+        { label: "Cucumber", plural: "Cucumbers", terms: ["cucumber"] },
+        { label: "Squash", plural: "Squash", terms: ["squash", "zucchini", "pumpkin"] },
+        { label: "Melon", plural: "Melons", terms: ["melon", "cantaloupe", "watermelon"] },
+        { label: "Okra", plural: "Okra", terms: ["okra"] },
+        { label: "Broccoli", plural: "Broccoli", terms: ["broccoli"] },
+        { label: "Cabbage", plural: "Cabbage", terms: ["cabbage"] },
+        { label: "Cauliflower", plural: "Cauliflower", terms: ["cauliflower"] },
+        { label: "Basil", plural: "Basil", terms: ["basil"] },
+        { label: "Mint", plural: "Mint", terms: ["mint"] },
+        { label: "Rosemary", plural: "Rosemary", terms: ["rosemary"] },
+        { label: "Thyme", plural: "Thyme", terms: ["thyme"] },
+        { label: "Parsley", plural: "Parsley", terms: ["parsley"] },
+        { label: "Cilantro", plural: "Cilantro", terms: ["cilantro"] },
+        { label: "Dill", plural: "Dill", terms: ["dill"] },
+        { label: "Milkweed", plural: "Milkweeds", terms: ["milkweed"] },
+        { label: "Coneflower", plural: "Coneflowers", terms: ["coneflower", "echinacea"] },
+        { label: "Black-eyed Susan", plural: "Black-eyed Susans", terms: ["black eyed susan", "rudbeckia"] },
+        { label: "Hydrangea", plural: "Hydrangeas", terms: ["hydrangea"] },
+        { label: "Holly", plural: "Hollies", terms: ["holly"] },
+        { label: "Maple", plural: "Maples", terms: ["maple"] },
+        { label: "Oak", plural: "Oaks", terms: ["oak"] }
       ];
 
       function setActiveView(view) {
@@ -1251,6 +1337,77 @@ const webAppJsonLd = {
         return pluralTypeLabel(plant.type);
       }
 
+      function calendarOptionKey(label) {
+        return String(label ?? "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
+      }
+
+      function singularPlantClassLabel(label) {
+        const replacements = {
+          Apples: "Apple",
+          Pears: "Pear",
+          Peaches: "Peach",
+          Plums: "Plum",
+          Cherries: "Cherry",
+          Figs: "Fig",
+          Persimmons: "Persimmon",
+          Pawpaws: "Pawpaw",
+          Blueberries: "Blueberry",
+          Blackberries: "Blackberry",
+          Raspberries: "Raspberry",
+          Strawberries: "Strawberry",
+          Currants: "Currant",
+          Gooseberries: "Gooseberry",
+          Grapes: "Grape",
+          "Kiwi vines": "Kiwi",
+          Beans: "Bean",
+          Peas: "Pea",
+          Tomatoes: "Tomato",
+          Peppers: "Pepper",
+          Eggplants: "Eggplant",
+          "Root crops": "Root crop",
+          "Onions & garlic": "Onion or garlic",
+          "Squash & zucchini": "Squash",
+          Melons: "Melon",
+          Cucumbers: "Cucumber",
+          Potatoes: "Potato",
+          Milkweeds: "Milkweed",
+          Coneflowers: "Coneflower",
+          Hydrangeas: "Hydrangea",
+          Hollies: "Holly",
+          Maples: "Maple",
+          Oaks: "Oak"
+        };
+        if (replacements[label]) return replacements[label];
+        if (label.endsWith("ies")) return `${label.slice(0, -3)}y`;
+        if (label.endsWith("s") && !label.endsWith("ss")) return label.slice(0, -1);
+        return label;
+      }
+
+      function calendarPlantClassForPlant(plant) {
+        const identity = relationshipIdentity(plant);
+        const matchedClass = calendarPlantClassTerms.find((plantClass) => {
+          const matches = plantClass.terms.some((term) => termMatchesIdentity(identity, term));
+          const excluded = (plantClass.excludes ?? []).some((term) => termMatchesIdentity(identity, term));
+          return matches && !excluded;
+        });
+        if (matchedClass) {
+          return {
+            id: calendarOptionKey(matchedClass.label),
+            label: matchedClass.label,
+            plural: matchedClass.plural ?? pluralTypeLabel(matchedClass.label)
+          };
+        }
+        const plural = plantGroupLabel(plant);
+        return {
+          id: calendarOptionKey(plural),
+          label: singularPlantClassLabel(plural),
+          plural
+        };
+      }
+
       function partnerName(value) {
         return partners[value]?.name ?? sentenceCase(String(value ?? "").replaceAll("-", " "));
       }
@@ -1525,6 +1682,71 @@ function outputSortValue(metrics) {
         return true;
       }
 
+      function calendarPlantFilterBasePlants() {
+        const selectedSet = calendarSetEl.value;
+        return plants
+          .filter((plant) => !calendarFrost || calendarPlantFitsZone(plant, calendarFrost.zoneNumber))
+          .filter((plant) => calendarPlantMatchesSet(plant, selectedSet))
+          .sort((a, b) => a.name.localeCompare(b.name));
+      }
+
+      function calendarPlantMatchesFocusedFilters(plant) {
+        const selectedClass = calendarPlantClassEl.value;
+        const selectedVariety = calendarVarietyEl.value;
+        if (selectedClass !== "all" && calendarPlantClassForPlant(plant).id !== selectedClass) return false;
+        if (selectedVariety !== "all" && plant.id !== selectedVariety) return false;
+        return true;
+      }
+
+      function calendarSelectedPlantFocusLabel() {
+        if (calendarVarietyEl.value !== "all") {
+          return calendarPlantFilterBasePlants().find((plant) => plant.id === calendarVarietyEl.value)?.name ?? "selected variety";
+        }
+        if (calendarPlantClassEl.value !== "all") {
+          return calendarPlantClassEl.selectedOptions[0]?.textContent?.replace(/\s+\(\d+\)$/, "") ?? "selected class";
+        }
+        return calendarSetEl.selectedOptions[0]?.textContent ?? "selected plants";
+      }
+
+      function syncCalendarPlantFilterOptions() {
+        const basePlants = calendarPlantFilterBasePlants();
+        const previousClass = calendarPlantClassEl.value || "all";
+        const previousVariety = calendarVarietyEl.value || "all";
+        const classMap = new Map();
+
+        basePlants.forEach((plant) => {
+          const plantClass = calendarPlantClassForPlant(plant);
+          if (!classMap.has(plantClass.id)) {
+            classMap.set(plantClass.id, { ...plantClass, count: 0 });
+          }
+          classMap.get(plantClass.id).count += 1;
+        });
+
+        const classes = Array.from(classMap.values())
+          .sort((a, b) => a.label.localeCompare(b.label));
+        const classStillAvailable = previousClass === "all" || classMap.has(previousClass);
+        const selectedClass = classStillAvailable ? previousClass : "all";
+        calendarPlantClassEl.innerHTML = [
+          `<option value="all">All classes (${basePlants.length})</option>`,
+          ...classes.map((plantClass) => `<option value="${escapeHtml(plantClass.id)}">${escapeHtml(plantClass.label)} (${plantClass.count})</option>`)
+        ].join("");
+        calendarPlantClassEl.value = selectedClass;
+
+        const varietyPlants = selectedClass === "all"
+          ? []
+          : basePlants.filter((plant) => calendarPlantClassForPlant(plant).id === selectedClass);
+        const varietyStillAvailable = previousVariety === "all" || varietyPlants.some((plant) => plant.id === previousVariety);
+        const selectedVariety = varietyStillAvailable ? previousVariety : "all";
+        calendarVarietyEl.disabled = selectedClass === "all" || varietyPlants.length === 0;
+        calendarVarietyEl.innerHTML = selectedClass === "all"
+          ? `<option value="all">Choose a class first</option>`
+          : [
+              `<option value="all">All ${calendarPlantClassForPlant(varietyPlants[0])?.plural ?? "varieties"} (${varietyPlants.length})</option>`,
+              ...varietyPlants.map((plant) => `<option value="${escapeHtml(plant.id)}">${escapeHtml(plant.name)}</option>`)
+            ].join("");
+        calendarVarietyEl.value = selectedClass === "all" ? "all" : selectedVariety;
+      }
+
       function updateCalendarSetTabs() {
         calendarSetButtons.forEach((button) => {
           const isActive = button.dataset.calendarSet === calendarSetEl.value;
@@ -1537,9 +1759,11 @@ function outputSortValue(metrics) {
         const anchorDate = anchor === "first" ? frost.firstFrost : frost.lastFrost;
         const start = addCalendarDays(anchorDate, startOffset);
         const end = addCalendarDays(anchorDate, endOffset);
+        const plantClass = calendarPlantClassForPlant(plant);
         return {
           plant,
-          group: plantGroupLabel(plant),
+          group: plantClass.plural,
+          plantClass,
           action,
           method,
           season,
@@ -1650,6 +1874,7 @@ function outputSortValue(metrics) {
         const selectedMethod = calendarMethodEl.value;
         return calendarEvents.filter((event) => {
           if (!calendarPlantMatchesSet(event.plant, selectedSet)) return false;
+          if (!calendarPlantMatchesFocusedFilters(event.plant)) return false;
           if (selectedMethod !== "all" && event.method !== selectedMethod) return false;
           if (includeSeason) {
             if (selectedSeason === "next" && !calendarRangeOverlaps(event.start, event.end, today, nextEnd)) return false;
@@ -1718,15 +1943,21 @@ function outputSortValue(metrics) {
 
       function calendarTimelineRows(events) {
         const rows = new Map();
-        groupCalendarEvents(events).forEach((group) => {
-          if (!rows.has(group.group)) {
-            rows.set(group.group, {
-              label: group.group,
+        const showVarietyRows = calendarPlantClassEl.value !== "all" || calendarVarietyEl.value !== "all";
+        const bars = showVarietyRows
+          ? events.map((event) => ({ ...event, group: event.plant.name, plants: [event.plant] }))
+          : groupCalendarEvents(events);
+        bars.forEach((group) => {
+          const rowKey = showVarietyRows ? group.plants[0].id : group.group;
+          const rowLabel = showVarietyRows ? group.plants[0].name : group.group;
+          if (!rows.has(rowKey)) {
+            rows.set(rowKey, {
+              label: rowLabel,
               plants: new Map(),
               bars: []
             });
           }
-          const row = rows.get(group.group);
+          const row = rows.get(rowKey);
           group.plants.forEach((plant) => row.plants.set(plant.id, plant));
           row.bars.push(group);
         });
@@ -1867,14 +2098,14 @@ function outputSortValue(metrics) {
         }
         const rows = calendarTimelineRows(events);
         const compact = calendarCompactView();
-        const rowLimit = compact ? 18 : 44;
+        const rowLimit = compact ? 18 : 64;
         const visibleRows = rows.slice(0, rowLimit);
         if (!visibleRows.length) {
           calendarGanttEl.innerHTML = "<p class=\"calendar-gantt-empty\">No timeline rows match this plant set and method.</p>";
           return;
         }
         const frostOverlay = calendarFrostOverlayHtml();
-        const chartMarkup = `
+        calendarGanttEl.innerHTML = `
           <div class="calendar-gantt-scroll" role="region" aria-label="Year-long planting bars" tabindex="0">
             <div class="calendar-gantt-months" aria-hidden="true">
               <span></span>
@@ -1913,9 +2144,6 @@ function outputSortValue(metrics) {
           </div>
           ${rows.length > visibleRows.length ? `<p class="calendar-limit-note">Showing ${visibleRows.length} of ${rows.length} timeline rows. Narrow the plant set or method to see a tighter year view.</p>` : ""}
         `;
-        calendarGanttEl.innerHTML = compact
-          ? `<details class="calendar-gantt-mobile-details"><summary><span>Full year bars</span><strong>${visibleRows.length} rows</strong></summary>${chartMarkup}</details>`
-          : chartMarkup;
       }
 
       function renderCalendarMobilePlan(events) {
@@ -1925,7 +2153,7 @@ function outputSortValue(metrics) {
         }
         const focusMonth = calendarFocusMonth(events);
         const groups = calendarGroupsForMonth(events, focusMonth);
-        const visibleGroups = groups.slice(0, 4);
+        const visibleGroups = groups.slice(0, 3);
         const focusLabel = calendarMonthFilter === "" ? "Month focus" : "Selected month";
         const monthName = calendarMonthLabels[focusMonth];
         const clearButton = calendarMonthFilter === ""
@@ -2037,7 +2265,7 @@ function outputSortValue(metrics) {
         calendarNowSummaryEl.textContent = activeGroups.length
           ? `${activeGroups.length} grouped planting ${activeGroups.length === 1 ? "window overlaps" : "windows overlap"} this week. ${frostNote}`
           : `No matching planting windows overlap this week. ${frostNote}`;
-        const groups = activeGroups.length ? activeGroups.slice(0, 6) : upcomingGroups;
+        const groups = activeGroups.length ? activeGroups.slice(0, 3) : upcomingGroups.slice(0, 3);
         if (!groups.length) {
           calendarNowListEl.innerHTML = "<p>No current or upcoming windows match this plant set and method.</p>";
           return;
@@ -2104,6 +2332,7 @@ function outputSortValue(metrics) {
 
       function renderCalendar() {
         updateCalendarSetTabs();
+        syncCalendarPlantFilterOptions();
         renderCalendarDashboard();
         if (!calendarFrost) {
           calendarMonthStripEl.innerHTML = "";
@@ -2119,22 +2348,22 @@ function outputSortValue(metrics) {
         const visualEvents = calendarVisualEvents();
         const timelineRows = calendarTimelineRows(visualEvents);
         const visualGroups = groupCalendarEvents(visualEvents);
-        const setLabel = calendarSetEl.selectedOptions[0]?.textContent ?? "selected plants";
+        const plantFocusLabel = calendarSelectedPlantFocusLabel();
         const methodLabel = calendarMethodEl.selectedOptions[0]?.textContent ?? "selected methods";
-        calendarVisualSummaryEl.textContent = `${timelineRows.length} category rows and ${visualGroups.length} grouped windows for ${setLabel.toLowerCase()}, ${methodLabel.toLowerCase()}. Today, last frost, and first frost are marked on the year.`;
+        calendarVisualSummaryEl.textContent = `${timelineRows.length} timeline rows and ${visualGroups.length} grouped windows for ${plantFocusLabel}, ${methodLabel.toLowerCase()}. Today, last frost, and first frost are marked on the year.`;
         renderCalendarNowPanel();
+        renderCalendarGantt(visualEvents);
         renderCalendarHeatmap(visualEvents);
         renderCalendarMobilePlan(visualEvents);
-        renderCalendarGantt(visualEvents);
         const monthBaseEvents = filterCalendarEvents({ includeMonth: false });
         renderCalendarMonthStrip(monthBaseEvents);
         const groups = groupCalendarEvents(filterCalendarEvents());
-        const visibleGroups = groups.slice(0, 72);
+        const visibleGroups = groups.slice(0, 36);
         const seasonLabel = calendarSeasonEl.selectedOptions[0]?.textContent ?? "selected window";
         calendarResultsTitleEl.textContent = calendarMonthFilter === ""
           ? `${calendarDisplayYear} planting windows`
           : `${calendarMonthLabels[Number(calendarMonthFilter)]} detail`;
-        calendarSummaryEl.textContent = `Showing ${groups.length} grouped windows for ${setLabel.toLowerCase()}, ${seasonLabel.toLowerCase()}, ${methodLabel.toLowerCase()}.`;
+        calendarSummaryEl.textContent = `Showing ${groups.length} grouped windows for ${plantFocusLabel}, ${seasonLabel.toLowerCase()}, ${methodLabel.toLowerCase()}.`;
         calendarEventsEl.innerHTML = visibleGroups.map(renderCalendarGroup).join("")
           + (groups.length > visibleGroups.length
             ? `<p class="calendar-limit-note">Showing the first ${visibleGroups.length} grouped windows. Narrow the filters to see a tighter list.</p>`
@@ -2157,7 +2386,7 @@ function outputSortValue(metrics) {
           calendarFrost = estimateCalendarFrost(calendarZoneData, calendarDisplayYear);
           calendarEvents = buildCalendarEvents(calendarFrost);
           calendarMonthFilter = "";
-          calendarStatusEl.textContent = `Zone ${calendarZoneData.zone} calendar ready. Adjust the filters to compare plant sets.`;
+          calendarStatusEl.textContent = `Zone ${calendarZoneData.zone} calendar ready. Use plant class and variety filters to narrow the timeline.`;
           renderCalendar();
         } catch (error) {
           calendarZoneData = null;
@@ -2177,6 +2406,15 @@ function outputSortValue(metrics) {
             calendarMonthFilter = "";
             renderCalendar();
           });
+        });
+        calendarPlantClassEl.addEventListener("input", () => {
+          calendarVarietyEl.value = "all";
+          calendarMonthFilter = "";
+          renderCalendar();
+        });
+        calendarVarietyEl.addEventListener("input", () => {
+          calendarMonthFilter = "";
+          renderCalendar();
         });
         [calendarSeasonEl, calendarMethodEl].forEach((control) => {
           control.addEventListener("input", () => {

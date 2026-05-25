@@ -2026,6 +2026,12 @@ fieldset:nth-of-type(2) .segmented {
   font-size: 0.88rem;
 }
 
+.calendar-field select:disabled {
+  color: #7a8577;
+  background: #f3f0e8;
+  cursor: not-allowed;
+}
+
 .calendar-zip-row input {
   padding: 0 12px;
 }
@@ -2064,7 +2070,7 @@ fieldset:nth-of-type(2) .segmented {
 
 .calendar-controls {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(160px, 1.15fr) minmax(190px, 1.35fr) minmax(140px, 0.85fr) minmax(150px, 0.9fr);
   gap: 10px;
   padding: 14px;
   border: 1px solid #dfe6d8;
@@ -2391,10 +2397,13 @@ fieldset:nth-of-type(2) .segmented {
 }
 
 .calendar-gantt-scroll {
-  overflow-x: auto;
+  overflow: auto;
+  max-height: min(72vh, 780px);
   border: 1px solid #dfe6d8;
   border-radius: 14px;
   background: #fff;
+  box-shadow: 0 14px 28px rgba(31, 45, 35, 0.08);
+  overscroll-behavior: contain;
   scrollbar-width: thin;
 }
 
@@ -2583,38 +2592,6 @@ fieldset:nth-of-type(2) .segmented {
   background: #fbfcf8;
   font-size: 0.84rem;
   font-weight: 750;
-}
-
-.calendar-gantt-mobile-details {
-  display: grid;
-  gap: 10px;
-}
-
-.calendar-gantt-mobile-details summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  min-height: 44px;
-  padding: 0 12px;
-  border: 1px solid #dfe6d8;
-  border-radius: 12px;
-  color: var(--leaf-dark);
-  background: #fbfcf8;
-  font-size: 0.84rem;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.calendar-gantt-mobile-details summary::-webkit-details-marker {
-  display: none;
-}
-
-.calendar-gantt-mobile-details summary strong {
-  color: var(--terracotta);
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
 
 .calendar-layout {
@@ -4064,6 +4041,10 @@ fieldset:nth-of-type(2) .segmented {
 
   .calendar-heatmap {
     grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .calendar-gantt-scroll {
+    max-height: 62vh;
   }
 
   .calendar-mobile-plan {
