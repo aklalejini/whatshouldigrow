@@ -76,7 +76,6 @@ button {
 .calendar-empty[hidden],
 .screener-empty[hidden],
 .climate-panel[hidden],
-.sample-preview[hidden],
 .share-plan-button[hidden],
 .zone-preview[hidden] {
   display: none;
@@ -133,7 +132,7 @@ button {
   display: grid;
   grid-template-columns: minmax(0, 1.06fr) minmax(360px, 0.62fr);
   gap: 24px;
-  width: min(1240px, calc(100% - 40px));
+  width: min(1180px, calc(100% - 40px));
   margin: 0 auto;
   padding: 32px 0 26px;
   align-items: stretch;
@@ -427,8 +426,7 @@ fieldset {
   border: 0;
 }
 
-.app-shell:not(.has-started) .detail-field,
-.app-shell:not(.has-started) .sample-link-button {
+.app-shell:not(.has-started) .detail-field {
   display: none;
 }
 
@@ -625,22 +623,6 @@ fieldset:nth-of-type(2) .segmented {
   fill: currentColor;
 }
 
-.sample-link-button {
-  width: 100%;
-  min-height: 44px;
-  margin-top: 10px;
-  border: 1px solid #cfdac8;
-  border-radius: 999px;
-  color: var(--leaf-dark);
-  background: rgba(255, 253, 248, 0.92);
-  font-weight: 850;
-  cursor: pointer;
-}
-
-.sample-link-button:hover {
-  background: #f4f8ef;
-}
-
 .results-band {
   width: min(1180px, calc(100% - 40px));
   margin: 0 auto 44px;
@@ -732,61 +714,6 @@ fieldset:nth-of-type(2) .segmented {
   color: var(--muted);
   font-size: 0.75rem;
   line-height: 1.4;
-}
-
-.sample-preview {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px;
-  align-items: center;
-  margin-top: 18px;
-  padding: 18px;
-  border: 1px dashed rgba(39, 88, 58, 0.28);
-  border-radius: 18px;
-  background:
-    linear-gradient(135deg, rgba(238, 244, 233, 0.84), rgba(255, 253, 248, 0.96));
-}
-
-.sample-preview h3 {
-  margin: 0 0 6px;
-  font-family: var(--font-display);
-  font-size: 1.45rem;
-  line-height: 1.08;
-}
-
-.sample-preview p:not(.eyebrow) {
-  max-width: 640px;
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.55;
-}
-
-.sample-preview-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-.sample-preview-actions button {
-  min-height: 42px;
-  padding: 0 16px;
-  border: 1px solid #cfdac8;
-  border-radius: 999px;
-  color: var(--leaf-dark);
-  background: #fff;
-  font-weight: 850;
-  cursor: pointer;
-}
-
-.sample-preview-actions button:first-child {
-  color: #fff;
-  border-color: var(--leaf);
-  background: var(--leaf);
-}
-
-.sample-preview-actions button:hover {
-  transform: translateY(-1px);
 }
 
 .results-grid {
@@ -4420,7 +4347,6 @@ input.calendar-filter-search[type="search"]:focus {
   .results-grid,
   .results-head,
   .climate-panel,
-  .sample-preview,
   .calendar-header,
   .calendar-layout,
   .screener-header,
@@ -4471,14 +4397,6 @@ input.calendar-filter-search[type="search"]:focus {
   .app-shell:not(.has-started) .intro-panel p {
     font-size: 1rem;
     line-height: 1.55;
-  }
-
-  .sample-preview-actions {
-    justify-content: stretch;
-  }
-
-  .sample-preview-actions button {
-    flex: 1 1 150px;
   }
 
   .climate-panel-grid {

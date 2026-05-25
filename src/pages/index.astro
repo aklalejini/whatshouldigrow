@@ -301,7 +301,6 @@ const webAppJsonLd = {
             </svg>
             Find plants
           </button>
-          <button id="sample-match-inline" class="sample-link-button" type="button">See a sample output</button>
         </form>
       </section>
 
@@ -315,20 +314,6 @@ const webAppJsonLd = {
         </div>
         <div id="status" class="status"></div>
         <div id="climate-panel" class="climate-panel" hidden></div>
-        <div id="sample-preview" class="sample-preview">
-          <div>
-            <p class="eyebrow">Preview the tool</p>
-            <h3>Not ready to enter a ZIP?</h3>
-            <p>
-              Load a real sample for Atlanta, zone 8a, with full sun, loam soil, medium water,
-              and fruit as the goal.
-            </p>
-          </div>
-          <div class="sample-preview-actions">
-            <button id="sample-match" type="button">See sample results</button>
-            <button id="focus-zip" type="button">Use my ZIP</button>
-          </div>
-        </div>
         <ol id="results" class="results-grid"></ol>
         <div class="results-actions">
           <button id="save-list" class="save-list-button" type="button" hidden>Save this list</button>
@@ -811,10 +796,6 @@ const webAppJsonLd = {
       const seeMoreEl = document.getElementById("see-more");
       const saveListEl = document.getElementById("save-list");
       const sharePlanEl = document.getElementById("share-plan");
-      const samplePreviewEl = document.getElementById("sample-preview");
-      const sampleMatchEl = document.getElementById("sample-match");
-      const sampleMatchInlineEl = document.getElementById("sample-match-inline");
-      const focusZipEl = document.getElementById("focus-zip");
       const zipEl = document.getElementById("zip");
       const zonePreviewEl = document.getElementById("zone-preview");
       const tabButtons = Array.from(document.querySelectorAll("[data-view]"));
@@ -952,13 +933,6 @@ const webAppJsonLd = {
       const matcherParamKeys = ["zip", "sun", "soil", "water", "goal"];
       const matcherDefaults = {
         zip: "",
-        sun: "full",
-        soil: "loam",
-        water: "medium",
-        goal: "fruit"
-      };
-      const samplePlan = {
-        zip: "30301",
         sun: "full",
         soil: "loam",
         water: "medium",
@@ -4274,7 +4248,6 @@ function outputSortValue(metrics) {
         zoneNoteEl.textContent = localRealityNote(zoneData, inputs);
         climatePanelEl.innerHTML = renderClimatePanel(inputs);
         climatePanelEl.hidden = false;
-        samplePreviewEl.hidden = true;
         if (ranked.length === 0) {
           statusEl.textContent = "No plants matched that goal. Try a broader goal or loosen one growing condition.";
           resultsEl.replaceChildren();
@@ -4371,7 +4344,6 @@ function outputSortValue(metrics) {
         seeMoreEl.hidden = true;
         saveListEl.hidden = true;
         sharePlanEl.hidden = true;
-        samplePreviewEl.hidden = true;
 
         try {
           const zoneData = await lookupZone(zip);
@@ -4392,23 +4364,9 @@ function outputSortValue(metrics) {
           zonePreviewEl.textContent = "Zone lookup needs another try";
           zonePreviewEl.classList.add("is-error");
           climatePanelEl.hidden = true;
-          samplePreviewEl.hidden = false;
           return false;
         }
       }
-
-      function loadSamplePlan() {
-        applyMatcherPlanParams(samplePlan);
-        zonePreviewEl.hidden = true;
-        runMatcher({ writeUrl: true, scrollToResults: true });
-      }
-
-      sampleMatchEl.addEventListener("click", loadSamplePlan);
-      sampleMatchInlineEl.addEventListener("click", loadSamplePlan);
-      focusZipEl.addEventListener("click", () => {
-        zipEl.focus();
-        zipEl.scrollIntoView({ behavior: "smooth", block: "center" });
-      });
 
       sharePlanEl.addEventListener("click", async () => {
         if (!currentPlanParams) return;
