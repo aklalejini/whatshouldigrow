@@ -64,7 +64,7 @@ const webAppJsonLd = {
   url: canonicalUrl,
   applicationCategory: "LifestyleApplication",
   operatingSystem: "Any",
-  description: `Match ${plantCount} practical plant options to a ZIP code, light, soil, water, and garden goal.`
+  description: `Match ${plantCount} practical plant options to a ZIP code, light, soil, water, and garden goal, then build a ZIP-based planting calendar.`
 };
 ---
 
@@ -115,6 +115,16 @@ const webAppJsonLd = {
           data-view="matcher"
         >
           Plant matcher
+        </button>
+        <button
+          class="site-tab"
+          type="button"
+          role="tab"
+          aria-selected="false"
+          aria-controls="calendar-view"
+          data-view="calendar"
+        >
+          Calendar
         </button>
         <button
           class="site-tab"
@@ -340,6 +350,132 @@ const webAppJsonLd = {
         </div>
       </section>
       </div>
+
+      <section
+        id="calendar-view"
+        class="view-panel calendar-view"
+        role="tabpanel"
+        data-view-panel="calendar"
+        aria-labelledby="calendar-title"
+        hidden
+      >
+        <div class="calendar-shell">
+          <header class="calendar-header">
+            <div>
+              <p class="eyebrow">ZIP planting planner</p>
+              <h1 id="calendar-title">Planting Calendar</h1>
+              <p>
+                Enter a ZIP code to turn the plant database into estimated seed-starting,
+                transplanting, direct-sow, and nursery planting windows for your hardiness zone.
+              </p>
+            </div>
+            <form id="calendar-form" class="calendar-zip-card">
+              <label for="calendar-zip">ZIP code</label>
+              <div class="calendar-zip-row">
+                <input
+                  id="calendar-zip"
+                  name="calendar-zip"
+                  inputmode="numeric"
+                  pattern="[0-9]{5}"
+                  maxlength="5"
+                  autocomplete="postal-code"
+                  placeholder="75001"
+                  required
+                />
+                <button type="submit">Build calendar</button>
+              </div>
+              <p id="calendar-status">Enter a five-digit U.S. ZIP code to estimate local windows.</p>
+            </form>
+          </header>
+
+          <section class="calendar-controls" aria-label="Calendar filters">
+            <label class="calendar-field" for="calendar-set">
+              <span>Plant set</span>
+              <select id="calendar-set">
+                <option value="all">All zone-fit plants</option>
+                <option value="kitchen">Kitchen garden</option>
+                <option value="fruit">Fruit and berries</option>
+                <option value="pollinator">Pollinator plants</option>
+                <option value="native">Native cues</option>
+                <option value="containers">Container-friendly</option>
+                <option value="quick">Quick payoff</option>
+              </select>
+            </label>
+            <label class="calendar-field" for="calendar-season">
+              <span>Window</span>
+              <select id="calendar-season">
+                <option value="all">Full year</option>
+                <option value="next">Next 45 days</option>
+                <option value="spring">Spring</option>
+                <option value="fall">Fall</option>
+              </select>
+            </label>
+            <label class="calendar-field" for="calendar-method">
+              <span>Method</span>
+              <select id="calendar-method">
+                <option value="all">All methods</option>
+                <option value="indoors">Start indoors</option>
+                <option value="direct">Direct sow</option>
+                <option value="transplant">Transplant</option>
+                <option value="nursery">Plant nursery stock</option>
+              </select>
+            </label>
+          </section>
+
+          <section class="calendar-dashboard" aria-label="Calendar climate summary">
+            <div>
+              <span>Zone</span>
+              <strong id="calendar-zone-value">--</strong>
+              <small id="calendar-temp-value">USDA hardiness</small>
+            </div>
+            <div>
+              <span>Last frost</span>
+              <strong id="calendar-last-frost">--</strong>
+              <small>spring estimate</small>
+            </div>
+            <div>
+              <span>First frost</span>
+              <strong id="calendar-first-frost">--</strong>
+              <small>fall estimate</small>
+            </div>
+            <div>
+              <span>Growing season</span>
+              <strong id="calendar-season-length">--</strong>
+              <small>frost-free days</small>
+            </div>
+          </section>
+
+          <section class="calendar-layout" aria-label="Planting calendar results">
+            <aside class="calendar-next">
+              <div class="calendar-panel-head">
+                <p class="eyebrow">Next moves</p>
+                <h2>What to do soon</h2>
+              </div>
+              <div id="calendar-next-list" class="calendar-next-list">
+                <p>Build a calendar to see near-term planting tasks.</p>
+              </div>
+            </aside>
+
+            <section class="calendar-timeline" aria-label="Planting window timeline">
+              <div class="calendar-timeline-head">
+                <div>
+                  <p class="eyebrow">Calendar windows</p>
+                  <h2 id="calendar-results-title">Waiting on ZIP</h2>
+                </div>
+                <p id="calendar-summary">Frost-based windows will appear here after lookup.</p>
+              </div>
+              <div id="calendar-month-strip" class="calendar-month-strip" role="group" aria-label="Month filter"></div>
+              <div id="calendar-events" class="calendar-event-list"></div>
+              <p id="calendar-empty" class="calendar-empty" hidden>No planting windows match those filters.</p>
+            </section>
+          </section>
+
+          <p class="calendar-method-note">
+            Planning dates are approximate. Use local extension guidance, seed packet directions,
+            soil temperature, and the near-term forecast before planting.
+          </p>
+        </div>
+      </section>
 
       <section
         id="screener-view"
@@ -593,6 +729,23 @@ const webAppJsonLd = {
       const articleSearchEl = document.getElementById("article-search");
       const blogEmptyEl = document.getElementById("blog-empty");
       const articleCards = Array.from(document.querySelectorAll("[data-article-slug]"));
+      const calendarFormEl = document.getElementById("calendar-form");
+      const calendarZipEl = document.getElementById("calendar-zip");
+      const calendarStatusEl = document.getElementById("calendar-status");
+      const calendarSetEl = document.getElementById("calendar-set");
+      const calendarSeasonEl = document.getElementById("calendar-season");
+      const calendarMethodEl = document.getElementById("calendar-method");
+      const calendarZoneValueEl = document.getElementById("calendar-zone-value");
+      const calendarTempValueEl = document.getElementById("calendar-temp-value");
+      const calendarLastFrostEl = document.getElementById("calendar-last-frost");
+      const calendarFirstFrostEl = document.getElementById("calendar-first-frost");
+      const calendarSeasonLengthEl = document.getElementById("calendar-season-length");
+      const calendarResultsTitleEl = document.getElementById("calendar-results-title");
+      const calendarSummaryEl = document.getElementById("calendar-summary");
+      const calendarMonthStripEl = document.getElementById("calendar-month-strip");
+      const calendarEventsEl = document.getElementById("calendar-events");
+      const calendarNextListEl = document.getElementById("calendar-next-list");
+      const calendarEmptyEl = document.getElementById("calendar-empty");
       const screenerSearchEl = document.getElementById("screener-search");
       const screenerTypeEl = document.getElementById("screener-type");
       const screenerZoneEl = document.getElementById("screener-zone");
@@ -636,6 +789,11 @@ const webAppJsonLd = {
       let screenerSort = { key: "name", direction: "asc" };
       let screenerGroupedByType = false;
       let screenerVisibleLimit = 120;
+      let calendarZoneData = null;
+      let calendarFrost = null;
+      let calendarEvents = [];
+      let calendarMonthFilter = "";
+      let calendarDisplayYear = new Date().getFullYear();
       const screenerPageSize = 120;
       const screenerColumnCount = 20;
       const zoneCache = new Map();
@@ -748,8 +906,10 @@ const webAppJsonLd = {
       tabButtons.forEach((button) => {
         button.addEventListener("click", () => {
           const view = button.dataset.view;
+          if (view === "calendar") syncCalendarZipFromMatcher();
           setActiveView(view);
-          const hash = view === "blog" ? "#blog" : view === "screener" ? "#screener" : window.location.pathname;
+          const viewHash = { blog: "#blog", calendar: "#calendar", screener: "#screener" };
+          const hash = viewHash[view] ?? window.location.pathname;
           history.replaceState(null, "", hash);
         });
       });
@@ -759,12 +919,15 @@ const webAppJsonLd = {
       const initialBlogQuery = initialParams.get("q");
       const hasInitialScreenerQuery = screenerParamKeys.some((key) => initialParams.has(key));
       const initialWantsScreener = hasInitialScreenerQuery || window.location.hash === "#screener" || window.location.hash === "#screener-view";
+      const initialWantsCalendar = window.location.hash === "#calendar" || window.location.hash === "#calendar-view";
       if (initialBlogQuery) {
         articleSearchEl.value = initialBlogQuery;
         filterArticles();
       }
       if (initialWantsScreener) {
         setActiveView("screener");
+      } else if (initialWantsCalendar) {
+        setActiveView("calendar");
       } else if (initialBlogQuery || window.location.hash === "#blog" || window.location.hash === "#blog-view") {
         setActiveView("blog");
       }
@@ -1082,6 +1245,505 @@ function outputSortValue(metrics) {
           .replace(/>/g, "&gt;")
           .replace(/"/g, "&quot;")
           .replace(/'/g, "&#39;");
+      }
+
+      const calendarDayMs = 24 * 60 * 60 * 1000;
+      const calendarMonthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const calendarMethodLabels = {
+        indoors: "Start indoors",
+        direct: "Direct sow",
+        transplant: "Transplant",
+        nursery: "Nursery stock"
+      };
+      const calendarMethodOrder = { indoors: 1, direct: 2, transplant: 3, nursery: 4 };
+      const calendarFrostAnchors = [
+        { zone: 2, last: 162, first: 248 },
+        { zone: 3, last: 149, first: 262 },
+        { zone: 4, last: 139, first: 272 },
+        { zone: 5, last: 128, first: 283 },
+        { zone: 6, last: 115, first: 293 },
+        { zone: 7, last: 102, first: 305 },
+        { zone: 8, last: 87, first: 319 },
+        { zone: 9, last: 69, first: 339 },
+        { zone: 10, last: 46, first: 359 },
+        { zone: 11, last: 20, first: 365 },
+        { zone: 12, last: 10, first: 365 }
+      ];
+      const calendarTermSets = {
+        warmTransplant: ["tomato", "pepper", "eggplant", "tomatillo", "basil"],
+        warmDirect: ["bean", "corn", "cucumber", "squash", "zucchini", "pumpkin", "melon", "watermelon", "cantaloupe", "okra", "cowpea", "edamame", "sweet potato"],
+        shortIndoorWarm: ["cucumber", "squash", "zucchini", "pumpkin", "melon", "watermelon", "cantaloupe", "okra"],
+        coolDirect: ["lettuce", "spinach", "arugula", "mizuna", "radish", "carrot", "beet", "turnip", "daikon", "pea", "cilantro", "dill", "mustard", "bok choy", "pak choi"],
+        coolTransplant: ["broccoli", "cabbage", "cauliflower", "kale", "collards", "chard", "brussels", "parsley", "onion", "leek", "celery"],
+        potato: ["potato"],
+        garlic: ["garlic"],
+        tenderContainer: ["citrus", "lemon", "lime", "orange", "mandarin", "kumquat", "pineapple", "banana"]
+      };
+
+      function syncCalendarZipFromMatcher() {
+        const suggestedZip = currentInputs?.zip ?? zipEl.value.trim();
+        if (/^\d{5}$/.test(suggestedZip) && !calendarZipEl.value.trim()) {
+          calendarZipEl.value = suggestedZip;
+        }
+      }
+
+      function startOfCalendarDay(date) {
+        const copy = new Date(date);
+        copy.setHours(0, 0, 0, 0);
+        return copy;
+      }
+
+      function addCalendarDays(date, days) {
+        const copy = new Date(date);
+        copy.setDate(copy.getDate() + days);
+        return startOfCalendarDay(copy);
+      }
+
+      function calendarDateFromDay(year, dayOfYear) {
+        const date = new Date(year, 0, 1);
+        date.setDate(Math.round(dayOfYear));
+        return startOfCalendarDay(date);
+      }
+
+      function calendarDateKey(date) {
+        return date.toISOString().slice(0, 10);
+      }
+
+      function formatCalendarDate(date) {
+        return `${calendarMonthLabels[date.getMonth()]} ${date.getDate()}`;
+      }
+
+      function formatCalendarWindow(start, end) {
+        const sameMonth = start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear();
+        if (calendarDateKey(start) === calendarDateKey(end)) return formatCalendarDate(start);
+        if (sameMonth) return `${calendarMonthLabels[start.getMonth()]} ${start.getDate()}-${end.getDate()}`;
+        return `${formatCalendarDate(start)} - ${formatCalendarDate(end)}`;
+      }
+
+      function calendarRangeOverlaps(start, end, filterStart, filterEnd) {
+        return start <= filterEnd && end >= filterStart;
+      }
+
+      function interpolateCalendarFrost(zoneNumber, key) {
+        const anchors = calendarFrostAnchors;
+        const lastAnchor = anchors[anchors.length - 1];
+        const clampedZone = clamp(zoneNumber, anchors[0].zone, lastAnchor.zone);
+        let lower = anchors[0];
+        let upper = lastAnchor;
+        for (let index = 0; index < anchors.length - 1; index += 1) {
+          if (clampedZone >= anchors[index].zone && clampedZone <= anchors[index + 1].zone) {
+            lower = anchors[index];
+            upper = anchors[index + 1];
+            break;
+          }
+        }
+        if (lower.zone === upper.zone) return lower[key];
+        const ratio = (clampedZone - lower.zone) / (upper.zone - lower.zone);
+        return lower[key] + (upper[key] - lower[key]) * ratio;
+      }
+
+      function estimateCalendarFrost(zoneData, year) {
+        const zoneNumber = zoneToNumber(zoneData.zone);
+        if (!Number.isFinite(zoneNumber)) throw new Error("Zone missing from lookup");
+        let lastDay = interpolateCalendarFrost(zoneNumber, "last");
+        let firstDay = interpolateCalendarFrost(zoneNumber, "first");
+        const coordinates = zoneData.coordinates ?? {};
+        const latitude = Number(coordinates.lat ?? coordinates.latitude ?? zoneData.latitude);
+        if (Number.isFinite(latitude)) {
+          if (latitude > 42) {
+            const adjustment = Math.min(7, (latitude - 42) * 1.2);
+            lastDay += adjustment;
+            firstDay -= adjustment;
+          } else if (latitude < 32) {
+            const adjustment = Math.min(7, (32 - latitude) * 1.2);
+            lastDay -= adjustment;
+            firstDay += adjustment;
+          }
+        }
+        const isFrostFree = zoneNumber >= 11;
+        const lastFrost = calendarDateFromDay(year, clamp(lastDay, 5, 180));
+        const firstFrost = calendarDateFromDay(year, clamp(firstDay, 230, 365));
+        const seasonLength = Math.max(0, Math.round((firstFrost - lastFrost) / calendarDayMs));
+        return { zoneNumber, lastFrost, firstFrost, seasonLength, isFrostFree, year };
+      }
+
+      function calendarPlanningYear(zoneData) {
+        const currentYear = new Date().getFullYear();
+        const currentFrost = estimateCalendarFrost(zoneData, currentYear);
+        const today = startOfCalendarDay(new Date());
+        return today > addCalendarDays(currentFrost.firstFrost, 45) ? currentYear + 1 : currentYear;
+      }
+
+      function calendarIdentityMatches(identity, terms) {
+        return terms.some((term) => termMatchesIdentity(identity, term));
+      }
+
+      function calendarClassForPlant(plant) {
+        const identity = relationshipIdentity(plant);
+        const type = plant.type.toLowerCase();
+        if (calendarIdentityMatches(identity, calendarTermSets.garlic)) return "garlic";
+        if (calendarIdentityMatches(identity, ["sweet potato"])) return "warm-direct";
+        if (calendarIdentityMatches(identity, calendarTermSets.potato)) return "potato";
+        if (calendarIdentityMatches(identity, calendarTermSets.warmTransplant)) return "warm-transplant";
+        if (calendarIdentityMatches(identity, calendarTermSets.warmDirect)) return "warm-direct";
+        if (calendarIdentityMatches(identity, calendarTermSets.coolDirect)) return "cool-direct";
+        if (calendarIdentityMatches(identity, calendarTermSets.coolTransplant)) return "cool-transplant";
+        if (calendarIdentityMatches(identity, calendarTermSets.tenderContainer) || type === "citrus") return "tender-container";
+        if (type.includes("annual vegetable")) return "warm-direct";
+        if (type.includes("annual") && (type.includes("flower") || type.includes("herb"))) return "annual-flower";
+        if (calendarIdentityMatches(identity, ["strawberry", "asparagus", "rhubarb"]) || type.includes("herbaceous perennial") || type.includes("perennial flower") || type.includes("perennial herb") || type.includes("perennial vegetable") || type.includes("grass")) return "perennial";
+        if (type.includes("tree") || type.includes("shrub") || type.includes("cane") || type.includes("vine") || type.includes("woody") || type.includes("berry")) return "woody";
+        if (type.includes("perennial") || type.includes("grass")) return "perennial";
+        return "nursery";
+      }
+
+      function calendarPlantFitsZone(plant, zoneNumber) {
+        const minZone = zoneToNumber(plant.zones[0]);
+        const maxZone = zoneToNumber(plant.zones[1]);
+        return Number.isFinite(minZone) && Number.isFinite(maxZone) && zoneNumber >= minZone - 0.25 && zoneNumber <= maxZone + 0.25;
+      }
+
+      function calendarPlantMatchesSet(plant, set) {
+        const metrics = metricFor(plant);
+        if (set === "kitchen") return goalMatchesPlant(plant, "vegetables-herbs");
+        if (set === "fruit") return goalMatchesPlant(plant, "fruit");
+        if (set === "pollinator") return goalMatchesPlant(plant, "pollinators-wildlife");
+        if (set === "native") return hasNativeCue(plant);
+        if (set === "containers") {
+          const containerMin = Number(metrics.containerMinGallons);
+          return ["good", "workable"].includes(metrics.containerSuitability) || (Number.isFinite(containerMin) && containerMin > 0 && containerMin <= 10);
+        }
+        if (set === "quick") {
+          const maturityDays = Number(metrics.daysToMaturityMax);
+          return ["quick", "seasonal", "fast-perennial"].includes(metrics.horizonKey) || (Number.isFinite(maturityDays) && maturityDays > 0 && maturityDays <= 75);
+        }
+        return true;
+      }
+
+      function calendarWindow(frost, plant, action, method, season, anchor, startOffset, endOffset, note) {
+        const anchorDate = anchor === "first" ? frost.firstFrost : frost.lastFrost;
+        const start = addCalendarDays(anchorDate, startOffset);
+        const end = addCalendarDays(anchorDate, endOffset);
+        return {
+          plant,
+          group: plantGroupLabel(plant),
+          action,
+          method,
+          season,
+          start: start <= end ? start : end,
+          end: start <= end ? end : start,
+          note
+        };
+      }
+
+      function calendarWindowsForPlant(plant, frost) {
+        const metrics = metricFor(plant);
+        const identity = relationshipIdentity(plant);
+        const daysToMaturity = clamp(Number(metrics.daysToMaturityMax) || 60, 35, 120);
+        const fallDirectLead = clamp(daysToMaturity + 21, 45, 100);
+        const fallTransplantLead = clamp(daysToMaturity + 35, 55, 110);
+        const plantClass = calendarClassForPlant(plant);
+
+        if (plantClass === "warm-transplant") {
+          return [
+            calendarWindow(frost, plant, "Start seeds indoors", "indoors", "spring", "last", -56, -42, "Warm-season crops need a head start before frost-free weather."),
+            calendarWindow(frost, plant, "Transplant outside", "transplant", "spring", "last", 7, 28, "Wait for settled nights and warm soil before moving plants out.")
+          ];
+        }
+
+        if (plantClass === "warm-direct") {
+          const windows = [
+            calendarWindow(frost, plant, "Direct sow or plant outside", "direct", "spring", "last", 7, 35, "Sow after frost risk is low and the soil has warmed.")
+          ];
+          if (calendarIdentityMatches(identity, calendarTermSets.shortIndoorWarm)) {
+            windows.unshift(calendarWindow(frost, plant, "Optional indoor start", "indoors", "spring", "last", -28, -14, "Use for an earlier crop, then transplant gently after frost."));
+          }
+          return windows;
+        }
+
+        if (plantClass === "cool-direct") {
+          return [
+            calendarWindow(frost, plant, "Direct sow spring crop", "direct", "spring", "last", -42, 14, "Cool-season crops can usually start before the last frost in workable soil."),
+            calendarWindow(frost, plant, "Direct sow fall crop", "direct", "fall", "first", -fallDirectLead, -35, "Count back from first frost so the crop can size up in cooler weather.")
+          ];
+        }
+
+        if (plantClass === "cool-transplant") {
+          return [
+            calendarWindow(frost, plant, "Start seeds indoors", "indoors", "spring", "last", -70, -42, "Give cool-season transplants time to size up before spring planting."),
+            calendarWindow(frost, plant, "Transplant spring crop", "transplant", "spring", "last", -28, 14, "Harden off seedlings and use row cover if a hard freeze threatens."),
+            calendarWindow(frost, plant, "Start seeds for fall", "indoors", "fall", "first", -fallTransplantLead, -70, "Start fall brassicas and greens before summer heat fully passes."),
+            calendarWindow(frost, plant, "Transplant fall crop", "transplant", "fall", "first", -63, -35, "Set plants out early enough to establish before short days and frost.")
+          ];
+        }
+
+        if (plantClass === "potato") {
+          return [
+            calendarWindow(frost, plant, "Plant seed pieces", "direct", "spring", "last", -28, 14, "Plant into workable soil and hill as shoots grow.")
+          ];
+        }
+
+        if (plantClass === "garlic") {
+          return [
+            calendarWindow(frost, plant, "Plant cloves", "direct", "fall", "first", -42, -14, "Plant in fall after heat fades so roots grow before winter.")
+          ];
+        }
+
+        if (plantClass === "annual-flower") {
+          return [
+            calendarWindow(frost, plant, "Start seeds indoors", "indoors", "spring", "last", -42, -21, "Start indoors for earlier bloom where the season is short."),
+            calendarWindow(frost, plant, "Sow or transplant outside", "direct", "spring", "last", 7, 35, "Plant after frost risk drops and soil is workable.")
+          ];
+        }
+
+        if (plantClass === "tender-container") {
+          return [
+            calendarWindow(frost, plant, "Move or plant outside", "transplant", "spring", "last", 14, 56, "Keep tender plants protected until nights are reliably mild.")
+          ];
+        }
+
+        if (plantClass === "woody") {
+          return [
+            calendarWindow(frost, plant, "Plant dormant or potted stock", "nursery", "spring", "last", -35, 21, "Plant while weather is cool, then water deeply through establishment."),
+            calendarWindow(frost, plant, "Fall planting window", "nursery", "fall", "first", -63, -28, "Fall planting works best while soil is warm and drought stress is lower.")
+          ];
+        }
+
+        if (plantClass === "perennial") {
+          return [
+            calendarWindow(frost, plant, "Plant plugs or divisions", "nursery", "spring", "last", -21, 42, "Plant perennials in cool weather and keep roots evenly moist."),
+            calendarWindow(frost, plant, "Fall planting window", "nursery", "fall", "first", -56, -28, "Give perennials several weeks to root before hard freezes.")
+          ];
+        }
+
+        return [
+          calendarWindow(frost, plant, "Plant nursery stock", "nursery", "spring", "last", -21, 35, "Use the profile and nursery directions to tune final timing.")
+        ];
+      }
+
+      function buildCalendarEvents(frost) {
+        return plants
+          .filter((plant) => calendarPlantFitsZone(plant, frost.zoneNumber))
+          .flatMap((plant) => calendarWindowsForPlant(plant, frost))
+          .sort((a, b) => a.start - b.start || calendarMethodOrder[a.method] - calendarMethodOrder[b.method] || a.group.localeCompare(b.group));
+      }
+
+      function filterCalendarEvents({ includeSeason = true, includeMonth = true } = {}) {
+        if (!calendarEvents.length) return [];
+        const today = startOfCalendarDay(new Date());
+        const nextEnd = addCalendarDays(today, 45);
+        const selectedSet = calendarSetEl.value;
+        const selectedSeason = calendarSeasonEl.value;
+        const selectedMethod = calendarMethodEl.value;
+        return calendarEvents.filter((event) => {
+          if (!calendarPlantMatchesSet(event.plant, selectedSet)) return false;
+          if (selectedMethod !== "all" && event.method !== selectedMethod) return false;
+          if (includeSeason) {
+            if (selectedSeason === "next" && !calendarRangeOverlaps(event.start, event.end, today, nextEnd)) return false;
+            if ((selectedSeason === "spring" || selectedSeason === "fall") && event.season !== selectedSeason) return false;
+          }
+          if (includeMonth && calendarMonthFilter !== "") {
+            const month = Number(calendarMonthFilter);
+            const monthStart = new Date(calendarDisplayYear, month, 1);
+            const monthEnd = startOfCalendarDay(new Date(calendarDisplayYear, month + 1, 0));
+            if (!calendarRangeOverlaps(event.start, event.end, monthStart, monthEnd)) return false;
+          }
+          return true;
+        });
+      }
+
+      function groupCalendarEvents(events) {
+        const groups = new Map();
+        events.forEach((event) => {
+          const key = [
+            event.group,
+            event.action,
+            event.method,
+            event.season,
+            calendarDateKey(event.start),
+            calendarDateKey(event.end)
+          ].join("|");
+          if (!groups.has(key)) {
+            groups.set(key, {
+              ...event,
+              plants: []
+            });
+          }
+          groups.get(key).plants.push(event.plant);
+        });
+        return Array.from(groups.values())
+          .map((group) => ({
+            ...group,
+            plants: group.plants.sort((a, b) => a.name.localeCompare(b.name))
+          }))
+          .sort((a, b) => a.start - b.start || calendarMethodOrder[a.method] - calendarMethodOrder[b.method] || a.group.localeCompare(b.group));
+      }
+
+      function calendarMonthsTouched(start, end) {
+        const months = [];
+        for (let month = 0; month < 12; month += 1) {
+          const monthStart = new Date(calendarDisplayYear, month, 1);
+          const monthEnd = startOfCalendarDay(new Date(calendarDisplayYear, month + 1, 0));
+          if (calendarRangeOverlaps(start, end, monthStart, monthEnd)) months.push(month);
+        }
+        return months;
+      }
+
+      function renderCalendarMonthStrip(events) {
+        const groups = groupCalendarEvents(events);
+        const counts = new Array(12).fill(0);
+        groups.forEach((group) => {
+          calendarMonthsTouched(group.start, group.end).forEach((month) => {
+            counts[month] += 1;
+          });
+        });
+        calendarMonthStripEl.innerHTML = [
+          `<button type="button" class="calendar-month-button ${calendarMonthFilter === "" ? "is-active" : ""}" data-calendar-month="" aria-pressed="${calendarMonthFilter === ""}">All <span>${groups.length}</span></button>`,
+          ...calendarMonthLabels.map((label, index) => `
+            <button type="button" class="calendar-month-button ${calendarMonthFilter === String(index) ? "is-active" : ""}" data-calendar-month="${index}" aria-pressed="${calendarMonthFilter === String(index)}">
+              ${label} <span>${counts[index]}</span>
+            </button>
+          `)
+        ].join("");
+        calendarMonthStripEl.querySelectorAll("[data-calendar-month]").forEach((button) => {
+          button.addEventListener("click", () => {
+            calendarMonthFilter = button.dataset.calendarMonth ?? "";
+            renderCalendar();
+          });
+        });
+      }
+
+      function renderCalendarPlantLinks(plantsForGroup) {
+        const visiblePlants = plantsForGroup.slice(0, 4);
+        const hiddenCount = plantsForGroup.length - visiblePlants.length;
+        return `
+          <div class="calendar-plant-links">
+            ${visiblePlants.map((plant) => `<a href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a>`).join("")}
+            ${hiddenCount > 0 ? `<span>+${hiddenCount} more</span>` : ""}
+          </div>
+        `;
+      }
+
+      function renderCalendarGroup(group) {
+        return `
+          <article class="calendar-event">
+            <div class="calendar-event-date">
+              <strong>${formatCalendarWindow(group.start, group.end)}</strong>
+              <span>${group.season === "fall" ? "Fall" : "Spring"}</span>
+            </div>
+            <div class="calendar-event-main">
+              <div class="calendar-event-title">
+                <h3>${escapeHtml(group.action)}</h3>
+                <span class="calendar-method calendar-method-${escapeHtml(group.method)}">${calendarMethodLabels[group.method]}</span>
+              </div>
+              <p>${escapeHtml(group.group)} &middot; ${group.plants.length} ${group.plants.length === 1 ? "plant" : "plants"}</p>
+              ${renderCalendarPlantLinks(group.plants)}
+              <small>${escapeHtml(group.note)}</small>
+            </div>
+          </article>
+        `;
+      }
+
+      function renderCalendarNextList() {
+        const today = startOfCalendarDay(new Date());
+        const nextEnd = addCalendarDays(today, 45);
+        const baseEvents = filterCalendarEvents({ includeSeason: false, includeMonth: false });
+        let groups = groupCalendarEvents(baseEvents.filter((event) => calendarRangeOverlaps(event.start, event.end, today, nextEnd)));
+        let intro = "";
+        if (!groups.length) {
+          groups = groupCalendarEvents(baseEvents.filter((event) => event.start > today)).slice(0, 6);
+          intro = groups.length ? `<p>No matching windows in the next 45 days. Next up:</p>` : "";
+        }
+        if (!groups.length) {
+          calendarNextListEl.innerHTML = "<p>No upcoming windows match those filters.</p>";
+          return;
+        }
+        calendarNextListEl.innerHTML = `
+          ${intro}
+          ${groups.slice(0, 6).map((group) => `
+            <article class="calendar-next-item">
+              <strong>${formatCalendarWindow(group.start, group.end)}</strong>
+              <span>${escapeHtml(group.action)}: ${escapeHtml(group.group)}</span>
+            </article>
+          `).join("")}
+        `;
+      }
+
+      function renderCalendarDashboard() {
+        if (!calendarZoneData || !calendarFrost) {
+          calendarZoneValueEl.textContent = "--";
+          calendarTempValueEl.textContent = "USDA hardiness";
+          calendarLastFrostEl.textContent = "--";
+          calendarFirstFrostEl.textContent = "--";
+          calendarSeasonLengthEl.textContent = "--";
+          return;
+        }
+        calendarZoneValueEl.textContent = calendarZoneData.zone;
+        calendarTempValueEl.textContent = calendarZoneData.temperature_range ?? "USDA hardiness";
+        calendarLastFrostEl.textContent = formatCalendarDate(calendarFrost.lastFrost);
+        calendarFirstFrostEl.textContent = calendarFrost.isFrostFree ? "Rare" : formatCalendarDate(calendarFrost.firstFrost);
+        calendarSeasonLengthEl.textContent = calendarFrost.isFrostFree ? "Most year" : `${calendarFrost.seasonLength} days`;
+      }
+
+      function renderCalendar() {
+        renderCalendarDashboard();
+        if (!calendarFrost) {
+          calendarMonthStripEl.innerHTML = "";
+          calendarEventsEl.innerHTML = "";
+          calendarEmptyEl.hidden = true;
+          return;
+        }
+        const monthBaseEvents = filterCalendarEvents({ includeMonth: false });
+        renderCalendarMonthStrip(monthBaseEvents);
+        const groups = groupCalendarEvents(filterCalendarEvents());
+        const visibleGroups = groups.slice(0, 72);
+        const setLabel = calendarSetEl.selectedOptions[0]?.textContent ?? "selected plants";
+        const seasonLabel = calendarSeasonEl.selectedOptions[0]?.textContent ?? "selected window";
+        const methodLabel = calendarMethodEl.selectedOptions[0]?.textContent ?? "selected methods";
+        calendarResultsTitleEl.textContent = `${calendarDisplayYear} planting windows`;
+        calendarSummaryEl.textContent = `Showing ${groups.length} grouped windows for ${setLabel.toLowerCase()}, ${seasonLabel.toLowerCase()}, ${methodLabel.toLowerCase()}.`;
+        calendarEventsEl.innerHTML = visibleGroups.map(renderCalendarGroup).join("")
+          + (groups.length > visibleGroups.length
+            ? `<p class="calendar-limit-note">Showing the first ${visibleGroups.length} grouped windows. Narrow the filters to see a tighter list.</p>`
+            : "");
+        calendarEmptyEl.hidden = groups.length > 0;
+        renderCalendarNextList();
+      }
+
+      async function handleCalendarSubmit(event) {
+        event.preventDefault();
+        const zip = calendarZipEl.value.trim();
+        if (!/^\d{5}$/.test(zip)) {
+          calendarStatusEl.textContent = "Enter a five-digit U.S. ZIP code.";
+          return;
+        }
+        calendarStatusEl.textContent = "Looking up your USDA hardiness zone...";
+        try {
+          calendarZoneData = await lookupZone(zip);
+          calendarDisplayYear = calendarPlanningYear(calendarZoneData);
+          calendarFrost = estimateCalendarFrost(calendarZoneData, calendarDisplayYear);
+          calendarEvents = buildCalendarEvents(calendarFrost);
+          calendarMonthFilter = "";
+          calendarStatusEl.textContent = `Zone ${calendarZoneData.zone} calendar ready. Adjust the filters to compare plant sets.`;
+          renderCalendar();
+        } catch (error) {
+          calendarZoneData = null;
+          calendarFrost = null;
+          calendarEvents = [];
+          calendarStatusEl.textContent = "The zone lookup did not respond. Try again in a moment.";
+          renderCalendar();
+        }
+      }
+
+      function initializeCalendar() {
+        calendarFormEl.addEventListener("submit", handleCalendarSubmit);
+        [calendarSetEl, calendarSeasonEl, calendarMethodEl].forEach((control) => {
+          control.addEventListener("input", () => {
+            calendarMonthFilter = "";
+            renderCalendar();
+          });
+        });
+        renderCalendar();
       }
 
       function renderScreenerPills(values, formatter = (value) => value, limit = 3) {
@@ -1451,6 +2113,7 @@ function outputSortValue(metrics) {
         renderScreener();
       }
 
+      initializeCalendar();
       initializeScreener();
 
       function scoreBreakdown(plant, inputs) {
