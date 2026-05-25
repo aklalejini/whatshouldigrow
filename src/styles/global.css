@@ -2414,8 +2414,7 @@ input.calendar-filter-search[type="search"]:focus {
 }
 
 .calendar-now-copy h2,
-.calendar-visual-head h2,
-.calendar-set-bar h3 {
+.calendar-visual-head h2 {
   margin: 0;
   color: var(--leaf-dark);
   font-family: var(--font-display);
@@ -2531,8 +2530,7 @@ input.calendar-filter-search[type="search"]:focus {
   padding: 16px;
 }
 
-.calendar-visual-head,
-.calendar-set-bar {
+.calendar-visual-head {
   display: grid;
   grid-template-columns: minmax(0, 0.35fr) minmax(0, 1fr);
   gap: 16px;
@@ -2581,31 +2579,6 @@ input.calendar-filter-search[type="search"]:focus {
   background: #f3f8ee;
 }
 
-.calendar-set-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
-}
-
-.calendar-set-tabs button {
-  min-height: 36px;
-  padding: 0 12px;
-  border: 1px solid #cfdac8;
-  border-radius: 999px;
-  color: var(--leaf-dark);
-  background: #fff;
-  font-size: 0.78rem;
-  font-weight: 850;
-  cursor: pointer;
-}
-
-.calendar-set-tabs button.is-active {
-  color: #fff;
-  border-color: var(--leaf);
-  background: var(--leaf);
-}
-
 .calendar-legend {
   display: flex;
   flex-wrap: wrap;
@@ -2634,7 +2607,7 @@ input.calendar-filter-search[type="search"]:focus {
 
 .calendar-heatmap {
   display: grid;
-  grid-template-columns: repeat(12, minmax(54px, 1fr));
+  grid-template-columns: minmax(74px, 0.8fr) repeat(12, minmax(50px, 1fr));
   gap: 6px;
 }
 
@@ -2657,8 +2630,8 @@ input.calendar-filter-search[type="search"]:focus {
 .calendar-heatmap-cell {
   display: grid;
   gap: 4px;
-  min-height: 58px;
-  padding: 8px;
+  min-height: 50px;
+  padding: 7px;
   border: 1px solid #dfe6d8;
   border-radius: 12px;
   color: var(--leaf-dark);
@@ -2672,14 +2645,16 @@ input.calendar-filter-search[type="search"]:focus {
   cursor: pointer;
 }
 
-.calendar-heatmap-cell.is-empty,
-.calendar-month-button.is-empty {
+.calendar-heatmap-all {
+  background: #fffdf8;
+}
+
+.calendar-heatmap-cell.is-empty {
   opacity: 0.42;
   cursor: default;
 }
 
-.calendar-heatmap-cell:disabled,
-.calendar-month-button:disabled {
+.calendar-heatmap-cell:disabled {
   pointer-events: none;
 }
 
@@ -2991,54 +2966,6 @@ input.calendar-filter-search[type="search"]:focus {
   font-weight: 700;
   line-height: 1.5;
   text-align: right;
-}
-
-.calendar-month-strip {
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  padding: 12px 0;
-  scrollbar-width: thin;
-}
-
-.calendar-month-button {
-  display: inline-flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 6px;
-  min-height: 34px;
-  padding: 0 10px;
-  border: 1px solid #d4dfcc;
-  border-radius: 999px;
-  color: var(--leaf-dark);
-  background: #fff;
-  font-size: 0.74rem;
-  font-weight: 850;
-  cursor: pointer;
-}
-
-.calendar-month-button span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 24px;
-  min-height: 22px;
-  padding: 0 5px;
-  border-radius: 999px;
-  color: #657062;
-  background: #eef4e9;
-  font-size: 0.68rem;
-}
-
-.calendar-month-button.is-active {
-  color: #fff;
-  border-color: var(--leaf);
-  background: var(--leaf);
-}
-
-.calendar-month-button.is-active span {
-  color: var(--leaf-dark);
-  background: #f3f8ee;
 }
 
 .calendar-event-list {
@@ -4324,8 +4251,7 @@ input.calendar-filter-search[type="search"]:focus {
   }
 
   .calendar-now,
-  .calendar-visual-head,
-  .calendar-set-bar {
+  .calendar-visual-head {
     grid-template-columns: 1fr;
   }
 
@@ -4337,18 +4263,6 @@ input.calendar-filter-search[type="search"]:focus {
 
   .calendar-now-list {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .calendar-set-tabs {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    scrollbar-width: thin;
-  }
-
-  .calendar-set-tabs button {
-    flex: 0 0 auto;
   }
 
   .calendar-heatmap {

@@ -402,7 +402,7 @@ const webAppJsonLd = {
                   aria-controls="calendar-plant-group-options"
                   aria-haspopup="listbox"
                   autocomplete="off"
-                  placeholder="Search plant groups"
+                  placeholder="Search groups or presets"
                 />
                 <button class="calendar-combobox-clear" type="button" aria-label="Clear plant group filter" hidden>Clear</button>
                 <button class="calendar-combobox-toggle" type="button" aria-label="Show plant group options" aria-controls="calendar-plant-group-options"></button>
@@ -509,30 +509,9 @@ const webAppJsonLd = {
               </div>
             </div>
 
-            <div class="calendar-set-bar">
-              <div>
-                <p class="eyebrow">Plant set</p>
-                <h3>Focus the year</h3>
-              </div>
-              <div id="calendar-set-tabs" class="calendar-set-tabs" role="group" aria-label="Plant set">
-                <button type="button" class="is-active" data-calendar-set="all" aria-pressed="true">All</button>
-                <button type="button" data-calendar-set="kitchen" aria-pressed="false">Kitchen</button>
-                <button type="button" data-calendar-set="fruit" aria-pressed="false">Fruit</button>
-                <button type="button" data-calendar-set="pollinator" aria-pressed="false">Pollinators</button>
-                <button type="button" data-calendar-set="native" aria-pressed="false">Natives</button>
-                <button type="button" data-calendar-set="containers" aria-pressed="false">Containers</button>
-                <button type="button" data-calendar-set="quick" aria-pressed="false">Quick</button>
-              </div>
-              <select id="calendar-set" hidden aria-hidden="true">
-                <option value="all">All zone-fit plants</option>
-                <option value="kitchen">Kitchen garden</option>
-                <option value="fruit">Fruit and berries</option>
-                <option value="pollinator">Pollinator plants</option>
-                <option value="native">Native cues</option>
-                <option value="containers">Container-friendly</option>
-                <option value="quick">Quick payoff</option>
-              </select>
-            </div>
+            <select id="calendar-set" hidden aria-hidden="true">
+              <option value="all">All zone-fit plants</option>
+            </select>
 
             <div class="calendar-legend" aria-label="Timeline legend">
               <span><i class="calendar-legend-swatch calendar-method-indoors"></i>Start indoors</span>
@@ -542,7 +521,7 @@ const webAppJsonLd = {
             </div>
 
             <div id="calendar-gantt" class="calendar-gantt" aria-label="Planting timeline rows"></div>
-            <div id="calendar-heatmap" class="calendar-heatmap" aria-label="Monthly planting activity"></div>
+            <div id="calendar-heatmap" class="calendar-heatmap" aria-label="Month detail selector"></div>
             <div id="calendar-mobile-plan" class="calendar-mobile-plan" aria-live="polite"></div>
           </section>
 
@@ -555,7 +534,6 @@ const webAppJsonLd = {
                 </div>
                 <p id="calendar-summary">Frost-based windows will appear here after lookup.</p>
               </div>
-              <div id="calendar-month-strip" class="calendar-month-strip" role="group" aria-label="Month filter"></div>
               <div id="calendar-events" class="calendar-event-list"></div>
               <p id="calendar-empty" class="calendar-empty" hidden>No planting windows match those filters.</p>
             </section>
@@ -824,7 +802,6 @@ const webAppJsonLd = {
       const calendarZipEl = document.getElementById("calendar-zip");
       const calendarStatusEl = document.getElementById("calendar-status");
       const calendarSetEl = document.getElementById("calendar-set");
-      const calendarSetButtons = Array.from(document.querySelectorAll("[data-calendar-set]"));
       const calendarPlantClassEl = document.getElementById("calendar-plant-class");
       const calendarPlantClassComboboxEl = document.querySelector("[data-calendar-combobox='plant-group']");
       const calendarPlantClassSearchEl = document.getElementById("calendar-plant-group-search");
@@ -840,8 +817,8 @@ const webAppJsonLd = {
         select: calendarPlantClassEl,
         clear: calendarPlantClassComboboxEl?.querySelector(".calendar-combobox-clear"),
         toggle: calendarPlantClassComboboxEl?.querySelector(".calendar-combobox-toggle"),
-        placeholder: "Search plant groups",
-        disabledPlaceholder: "Search plant groups",
+        placeholder: "Search groups or presets",
+        disabledPlaceholder: "Search groups or presets",
         emptyLabel: "plant groups",
         activeIndex: 0
       };
@@ -876,7 +853,6 @@ const webAppJsonLd = {
       const calendarPrintEl = document.getElementById("calendar-print");
       const calendarResultsTitleEl = document.getElementById("calendar-results-title");
       const calendarSummaryEl = document.getElementById("calendar-summary");
-      const calendarMonthStripEl = document.getElementById("calendar-month-strip");
       const calendarEventsEl = document.getElementById("calendar-events");
       const calendarEmptyEl = document.getElementById("calendar-empty");
       const screenerSearchEl = document.getElementById("screener-search");
@@ -1669,6 +1645,15 @@ function outputSortValue(metrics) {
         transplant: "Transplant",
         nursery: "Nursery stock"
       };
+      const calendarPresetPrefix = "preset:";
+      const calendarPlantSetPresets = [
+        { id: "kitchen", label: "Kitchen garden" },
+        { id: "fruit", label: "Fruit and berries" },
+        { id: "pollinator", label: "Pollinator plants" },
+        { id: "native", label: "Native cues" },
+        { id: "containers", label: "Container-friendly" },
+        { id: "quick", label: "Quick payoff" }
+      ];
       const calendarMethodOrder = { indoors: 1, direct: 2, transplant: 3, nursery: 4 };
       const calendarUrgencyLabels = {
         active: "This week",
@@ -1884,6 +1869,7 @@ function outputSortValue(metrics) {
 
       function calendarPlantMatchesSet(plant, set) {
         const metrics = metricFor(plant);
+        if (set === "all") return true;
         if (set === "kitchen") return goalMatchesPlant(plant, "vegetables-herbs");
         if (set === "fruit") return goalMatchesPlant(plant, "fruit");
         if (set === "pollinator") return goalMatchesPlant(plant, "pollinators-wildlife");
@@ -1899,18 +1885,28 @@ function outputSortValue(metrics) {
         return true;
       }
 
+      function calendarPresetValue(presetId) {
+        return `${calendarPresetPrefix}${presetId}`;
+      }
+
+      function calendarPresetIdFromValue(value) {
+        return String(value ?? "").startsWith(calendarPresetPrefix)
+          ? String(value).slice(calendarPresetPrefix.length)
+          : "";
+      }
+
       function calendarPlantFilterBasePlants() {
-        const selectedSet = calendarSetEl.value;
         return plants
           .filter((plant) => !calendarFrost || calendarPlantFitsZone(plant, calendarFrost.zoneNumber))
-          .filter((plant) => calendarPlantMatchesSet(plant, selectedSet))
           .sort((a, b) => a.name.localeCompare(b.name));
       }
 
       function calendarPlantMatchesFocusedFilters(plant) {
         const selectedClass = calendarPlantClassEl.value;
         const selectedVariety = calendarVarietyEl.value;
-        if (selectedClass !== "all" && calendarPlantClassForPlant(plant).id !== selectedClass) return false;
+        const presetId = calendarPresetIdFromValue(selectedClass);
+        if (presetId && !calendarPlantMatchesSet(plant, presetId)) return false;
+        if (!presetId && selectedClass !== "all" && calendarPlantClassForPlant(plant).id !== selectedClass) return false;
         if (selectedVariety !== "all" && plant.id !== selectedVariety) return false;
         return true;
       }
@@ -1920,7 +1916,7 @@ function outputSortValue(metrics) {
           return calendarPlantFilterBasePlants().find((plant) => plant.id === calendarVarietyEl.value)?.name ?? "selected variety";
         }
         if (calendarPlantClassEl.value !== "all") {
-          return calendarPlantClassEl.selectedOptions[0]?.textContent?.replace(/\s+\(\d+\)$/, "") ?? "selected group";
+          return calendarPlantClassEl.selectedOptions[0]?.textContent?.replace(/\s+\(\d+\)$/, "").replace(/^Preset:\s*/, "") ?? "selected group";
         }
         return calendarSetEl.selectedOptions[0]?.textContent ?? "selected plants";
       }
@@ -1960,7 +1956,7 @@ function outputSortValue(metrics) {
       function calendarComboboxVisibleEntries(combo) {
         const normalizedQuery = calendarSearchNormalize(combo.input.value);
         const entries = calendarSearchOptionList(combo.select);
-        if (!normalizedQuery || calendarSearchNormalize(calendarSearchOptionLabel(combo.select.selectedOptions[0])) === normalizedQuery) {
+        if (!normalizedQuery || calendarSearchNormalize(calendarSearchDisplayLabel(combo.select.selectedOptions[0])) === normalizedQuery) {
           return entries;
         }
         return entries.filter((entry) => {
@@ -2179,23 +2175,34 @@ function outputSortValue(metrics) {
 
         const classes = Array.from(classMap.values())
           .sort((a, b) => a.label.localeCompare(b.label));
-        const classStillAvailable = previousClass === "all" || classMap.has(previousClass);
+        const presetOptions = calendarPlantSetPresets
+          .map((preset) => ({
+            ...preset,
+            value: calendarPresetValue(preset.id),
+            count: basePlants.filter((plant) => calendarPlantMatchesSet(plant, preset.id)).length
+          }))
+          .filter((preset) => preset.count > 0);
+        const presetMap = new Map(presetOptions.map((preset) => [preset.value, preset]));
+        const selectedPreset = presetMap.get(previousClass);
+        const classStillAvailable = previousClass === "all" || classMap.has(previousClass) || Boolean(selectedPreset);
         const selectedClass = classStillAvailable ? previousClass : "all";
         calendarPlantClassEl.innerHTML = [
           `<option value="all">All plant groups (${basePlants.length})</option>`,
+          ...presetOptions.map((preset) => `<option value="${escapeHtml(preset.value)}">Preset: ${escapeHtml(preset.label)} (${preset.count})</option>`),
           ...classes.map((plantClass) => `<option value="${escapeHtml(plantClass.id)}">${escapeHtml(plantClass.label)} (${plantClass.count})</option>`)
         ].join("");
         calendarPlantClassEl.value = selectedClass;
-        syncCalendarCombobox(calendarPlantClassCombo, "Search plant groups");
+        syncCalendarCombobox(calendarPlantClassCombo, "Search groups or presets");
 
-        const varietyPlants = selectedClass === "all"
+        const selectedPresetId = calendarPresetIdFromValue(selectedClass);
+        const varietyPlants = selectedClass === "all" || selectedPresetId
           ? []
           : basePlants.filter((plant) => calendarPlantClassForPlant(plant).id === selectedClass);
         const varietyStillAvailable = previousVariety === "all" || varietyPlants.some((plant) => plant.id === previousVariety);
         const selectedVariety = varietyStillAvailable ? previousVariety : "all";
-        calendarVarietyEl.disabled = selectedClass === "all" || varietyPlants.length === 0;
-        calendarVarietyEl.innerHTML = selectedClass === "all"
-          ? `<option value="all">Choose a plant group first</option>`
+        calendarVarietyEl.disabled = selectedClass === "all" || Boolean(selectedPresetId) || varietyPlants.length === 0;
+        calendarVarietyEl.innerHTML = selectedClass === "all" || selectedPresetId
+          ? `<option value="all">${selectedPresetId ? "Choose an individual plant group first" : "Choose a plant group first"}</option>`
           : [
               `<option value="all">All ${calendarPlantClassForPlant(varietyPlants[0])?.plural ?? "varieties"} (${varietyPlants.length})</option>`,
               ...varietyPlants.map((plant) => `<option value="${escapeHtml(plant.id)}">${escapeHtml(plant.name)}</option>`)
@@ -2207,14 +2214,6 @@ function outputSortValue(metrics) {
         calendarExpandVarietiesEl.disabled = !canExpandVarieties;
         if (!canExpandVarieties) calendarExpandVarietiesEl.checked = false;
         calendarExpandVarietiesEl.closest(".calendar-expand-control")?.classList.toggle("is-disabled", !canExpandVarieties);
-      }
-
-      function updateCalendarSetTabs() {
-        calendarSetButtons.forEach((button) => {
-          const isActive = button.dataset.calendarSet === calendarSetEl.value;
-          button.classList.toggle("is-active", isActive);
-          button.setAttribute("aria-pressed", String(isActive));
-        });
       }
 
       function calendarWindow(frost, plant, action, method, season, anchor, startOffset, endOffset, note) {
@@ -2333,11 +2332,9 @@ function outputSortValue(metrics) {
         if (!calendarEvents.length) return [];
         const today = startOfCalendarDay(new Date());
         const nextEnd = addCalendarDays(today, 45);
-        const selectedSet = calendarSetEl.value;
         const selectedSeason = calendarSeasonEl.value;
         const selectedMethod = calendarMethodEl.value;
         return calendarEvents.filter((event) => {
-          if (!calendarPlantMatchesSet(event.plant, selectedSet)) return false;
           if (!calendarPlantMatchesFocusedFilters(event.plant)) return false;
           if (selectedMethod !== "all" && event.method !== selectedMethod) return false;
           if (includeSeason) {
@@ -2559,41 +2556,6 @@ function outputSortValue(metrics) {
         `;
       }
 
-      function renderCalendarMonthStrip(events) {
-        const groups = groupCalendarEvents(events);
-        const counts = new Array(12).fill(0);
-        groups.forEach((group) => {
-          calendarMonthsTouched(group.start, group.end).forEach((month) => {
-            counts[month] += 1;
-          });
-        });
-        calendarMonthStripEl.innerHTML = [
-          `<button type="button" class="calendar-month-button ${calendarMonthFilter === "" ? "is-active" : ""}" data-calendar-month="" aria-pressed="${calendarMonthFilter === ""}">All <span>${groups.length}</span></button>`,
-          ...calendarMonthLabels.map((label, index) => {
-            const count = counts[index];
-            const isActive = calendarMonthFilter === String(index);
-            const isEmpty = count === 0;
-            return `
-              <button
-                type="button"
-                class="calendar-month-button ${isActive ? "is-active" : ""} ${isEmpty ? "is-empty" : ""}"
-                data-calendar-month="${index}"
-                aria-pressed="${isActive}"
-                ${isEmpty ? "disabled aria-disabled=\"true\"" : ""}
-              >
-                ${label} <span>${count}</span>
-              </button>
-            `;
-          })
-        ].join("");
-        calendarMonthStripEl.querySelectorAll("[data-calendar-month]").forEach((button) => {
-          if (button.disabled) return;
-          button.addEventListener("click", () => {
-            handleCalendarMonthSelection(button.dataset.calendarMonth ?? "");
-          });
-        });
-      }
-
       function handleCalendarMonthSelection(month) {
         calendarMonthFilter = month;
         calendarSeasonEl.value = "all";
@@ -2615,7 +2577,23 @@ function outputSortValue(metrics) {
           });
         });
         const maxCount = Math.max(1, ...counts);
-        calendarHeatmapEl.innerHTML = calendarMonthLabels.map((label, index) => {
+        const allIsActive = calendarMonthFilter === "";
+        const allButton = `
+          <button
+            type="button"
+            class="calendar-heatmap-cell calendar-heatmap-all ${allIsActive ? "is-active" : ""}"
+            data-calendar-heat-month=""
+            style="--activity: 0.42"
+            aria-pressed="${allIsActive}"
+            title="Show all month details"
+          >
+            <span>All</span>
+            <strong>${groups.length}</strong>
+          </button>
+        `;
+        calendarHeatmapEl.innerHTML = [
+          allButton,
+          ...calendarMonthLabels.map((label, index) => {
           const count = counts[index];
           const intensity = count / maxCount;
           const isActive = calendarMonthFilter === String(index);
@@ -2627,13 +2605,15 @@ function outputSortValue(metrics) {
               data-calendar-heat-month="${index}"
               style="--activity: ${intensity.toFixed(3)}"
               aria-pressed="${isActive}"
+              title="Show ${label} detail"
               ${isEmpty ? "disabled aria-disabled=\"true\"" : ""}
             >
               <span>${label}</span>
               <strong>${count}</strong>
             </button>
           `;
-        }).join("");
+          })
+        ].join("");
         calendarHeatmapEl.querySelectorAll("[data-calendar-heat-month]").forEach((button) => {
           if (button.disabled) return;
           button.addEventListener("click", () => {
@@ -2653,7 +2633,7 @@ function outputSortValue(metrics) {
         const visibleRows = rows.slice(0, rowLimit);
         const showingVarietyRows = calendarShowsVarietyRows();
         if (!visibleRows.length) {
-          calendarGanttEl.innerHTML = "<p class=\"calendar-gantt-empty\">No timeline rows match this plant set and method.</p>";
+          calendarGanttEl.innerHTML = "<p class=\"calendar-gantt-empty\">No timeline rows match these filters.</p>";
           return;
         }
         const frostOverlay = calendarFrostOverlayHtml();
@@ -2695,7 +2675,7 @@ function outputSortValue(metrics) {
               }).join("")}
             </div>
           </div>
-          ${rows.length > visibleRows.length ? `<p class="calendar-limit-note">Showing ${visibleRows.length} of ${rows.length} timeline rows. Narrow the plant set or method to see a tighter year view.</p>` : ""}
+          ${rows.length > visibleRows.length ? `<p class="calendar-limit-note">Showing ${visibleRows.length} of ${rows.length} timeline rows. Narrow the plant group, preset, or method to see a tighter year view.</p>` : ""}
         `;
       }
 
@@ -2730,7 +2710,7 @@ function outputSortValue(metrics) {
               <div>
                 <p class="eyebrow">${focusLabel}</p>
                 <h3>${monthName} tasks</h3>
-                <p>${groups.length} grouped ${groups.length === 1 ? "window" : "windows"} for the current plant set and method.</p>
+                <p>${groups.length} grouped ${groups.length === 1 ? "window" : "windows"} for the current filters.</p>
               </div>
               ${clearButton}
             </div>
@@ -2822,11 +2802,10 @@ function outputSortValue(metrics) {
           : `No matching planting windows overlap this week. ${timingNote} ${frostNote}`;
         const groups = activeGroups.length ? activeGroups.slice(0, 3) : upcomingGroups.slice(0, 3);
         if (!groups.length) {
-          calendarNowListEl.innerHTML = "<p>No current or upcoming windows match this plant set and method.</p>";
+          calendarNowListEl.innerHTML = "<p>No current or upcoming windows match these filters.</p>";
           return;
         }
         calendarNowListEl.innerHTML = `
-          ${!activeGroups.length ? "<p>No current matches. Next up:</p>" : ""}
           ${groups.map((group) => {
             const urgency = calendarUrgencyForRange(group.start, group.end);
             return `
@@ -2857,11 +2836,9 @@ function outputSortValue(metrics) {
       }
 
       function renderCalendar() {
-        updateCalendarSetTabs();
         syncCalendarPlantFilterOptions();
         renderCalendarDashboard();
         if (!calendarFrost) {
-          calendarMonthStripEl.innerHTML = "";
           calendarEventsEl.innerHTML = "";
           calendarHeatmapEl.innerHTML = "<p>Build a calendar to see monthly activity.</p>";
           calendarMobilePlanEl.innerHTML = "<p class=\"calendar-mobile-empty\">Build a calendar to see a shorter month plan here.</p>";
@@ -2881,8 +2858,6 @@ function outputSortValue(metrics) {
         renderCalendarGantt(visualEvents);
         renderCalendarHeatmap(visualEvents);
         renderCalendarMobilePlan(visualEvents);
-        const monthBaseEvents = filterCalendarEvents({ includeMonth: false });
-        renderCalendarMonthStrip(monthBaseEvents);
         const groups = groupCalendarEvents(filterCalendarEvents());
         const visibleGroups = groups.slice(0, 36);
         const seasonLabel = calendarSeasonEl.selectedOptions[0]?.textContent ?? "selected window";
@@ -2911,7 +2886,7 @@ function outputSortValue(metrics) {
           calendarFrost = estimateCalendarFrost(calendarZoneData, calendarDisplayYear);
           calendarEvents = buildCalendarEvents(calendarFrost);
           calendarMonthFilter = "";
-          calendarStatusEl.textContent = `Zone ${calendarZoneData.zone} calendar ready. Use plant group and variety filters to narrow the timeline.`;
+          calendarStatusEl.textContent = `Zone ${calendarZoneData.zone} calendar ready. Use preset views, plant groups, and varieties to narrow the timeline.`;
           renderCalendar();
         } catch (error) {
           calendarZoneData = null;
@@ -2925,13 +2900,6 @@ function outputSortValue(metrics) {
       function initializeCalendar() {
         let calendarResizeTimer = null;
         calendarFormEl.addEventListener("submit", handleCalendarSubmit);
-        calendarSetButtons.forEach((button) => {
-          button.addEventListener("click", () => {
-            calendarSetEl.value = button.dataset.calendarSet ?? "all";
-            calendarMonthFilter = "";
-            renderCalendar();
-          });
-        });
         const handleCalendarPlantGroupChange = () => {
           calendarVarietyEl.value = "all";
           calendarExpandVarietiesEl.checked = false;
