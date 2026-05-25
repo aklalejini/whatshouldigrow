@@ -627,13 +627,122 @@ const webAppJsonLd = {
                 </div>
                 <p>
                   Click a region or use ZIP lookup. The colored bands show colder-to-warmer USDA
-                  hardiness patterns; your ZIP pin is approximate on this simplified garden map.
+                  hardiness patterns; your ZIP pin is approximate on this interpretive garden map.
                 </p>
               </div>
-              <div id="zone-map-canvas" class="zone-map-canvas" aria-label="Simplified United States gardening zone map">
-                <div class="zone-map-contiguous" aria-hidden="true"></div>
-                <div class="zone-map-inset zone-map-alaska" aria-hidden="true">Alaska</div>
-                <div class="zone-map-inset zone-map-hawaii" aria-hidden="true">HI / PR</div>
+              <div id="zone-map-canvas" class="zone-map-canvas" aria-label="Interactive United States gardening zone map">
+                <svg class="zone-map-svg" viewBox="0 0 1000 640" aria-hidden="true" focusable="false">
+                  <defs>
+                    <clipPath id="zone-map-us-clip">
+                      <path d="M86 89 L126 99 L162 111 L206 104 L252 115 L301 119 L346 111 L388 123 L448 123 L510 132 L571 127 L636 134 L696 150 L748 164 L806 153 L867 136 L923 171 L909 202 L931 228 L911 257 L926 283 L908 305 L924 333 L903 354 L880 350 L857 374 L862 398 L846 424 L837 455 L812 476 L792 461 L790 430 L777 399 L754 387 L731 404 L692 427 L650 429 L614 448 L580 464 L548 460 L516 480 L467 478 L421 494 L375 483 L330 492 L298 471 L263 454 L218 444 L180 425 L154 395 L134 364 L121 321 L101 288 L93 250 L104 218 L91 176 Z" />
+                    </clipPath>
+                    <linearGradient id="zone-map-water-gradient" x1="0" x2="1" y1="0" y2="1">
+                      <stop offset="0%" stop-color="#b7e0e6" />
+                      <stop offset="100%" stop-color="#8ccad8" />
+                    </linearGradient>
+                    <linearGradient id="zone-map-zone-gradient" x1="0" x2="1" y1="0" y2="1">
+                      <stop offset="0%" stop-color="#8d78d6" />
+                      <stop offset="28%" stop-color="#68b9c4" />
+                      <stop offset="52%" stop-color="#70b86b" />
+                      <stop offset="73%" stop-color="#d6c862" />
+                      <stop offset="100%" stop-color="#e7954d" />
+                    </linearGradient>
+                    <pattern id="zone-map-topo-lines" width="34" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(-13)">
+                      <path d="M0 14 C8 7 17 21 34 12" fill="none" stroke="rgba(31, 67, 43, 0.12)" stroke-width="1" />
+                    </pattern>
+                  </defs>
+                  <rect class="zone-map-water-fill" width="1000" height="640" rx="26" />
+                  <path class="zone-map-neighbor-land" d="M0 0 H1000 V92 C920 62 858 87 807 123 C744 134 701 123 636 111 C556 95 471 94 397 100 C305 109 225 83 128 58 C73 44 33 42 0 54 Z" />
+                  <path class="zone-map-neighbor-land" d="M0 464 C86 454 171 465 243 500 C322 539 431 560 548 540 C676 518 744 532 827 504 C907 477 957 479 1000 496 V640 H0 Z" />
+                  <g clip-path="url(#zone-map-us-clip)">
+                    <rect x="64" y="70" width="880" height="430" fill="url(#zone-map-zone-gradient)" />
+                    <path class="zone-map-band zone-map-band-cold" d="M80 84 C204 97 317 132 453 128 C568 124 665 132 757 162 C823 183 875 171 928 190 L928 286 C838 239 742 233 648 218 C538 200 417 202 309 189 C216 177 146 159 80 139 Z" />
+                    <path class="zone-map-band zone-map-band-cool" d="M76 140 C174 164 250 184 354 190 C486 198 594 207 696 231 C789 253 866 246 930 286 L925 350 C833 323 760 315 657 302 C550 289 449 279 337 266 C231 254 146 236 83 217 Z" />
+                    <path class="zone-map-band zone-map-band-temperate" d="M82 221 C188 248 286 264 395 277 C516 291 632 300 735 316 C819 329 878 344 924 368 L891 430 C813 391 731 377 642 367 C527 353 420 343 315 327 C218 312 143 292 92 270 Z" />
+                    <path class="zone-map-band zone-map-band-mild" d="M98 273 C167 307 262 329 371 344 C481 360 593 368 703 385 C774 397 835 420 867 454 L823 491 C742 454 655 437 561 430 C462 423 379 411 299 386 C214 359 151 326 105 292 Z" />
+                    <path class="zone-map-band zone-map-band-hot" d="M302 407 C418 435 527 430 637 435 C744 438 803 459 839 492 L758 527 L598 506 L438 519 L302 491 Z" />
+                    <path class="zone-map-band zone-map-band-coast" d="M85 90 C111 128 119 176 107 224 C92 288 119 344 157 390 L181 425 L142 404 C104 361 76 297 69 243 C60 177 64 124 85 90 Z" />
+                    <path class="zone-map-band zone-map-band-coast" d="M897 151 C866 206 865 254 895 302 C925 347 891 391 840 455 C876 392 856 349 876 307 C898 259 888 209 897 151 Z" />
+                    <path class="zone-map-band zone-map-band-florida" d="M778 398 C808 410 826 446 815 485 C797 470 790 438 778 398 Z" />
+                    <path class="zone-map-mountain-fill" d="M118 109 C170 116 221 145 262 178 C306 214 356 218 398 256 C341 259 294 248 244 268 C192 288 153 267 112 226 C100 184 97 141 118 109 Z" />
+                    <path class="zone-map-mountain-fill" d="M204 116 C263 126 332 148 381 189 C420 222 445 249 474 285 C420 274 356 258 309 228 C257 195 228 159 204 116 Z" />
+                    <path class="zone-map-topo" d="M65 70 H515 V380 H65 Z" />
+                    <g class="zone-map-ridges">
+                      <path d="M142 124 C165 157 169 191 154 228 C144 254 150 285 176 317" />
+                      <path d="M185 121 C205 157 219 194 215 236 C211 274 235 306 264 334" />
+                      <path d="M239 134 C268 174 292 203 318 234 C345 267 379 286 415 310" />
+                      <path d="M296 123 C324 154 346 182 371 218 C392 249 424 266 466 286" />
+                      <path d="M358 121 C378 156 397 181 424 205 C454 232 477 259 492 289" />
+                      <path d="M101 221 C147 227 185 226 220 216" />
+                      <path d="M146 284 C195 276 241 273 288 285" />
+                    </g>
+                    <g class="zone-map-state-lines">
+                      <path d="M166 112 L157 395" />
+                      <path d="M221 110 L211 441" />
+                      <path d="M286 119 L272 454" />
+                      <path d="M347 116 L335 492" />
+                      <path d="M409 124 L408 489" />
+                      <path d="M471 125 L470 477" />
+                      <path d="M533 130 L534 468" />
+                      <path d="M594 130 L604 450" />
+                      <path d="M658 137 L648 430" />
+                      <path d="M720 155 L704 421" />
+                      <path d="M785 157 L765 404" />
+                      <path d="M850 143 L845 391" />
+                      <path d="M93 250 L910 257" />
+                      <path d="M121 321 L907 305" />
+                      <path d="M154 395 L861 398" />
+                      <path d="M252 115 L263 454" />
+                      <path d="M571 127 L580 464" />
+                    </g>
+                    <g class="zone-map-rivers">
+                      <path d="M598 197 C586 233 592 263 614 296 C637 331 626 367 612 405 C605 424 612 438 626 451" />
+                      <path d="M486 190 C516 211 550 224 583 239" />
+                      <path d="M782 220 C759 253 738 281 713 309" />
+                    </g>
+                  </g>
+                  <path class="zone-map-us-outline" d="M86 89 L126 99 L162 111 L206 104 L252 115 L301 119 L346 111 L388 123 L448 123 L510 132 L571 127 L636 134 L696 150 L748 164 L806 153 L867 136 L923 171 L909 202 L931 228 L911 257 L926 283 L908 305 L924 333 L903 354 L880 350 L857 374 L862 398 L846 424 L837 455 L812 476 L792 461 L790 430 L777 399 L754 387 L731 404 L692 427 L650 429 L614 448 L580 464 L548 460 L516 480 L467 478 L421 494 L375 483 L330 492 L298 471 L263 454 L218 444 L180 425 L154 395 L134 364 L121 321 L101 288 L93 250 L104 218 L91 176 Z" />
+                  <g class="zone-map-lakes">
+                    <path d="M684 165 C723 151 766 156 786 184 C756 204 714 205 684 185 Z" />
+                    <path d="M748 202 C785 187 827 196 845 224 C813 235 775 235 748 218 Z" />
+                    <path d="M808 179 C844 168 875 177 891 200 C866 214 836 211 808 194 Z" />
+                    <path d="M664 210 C696 200 724 209 739 232 C709 238 681 231 664 210 Z" />
+                    <path d="M752 248 C786 245 810 258 818 283 C790 286 766 274 752 248 Z" />
+                  </g>
+                  <g class="zone-map-city-labels">
+                    <circle cx="112" cy="144" r="2.5" /><text x="119" y="147">Seattle</text>
+                    <circle cx="118" cy="254" r="2.5" /><text x="126" y="257">San Francisco</text>
+                    <circle cx="154" cy="385" r="2.5" /><text x="162" y="388">Los Angeles</text>
+                    <circle cx="290" cy="253" r="2.5" /><text x="298" y="256">Salt Lake</text>
+                    <circle cx="376" cy="244" r="2.5" /><text x="384" y="247">Denver</text>
+                    <circle cx="472" cy="355" r="2.5" /><text x="480" y="358">Dallas</text>
+                    <circle cx="618" cy="334" r="2.5" /><text x="626" y="337">Memphis</text>
+                    <circle cx="704" cy="338" r="2.5" /><text x="712" y="341">Atlanta</text>
+                    <circle cx="807" cy="404" r="2.5" /><text x="815" y="407">Tampa</text>
+                    <circle cx="814" cy="260" r="2.5" /><text x="822" y="263">D.C.</text>
+                    <circle cx="851" cy="200" r="2.5" /><text x="859" y="203">Boston</text>
+                    <circle cx="662" cy="199" r="2.5" /><text x="670" y="202">Chicago</text>
+                  </g>
+                  <g class="zone-map-insets">
+                    <rect x="72" y="510" width="190" height="96" rx="12" />
+                    <path class="zone-map-inset-land zone-map-inset-cold" d="M103 570 C119 545 147 535 173 547 C194 558 218 547 240 562 C218 581 185 586 155 578 C134 572 117 586 103 570 Z" />
+                    <text x="92" y="532">Alaska</text>
+                    <rect x="282" y="510" width="190" height="96" rx="12" />
+                    <path class="zone-map-inset-land zone-map-inset-hot" d="M316 565 L334 558 L354 569 L379 558 L405 571 L432 563" />
+                    <text x="302" y="532">Hawaii</text>
+                    <rect x="726" y="510" width="190" height="96" rx="12" />
+                    <path class="zone-map-inset-land zone-map-inset-tropical" d="M760 562 C800 548 846 550 888 565 C849 582 798 580 760 562 Z" />
+                    <text x="746" y="532">Puerto Rico</text>
+                  </g>
+                  <g class="zone-map-mini-legend">
+                    <text x="764" y="92">Average annual extreme minimum</text>
+                    <text x="764" y="109">temperature pattern</text>
+                    <rect x="764" y="124" width="24" height="12" class="legend-cold" /><text x="795" y="134">Zones 1-4</text>
+                    <rect x="764" y="143" width="24" height="12" class="legend-cool" /><text x="795" y="153">Zones 5-6</text>
+                    <rect x="764" y="162" width="24" height="12" class="legend-temperate" /><text x="795" y="172">Zones 7-8</text>
+                    <rect x="764" y="181" width="24" height="12" class="legend-hot" /><text x="795" y="191">Zones 9-13</text>
+                  </g>
+                </svg>
                 <div id="zone-map-region-layer" class="zone-map-region-layer"></div>
                 <span id="zone-map-pin" class="zone-map-pin" hidden><span></span></span>
               </div>
@@ -2097,7 +2206,7 @@ function outputSortValue(metrics) {
           id: "pacific",
           label: "Pacific coast",
           range: "8a-10b",
-          style: "--x: 7%; --y: 26%; --w: 14%; --h: 39%;",
+          style: "--x: 8%; --y: 27%; --w: 13%; --h: auto;",
           summary: "Marine air, fog, slope, and summer-dry soil can matter more than the printed USDA zone.",
           checks: ["Use Sunset or local coastal guidance for ornamentals.", "Verify chill hours before buying fruit trees.", "Plan irrigation even where winter rainfall is generous."]
         },
@@ -2105,7 +2214,7 @@ function outputSortValue(metrics) {
           id: "mountain-west",
           label: "Mountain West",
           range: "3a-7b",
-          style: "--x: 20%; --y: 22%; --w: 22%; --h: 43%;",
+          style: "--x: 26%; --y: 28%; --w: 16%; --h: auto;",
           summary: "Elevation, wind, snow cover, and late spring freezes create sharp local differences.",
           checks: ["Favor cold-hardy roots and wind-tolerant structure.", "Treat valley floors and slopes as different gardens.", "Use short-season vegetables unless your frost window is proven."]
         },
@@ -2113,7 +2222,7 @@ function outputSortValue(metrics) {
           id: "desert-southwest",
           label: "Desert Southwest",
           range: "8a-11a",
-          style: "--x: 18%; --y: 60%; --w: 24%; --h: 22%;",
+          style: "--x: 21%; --y: 64%; --w: 18%; --h: auto;",
           summary: "Warm winter zones do not mean easy growing; heat, alkaline soil, and irrigation drive success.",
           checks: ["Low-water plants still need establishment water.", "Use afternoon shade for many edibles.", "Check salt, pH, and drainage before planting fruit."]
         },
@@ -2121,7 +2230,7 @@ function outputSortValue(metrics) {
           id: "plains",
           label: "Plains",
           range: "3b-8a",
-          style: "--x: 42%; --y: 25%; --w: 18%; --h: 47%;",
+          style: "--x: 45%; --y: 35%; --w: 13%; --h: auto;",
           summary: "Wind, drought swings, hail, and fast temperature changes make hardiness margins important.",
           checks: ["Mulch and wind protection often matter as much as zone.", "Choose drought- and cold-tolerant woody plants.", "Time transplants around wind and hardening-off, not just frost."]
         },
@@ -2129,7 +2238,7 @@ function outputSortValue(metrics) {
           id: "midwest",
           label: "Midwest / Great Lakes",
           range: "4a-7a",
-          style: "--x: 58%; --y: 25%; --w: 18%; --h: 31%;",
+          style: "--x: 62%; --y: 31%; --w: 16%; --h: auto;",
           summary: "Winter lows are useful, but freeze-thaw cycles, wet spring soil, and lake effects complicate timing.",
           checks: ["Wait for workable soil before direct sowing.", "Use disease-resistant fruit cultivars in humid summers.", "Watch late frost pockets around bloom time."]
         },
@@ -2137,7 +2246,7 @@ function outputSortValue(metrics) {
           id: "northeast",
           label: "Northeast",
           range: "3b-7b",
-          style: "--x: 74%; --y: 20%; --w: 18%; --h: 26%;",
+          style: "--x: 78%; --y: 24%; --w: 14%; --h: auto;",
           summary: "Shorter seasons, snow cover, and coastal moderation can change the real garden window.",
           checks: ["Use frost dates for vegetables and bloom risk.", "Protect broadleaf evergreens from winter wind.", "Match fruit cultivars to chill and disease pressure."]
         },
@@ -2145,7 +2254,7 @@ function outputSortValue(metrics) {
           id: "mid-atlantic",
           label: "Mid-Atlantic / Appalachia",
           range: "5b-8a",
-          style: "--x: 71%; --y: 45%; --w: 19%; --h: 22%;",
+          style: "--x: 75%; --y: 47%; --w: 16%; --h: auto;",
           summary: "Elevation and humidity can move a garden from easy to difficult within a few miles.",
           checks: ["Drainage and airflow are key for fruit and roses.", "Use native-range checks for habitat plantings.", "Account for mountain frost pockets before tender crops."]
         },
@@ -2153,7 +2262,7 @@ function outputSortValue(metrics) {
           id: "southeast",
           label: "Southeast",
           range: "7a-9a",
-          style: "--x: 62%; --y: 62%; --w: 27%; --h: 22%;",
+          style: "--x: 65%; --y: 63%; --w: 15%; --h: auto;",
           summary: "The USDA zone is often less limiting than heat, humidity, disease pressure, and low chill.",
           checks: ["Choose low-chill fruit cultivars where winters are mild.", "Prioritize disease resistance and airflow.", "Use spring and fall as prime vegetable seasons."]
         },
@@ -2161,7 +2270,7 @@ function outputSortValue(metrics) {
           id: "gulf-florida",
           label: "Gulf & Florida",
           range: "8b-11b",
-          style: "--x: 59%; --y: 80%; --w: 28%; --h: 14%;",
+          style: "--x: 58%; --y: 69%; --w: 18%; --h: auto;",
           summary: "Rare freezes still happen, but warm nights, rainfall timing, and low chill drive many decisions.",
           checks: ["Plan freeze protection for tender perennials.", "Treat cool-season vegetables as winter crops.", "Verify chill needs before buying peaches, apples, or blueberries."]
         },
@@ -2169,7 +2278,7 @@ function outputSortValue(metrics) {
           id: "alaska",
           label: "Alaska",
           range: "1a-8b",
-          style: "--x: 4%; --y: 79%; --w: 17%; --h: 12%;",
+          style: "--x: 8%; --y: 79%; --w: 13%; --h: auto;",
           summary: "Day length, snow cover, and microclimate can matter as much as the hardiness label.",
           checks: ["Use local extension calendars for vegetables.", "Favor very hardy perennials and shrubs.", "Protect roots from freeze-thaw and winter desiccation."]
         },
@@ -2177,7 +2286,7 @@ function outputSortValue(metrics) {
           id: "hawaii-pr",
           label: "Hawaii / Caribbean",
           range: "10a-13b",
-          style: "--x: 24%; --y: 84%; --w: 18%; --h: 10%;",
+          style: "--x: 29%; --y: 82%; --w: 14%; --h: auto;",
           summary: "USDA zones mostly confirm frost is rare; rainfall, elevation, wind, and salt exposure decide the garden.",
           checks: ["Use local tropical crop guidance.", "Map wet and dry sides separately.", "Match plants to rainfall, salt, and elevation."]
         }
@@ -2519,12 +2628,12 @@ function outputSortValue(metrics) {
       }
 
       function zoneMapPinPosition(lat, lon, regionId) {
-        if (regionId === "alaska") return { x: 12, y: 86 };
-        if (regionId === "hawaii-pr") return { x: 33, y: 89 };
+        if (regionId === "alaska") return { x: 16, y: 86 };
+        if (regionId === "hawaii-pr") return lon >= -90 ? { x: 82, y: 88 } : { x: 36, y: 88 };
         if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
         return {
-          x: clamp(((lon + 125) / 59) * 100, 5, 94),
-          y: clamp(((49 - lat) / 25) * 100, 9, 88)
+          x: clamp(7 + ((lon + 125) / 59) * 87, 7, 94),
+          y: clamp(11 + ((49 - lat) / 25) * 64, 11, 75)
         };
       }
 

@@ -2297,70 +2297,190 @@ fieldset:nth-of-type(2) .segmented {
 
 .zone-map-canvas {
   position: relative;
-  min-height: 430px;
+  min-height: 540px;
   overflow: hidden;
   border: 1px solid #d8e2d0;
   border-radius: 18px;
   background:
-    linear-gradient(180deg, rgba(249, 252, 245, 0.95), rgba(235, 241, 229, 0.82)),
-    repeating-linear-gradient(0deg, rgba(39, 88, 58, 0.05) 0 1px, transparent 1px 38px),
-    repeating-linear-gradient(90deg, rgba(39, 88, 58, 0.04) 0 1px, transparent 1px 48px);
+    linear-gradient(180deg, rgba(245, 249, 242, 0.28), rgba(196, 223, 224, 0.42)),
+    repeating-linear-gradient(0deg, rgba(31, 67, 43, 0.05) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(90deg, rgba(31, 67, 43, 0.04) 0 1px, transparent 1px 52px);
+  box-shadow: inset 0 0 0 1px rgba(255, 253, 248, 0.62);
+  isolation: isolate;
 }
 
-.zone-map-contiguous {
-  position: absolute;
-  inset: 38px 36px 54px 34px;
-  border: 1px solid rgba(28, 67, 43, 0.24);
-  border-radius: 44% 38% 46% 34%;
-  background:
-    linear-gradient(105deg,
-      #7f97bd 0 13%,
-      #9fb886 13% 28%,
-      #d8c875 28% 45%,
-      #df9f58 45% 62%,
-      #c86e50 62% 78%,
-      #9d5060 78% 100%);
-  clip-path: polygon(8% 18%, 22% 8%, 38% 12%, 48% 7%, 62% 15%, 72% 12%, 86% 26%, 95% 43%, 88% 57%, 82% 70%, 76% 86%, 61% 78%, 51% 84%, 39% 76%, 28% 79%, 16% 66%, 12% 49%, 4% 38%);
-  opacity: 0.86;
-  box-shadow: inset 0 0 40px rgba(255, 253, 248, 0.22);
-}
-
-.zone-map-contiguous::after {
-  content: "";
+.zone-map-svg {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 17% 38%, rgba(255, 253, 248, 0.28), transparent 24%),
-    radial-gradient(circle at 74% 34%, rgba(255, 253, 248, 0.2), transparent 20%),
-    linear-gradient(180deg, rgba(255, 253, 248, 0.14), transparent 55%);
+  z-index: 1;
+  width: 100%;
+  height: 100%;
 }
 
-.zone-map-inset {
+.zone-map-water-fill {
+  fill: url(#zone-map-water-gradient);
+}
+
+.zone-map-neighbor-land {
+  fill: rgba(223, 224, 216, 0.78);
+}
+
+.zone-map-band {
+  opacity: 0.9;
+  mix-blend-mode: multiply;
+}
+
+.zone-map-band-cold {
+  fill: #8f78d5;
+}
+
+.zone-map-band-cool {
+  fill: #72bad0;
+}
+
+.zone-map-band-temperate {
+  fill: #6fb66c;
+}
+
+.zone-map-band-mild {
+  fill: #d6c564;
+}
+
+.zone-map-band-hot,
+.zone-map-band-coast,
+.zone-map-band-florida {
+  fill: #e69a50;
+}
+
+.zone-map-band-coast {
+  opacity: 0.58;
+}
+
+.zone-map-band-florida {
+  opacity: 0.75;
+}
+
+.zone-map-mountain-fill {
+  fill: rgba(73, 126, 100, 0.32);
+}
+
+.zone-map-topo {
+  fill: url(#zone-map-topo-lines);
+  opacity: 0.8;
+}
+
+.zone-map-ridges path {
+  fill: none;
+  stroke: rgba(43, 89, 67, 0.36);
+  stroke-width: 2.1;
+  stroke-linecap: round;
+}
+
+.zone-map-state-lines path {
+  fill: none;
+  stroke: rgba(31, 49, 39, 0.18);
+  stroke-width: 1.1;
+  vector-effect: non-scaling-stroke;
+}
+
+.zone-map-rivers path {
+  fill: none;
+  stroke: rgba(86, 159, 181, 0.52);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-dasharray: 5 5;
+}
+
+.zone-map-us-outline {
+  fill: none;
+  stroke: rgba(24, 55, 37, 0.44);
+  stroke-width: 2.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.zone-map-lakes path {
+  fill: #9fd8e2;
+  stroke: rgba(29, 95, 115, 0.36);
+  stroke-width: 1.1;
+}
+
+.zone-map-city-labels circle {
+  fill: #1d3124;
+  stroke: #fffdf8;
+  stroke-width: 1.2;
+}
+
+.zone-map-city-labels text,
+.zone-map-mini-legend text,
+.zone-map-insets text {
+  fill: rgba(24, 45, 34, 0.76);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.zone-map-city-labels text {
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.zone-map-insets rect {
+  fill: rgba(255, 253, 248, 0.42);
+  stroke: rgba(31, 67, 43, 0.2);
+}
+
+.zone-map-inset-land {
+  fill: none;
+  stroke-width: 13;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.zone-map-inset-cold {
+  stroke: #8f78d5;
+}
+
+.zone-map-inset-hot {
+  stroke: #e69a50;
+}
+
+.zone-map-inset-tropical {
+  fill: #c95c49;
+  stroke: rgba(124, 48, 43, 0.32);
+  stroke-width: 2;
+}
+
+.zone-map-mini-legend {
+  opacity: 0.92;
+}
+
+.zone-map-mini-legend rect {
+  stroke: rgba(24, 45, 34, 0.24);
+  stroke-width: 0.8;
+}
+
+.legend-cold {
+  fill: #8f78d5;
+}
+
+.legend-cool {
+  fill: #72bad0;
+}
+
+.legend-temperate {
+  fill: #6fb66c;
+}
+
+.legend-hot {
+  fill: #e69a50;
+}
+
+.zone-map-region-layer {
   position: absolute;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(28, 67, 43, 0.22);
-  border-radius: 14px;
-  color: #314239;
-  background: rgba(255, 253, 248, 0.78);
-  font-size: 0.72rem;
-  font-weight: 850;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.zone-map-alaska {
-  left: 20px;
-  bottom: 18px;
-  width: 124px;
-  height: 52px;
-}
-
-.zone-map-hawaii {
-  left: 158px;
-  bottom: 18px;
-  width: 114px;
-  height: 44px;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
 }
 
 .zone-map-region {
@@ -2372,15 +2492,17 @@ fieldset:nth-of-type(2) .segmented {
   display: grid;
   align-content: center;
   gap: 3px;
-  min-width: 72px;
-  padding: 8px;
-  border: 1px solid rgba(31, 67, 43, 0.22);
-  border-radius: 14px;
+  min-width: 96px;
+  padding: 7px 9px;
+  border: 1px solid rgba(31, 67, 43, 0.26);
+  border-radius: 12px;
   color: #1d3124;
-  background: rgba(255, 253, 248, 0.78);
+  background: rgba(255, 253, 248, 0.74);
   text-align: left;
   cursor: pointer;
-  box-shadow: 0 8px 18px rgba(31, 45, 35, 0.08);
+  pointer-events: auto;
+  box-shadow: 0 8px 18px rgba(31, 45, 35, 0.1);
+  backdrop-filter: blur(7px);
   transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
 }
 
@@ -2457,19 +2579,19 @@ fieldset:nth-of-type(2) .segmented {
 }
 
 .zone-cold {
-  background: #7f97bd;
+  background: #8f78d5;
 }
 
 .zone-cool {
-  background: #9fb886;
+  background: #72bad0;
 }
 
 .zone-mild {
-  background: #df9f58;
+  background: #d6c564;
 }
 
 .zone-hot {
-  background: #9d5060;
+  background: #e69a50;
 }
 
 .zone-map-advice {
@@ -5021,16 +5143,13 @@ input.calendar-filter-search[type="search"]:focus {
     min-height: 520px;
   }
 
-  .zone-map-contiguous {
-    inset: 22px 18px 92px;
-  }
-
   .zone-map-region {
-    min-width: 92px;
-    min-height: 48px;
+    min-width: 84px;
+    min-height: 42px;
     width: auto;
     height: auto;
     transform: translate(-4px, 0);
+    padding: 6px 8px;
   }
 
   .zone-map-region:hover,
@@ -5042,14 +5161,9 @@ input.calendar-filter-search[type="search"]:focus {
     font-size: 0.76rem;
   }
 
-  .zone-map-alaska {
-    left: 18px;
-    bottom: 22px;
-  }
-
-  .zone-map-hawaii {
-    left: 156px;
-    bottom: 22px;
+  .zone-map-city-labels,
+  .zone-map-mini-legend {
+    display: none;
   }
 
   .calendar-header h1 {
@@ -5599,8 +5713,9 @@ input.calendar-filter-search[type="search"]:focus {
   }
 
   .zone-map-region {
-    min-width: 78px;
-    padding: 7px;
+    min-width: 68px;
+    min-height: 34px;
+    padding: 5px 6px;
   }
 
   .zone-map-region strong {
@@ -5608,7 +5723,7 @@ input.calendar-filter-search[type="search"]:focus {
   }
 
   .zone-map-region span {
-    font-size: 0.6rem;
+    display: none;
   }
 
   .plant-page-key-stats {
