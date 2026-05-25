@@ -430,6 +430,33 @@ const plantJsonLd = {
             </p>
           </section>
 
+          <section class="detail-panel plant-page-panel plant-page-checklist" aria-labelledby="planting-checklist-heading">
+            <div class="plant-checklist-head">
+              <h2 id="planting-checklist-heading">Planting Checklist</h2>
+              <span>{plantingChecklist.length} items</span>
+            </div>
+            <ul class="plant-checklist-list">
+              {plantingChecklist.map((item) => (
+                <li class="plant-checklist-item">
+                  <div class="plant-checklist-copy">
+                    <div class="plant-checklist-item-head">
+                      <h3>{item.name}</h3>
+                      <span>{item.category} / {item.timing}</span>
+                    </div>
+                    <p>{item.use}</p>
+                  </div>
+                  {item.affiliateUrl ? (
+                    <a class="plant-checklist-link" href={item.affiliateUrl} target="_blank" rel="noopener noreferrer" aria-label={`View ${item.name}`}>
+                      View
+                    </a>
+                  ) : (
+                    <span class="plant-checklist-link is-disabled">Pending</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+
           {hasYieldChart && yieldChart && (
             <section class="detail-panel plant-page-yield-chart">
               <div class="yield-chart-head">
@@ -504,35 +531,6 @@ const plantJsonLd = {
               {plant.goals.includes("privacy-screening") && <li>For screening, repeat compatible plants and confirm mature spacing before buying.</li>}
               {relatedPlantCount > 0 && <li>Use the pairing map below to choose nearby companions or compatible varieties.</li>}
             </ul>
-          </section>
-
-          <section class="detail-panel plant-page-checklist" aria-labelledby="planting-checklist-heading">
-            <div class="plant-checklist-head">
-              <div>
-                <p class="eyebrow">Gear and supplies</p>
-                <h2 id="planting-checklist-heading">Planting Checklist</h2>
-              </div>
-              <span>{plantingChecklist.length} items</span>
-            </div>
-            <div class="plant-checklist-grid">
-              {plantingChecklist.map((item) => (
-                <article class="plant-checklist-item">
-                  <div class="plant-checklist-item-head">
-                    <span>{item.category}</span>
-                    <strong>{item.timing}</strong>
-                  </div>
-                  <h3>{item.name}</h3>
-                  <p>{item.use}</p>
-                  {item.affiliateUrl ? (
-                    <a class="plant-checklist-link" href={item.affiliateUrl} target="_blank" rel="noopener noreferrer">
-                      View item
-                    </a>
-                  ) : (
-                    <span class="plant-checklist-link is-disabled">Link pending</span>
-                  )}
-                </article>
-              ))}
-            </div>
           </section>
 
           <section class="detail-panel plant-page-panel">

@@ -2404,7 +2404,6 @@ fieldset:nth-of-type(2) .segmented {
 
 .plant-page-relationships,
 .plant-page-yield-chart,
-.plant-page-checklist,
 .plant-page-comparables,
 .plant-page-methodology {
   grid-column: 1 / -1;
@@ -2412,109 +2411,104 @@ fieldset:nth-of-type(2) .segmented {
 
 .plant-page-checklist {
   display: grid;
-  gap: 14px;
+  align-self: start;
+  gap: 10px;
   border-radius: 8px;
 }
 
 .plant-checklist-head {
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
 }
 
 .plant-checklist-head h2 {
   margin: 0;
-  color: #24352a;
-  font-size: 0.76rem;
-  font-weight: 850;
-  text-transform: uppercase;
-  letter-spacing: 0;
 }
 
 .plant-checklist-head > span {
   flex: 0 0 auto;
-  padding: 6px 10px;
+  padding: 4px 8px;
   border: 1px solid #dfe7d8;
   border-radius: 999px;
   color: var(--leaf-dark);
   background: #fff;
-  font-size: 0.72rem;
+  font-size: 0.66rem;
   font-weight: 850;
   text-transform: uppercase;
   letter-spacing: 0;
 }
 
-.plant-checklist-grid {
+.plant-checklist-list {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
   border-top: 1px solid #edf1e9;
+  list-style: none;
 }
 
 .plant-checklist-item {
   display: grid;
-  grid-template-rows: auto auto minmax(72px, 1fr) auto;
-  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
   min-width: 0;
-  padding: 13px 12px 0;
-  border-left: 1px solid #edf1e9;
+  padding: 8px 0;
+  border-bottom: 1px solid #edf1e9;
 }
 
-.plant-checklist-item:nth-child(4n + 1) {
-  border-left: 0;
+.plant-checklist-item:last-child {
+  border-bottom: 0;
 }
 
-.plant-checklist-item:nth-child(n + 5) {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid #edf1e9;
+.plant-checklist-copy {
+  min-width: 0;
 }
 
-.plant-checklist-item-head {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  align-items: center;
-  justify-content: space-between;
+.plant-checklist-item-head h3 {
+  margin: 0;
+  color: var(--leaf-dark);
+  font-size: 0.88rem;
+  line-height: 1.18;
+}
+
+.plant-checklist-item-head span {
+  display: block;
+  margin-top: 3px;
   color: var(--muted);
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: 850;
+  line-height: 1.25;
   text-transform: uppercase;
   letter-spacing: 0;
 }
 
-.plant-checklist-item-head strong {
-  color: #7a6f60;
-  font-size: 0.66rem;
-}
-
-.plant-checklist-item h3 {
-  margin: 0;
-  color: var(--leaf-dark);
-  font-size: 1rem;
-  line-height: 1.2;
-}
-
 .plant-checklist-item p {
-  margin: 0;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  margin: 3px 0 0;
   color: #3f4d43;
-  font-size: 0.84rem;
-  line-height: 1.5;
+  font-size: 0.74rem;
+  line-height: 1.35;
 }
 
 .plant-checklist-link {
-  justify-self: start;
+  justify-self: end;
   display: inline-flex;
   align-items: center;
-  min-height: 30px;
-  padding: 5px 10px;
+  min-height: 26px;
+  padding: 4px 8px;
   border: 1px solid rgba(39, 88, 58, 0.24);
   border-radius: 999px;
   color: var(--leaf-dark);
   background: #f8fbf4;
-  font-size: 0.74rem;
+  font-size: 0.68rem;
   font-weight: 850;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .plant-checklist-link:not(.is-disabled):hover {
@@ -3098,25 +3092,6 @@ fieldset:nth-of-type(2) .segmented {
     min-width: 520px;
   }
 
-  .plant-checklist-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .plant-checklist-item,
-  .plant-checklist-item:nth-child(4n + 1) {
-    border-left: 1px solid #edf1e9;
-  }
-
-  .plant-checklist-item:nth-child(2n + 1) {
-    border-left: 0;
-  }
-
-  .plant-checklist-item:nth-child(n + 3) {
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid #edf1e9;
-  }
-
   .screener-search {
     grid-column: 1 / -1;
   }
@@ -3383,23 +3358,17 @@ fieldset:nth-of-type(2) .segmented {
   }
 
   .plant-checklist-head {
-    flex-direction: column;
+    align-items: flex-start;
+    flex-direction: row;
   }
 
-  .plant-checklist-grid {
+  .plant-checklist-item {
     grid-template-columns: 1fr;
+    gap: 6px;
   }
 
-  .plant-checklist-item,
-  .plant-checklist-item:nth-child(4n + 1),
-  .plant-checklist-item:nth-child(2n + 1) {
-    border-left: 0;
-  }
-
-  .plant-checklist-item:nth-child(n + 2) {
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid #edf1e9;
+  .plant-checklist-link {
+    justify-self: start;
   }
 
   .intro-panel {
