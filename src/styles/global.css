@@ -85,8 +85,7 @@ button {
   display: none;
 }
 
-.app-shell:not(.has-started) .results-band,
-.app-shell:not(.has-started) .public-notes {
+.app-shell:not(.has-started) .results-band {
   display: none;
 }
 
@@ -425,10 +424,6 @@ fieldset {
   border: 0;
 }
 
-.app-shell:not(.has-started) .detail-field {
-  display: none;
-}
-
 input[type="text"],
 input[type="search"],
 input#zip {
@@ -520,19 +515,6 @@ fieldset:nth-of-type(2) .segmented {
 
 .app-shell:not(.has-started) .starter-goal-field {
   margin-bottom: 18px;
-}
-
-.app-shell:not(.has-started) .starter-goal-field .goal-grid {
-  grid-template-columns: 1fr;
-}
-
-.app-shell:not(.has-started) .starter-goal-field .goal-grid label:nth-child(n+4) {
-  display: none;
-}
-
-.app-shell:not(.has-started) .starter-goal-field .option-card {
-  min-height: 58px;
-  border-radius: 999px;
 }
 
 .segmented label {
@@ -5105,6 +5087,16 @@ input.calendar-filter-search[type="search"]:focus {
   .workspace {
     padding-top: 12px;
     gap: 14px;
+  }
+
+  .results-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .results-head > p {
+    max-width: none;
   }
 
   .app-shell.has-started .intro-panel {
