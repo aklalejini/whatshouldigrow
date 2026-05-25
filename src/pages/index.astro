@@ -391,16 +391,22 @@ const webAppJsonLd = {
             </form>
             <label class="calendar-field calendar-search-field" for="calendar-plant-group-search">
               <span>Plant group</span>
-              <div class="calendar-search-select">
+              <div class="calendar-combobox" data-calendar-combobox="plant-group">
                 <input
                   id="calendar-plant-group-search"
                   class="calendar-filter-search"
                   type="search"
-                  list="calendar-plant-group-options"
+                  role="combobox"
+                  aria-autocomplete="list"
+                  aria-expanded="false"
+                  aria-controls="calendar-plant-group-options"
+                  aria-haspopup="listbox"
                   autocomplete="off"
                   placeholder="Search plant groups"
                 />
-                <datalist id="calendar-plant-group-options"></datalist>
+                <button class="calendar-combobox-clear" type="button" aria-label="Clear plant group filter" hidden>Clear</button>
+                <button class="calendar-combobox-toggle" type="button" aria-label="Show plant group options" aria-controls="calendar-plant-group-options"></button>
+                <div id="calendar-plant-group-options" class="calendar-combobox-options" role="listbox"></div>
                 <select id="calendar-plant-class" class="calendar-hidden-select" tabindex="-1" aria-hidden="true">
                   <option value="all">All plant groups</option>
                 </select>
@@ -408,17 +414,23 @@ const webAppJsonLd = {
             </label>
             <label class="calendar-field calendar-search-field" for="calendar-variety-search">
               <span>Variety</span>
-              <div class="calendar-search-select">
+              <div class="calendar-combobox" data-calendar-combobox="variety">
                 <input
                   id="calendar-variety-search"
                   class="calendar-filter-search"
                   type="search"
-                  list="calendar-variety-options"
+                  role="combobox"
+                  aria-autocomplete="list"
+                  aria-expanded="false"
+                  aria-controls="calendar-variety-options"
+                  aria-haspopup="listbox"
                   autocomplete="off"
                   placeholder="Choose a plant group first"
                   disabled
                 />
-                <datalist id="calendar-variety-options"></datalist>
+                <button class="calendar-combobox-clear" type="button" aria-label="Clear variety filter" hidden>Clear</button>
+                <button class="calendar-combobox-toggle" type="button" aria-label="Show variety options" aria-controls="calendar-variety-options" disabled></button>
+                <div id="calendar-variety-options" class="calendar-combobox-options" role="listbox"></div>
                 <select id="calendar-variety" class="calendar-hidden-select" tabindex="-1" aria-hidden="true" disabled>
                   <option value="all">Choose a plant group first</option>
                 </select>
@@ -814,11 +826,38 @@ const webAppJsonLd = {
       const calendarSetEl = document.getElementById("calendar-set");
       const calendarSetButtons = Array.from(document.querySelectorAll("[data-calendar-set]"));
       const calendarPlantClassEl = document.getElementById("calendar-plant-class");
+      const calendarPlantClassComboboxEl = document.querySelector("[data-calendar-combobox='plant-group']");
       const calendarPlantClassSearchEl = document.getElementById("calendar-plant-group-search");
       const calendarPlantClassListEl = document.getElementById("calendar-plant-group-options");
       const calendarVarietyEl = document.getElementById("calendar-variety");
+      const calendarVarietyComboboxEl = document.querySelector("[data-calendar-combobox='variety']");
       const calendarVarietySearchEl = document.getElementById("calendar-variety-search");
       const calendarVarietyListEl = document.getElementById("calendar-variety-options");
+      const calendarPlantClassCombo = {
+        root: calendarPlantClassComboboxEl,
+        input: calendarPlantClassSearchEl,
+        list: calendarPlantClassListEl,
+        select: calendarPlantClassEl,
+        clear: calendarPlantClassComboboxEl?.querySelector(".calendar-combobox-clear"),
+        toggle: calendarPlantClassComboboxEl?.querySelector(".calendar-combobox-toggle"),
+        placeholder: "Search plant groups",
+        disabledPlaceholder: "Search plant groups",
+        emptyLabel: "plant groups",
+        activeIndex: 0
+      };
+      const calendarVarietyCombo = {
+        root: calendarVarietyComboboxEl,
+        input: calendarVarietySearchEl,
+        list: calendarVarietyListEl,
+        select: calendarVarietyEl,
+        clear: calendarVarietyComboboxEl?.querySelector(".calendar-combobox-clear"),
+        toggle: calendarVarietyComboboxEl?.querySelector(".calendar-combobox-toggle"),
+        placeholder: "Search varieties",
+        disabledPlaceholder: "Choose a plant group first",
+        emptyLabel: "varieties",
+        activeIndex: 0
+      };
+      const calendarComboboxes = [calendarPlantClassCombo, calendarVarietyCombo];
       const calendarExpandVarietiesEl = document.getElementById("calendar-expand-varieties");
       const calendarSeasonEl = document.getElementById("calendar-season");
       const calendarMethodEl = document.getElementById("calendar-method");
@@ -1890,15 +1929,23 @@ function outputSortValue(metrics) {
         return String(text ?? "").replace(/\s+\(\d+\)$/, "").trim();
       }
 
+      function calendarOptionCount(text) {
+        return String(text ?? "").match(/\((\d+)\)\s*$/)?.[1] ?? "";
+      }
+
       function calendarSearchOptionLabel(option) {
         return option?.textContent?.trim() ?? "";
       }
 
       function calendarSearchOptionList(selectEl) {
-        return Array.from(selectEl.options).map((option) => ({
+        return Array.from(selectEl.options).map((option, index) => ({
           option,
+          index,
+          value: option.value,
           text: calendarSearchOptionLabel(option),
-          plainText: calendarOptionTextWithoutCount(option.textContent)
+          plainText: calendarOptionTextWithoutCount(option.textContent),
+          count: calendarOptionCount(option.textContent),
+          selected: option.selected
         }));
       }
 
@@ -1906,20 +1953,62 @@ function outputSortValue(metrics) {
         return String(value ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
       }
 
-      function syncCalendarSearchOptions(selectEl, listEl) {
-        listEl.innerHTML = calendarSearchOptionList(selectEl)
-          .map((entry) => `<option value="${escapeHtml(entry.text)}"></option>`)
-          .join("");
+      function calendarComboboxVisibleEntries(combo) {
+        const normalizedQuery = calendarSearchNormalize(combo.input.value);
+        const entries = calendarSearchOptionList(combo.select);
+        if (!normalizedQuery || calendarSearchNormalize(calendarSearchOptionLabel(combo.select.selectedOptions[0])) === normalizedQuery) {
+          return entries;
+        }
+        return entries.filter((entry) => {
+          return calendarSearchNormalize(entry.text).includes(normalizedQuery)
+            || calendarSearchNormalize(entry.plainText).includes(normalizedQuery);
+        });
       }
 
-      function syncCalendarSearchInput(inputEl, selectEl, placeholder) {
-        inputEl.disabled = selectEl.disabled;
-        inputEl.setAttribute("aria-disabled", String(selectEl.disabled));
-        inputEl.placeholder = placeholder;
-        inputEl.value = selectEl.disabled ? "" : calendarSearchOptionLabel(selectEl.selectedOptions[0]);
+      function renderCalendarComboboxOptions(combo) {
+        const entries = calendarComboboxVisibleEntries(combo);
+        combo.activeIndex = Math.min(Math.max(combo.activeIndex, 0), Math.max(entries.length - 1, 0));
+        if (!entries.length) {
+          combo.list.innerHTML = `<p class="calendar-combobox-empty">No ${escapeHtml(combo.emptyLabel)} match "${escapeHtml(combo.input.value)}".</p>`;
+          combo.input.removeAttribute("aria-activedescendant");
+          return;
+        }
+        combo.list.innerHTML = entries.map((entry, index) => {
+          const optionId = `${combo.list.id}-${index}`;
+          const selectedClass = entry.value === combo.select.value ? " is-selected" : "";
+          const activeClass = index === combo.activeIndex ? " is-active" : "";
+          const count = entry.count ? `<small>${escapeHtml(entry.count)}</small>` : "";
+          return `
+            <button
+              id="${escapeHtml(optionId)}"
+              class="calendar-combobox-option${selectedClass}${activeClass}"
+              type="button"
+              role="option"
+              aria-selected="${entry.value === combo.select.value}"
+              data-value="${escapeHtml(entry.value)}"
+            >
+              <span>${escapeHtml(entry.plainText || entry.text)}</span>
+              ${count}
+            </button>
+          `;
+        }).join("");
+        const activeButton = combo.list.querySelector(".calendar-combobox-option.is-active");
+        if (activeButton) combo.input.setAttribute("aria-activedescendant", activeButton.id);
       }
 
-      function findCalendarSearchOption(selectEl, query, { allowPartial = false } = {}) {
+      function syncCalendarCombobox(combo, placeholder) {
+        const isDisabled = combo.select.disabled;
+        combo.input.disabled = isDisabled;
+        combo.input.setAttribute("aria-disabled", String(isDisabled));
+        combo.input.placeholder = placeholder;
+        combo.input.value = isDisabled ? "" : calendarSearchOptionLabel(combo.select.selectedOptions[0]);
+        combo.clear.hidden = isDisabled || combo.select.value === "all";
+        combo.toggle.disabled = isDisabled;
+        combo.root.classList.toggle("is-disabled", isDisabled);
+        renderCalendarComboboxOptions(combo);
+      }
+
+      function findCalendarSearchOption(selectEl, query) {
         const normalizedQuery = calendarSearchNormalize(query);
         if (!normalizedQuery) return selectEl.options[0] ?? null;
         const options = calendarSearchOptionList(selectEl);
@@ -1927,7 +2016,6 @@ function outputSortValue(metrics) {
           return calendarSearchNormalize(entry.text) === normalizedQuery || calendarSearchNormalize(entry.plainText) === normalizedQuery;
         });
         if (exact) return exact.option;
-        if (!allowPartial) return null;
         const partial = options.find((entry) => {
           return calendarSearchNormalize(entry.text).includes(normalizedQuery) || calendarSearchNormalize(entry.plainText).includes(normalizedQuery);
         });
@@ -1941,24 +2029,127 @@ function outputSortValue(metrics) {
         return true;
       }
 
-      function handleCalendarSearchTyping(inputEl, selectEl) {
-        const option = findCalendarSearchOption(selectEl, inputEl.value);
-        if (option) selectCalendarSearchOption(selectEl, option);
-      }
-
-      function commitCalendarSearchInput(inputEl, selectEl) {
-        const option = findCalendarSearchOption(selectEl, inputEl.value, { allowPartial: true });
-        if (!selectCalendarSearchOption(selectEl, option)) {
-          const placeholder = selectEl === calendarVarietyEl
-            ? (selectEl.disabled ? "Choose a plant group first" : "Search varieties")
-            : "Search plant groups";
-          syncCalendarSearchInput(
-            inputEl,
-            selectEl,
-            placeholder
-          );
+      function setCalendarComboboxOpen(combo, isOpen) {
+        if (combo.input.disabled && isOpen) return;
+        combo.root.classList.toggle("is-open", isOpen);
+        combo.input.setAttribute("aria-expanded", String(isOpen));
+        if (isOpen) {
+          combo.activeIndex = 0;
+          renderCalendarComboboxOptions(combo);
+        } else {
+          combo.input.removeAttribute("aria-activedescendant");
         }
       }
+
+      function closeCalendarCombobox(combo, restoreValue = true) {
+        setCalendarComboboxOpen(combo, false);
+        if (restoreValue) {
+          const placeholder = combo.select.disabled ? combo.disabledPlaceholder : combo.placeholder;
+          syncCalendarCombobox(combo, placeholder);
+        }
+      }
+
+      function chooseCalendarComboboxOption(combo, option) {
+        closeCalendarCombobox(combo, false);
+        if (!selectCalendarSearchOption(combo.select, option)) {
+          syncCalendarCombobox(combo, combo.placeholder);
+        }
+      }
+
+      function moveCalendarComboboxActive(combo, direction) {
+        const entries = calendarComboboxVisibleEntries(combo);
+        if (!entries.length) return;
+        combo.activeIndex = (combo.activeIndex + direction + entries.length) % entries.length;
+        renderCalendarComboboxOptions(combo);
+        combo.list.querySelector(".calendar-combobox-option.is-active")?.scrollIntoView({ block: "nearest" });
+      }
+
+      function selectCalendarComboboxActive(combo) {
+        const activeButton = combo.list.querySelector(".calendar-combobox-option.is-active");
+        const value = activeButton?.dataset.value;
+        const option = value ? Array.from(combo.select.options).find((entry) => entry.value === value) : findCalendarSearchOption(combo.select, combo.input.value);
+        chooseCalendarComboboxOption(combo, option);
+      }
+
+      function resetCalendarCombobox(combo) {
+        chooseCalendarComboboxOption(combo, combo.select.options[0]);
+      }
+
+      function initializeCalendarCombobox(combo) {
+        combo.input.addEventListener("focus", () => {
+          setCalendarComboboxOpen(combo, true);
+          combo.input.select();
+        });
+        combo.input.addEventListener("click", () => {
+          setCalendarComboboxOpen(combo, true);
+        });
+        combo.input.addEventListener("input", () => {
+          combo.activeIndex = 0;
+          setCalendarComboboxOpen(combo, true);
+          renderCalendarComboboxOptions(combo);
+        });
+        combo.input.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowDown") {
+            event.preventDefault();
+            setCalendarComboboxOpen(combo, true);
+            moveCalendarComboboxActive(combo, 1);
+          } else if (event.key === "ArrowUp") {
+            event.preventDefault();
+            setCalendarComboboxOpen(combo, true);
+            moveCalendarComboboxActive(combo, -1);
+          } else if (event.key === "Enter") {
+            event.preventDefault();
+            selectCalendarComboboxActive(combo);
+          } else if (event.key === "Escape") {
+            event.preventDefault();
+            closeCalendarCombobox(combo);
+          }
+        });
+        combo.toggle.addEventListener("click", () => {
+          combo.input.focus();
+          setCalendarComboboxOpen(combo, !combo.root.classList.contains("is-open"));
+          combo.input.select();
+        });
+        combo.clear.addEventListener("click", () => {
+          resetCalendarCombobox(combo);
+          combo.input.focus();
+        });
+        combo.list.addEventListener("mousedown", (event) => {
+          event.preventDefault();
+        });
+        combo.list.addEventListener("click", (event) => {
+          const optionButton = event.target.closest(".calendar-combobox-option");
+          if (!optionButton) return;
+          const option = Array.from(combo.select.options).find((entry) => entry.value === optionButton.dataset.value);
+          chooseCalendarComboboxOption(combo, option);
+          combo.input.focus();
+        });
+        combo.root.addEventListener("focusout", () => {
+          window.setTimeout(() => {
+            if (!combo.root.contains(document.activeElement)) closeCalendarCombobox(combo);
+          }, 120);
+        });
+      }
+
+      function closeCalendarComboboxesExcept(activeCombo) {
+        calendarComboboxes.forEach((combo) => {
+          if (combo !== activeCombo) closeCalendarCombobox(combo);
+        });
+      }
+
+      document.addEventListener("pointerdown", (event) => {
+        calendarComboboxes.forEach((combo) => {
+          if (!combo.root.contains(event.target)) closeCalendarCombobox(combo);
+        });
+      });
+
+      calendarComboboxes.forEach((combo) => {
+        combo.root.addEventListener("pointerdown", () => {
+          closeCalendarComboboxesExcept(combo);
+        });
+      });
+
+      calendarComboboxes.forEach(initializeCalendarCombobox);
 
       function syncCalendarPlantFilterOptions() {
         const basePlants = calendarPlantFilterBasePlants();
@@ -1983,8 +2174,7 @@ function outputSortValue(metrics) {
           ...classes.map((plantClass) => `<option value="${escapeHtml(plantClass.id)}">${escapeHtml(plantClass.label)} (${plantClass.count})</option>`)
         ].join("");
         calendarPlantClassEl.value = selectedClass;
-        syncCalendarSearchOptions(calendarPlantClassEl, calendarPlantClassListEl);
-        syncCalendarSearchInput(calendarPlantClassSearchEl, calendarPlantClassEl, "Search plant groups");
+        syncCalendarCombobox(calendarPlantClassCombo, "Search plant groups");
 
         const varietyPlants = selectedClass === "all"
           ? []
@@ -1999,8 +2189,7 @@ function outputSortValue(metrics) {
               ...varietyPlants.map((plant) => `<option value="${escapeHtml(plant.id)}">${escapeHtml(plant.name)}</option>`)
             ].join("");
         calendarVarietyEl.value = selectedClass === "all" ? "all" : selectedVariety;
-        syncCalendarSearchOptions(calendarVarietyEl, calendarVarietyListEl);
-        syncCalendarSearchInput(calendarVarietySearchEl, calendarVarietyEl, calendarVarietyEl.disabled ? "Choose a plant group first" : "Search varieties");
+        syncCalendarCombobox(calendarVarietyCombo, calendarVarietyEl.disabled ? "Choose a plant group first" : "Search varieties");
 
         const canExpandVarieties = selectedClass !== "all" && calendarVarietyEl.value === "all" && varietyPlants.length > 1;
         calendarExpandVarietiesEl.disabled = !canExpandVarieties;
@@ -2745,25 +2934,6 @@ function outputSortValue(metrics) {
         calendarPlantClassEl.addEventListener("change", handleCalendarPlantGroupChange);
         calendarVarietyEl.addEventListener("input", handleCalendarVarietyChange);
         calendarVarietyEl.addEventListener("change", handleCalendarVarietyChange);
-        calendarPlantClassSearchEl.addEventListener("input", () => {
-          handleCalendarSearchTyping(calendarPlantClassSearchEl, calendarPlantClassEl);
-        });
-        calendarVarietySearchEl.addEventListener("input", () => {
-          handleCalendarSearchTyping(calendarVarietySearchEl, calendarVarietyEl);
-        });
-        [
-          [calendarPlantClassSearchEl, calendarPlantClassEl],
-          [calendarVarietySearchEl, calendarVarietyEl]
-        ].forEach(([inputEl, selectEl]) => {
-          inputEl.addEventListener("keydown", (event) => {
-            if (event.key !== "Enter") return;
-            event.preventDefault();
-            commitCalendarSearchInput(inputEl, selectEl);
-          });
-          inputEl.addEventListener("blur", () => {
-            commitCalendarSearchInput(inputEl, selectEl);
-          });
-        });
         calendarExpandVarietiesEl.addEventListener("input", () => {
           renderCalendar();
         });

@@ -2014,7 +2014,7 @@ fieldset:nth-of-type(2) .segmented {
 }
 
 .calendar-zip-card label,
-.calendar-field span {
+.calendar-field > span {
   color: var(--leaf-dark);
   font-size: 0.72rem;
   font-weight: 850;
@@ -2114,30 +2114,42 @@ fieldset:nth-of-type(2) .segmented {
   align-content: start;
 }
 
-.calendar-search-select {
+.calendar-combobox {
   position: relative;
   min-width: 0;
+  z-index: 1;
 }
 
-.calendar-search-select::after {
+.calendar-combobox.is-open {
+  z-index: 20;
+}
+
+.calendar-combobox::after {
   content: "";
   position: absolute;
-  top: 50%;
-  right: 13px;
+  top: 20px;
+  right: 16px;
   width: 8px;
   height: 8px;
   border-right: 2px solid var(--leaf-dark);
   border-bottom: 2px solid var(--leaf-dark);
   pointer-events: none;
-  transform: translateY(-68%) rotate(45deg);
+  transform: translateY(-62%) rotate(45deg);
+  transition: transform 0.16s ease;
 }
 
-.calendar-search-select:has(.calendar-filter-search:disabled)::after {
+.calendar-combobox.is-open::after {
+  transform: translateY(-28%) rotate(225deg);
+}
+
+.calendar-combobox.is-disabled::after {
   opacity: 0.42;
 }
 
 .calendar-filter-search {
   appearance: none;
+  padding-right: 72px;
+  font-weight: 800;
 }
 
 .calendar-hidden-select {
@@ -2147,6 +2159,128 @@ fieldset:nth-of-type(2) .segmented {
   height: 1px;
   opacity: 0;
   pointer-events: none;
+}
+
+.calendar-combobox-clear,
+.calendar-combobox-toggle {
+  position: absolute;
+  top: 1px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 40px;
+  border: 0;
+  color: var(--leaf);
+  background: transparent;
+  cursor: pointer;
+}
+
+.calendar-combobox-clear {
+  right: 34px;
+  overflow: hidden;
+  text-indent: -999px;
+}
+
+.calendar-combobox-clear::before,
+.calendar-combobox-clear::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.calendar-combobox-clear::before {
+  transform: rotate(45deg);
+}
+
+.calendar-combobox-clear::after {
+  transform: rotate(-45deg);
+}
+
+.calendar-combobox-toggle {
+  right: 0;
+}
+
+.calendar-combobox-toggle:disabled {
+  cursor: not-allowed;
+}
+
+.calendar-combobox-options {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  display: none;
+  max-height: min(320px, 58vh);
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid #ccd8c6;
+  border-radius: 12px;
+  background: #fffdf8;
+  box-shadow: 0 18px 34px rgba(31, 45, 35, 0.18);
+  scrollbar-width: thin;
+}
+
+.calendar-combobox.is-open .calendar-combobox-options {
+  display: grid;
+  gap: 2px;
+}
+
+.calendar-combobox-option {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-height: 36px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--ink);
+  background: transparent;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 760;
+  text-align: left;
+  cursor: pointer;
+}
+
+.calendar-combobox-option span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-combobox-option small {
+  color: #617060;
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.calendar-combobox-option:hover,
+.calendar-combobox-option.is-active {
+  background: #eef5e9;
+}
+
+.calendar-combobox-option.is-selected {
+  color: #fff;
+  background: var(--leaf);
+}
+
+.calendar-combobox-option.is-selected small {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.calendar-combobox-empty {
+  margin: 0;
+  padding: 10px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 750;
+  line-height: 1.35;
 }
 
 .calendar-expand-control {
