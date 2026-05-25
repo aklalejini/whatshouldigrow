@@ -626,11 +626,20 @@ const webAppJsonLd = {
                   <h2>Hardiness is only the first layer</h2>
                 </div>
                 <p>
-                  Click a region or use ZIP lookup. The colored bands show colder-to-warmer USDA
-                  hardiness patterns; your ZIP pin is approximate on this interpretive garden map.
+                  Use ZIP lookup to place your garden on the official USDA hardiness pattern, then
+                  use the region checks below to interpret what the zone does not tell you.
                 </p>
               </div>
               <div id="zone-map-canvas" class="zone-map-canvas" aria-label="Interactive United States gardening zone map">
+                <div class="zone-map-image-frame">
+                  <div class="zone-map-image-stage">
+                    <img
+                      class="zone-map-image"
+                      src="/maps/usda-plant-hardiness-all-states-hillshade.png"
+                      alt="2023 USDA Plant Hardiness Zone Map showing zones across the United States, Alaska, Hawaii, and Puerto Rico"
+                      loading="lazy"
+                      decoding="async"
+                    />
                 <svg class="zone-map-svg" viewBox="0 0 1000 640" aria-hidden="true" focusable="false">
                   <defs>
                     <clipPath id="zone-map-us-clip">
@@ -743,8 +752,14 @@ const webAppJsonLd = {
                     <rect x="764" y="181" width="24" height="12" class="legend-hot" /><text x="795" y="191">Zones 9-13</text>
                   </g>
                 </svg>
-                <div id="zone-map-region-layer" class="zone-map-region-layer"></div>
                 <span id="zone-map-pin" class="zone-map-pin" hidden><span></span></span>
+                  </div>
+                </div>
+                <p class="zone-map-caption">
+                  Official USDA ARS 2023 national map layer. ZIP pin is approximate; local terrain,
+                  exposure, and drainage can shift real garden behavior.
+                </p>
+                <div id="zone-map-region-layer" class="zone-map-region-layer" aria-label="Regional climate reality checks"></div>
               </div>
               <div class="zone-map-legend" aria-label="Zone color guide">
                 <span><i class="zone-swatch zone-cold"></i>Short season / cold winter</span>
@@ -798,9 +813,9 @@ const webAppJsonLd = {
           </section>
 
           <p class="zone-map-source-note">
-            This is a Plant by ZIP decision map, not the official USDA GIS layer. Use the
-            <a href="https://planthardiness.ars.usda.gov/" target="_blank" rel="noopener noreferrer">official USDA Plant Hardiness Zone Map</a>
-            for exact boundary inspection; use this tab to interpret what your ZIP-based zone means for planting.
+            Map image is from the
+            <a href="https://planthardiness.ars.usda.gov/index.php/pages/map-downloads" target="_blank" rel="noopener noreferrer">2023 USDA ARS Plant Hardiness Zone Map downloads</a>.
+            Plant by ZIP overlays an approximate ZIP pin and local planning signals to help translate the map into planting decisions.
           </p>
         </div>
       </section>
@@ -2619,21 +2634,43 @@ function outputSortValue(metrics) {
           if (lon <= -105) return "mountain-west";
           if (lon <= -95) return "plains";
           if (lat <= 30.5 && lon > -100) return "gulf-florida";
+          if (lat <= 37 && lon > -95) return "southeast";
           if (lon >= -83 && lat <= 36) return "southeast";
           if (lon >= -82 && lat >= 39) return "northeast";
           if (lon >= -88 && lat >= 36) return "mid-atlantic";
           if (lon >= -95 && lat >= 39) return "midwest";
         }
-        return "humid-east";
+        return "southeast";
       }
 
       function zoneMapPinPosition(lat, lon, regionId) {
-        if (regionId === "alaska") return { x: 16, y: 86 };
-        if (regionId === "hawaii-pr") return lon >= -90 ? { x: 82, y: 88 } : { x: 36, y: 88 };
+        if (regionId === "alaska") return { x: 28, y: 84 };
+        if (regionId === "hawaii-pr") return lon >= -90 ? { x: 71, y: 86 } : { x: 14, y: 79 };
         if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+        const phi1 = 29.5 * Math.PI / 180;
+        const phi2 = 45.5 * Math.PI / 180;
+        const phi0 = 37.5 * Math.PI / 180;
+        const lambda0 = -96 * Math.PI / 180;
+        const phi = lat * Math.PI / 180;
+        const lambda = lon * Math.PI / 180;
+        const n = (Math.sin(phi1) + Math.sin(phi2)) / 2;
+        const c = Math.cos(phi1) ** 2 + 2 * n * Math.sin(phi1);
+        const rho = Math.sqrt(c - 2 * n * Math.sin(phi)) / n;
+        const rho0 = Math.sqrt(c - 2 * n * Math.sin(phi0)) / n;
+        const theta = n * (lambda - lambda0);
+        const projected = {
+          x: rho * Math.sin(theta),
+          y: rho0 - rho * Math.cos(theta)
+        };
+        const bounds = {
+          xMin: -0.4624,
+          xMax: 0.4778,
+          yMin: -0.2358,
+          yMax: 0.2558
+        };
         return {
-          x: clamp(7 + ((lon + 125) / 59) * 87, 7, 94),
-          y: clamp(11 + ((49 - lat) / 25) * 64, 11, 75)
+          x: clamp(5 + ((projected.x - bounds.xMin) / (bounds.xMax - bounds.xMin)) * 88, 5, 93),
+          y: clamp(12 + ((bounds.yMax - projected.y) / (bounds.yMax - bounds.yMin)) * 72, 10, 82)
         };
       }
 
@@ -2662,7 +2699,6 @@ function outputSortValue(metrics) {
             <button
               class="zone-map-region"
               type="button"
-              style="${region.style}"
               data-zone-map-region="${region.id}"
               aria-pressed="false"
             >
