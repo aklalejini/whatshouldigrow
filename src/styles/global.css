@@ -85,7 +85,6 @@ button {
   display: none;
 }
 
-.app-shell:not(.has-started) .site-tabs,
 .app-shell:not(.has-started) .results-band,
 .app-shell:not(.has-started) .public-notes {
   display: none;
@@ -140,8 +139,8 @@ button {
 
 .app-shell:not(.has-started) .workspace {
   width: min(1100px, calc(100dvw - 40px));
-  min-height: 100vh;
-  padding: 42px 0 34px;
+  min-height: calc(100vh - 72px);
+  padding: 28px 0 34px;
   align-items: center;
 }
 
