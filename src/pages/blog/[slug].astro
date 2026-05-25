@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
+import ArticleShare from "../../components/ArticleShare.astro";
 import {
   DEFAULT_SOCIAL_IMAGE,
   SITE_DESCRIPTION,
@@ -21,6 +22,7 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const canonicalUrl = siteUrl(`/blog/${post.data.slug}/`);
 const socialImageUrl = siteUrl(post.data.heroImage || DEFAULT_SOCIAL_IMAGE);
+const shareText = post.data.excerpt || `${post.data.title} from ${SITE_NAME}`;
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -92,12 +94,25 @@ const articleJsonLd = {
         <div class="article-full-tags" aria-label="Article tags">
           {post.data.tags.map((tag) => <span>{tag}</span>)}
         </div>
+        <ArticleShare
+          title={post.data.title}
+          text={shareText}
+          url={canonicalUrl}
+          imageUrl={socialImageUrl}
+        />
         <figure class="article-hero-photo">
           <img src={post.data.heroImage} alt={post.data.heroAlt} loading="eager" />
         </figure>
         <div class="article-body">
           <Content />
         </div>
+        <ArticleShare
+          title={post.data.title}
+          text={shareText}
+          url={canonicalUrl}
+          imageUrl={socialImageUrl}
+          placement="footer"
+        />
       </article>
     </main>
   </body>
