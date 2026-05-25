@@ -19,6 +19,7 @@ import {
   formatGoalList,
   formatList,
   goalLabels,
+  isSourcedValue,
   plantArtEntry,
   plantKind,
   plantPhotoStyle,
@@ -27,6 +28,7 @@ import {
   relationshipTypeLabels,
   sentenceCase
 } from "../../lib/plantUtils";
+import { relatedHubsForPlant } from "../../lib/hubData";
 import "../../styles/global.css";
 
 export function getStaticPaths() {
@@ -182,10 +184,19 @@ function metricNumber(value) {
   return Number.isInteger(value) ? String(value) : String(Math.round(value * 10) / 10);
 }
 
-function metricRange(min, max, suffix = "", fallback = "Needs source") {
+function cleanMetric(value) {
+  return isSourcedValue(value) ? value : null;
+}
+
+function metricRange(min, max, suffix = "", fallback = "Not yet modeled") {
   if (min === null || min === undefined || max === null || max === undefined) return fallback;
   if (min === max) return `${metricNumber(min)}${suffix}`;
   return `${metricNumber(min)}-${metricNumber(max)}${suffix}`;
+}
+
+function metricFact(label, value, featured = false) {
+  const cleanValue = cleanMetric(value);
+  return cleanValue ? { label, value: cleanValue, featured } : null;
 }
 
 function buildYieldChart(curve) {
@@ -242,7 +253,7 @@ const hasYieldChart = yieldCurve.length > 0 && metrics.yieldLbsMin !== null && m
 const yieldChart = hasYieldChart ? buildYieldChart(yieldCurve) : null;
 const hasPoundYield = metrics.yieldLbsMin !== null && metrics.yieldLbsMax !== null;
 const primaryReturnLabel = hasPoundYield ? "Yield return" : "Output";
-const primaryReturnValue = hasPoundYield ? metricDisplay.yieldLbs : metricDisplay.output;
+const primaryReturnValue = hasPoundYield ? cleanMetric(metricDisplay.yieldLbs) : cleanMetric(metricDisplay.output);
 const yieldConfidenceLabel = metrics.yieldLbsConfidence
   ? `${metrics.yieldLbsConfidence.charAt(0).toUpperCase()}${metrics.yieldLbsConfidence.slice(1)} yield confidence`
   : "No pound-yield source";
@@ -255,15 +266,28 @@ const yieldYearOneNote = yieldYearOne?.max === 0
 const harvestInsight = hasPoundYield
   ? `Harvest window: ${plant.harvest}. Once established, the current pound-return model uses ${metricDisplay.yieldLbs ?? "the sourced yield range"} with a harvest window of ${metricDisplay.harvestWindow ?? "seasonal timing"}.`
   : `Timing: ${plant.harvest}. This profile tracks ${metricDisplay.output ?? "the listed output range"} with a harvest or display window of ${metricDisplay.harvestWindow ?? "seasonal timing"} where defensible.`;
-const returnFact = { label: primaryReturnLabel, value: primaryReturnValue ?? "Needs source", featured: hasPoundYield };
+const returnFact = metricFact(primaryReturnLabel, primaryReturnValue, hasPoundYield);
 const supportingHeroFacts = [
   { label: "Zones", value: `${plant.zones[0]}-${plant.zones[1]}` },
-  { label: "First output", value: metricDisplay.firstOutput ?? "Needs source" },
-  { label: "Spacing", value: metricDisplay.spacing ?? "Needs source" }
-];
+  metricFact("First output", metricDisplay.firstOutput),
+  metricFact("Spacing", metricDisplay.spacing)
+].filter(Boolean);
 const heroFacts = hasPoundYield
-  ? [returnFact, ...supportingHeroFacts]
-  : [...supportingHeroFacts, returnFact];
+  ? [returnFact, ...supportingHeroFacts].filter(Boolean)
+  : [...supportingHeroFacts, returnFact].filter(Boolean);
+const quantitativeRows = [
+  metricFact("Pound return", metricDisplay.yieldLbs),
+  metricFact("10-year return", metricDisplay.tenYearYieldLbs),
+  metricFact("Full output", metricDisplay.fullOutput),
+  metricFact("Mature size", metricDisplay.matureSize),
+  metricFact("Spacing", metricDisplay.spacing),
+  metricFact("Planting depth", metricDisplay.plantingDepth),
+  metricFact("Container min", metricDisplay.containerMin),
+  metricFact("Productive life", metricDisplay.lifespan),
+  metricFact("Difficulty", metricDisplay.difficulty),
+  metricFact("Reliability", metricDisplay.reliability)
+].filter(Boolean);
+const relatedHubs = relatedHubsForPlant(plant);
 const cultivarRelationshipEntries = relationshipEntries.filter(({ relationship }) => (
   /pollinat|cultivar|compatible|fruit set|another/i.test(`${relationship.id} ${relationship.note}`)
 ));
@@ -286,6 +310,30 @@ const plantJsonLd = {
     additionalType: plant.type,
     description: plant.notes
   }
+};
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: SITE_NAME,
+      item: SITE_URL
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Plants",
+      item: siteUrl("/#screener")
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: plant.name,
+      item: canonicalUrl
+    }
+  ]
 };
 ---
 
@@ -317,12 +365,13 @@ const plantJsonLd = {
     <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
     <title>{plant.name} | {SITE_NAME}</title>
     <script type="application/ld+json" set:html={JSON.stringify(plantJsonLd)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
   </head>
   <body>
     <main class="app-shell">
       <nav class="site-tabs" aria-label="Primary sections">
         <a class="site-tab is-active" href="/">Plant matcher</a>
-        <a class="site-tab" href="/#calendar">Calendar</a>
+        <a class="site-tab" href="/planting-calendar/">Calendar</a>
         <a class="site-tab" href="/#screener">Screener</a>
         <a class="site-tab" href="/blog/">Blog</a>
       </nav>
@@ -383,8 +432,8 @@ const plantJsonLd = {
                 <dt>Water</dt>
                 <dd class="plant-page-chip-list"><span>{sentenceCase(plant.water)}</span></dd>
               </div>
-              <div><dt>Planting depth</dt><dd>{metricDisplay.plantingDepth ?? "Needs source"}</dd></div>
-              <div><dt>Container min</dt><dd>{metricDisplay.containerMin ?? "Needs source"}</dd></div>
+              {cleanMetric(metricDisplay.plantingDepth) && <div><dt>Planting depth</dt><dd>{cleanMetric(metricDisplay.plantingDepth)}</dd></div>}
+              {cleanMetric(metricDisplay.containerMin) && <div><dt>Container min</dt><dd>{cleanMetric(metricDisplay.containerMin)}</dd></div>}
               <div>
                 <dt>Goals</dt>
                 <dd class="plant-page-chip-list">{plant.goals.map((goal) => <span>{formatGoal(goal)}</span>)}</dd>
@@ -396,8 +445,8 @@ const plantJsonLd = {
             <h2>Harvest & Use</h2>
             <dl class="plant-page-stats compact">
               <div><dt>Window</dt><dd>{plant.harvest}</dd></div>
-              <div><dt>{primaryReturnLabel}</dt><dd>{primaryReturnValue ?? "Needs source"}</dd></div>
-              <div><dt>First output</dt><dd>{metricDisplay.firstOutput ?? "Needs source"}</dd></div>
+              {primaryReturnValue && <div><dt>{primaryReturnLabel}</dt><dd>{primaryReturnValue}</dd></div>}
+              {cleanMetric(metricDisplay.firstOutput) && <div><dt>First output</dt><dd>{cleanMetric(metricDisplay.firstOutput)}</dd></div>}
               <div><dt>Best for</dt><dd class="plant-page-chip-list">{plant.goals.map((goal) => <span>{formatGoal(goal)}</span>)}</dd></div>
             </dl>
             <p>{harvestInsight}</p>
@@ -416,16 +465,7 @@ const plantJsonLd = {
           <section class="detail-panel plant-page-panel">
             <h2>Quantitative Profile</h2>
             <dl class="plant-page-stats compact">
-              <div><dt>Pound return</dt><dd>{metricDisplay.yieldLbs ?? "Needs source"}</dd></div>
-              <div><dt>10-year return</dt><dd>{metricDisplay.tenYearYieldLbs ?? "Needs source"}</dd></div>
-              <div><dt>Full output</dt><dd>{metricDisplay.fullOutput ?? "Needs source"}</dd></div>
-              <div><dt>Mature size</dt><dd>{metricDisplay.matureSize ?? "Needs source"}</dd></div>
-              <div><dt>Spacing</dt><dd>{metricDisplay.spacing ?? "Needs source"}</dd></div>
-              <div><dt>Planting depth</dt><dd>{metricDisplay.plantingDepth ?? "Needs source"}</dd></div>
-              <div><dt>Container min</dt><dd>{metricDisplay.containerMin ?? "Needs source"}</dd></div>
-              <div><dt>Productive life</dt><dd>{metricDisplay.lifespan ?? "Needs source"}</dd></div>
-              <div><dt>Difficulty</dt><dd>{metricDisplay.difficulty ?? "Needs source"}</dd></div>
-              <div><dt>Reliability</dt><dd>{metricDisplay.reliability ?? "Needs source"}</dd></div>
+              {quantitativeRows.map((row) => <div><dt>{row.label}</dt><dd>{row.value}</dd></div>)}
               <div><dt>Data quality</dt><dd>{metricDisplay.confidence ?? "Needs review"} profile, {yieldConfidenceLabel}</dd></div>
             </dl>
             <p>
@@ -511,12 +551,12 @@ const plantJsonLd = {
                 <dl class="yield-chart-stats">
                   <div>
                     <dt>Year 1</dt>
-                    <dd>{yieldYearOne ? metricRange(yieldYearOne.min, yieldYearOne.max, " lb") : "Needs source"}</dd>
+                    <dd>{yieldYearOne ? metricRange(yieldYearOne.min, yieldYearOne.max, " lb") : "Not yet modeled"}</dd>
                     {yieldYearOne && <small>{yieldYearOneNote}</small>}
                   </div>
-                  <div><dt>Year 5</dt><dd>{yieldYearFive ? metricRange(yieldYearFive.min, yieldYearFive.max, " lb") : "Needs source"}</dd></div>
-                  <div><dt>Year 10</dt><dd>{yieldYearTen ? metricRange(yieldYearTen.min, yieldYearTen.max, " lb") : "Needs source"}</dd></div>
-                  <div><dt>10-year total</dt><dd>{metricDisplay.tenYearYieldLbs ?? "Needs source"}</dd></div>
+                  <div><dt>Year 5</dt><dd>{yieldYearFive ? metricRange(yieldYearFive.min, yieldYearFive.max, " lb") : "Not yet modeled"}</dd></div>
+                  <div><dt>Year 10</dt><dd>{yieldYearTen ? metricRange(yieldYearTen.min, yieldYearTen.max, " lb") : "Not yet modeled"}</dd></div>
+                  {cleanMetric(metricDisplay.tenYearYieldLbs) && <div><dt>10-year total</dt><dd>{cleanMetric(metricDisplay.tenYearYieldLbs)}</dd></div>}
                 </dl>
               </div>
               <p class="yield-chart-caption">
@@ -548,6 +588,20 @@ const plantJsonLd = {
             </ul>
           </section>
 
+          {relatedHubs.length > 0 && (
+            <section class="detail-panel plant-page-panel">
+              <h2>Related Planning Guides</h2>
+              <div class="plant-page-guide-links">
+                {relatedHubs.map((hub) => (
+                  <a href={hub.path}>
+                    <span>{hub.shortTitle}</span>
+                    <strong>{hub.description}</strong>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
+
           {comparablePlants.length > 0 && (
             <section class="detail-panel plant-page-comparables">
               <h2>Comparable Plants</h2>
@@ -566,8 +620,8 @@ const plantJsonLd = {
                     <a class="plant-comparison-row" href={plantUrl(candidate)} role="row">
                       <span role="cell"><strong>{candidate.name}</strong></span>
                       <span role="cell" data-label="Zones">{candidate.zones[0]}-{candidate.zones[1]}</span>
-                      <span role="cell" data-label="First output">{candidateMetrics.firstOutput ?? "Needs source"}</span>
-                      <span role="cell" data-label="Yield (lbs)">{candidateMetrics.yieldLbs ?? "Needs source"}</span>
+                      <span role="cell" data-label="First output">{cleanMetric(candidateMetrics.firstOutput) ?? "Not yet modeled"}</span>
+                      <span role="cell" data-label="Yield (lbs)">{cleanMetric(candidateMetrics.yieldLbs) ?? "Not yet modeled"}</span>
                       <span role="cell" data-label="Difficulty">{candidateMetrics.difficulty ?? "-"}</span>
                       <span role="cell" data-label="Why peer">{reason}</span>
                     </a>

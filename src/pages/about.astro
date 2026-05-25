@@ -1,0 +1,138 @@
+---
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+  siteUrl
+} from "../lib/site";
+import { hubInternalLinks } from "../lib/hubData";
+import "../styles/global.css";
+
+const canonicalUrl = siteUrl("/about/");
+const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
+const hubLinks = hubInternalLinks().slice(0, 4);
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: SITE_NAME,
+      item: SITE_URL
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "About",
+      item: canonicalUrl
+    }
+  ]
+};
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+  logo: siteUrl("/brand/plantbyzip-icon.png")
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={`About ${SITE_NAME}: ${SITE_DESCRIPTION}`} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`About ${SITE_NAME}`} />
+    <meta property="og:description" content={SITE_DESCRIPTION} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`About ${SITE_NAME}`} />
+    <meta name="twitter:description" content={SITE_DESCRIPTION} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,750&family=Inter:wght@400;500;650;750;850&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
+    <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
+    <title>About {SITE_NAME}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)}></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <nav class="site-tabs" aria-label="Primary sections">
+        <a class="site-tab" href="/">Plant matcher</a>
+        <a class="site-tab" href="/planting-calendar/">Calendar</a>
+        <a class="site-tab" href="/native-plants/">Native plants</a>
+        <a class="site-tab" href="/fruit-trees/">Fruit trees</a>
+        <a class="site-tab is-active" href="/about/">About</a>
+      </nav>
+
+      <article class="trust-page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Plant by ZIP</a>
+          <span aria-hidden="true">/</span>
+          <span>About</span>
+        </nav>
+
+        <header class="trust-hero">
+          <p class="eyebrow">About</p>
+          <h1>Plant by ZIP helps gardeners choose better plants for their actual site.</h1>
+          <p>
+            The site combines a structured plant database, ZIP-based hardiness lookup,
+            practical growing filters, planting-window estimates, and plant-profile notes
+            so gardeners can compare options before they buy or plant.
+          </p>
+        </header>
+
+        <section class="trust-grid" aria-label="What Plant by ZIP covers">
+          <article>
+            <h2>What it is</h2>
+            <p>
+              A planning layer for matching plants to hardiness zone, light, soil,
+              water, garden goal, timing, and space constraints.
+            </p>
+          </article>
+          <article>
+            <h2>What it is not</h2>
+            <p>
+              It is not a replacement for local extension advice, soil testing, invasive
+              plant lists, nursery labels, or county-level native-range confirmation.
+            </p>
+          </article>
+          <article>
+            <h2>How to use it</h2>
+            <p>
+              Start with a ZIP lookup, compare a few profiles, then confirm site-specific
+              risks like drainage, pests, heat, chill hours, wildlife pressure, and local rules.
+            </p>
+          </article>
+        </section>
+
+        <section class="trust-panel">
+          <h2>Planning Guides</h2>
+          <div class="home-hub-grid">
+            {hubLinks.map((link) => (
+              <a href={link.href}>
+                <span>{link.title}</span>
+                <strong>{link.description}</strong>
+              </a>
+            ))}
+          </div>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

@@ -5,6 +5,7 @@ import partners from "../data/affiliatePartners.json";
 import plantArtEntries from "../data/plantArt.json";
 import plantMetrics from "../data/plantMetrics.json";
 import plantRelationships from "../data/plantRelationships.json";
+import { hubInternalLinks } from "../lib/hubData";
 import {
   DEFAULT_SOCIAL_IMAGE,
   SITE_DESCRIPTION,
@@ -15,6 +16,17 @@ import {
 import "../styles/global.css";
 
 const plantCount = Array.isArray(plants) ? plants.length : 0;
+const hubLinks = hubInternalLinks();
+const cleanClientPlantMetrics = (value) => {
+  if (Array.isArray(value)) return value.map(cleanClientPlantMetrics);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, entry]) => [key, cleanClientPlantMetrics(entry)])
+    );
+  }
+  return value === "Needs source" ? null : value;
+};
+const clientPlantMetrics = cleanClientPlantMetrics(plantMetrics);
 const plantMetricEntries = Object.values(plantMetrics);
 const poundYieldMetricCount = plantMetricEntries.filter((metric) => metric.yieldLbsMin !== null && metric.yieldLbsMax !== null).length;
 const blogEntries = (await getCollection("blog")).sort(
@@ -359,6 +371,31 @@ const webAppJsonLd = {
               and native cues are not yet a county-level native-range database.
             </p>
           </article>
+        </div>
+      </section>
+
+      <section class="home-hubs" aria-labelledby="home-hubs-title">
+        <div class="home-hubs-head">
+          <div>
+            <p class="eyebrow">Planning guides</p>
+            <h2 id="home-hubs-title">Browse Plant by ZIP without starting from search.</h2>
+          </div>
+          <p>
+            These crawlable guides expose the plant database by season, purpose, water needs,
+            and site fit while keeping ZIP-based results inside the matcher.
+          </p>
+        </div>
+        <div class="home-hub-grid">
+          {hubLinks.map((link) => (
+            <a href={link.href}>
+              <span>{link.title}</span>
+              <strong>{link.description}</strong>
+            </a>
+          ))}
+        </div>
+        <div class="home-trust-links" aria-label="Trust and methodology">
+          <a href="/about/">About Plant by ZIP</a>
+          <a href="/methodology/">Sources and methodology</a>
         </div>
       </section>
       </div>
@@ -1047,7 +1084,7 @@ const webAppJsonLd = {
     <script is:inline type="application/json" id="plant-data" set:html={JSON.stringify(plants)}></script>
     <script is:inline type="application/json" id="partner-data" set:html={JSON.stringify(partners)}></script>
     <script is:inline type="application/json" id="plant-art-data" set:html={JSON.stringify(plantArtEntries)}></script>
-    <script is:inline type="application/json" id="plant-metrics-data" set:html={JSON.stringify(plantMetrics)}></script>
+    <script is:inline type="application/json" id="plant-metrics-data" set:html={JSON.stringify(clientPlantMetrics)}></script>
     <script is:inline type="application/json" id="plant-relationship-data" set:html={JSON.stringify(plantRelationships)}></script>
     <script is:inline type="application/json" id="blog-search-data" set:html={JSON.stringify(blogSearchData)}></script>
     <script is:inline>
@@ -2034,6 +2071,10 @@ const webAppJsonLd = {
 
       function metricFor(plant) {
         return plantMetrics[plant.id] ?? {};
+      }
+
+      function metricDisplayValue(value, fallback = "Not yet modeled") {
+        return value && value !== "Needs source" ? value : fallback;
       }
 
       function firstOutputSortValue(metrics) {
@@ -4435,23 +4476,23 @@ function outputSortValue(metrics) {
             <td data-label="Type/form">${escapeHtml(plant.type)}</td>
             <td data-label="Zone range"><strong>${escapeHtml(plant.zones[0])}-${escapeHtml(plant.zones[1])}</strong></td>
             <td data-label="First output">
-              <span class="screener-pill">${escapeHtml(metrics.display?.firstOutput ?? "Needs source")}</span>
+              <span class="screener-pill">${escapeHtml(metricDisplayValue(metrics.display?.firstOutput))}</span>
               <span class="screener-metric-note">${escapeHtml(metrics.horizonLabel ?? "")}</span>
             </td>
             <td data-label="Spacing">
-              ${escapeHtml(metrics.display?.spacing ?? "Needs source")}
+              ${escapeHtml(metricDisplayValue(metrics.display?.spacing))}
               <span class="screener-metric-note">${escapeHtml(metrics.display?.matureSize ?? "")}</span>
             </td>
             <td data-label="Planting depth">
-              ${escapeHtml(metrics.display?.plantingDepth ?? "Needs source")}
+              ${escapeHtml(metricDisplayValue(metrics.display?.plantingDepth))}
               <span class="screener-metric-note">${escapeHtml(metrics.display?.plantingDepthNote ?? "")}</span>
             </td>
             <td data-label="Container min">
-              <span class="screener-pill">${escapeHtml(metrics.display?.containerMin ?? "Needs source")}</span>
+              <span class="screener-pill">${escapeHtml(metricDisplayValue(metrics.display?.containerMin))}</span>
               <span class="screener-metric-note">${escapeHtml(metrics.display?.containerNote ?? "")}</span>
             </td>
             <td data-label="Yield (lbs)">
-              <strong>${escapeHtml(metrics.display?.yieldLbs ?? "Needs source")}</strong>
+              <strong>${escapeHtml(metricDisplayValue(metrics.display?.yieldLbs))}</strong>
               <span class="screener-metric-note">${escapeHtml(metrics.display?.harvestWindow ?? "")}</span>
             </td>
             <td data-label="Difficulty">
@@ -4974,9 +5015,9 @@ function outputSortValue(metrics) {
                   <div><dt>Sun</dt><dd>${formatList(plant.sun)}</dd></div>
                   <div><dt>Soil</dt><dd>${formatList(plant.soils)}</dd></div>
                   <div><dt>Water</dt><dd>${plant.water}</dd></div>
-                  <div><dt>First output</dt><dd>${escapeHtml(metrics.display?.firstOutput ?? "Needs source")}</dd></div>
-                  <div><dt>Spacing</dt><dd>${escapeHtml(metrics.display?.spacing ?? "Needs source")}</dd></div>
-                  <div><dt>Yield return</dt><dd>${escapeHtml(metrics.display?.yieldLbs ?? "Needs source")}</dd></div>
+                  <div><dt>First output</dt><dd>${escapeHtml(metricDisplayValue(metrics.display?.firstOutput))}</dd></div>
+                  <div><dt>Spacing</dt><dd>${escapeHtml(metricDisplayValue(metrics.display?.spacing))}</dd></div>
+                  <div><dt>Yield return</dt><dd>${escapeHtml(metricDisplayValue(metrics.display?.yieldLbs))}</dd></div>
                   <div><dt>Goals</dt><dd>${formatGoalList(plant.goals)}</dd></div>
                 </dl>
               </div>

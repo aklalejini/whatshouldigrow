@@ -20,6 +20,13 @@ export function plantUrl(plantOrId) {
   return `/plants/${id}/`;
 }
 
+export function isSourcedValue(value) {
+  return value !== null
+    && value !== undefined
+    && value !== ""
+    && value !== "Needs source";
+}
+
 export function formatList(values = []) {
   return values.map((value) => value.replaceAll("-", " ")).join(", ");
 }

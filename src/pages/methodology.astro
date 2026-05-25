@@ -1,0 +1,162 @@
+---
+import plantMetricSources from "../data/plantMetricSources.json";
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  SITE_NAME,
+  SITE_URL,
+  siteUrl
+} from "../lib/site";
+import { hubInternalLinks } from "../lib/hubData";
+import "../styles/global.css";
+
+const canonicalUrl = siteUrl("/methodology/");
+const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
+const hubLinks = hubInternalLinks().slice(0, 4);
+const sourceList = Object.values(plantMetricSources).filter((source) => source.title && source.url).slice(0, 10);
+const description = "How Plant by ZIP builds plant profiles, matching scores, planting windows, relationship suggestions, and quantitative planning ranges.";
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: SITE_NAME,
+      item: SITE_URL
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Methodology",
+      item: canonicalUrl
+    }
+  ]
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`Methodology | ${SITE_NAME}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`Methodology | ${SITE_NAME}`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,750&family=Inter:wght@400;500;650;750;850&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
+    <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
+    <title>Methodology | {SITE_NAME}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <nav class="site-tabs" aria-label="Primary sections">
+        <a class="site-tab" href="/">Plant matcher</a>
+        <a class="site-tab" href="/planting-calendar/">Calendar</a>
+        <a class="site-tab" href="/native-plants/">Native plants</a>
+        <a class="site-tab" href="/fruit-trees/">Fruit trees</a>
+        <a class="site-tab is-active" href="/methodology/">Methodology</a>
+      </nav>
+
+      <article class="trust-page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Plant by ZIP</a>
+          <span aria-hidden="true">/</span>
+          <span>Methodology</span>
+        </nav>
+
+        <header class="trust-hero">
+          <p class="eyebrow">Methodology</p>
+          <h1>How Plant by ZIP turns plant data into practical recommendations.</h1>
+          <p>
+            The matcher and profile pages are built from a structured database of plant
+            hardiness ranges, growing needs, goals, timing notes, quantitative metrics,
+            relationship rules, and source references.
+          </p>
+        </header>
+
+        <section class="trust-grid" aria-label="Methodology summary">
+          <article>
+            <h2>Matching</h2>
+            <p>
+              ZIP lookup anchors hardiness zone. Rankings then consider zone fit, sun,
+              soil, water, garden goal, plant form, climate cues, and practical risk notes.
+            </p>
+          </article>
+          <article>
+            <h2>Quantitative ranges</h2>
+            <p>
+              Yield, spacing, container, planting-depth, and maturity data use extension
+              and botanical references where defensible, then broad crop-family templates
+              when cultivar-specific numbers are not available.
+            </p>
+          </article>
+          <article>
+            <h2>Relationships</h2>
+            <p>
+              Companion and comparable-plant suggestions are generated from reviewed
+              term-based relationship rules, shared traits, overlapping goals, and similar
+              growing conditions.
+            </p>
+          </article>
+        </section>
+
+        <section class="trust-panel">
+          <h2>Important Limits</h2>
+          <p>
+            Plant by ZIP recommendations are planning ranges, not guarantees. Local drainage,
+            soil pH, pests, wildlife, chill hours, heat, microclimates, invasive-status rules,
+            and nursery stock quality can change the right answer.
+          </p>
+          <p>
+            Native-plant cues are not yet a county-level native-range database. Confirm regional
+            nativity and cultivar status with local native-plant societies, extension resources,
+            or authoritative regional references before planting at scale.
+          </p>
+        </section>
+
+        <section class="trust-panel">
+          <h2>Reference Sources</h2>
+          <p>
+            Plant profiles show the most relevant sources for each record. Common reference
+            families include university extension publications, botanical plant finders, and
+            crop-specific production guides.
+          </p>
+          <div class="plant-page-source-links">
+            <span>Sample sources:</span>
+            {sourceList.map((source) => (
+              <a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>
+            ))}
+          </div>
+        </section>
+
+        <section class="trust-panel">
+          <h2>Crawlable Planning Hubs</h2>
+          <div class="home-hub-grid">
+            {hubLinks.map((link) => (
+              <a href={link.href}>
+                <span>{link.title}</span>
+                <strong>{link.description}</strong>
+              </a>
+            ))}
+          </div>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>
