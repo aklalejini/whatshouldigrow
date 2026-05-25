@@ -2029,7 +2029,8 @@ fieldset:nth-of-type(2) .segmented {
 }
 
 .calendar-zip-row input,
-.calendar-field select {
+.calendar-field select,
+.calendar-filter-search {
   width: 100%;
   min-width: 0;
   min-height: 42px;
@@ -2040,7 +2041,8 @@ fieldset:nth-of-type(2) .segmented {
   font-size: 0.88rem;
 }
 
-.calendar-field select:disabled {
+.calendar-field select:disabled,
+.calendar-filter-search:disabled {
   color: #7a8577;
   background: #f3f0e8;
   cursor: not-allowed;
@@ -2050,12 +2052,14 @@ fieldset:nth-of-type(2) .segmented {
   padding: 0 12px;
 }
 
-.calendar-field select {
+.calendar-field select,
+.calendar-filter-search {
   padding: 0 30px 0 10px;
 }
 
 .calendar-zip-row input:focus,
-.calendar-field select:focus {
+.calendar-field select:focus,
+.calendar-filter-search:focus {
   outline: 3px solid rgba(223, 123, 79, 0.22);
   border-color: rgba(39, 88, 58, 0.45);
 }
@@ -2104,6 +2108,45 @@ fieldset:nth-of-type(2) .segmented {
   display: grid;
   gap: 6px;
   min-width: 0;
+}
+
+.calendar-search-field {
+  align-content: start;
+}
+
+.calendar-search-select {
+  position: relative;
+  min-width: 0;
+}
+
+.calendar-search-select::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 13px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--leaf-dark);
+  border-bottom: 2px solid var(--leaf-dark);
+  pointer-events: none;
+  transform: translateY(-68%) rotate(45deg);
+}
+
+.calendar-search-select:has(.calendar-filter-search:disabled)::after {
+  opacity: 0.42;
+}
+
+.calendar-filter-search {
+  appearance: none;
+}
+
+.calendar-hidden-select {
+  position: absolute;
+  inset: auto auto 0 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .calendar-expand-control {

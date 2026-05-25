@@ -389,17 +389,40 @@ const webAppJsonLd = {
               </div>
               <p id="calendar-status">Enter a five-digit U.S. ZIP code to estimate local windows.</p>
             </form>
-            <label class="calendar-field" for="calendar-plant-class">
-              <span>Plant class</span>
-              <select id="calendar-plant-class">
-                <option value="all">All classes</option>
-              </select>
+            <label class="calendar-field calendar-search-field" for="calendar-plant-group-search">
+              <span>Plant group</span>
+              <div class="calendar-search-select">
+                <input
+                  id="calendar-plant-group-search"
+                  class="calendar-filter-search"
+                  type="search"
+                  list="calendar-plant-group-options"
+                  autocomplete="off"
+                  placeholder="Search plant groups"
+                />
+                <datalist id="calendar-plant-group-options"></datalist>
+                <select id="calendar-plant-class" class="calendar-hidden-select" tabindex="-1" aria-hidden="true">
+                  <option value="all">All plant groups</option>
+                </select>
+              </div>
             </label>
-            <label class="calendar-field" for="calendar-variety">
+            <label class="calendar-field calendar-search-field" for="calendar-variety-search">
               <span>Variety</span>
-              <select id="calendar-variety" disabled>
-                <option value="all">Choose a class first</option>
-              </select>
+              <div class="calendar-search-select">
+                <input
+                  id="calendar-variety-search"
+                  class="calendar-filter-search"
+                  type="search"
+                  list="calendar-variety-options"
+                  autocomplete="off"
+                  placeholder="Choose a plant group first"
+                  disabled
+                />
+                <datalist id="calendar-variety-options"></datalist>
+                <select id="calendar-variety" class="calendar-hidden-select" tabindex="-1" aria-hidden="true" disabled>
+                  <option value="all">Choose a plant group first</option>
+                </select>
+              </div>
             </label>
             <label class="calendar-field" for="calendar-season">
               <span>Detail window</span>
@@ -791,7 +814,11 @@ const webAppJsonLd = {
       const calendarSetEl = document.getElementById("calendar-set");
       const calendarSetButtons = Array.from(document.querySelectorAll("[data-calendar-set]"));
       const calendarPlantClassEl = document.getElementById("calendar-plant-class");
+      const calendarPlantClassSearchEl = document.getElementById("calendar-plant-group-search");
+      const calendarPlantClassListEl = document.getElementById("calendar-plant-group-options");
       const calendarVarietyEl = document.getElementById("calendar-variety");
+      const calendarVarietySearchEl = document.getElementById("calendar-variety-search");
+      const calendarVarietyListEl = document.getElementById("calendar-variety-options");
       const calendarExpandVarietiesEl = document.getElementById("calendar-expand-varieties");
       const calendarSeasonEl = document.getElementById("calendar-season");
       const calendarMethodEl = document.getElementById("calendar-method");
@@ -973,6 +1000,30 @@ const webAppJsonLd = {
         { label: "Citrus", plural: "Citrus", terms: ["citrus", "lemon", "lime", "satsuma", "kumquat", "calamondin", "yuzu"], excludes: ["lemon balm"] },
         { label: "Olive", plural: "Olives", terms: ["olive"] },
         { label: "Prickly pear", plural: "Prickly pears", terms: ["prickly pear"] },
+        { label: "Mayhaw", plural: "Mayhaws", terms: ["mayhaw"] },
+        { label: "Quince", plural: "Quinces", terms: ["quince"] },
+        { label: "Che fruit", plural: "Che fruit", terms: ["che fruit"] },
+        { label: "Jaboticaba", plural: "Jaboticabas", terms: ["jaboticaba"] },
+        { label: "Starfruit", plural: "Starfruit", terms: ["starfruit"] },
+        { label: "White sapote", plural: "White sapotes", terms: ["white sapote"] },
+        { label: "Atemoya", plural: "Atemoyas", terms: ["atemoya", "cherimoya"] },
+        { label: "Medlar", plural: "Medlars", terms: ["medlar"] },
+        { label: "Pineapple guava", plural: "Pineapple guavas", terms: ["pineapple guava", "feijoa"] },
+        { label: "Guava", plural: "Guavas", terms: ["guava"] },
+        { label: "Sapodilla", plural: "Sapodillas", terms: ["sapodilla"] },
+        { label: "Apricot", plural: "Apricots", terms: ["apricot"] },
+        { label: "Walnut", plural: "Walnuts", terms: ["walnut"] },
+        { label: "Serviceberry", plural: "Serviceberries", terms: ["serviceberry"] },
+        { label: "Aronia", plural: "Aronias", terms: ["aronia", "chokeberry"] },
+        { label: "Goumi", plural: "Goumis", terms: ["goumi"] },
+        { label: "Goji", plural: "Goji berries", terms: ["goji"] },
+        { label: "Honeyberry", plural: "Honeyberries", terms: ["honeyberry"] },
+        { label: "Seaberry", plural: "Seaberries", terms: ["seaberry"] },
+        { label: "Lingonberry", plural: "Lingonberries", terms: ["lingonberry"] },
+        { label: "Cranberry", plural: "Cranberries", terms: ["cranberry"] },
+        { label: "Passionfruit", plural: "Passionfruits", terms: ["passionfruit", "passionflower", "maypop"] },
+        { label: "Schisandra", plural: "Schisandra", terms: ["schisandra"] },
+        { label: "Dragon fruit", plural: "Dragon fruit", terms: ["dragon fruit"] },
         { label: "Tomato", plural: "Tomatoes", terms: ["tomato"] },
         { label: "Pepper", plural: "Peppers", terms: ["pepper", "habanero", "jalapeno", "poblano", "shishito", "aji amarillo"] },
         { label: "Eggplant", plural: "Eggplants", terms: ["eggplant"] },
@@ -982,7 +1033,7 @@ const webAppJsonLd = {
         { label: "Lettuce", plural: "Lettuce", terms: ["lettuce"] },
         { label: "Spinach", plural: "Spinach", terms: ["spinach"] },
         { label: "Kale", plural: "Kale", terms: ["kale"] },
-        { label: "Collard", plural: "Collards", terms: ["collard"] },
+        { label: "Collard", plural: "Collards", terms: ["collard", "collards"] },
         { label: "Chard", plural: "Chard", terms: ["chard"] },
         { label: "Arugula", plural: "Arugula", terms: ["arugula"] },
         { label: "Carrot", plural: "Carrots", terms: ["carrot"] },
@@ -1001,6 +1052,15 @@ const webAppJsonLd = {
         { label: "Broccoli", plural: "Broccoli", terms: ["broccoli"] },
         { label: "Cabbage", plural: "Cabbage", terms: ["cabbage"] },
         { label: "Cauliflower", plural: "Cauliflower", terms: ["cauliflower"] },
+        { label: "Rhubarb", plural: "Rhubarb", terms: ["rhubarb"] },
+        { label: "Asparagus", plural: "Asparagus", terms: ["asparagus"] },
+        { label: "Artichoke", plural: "Artichokes", terms: ["artichoke"] },
+        { label: "Oca", plural: "Oca", terms: ["oca"] },
+        { label: "Yacon", plural: "Yacon", terms: ["yacon"] },
+        { label: "Sunchoke", plural: "Sunchokes", terms: ["sunchoke"] },
+        { label: "Skirret", plural: "Skirret", terms: ["skirret"] },
+        { label: "Roselle", plural: "Roselle", terms: ["roselle"] },
+        { label: "Mizuna", plural: "Mizuna", terms: ["mizuna"] },
         { label: "Basil", plural: "Basil", terms: ["basil"] },
         { label: "Mint", plural: "Mint", terms: ["mint"] },
         { label: "Rosemary", plural: "Rosemary", terms: ["rosemary"] },
@@ -1008,13 +1068,118 @@ const webAppJsonLd = {
         { label: "Parsley", plural: "Parsley", terms: ["parsley"] },
         { label: "Cilantro", plural: "Cilantro", terms: ["cilantro"] },
         { label: "Dill", plural: "Dill", terms: ["dill"] },
+        { label: "Bee balm", plural: "Bee balm", terms: ["bee balm", "bergamot"] },
+        { label: "Hyssop", plural: "Hyssops", terms: ["hyssop", "agastache"] },
+        { label: "Lavender", plural: "Lavender", terms: ["lavender", "lavandin"] },
+        { label: "Sage", plural: "Sage", terms: ["sage"], excludes: ["russian sage"] },
+        { label: "Russian sage", plural: "Russian sage", terms: ["russian sage"] },
+        { label: "Yarrow", plural: "Yarrows", terms: ["yarrow"] },
+        { label: "Coreopsis", plural: "Coreopsis", terms: ["coreopsis"] },
+        { label: "Blanket flower", plural: "Blanket flowers", terms: ["blanket flower", "gaillardia"] },
+        { label: "Salvia", plural: "Salvias", terms: ["salvia"] },
+        { label: "Blazing star", plural: "Blazing stars", terms: ["blazing star", "liatris"] },
+        { label: "Joe Pye weed", plural: "Joe Pye weeds", terms: ["joe pye"] },
+        { label: "Goldenrod", plural: "Goldenrods", terms: ["goldenrod", "solidago"] },
+        { label: "Aster", plural: "Asters", terms: ["aster"] },
+        { label: "Penstemon", plural: "Penstemons", terms: ["penstemon", "beardtongue"] },
+        { label: "Phlox", plural: "Phlox", terms: ["phlox"] },
+        { label: "Zinnia", plural: "Zinnias", terms: ["zinnia"] },
+        { label: "Cosmos", plural: "Cosmos", terms: ["cosmos"] },
+        { label: "Marigold", plural: "Marigolds", terms: ["marigold"] },
+        { label: "Nasturtium", plural: "Nasturtiums", terms: ["nasturtium"] },
+        { label: "Sunflower", plural: "Sunflowers", terms: ["sunflower", "helianthus"] },
+        { label: "Hosta", plural: "Hostas", terms: ["hosta"] },
+        { label: "Coral bells", plural: "Coral bells", terms: ["coral bells", "heuchera"] },
+        { label: "Shiso", plural: "Shiso", terms: ["shiso", "perilla"] },
+        { label: "Oregano", plural: "Oregano", terms: ["oregano"] },
+        { label: "Chives", plural: "Chives", terms: ["chives"] },
+        { label: "Fennel", plural: "Fennel", terms: ["fennel"] },
+        { label: "Lemon balm", plural: "Lemon balm", terms: ["lemon balm"] },
+        { label: "Lemongrass", plural: "Lemongrass", terms: ["lemongrass"] },
+        { label: "Sorrel", plural: "Sorrels", terms: ["sorrel"] },
+        { label: "Horseradish", plural: "Horseradish", terms: ["horseradish"] },
+        { label: "Good King Henry", plural: "Good King Henry", terms: ["good king henry"] },
+        { label: "Stevia", plural: "Stevia", terms: ["stevia"] },
+        { label: "Lovage", plural: "Lovage", terms: ["lovage"] },
         { label: "Milkweed", plural: "Milkweeds", terms: ["milkweed"] },
+        { label: "Butterfly weed", plural: "Butterfly weed", terms: ["butterfly weed", "asclepias tuberosa"] },
         { label: "Coneflower", plural: "Coneflowers", terms: ["coneflower", "echinacea"] },
         { label: "Black-eyed Susan", plural: "Black-eyed Susans", terms: ["black eyed susan", "rudbeckia"] },
+        { label: "Lobelia", plural: "Lobelias", terms: ["lobelia"] },
+        { label: "Cardinal flower", plural: "Cardinal flowers", terms: ["cardinal flower"] },
+        { label: "Bluebell", plural: "Bluebells", terms: ["bluebell", "bluebells"] },
+        { label: "Columbine", plural: "Columbines", terms: ["columbine"] },
+        { label: "Nicotiana", plural: "Nicotiana", terms: ["nicotiana", "flowering tobacco"] },
+        { label: "Catmint", plural: "Catmints", terms: ["catmint"] },
+        { label: "Borage", plural: "Borage", terms: ["borage"] },
+        { label: "Calendula", plural: "Calendulas", terms: ["calendula"] },
+        { label: "Verbena", plural: "Verbenas", terms: ["verbena"] },
+        { label: "Peony", plural: "Peonies", terms: ["peony"] },
+        { label: "Daylily", plural: "Daylilies", terms: ["daylily"] },
+        { label: "Iris", plural: "Irises", terms: ["iris"] },
+        { label: "Astilbe", plural: "Astilbes", terms: ["astilbe"] },
+        { label: "Foamflower", plural: "Foamflowers", terms: ["foamflower"] },
+        { label: "Wild ginger", plural: "Wild ginger", terms: ["wild ginger"] },
+        { label: "Green and gold", plural: "Green and gold", terms: ["green and gold"] },
+        { label: "Bluestar", plural: "Bluestars", terms: ["bluestar", "amsonia"] },
+        { label: "Baptisia", plural: "Baptisias", terms: ["baptisia", "wild indigo"] },
+        { label: "Rattlesnake master", plural: "Rattlesnake master", terms: ["rattlesnake master"] },
+        { label: "Silphium", plural: "Silphiums", terms: ["silphium", "cup plant", "rosinweed"] },
+        { label: "Golden ragwort", plural: "Golden ragwort", terms: ["ragwort"] },
+        { label: "Golden Alexanders", plural: "Golden Alexanders", terms: ["golden alexanders"] },
+        { label: "Trillium", plural: "Trilliums", terms: ["trillium"] },
+        { label: "Mayapple", plural: "Mayapples", terms: ["mayapple"] },
+        { label: "Bloodroot", plural: "Bloodroot", terms: ["bloodroot"] },
         { label: "Hydrangea", plural: "Hydrangeas", terms: ["hydrangea"] },
+        { label: "Beautyberry", plural: "Beautyberries", terms: ["beautyberry"] },
+        { label: "Witch hazel", plural: "Witch hazels", terms: ["witch hazel"] },
+        { label: "Dogwood", plural: "Dogwoods", terms: ["dogwood"] },
+        { label: "Viburnum", plural: "Viburnums", terms: ["viburnum"] },
+        { label: "Ninebark", plural: "Ninebarks", terms: ["ninebark"] },
+        { label: "Smokebush", plural: "Smokebushes", terms: ["smokebush"] },
+        { label: "Weigela", plural: "Weigelas", terms: ["weigela"] },
+        { label: "Beautybush", plural: "Beautybushes", terms: ["beautybush"] },
+        { label: "Forsythia", plural: "Forsythias", terms: ["forsythia"] },
+        { label: "Lilac", plural: "Lilacs", terms: ["lilac"] },
+        { label: "Boxwood", plural: "Boxwoods", terms: ["boxwood"] },
+        { label: "Rose of Sharon", plural: "Rose of Sharon", terms: ["rose of sharon"] },
+        { label: "Rose", plural: "Roses", terms: ["rose"], excludes: ["rose of sharon"] },
+        { label: "Arborvitae", plural: "Arborvitae", terms: ["arborvitae", "thuja"] },
+        { label: "Wax myrtle", plural: "Wax myrtles", terms: ["wax myrtle", "bayberry"] },
+        { label: "Privet", plural: "Privets", terms: ["privet"] },
+        { label: "Yew", plural: "Yews", terms: ["yew"] },
+        { label: "Spicebush", plural: "Spicebush", terms: ["spicebush"] },
+        { label: "Sumac", plural: "Sumacs", terms: ["sumac"] },
+        { label: "Fothergilla", plural: "Fothergillas", terms: ["fothergilla"] },
+        { label: "Summersweet", plural: "Summersweets", terms: ["summersweet", "clethra"] },
+        { label: "Sweetspire", plural: "Sweetspires", terms: ["sweetspire", "itea"] },
+        { label: "Buttonbush", plural: "Buttonbushes", terms: ["buttonbush"] },
+        { label: "Groundsel bush", plural: "Groundsel bushes", terms: ["groundsel"] },
         { label: "Holly", plural: "Hollies", terms: ["holly"] },
+        { label: "Inkberry", plural: "Inkberries", terms: ["inkberry"] },
+        { label: "Crape myrtle", plural: "Crape myrtles", terms: ["crape myrtle", "crepe myrtle"] },
+        { label: "Redbud", plural: "Redbuds", terms: ["redbud"] },
+        { label: "Magnolia", plural: "Magnolias", terms: ["magnolia"] },
+        { label: "Cryptomeria", plural: "Cryptomeria", terms: ["cryptomeria"] },
+        { label: "Red cedar", plural: "Red cedars", terms: ["red cedar"] },
+        { label: "Hornbeam", plural: "Hornbeams", terms: ["hornbeam"] },
+        { label: "Chaste tree", plural: "Chaste trees", terms: ["chaste tree", "vitex"] },
+        { label: "River birch", plural: "River birches", terms: ["river birch"] },
+        { label: "Bald cypress", plural: "Bald cypress", terms: ["bald cypress"] },
+        { label: "Black gum", plural: "Black gums", terms: ["black gum", "tupelo"] },
         { label: "Maple", plural: "Maples", terms: ["maple"] },
-        { label: "Oak", plural: "Oaks", terms: ["oak"] }
+        { label: "Oak", plural: "Oaks", terms: ["oak"] },
+        { label: "Little bluestem", plural: "Little bluestem", terms: ["little bluestem"] },
+        { label: "Switchgrass", plural: "Switchgrass", terms: ["switchgrass", "panicum"] },
+        { label: "Forest grass", plural: "Forest grasses", terms: ["forest grass"] },
+        { label: "Feather reed grass", plural: "Feather reed grass", terms: ["feather reed"] },
+        { label: "Miscanthus", plural: "Miscanthus", terms: ["miscanthus"] },
+        { label: "Bamboo", plural: "Bamboo", terms: ["bamboo", "fargesia"] },
+        { label: "Inland sea oats", plural: "Inland sea oats", terms: ["inland sea oats"] },
+        { label: "Prairie dropseed", plural: "Prairie dropseed", terms: ["prairie dropseed"] },
+        { label: "Side oats grama", plural: "Side oats grama", terms: ["side oats grama"] },
+        { label: "Love grass", plural: "Love grasses", terms: ["love grass"] },
+        { label: "Sedge", plural: "Sedges", terms: ["sedge"] }
       ];
 
       function setActiveView(view) {
@@ -1716,9 +1881,83 @@ function outputSortValue(metrics) {
           return calendarPlantFilterBasePlants().find((plant) => plant.id === calendarVarietyEl.value)?.name ?? "selected variety";
         }
         if (calendarPlantClassEl.value !== "all") {
-          return calendarPlantClassEl.selectedOptions[0]?.textContent?.replace(/\s+\(\d+\)$/, "") ?? "selected class";
+          return calendarPlantClassEl.selectedOptions[0]?.textContent?.replace(/\s+\(\d+\)$/, "") ?? "selected group";
         }
         return calendarSetEl.selectedOptions[0]?.textContent ?? "selected plants";
+      }
+
+      function calendarOptionTextWithoutCount(text) {
+        return String(text ?? "").replace(/\s+\(\d+\)$/, "").trim();
+      }
+
+      function calendarSearchOptionLabel(option) {
+        return option?.textContent?.trim() ?? "";
+      }
+
+      function calendarSearchOptionList(selectEl) {
+        return Array.from(selectEl.options).map((option) => ({
+          option,
+          text: calendarSearchOptionLabel(option),
+          plainText: calendarOptionTextWithoutCount(option.textContent)
+        }));
+      }
+
+      function calendarSearchNormalize(value) {
+        return String(value ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+      }
+
+      function syncCalendarSearchOptions(selectEl, listEl) {
+        listEl.innerHTML = calendarSearchOptionList(selectEl)
+          .map((entry) => `<option value="${escapeHtml(entry.text)}"></option>`)
+          .join("");
+      }
+
+      function syncCalendarSearchInput(inputEl, selectEl, placeholder) {
+        inputEl.disabled = selectEl.disabled;
+        inputEl.setAttribute("aria-disabled", String(selectEl.disabled));
+        inputEl.placeholder = placeholder;
+        inputEl.value = selectEl.disabled ? "" : calendarSearchOptionLabel(selectEl.selectedOptions[0]);
+      }
+
+      function findCalendarSearchOption(selectEl, query, { allowPartial = false } = {}) {
+        const normalizedQuery = calendarSearchNormalize(query);
+        if (!normalizedQuery) return selectEl.options[0] ?? null;
+        const options = calendarSearchOptionList(selectEl);
+        const exact = options.find((entry) => {
+          return calendarSearchNormalize(entry.text) === normalizedQuery || calendarSearchNormalize(entry.plainText) === normalizedQuery;
+        });
+        if (exact) return exact.option;
+        if (!allowPartial) return null;
+        const partial = options.find((entry) => {
+          return calendarSearchNormalize(entry.text).includes(normalizedQuery) || calendarSearchNormalize(entry.plainText).includes(normalizedQuery);
+        });
+        return partial?.option ?? null;
+      }
+
+      function selectCalendarSearchOption(selectEl, option) {
+        if (!option || selectEl.value === option.value) return false;
+        selectEl.value = option.value;
+        selectEl.dispatchEvent(new Event("input", { bubbles: true }));
+        return true;
+      }
+
+      function handleCalendarSearchTyping(inputEl, selectEl) {
+        const option = findCalendarSearchOption(selectEl, inputEl.value);
+        if (option) selectCalendarSearchOption(selectEl, option);
+      }
+
+      function commitCalendarSearchInput(inputEl, selectEl) {
+        const option = findCalendarSearchOption(selectEl, inputEl.value, { allowPartial: true });
+        if (!selectCalendarSearchOption(selectEl, option)) {
+          const placeholder = selectEl === calendarVarietyEl
+            ? (selectEl.disabled ? "Choose a plant group first" : "Search varieties")
+            : "Search plant groups";
+          syncCalendarSearchInput(
+            inputEl,
+            selectEl,
+            placeholder
+          );
+        }
       }
 
       function syncCalendarPlantFilterOptions() {
@@ -1740,10 +1979,12 @@ function outputSortValue(metrics) {
         const classStillAvailable = previousClass === "all" || classMap.has(previousClass);
         const selectedClass = classStillAvailable ? previousClass : "all";
         calendarPlantClassEl.innerHTML = [
-          `<option value="all">All classes (${basePlants.length})</option>`,
+          `<option value="all">All plant groups (${basePlants.length})</option>`,
           ...classes.map((plantClass) => `<option value="${escapeHtml(plantClass.id)}">${escapeHtml(plantClass.label)} (${plantClass.count})</option>`)
         ].join("");
         calendarPlantClassEl.value = selectedClass;
+        syncCalendarSearchOptions(calendarPlantClassEl, calendarPlantClassListEl);
+        syncCalendarSearchInput(calendarPlantClassSearchEl, calendarPlantClassEl, "Search plant groups");
 
         const varietyPlants = selectedClass === "all"
           ? []
@@ -1752,12 +1993,14 @@ function outputSortValue(metrics) {
         const selectedVariety = varietyStillAvailable ? previousVariety : "all";
         calendarVarietyEl.disabled = selectedClass === "all" || varietyPlants.length === 0;
         calendarVarietyEl.innerHTML = selectedClass === "all"
-          ? `<option value="all">Choose a class first</option>`
+          ? `<option value="all">Choose a plant group first</option>`
           : [
               `<option value="all">All ${calendarPlantClassForPlant(varietyPlants[0])?.plural ?? "varieties"} (${varietyPlants.length})</option>`,
               ...varietyPlants.map((plant) => `<option value="${escapeHtml(plant.id)}">${escapeHtml(plant.name)}</option>`)
             ].join("");
         calendarVarietyEl.value = selectedClass === "all" ? "all" : selectedVariety;
+        syncCalendarSearchOptions(calendarVarietyEl, calendarVarietyListEl);
+        syncCalendarSearchInput(calendarVarietySearchEl, calendarVarietyEl, calendarVarietyEl.disabled ? "Choose a plant group first" : "Search varieties");
 
         const canExpandVarieties = selectedClass !== "all" && calendarVarietyEl.value === "all" && varietyPlants.length > 1;
         calendarExpandVarietiesEl.disabled = !canExpandVarieties;
@@ -2431,7 +2674,7 @@ function outputSortValue(metrics) {
         const timelineRows = calendarTimelineRows(visualEvents);
         const plantFocusLabel = calendarSelectedPlantFocusLabel();
         const methodLabel = calendarMethodEl.selectedOptions[0]?.textContent ?? "selected methods";
-        const chartModeNote = calendarShowsVarietyRows() ? "Variety rows are expanded." : "Class rows use averaged variety dates.";
+        const chartModeNote = calendarShowsVarietyRows() ? "Variety rows are expanded." : "Group rows use averaged variety dates.";
         calendarVisualSummaryEl.textContent = `${timelineRows.length} chart rows for ${plantFocusLabel}, ${methodLabel.toLowerCase()}. ${chartModeNote} Today and frost dates stay fixed on the year.`;
         renderCalendarNowPanel();
         renderCalendarGantt(visualEvents);
@@ -2467,7 +2710,7 @@ function outputSortValue(metrics) {
           calendarFrost = estimateCalendarFrost(calendarZoneData, calendarDisplayYear);
           calendarEvents = buildCalendarEvents(calendarFrost);
           calendarMonthFilter = "";
-          calendarStatusEl.textContent = `Zone ${calendarZoneData.zone} calendar ready. Use plant class and variety filters to narrow the timeline.`;
+          calendarStatusEl.textContent = `Zone ${calendarZoneData.zone} calendar ready. Use plant group and variety filters to narrow the timeline.`;
           renderCalendar();
         } catch (error) {
           calendarZoneData = null;
@@ -2488,15 +2731,38 @@ function outputSortValue(metrics) {
             renderCalendar();
           });
         });
-        calendarPlantClassEl.addEventListener("input", () => {
+        const handleCalendarPlantGroupChange = () => {
           calendarVarietyEl.value = "all";
           calendarExpandVarietiesEl.checked = false;
           calendarMonthFilter = "";
           renderCalendar();
-        });
-        calendarVarietyEl.addEventListener("input", () => {
+        };
+        const handleCalendarVarietyChange = () => {
           calendarMonthFilter = "";
           renderCalendar();
+        };
+        calendarPlantClassEl.addEventListener("input", handleCalendarPlantGroupChange);
+        calendarPlantClassEl.addEventListener("change", handleCalendarPlantGroupChange);
+        calendarVarietyEl.addEventListener("input", handleCalendarVarietyChange);
+        calendarVarietyEl.addEventListener("change", handleCalendarVarietyChange);
+        calendarPlantClassSearchEl.addEventListener("input", () => {
+          handleCalendarSearchTyping(calendarPlantClassSearchEl, calendarPlantClassEl);
+        });
+        calendarVarietySearchEl.addEventListener("input", () => {
+          handleCalendarSearchTyping(calendarVarietySearchEl, calendarVarietyEl);
+        });
+        [
+          [calendarPlantClassSearchEl, calendarPlantClassEl],
+          [calendarVarietySearchEl, calendarVarietyEl]
+        ].forEach(([inputEl, selectEl]) => {
+          inputEl.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter") return;
+            event.preventDefault();
+            commitCalendarSearchInput(inputEl, selectEl);
+          });
+          inputEl.addEventListener("blur", () => {
+            commitCalendarSearchInput(inputEl, selectEl);
+          });
         });
         calendarExpandVarietiesEl.addEventListener("input", () => {
           renderCalendar();
