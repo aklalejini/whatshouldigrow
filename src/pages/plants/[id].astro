@@ -435,6 +435,9 @@ const plantJsonLd = {
               <h2 id="planting-checklist-heading">Planting Checklist</h2>
               <span>{plantingChecklist.length} items</span>
             </div>
+            <p class="plant-checklist-disclosure">
+              Plant by ZIP may earn a commission from qualifying purchases through checklist links.
+            </p>
             <ul class="plant-checklist-list">
               {plantingChecklist.map((item) => (
                 <li class="plant-checklist-item">
@@ -446,7 +449,7 @@ const plantJsonLd = {
                     <p>{item.use}</p>
                   </div>
                   {item.affiliateUrl ? (
-                    <a class="plant-checklist-link" href={item.affiliateUrl} target="_blank" rel="noopener noreferrer" aria-label={`View ${item.name}`}>
+                    <a class="plant-checklist-link" href={item.affiliateUrl} target="_blank" rel="sponsored noopener noreferrer" aria-label={`View ${item.name}`}>
                       View
                     </a>
                   ) : (

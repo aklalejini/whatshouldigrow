@@ -2440,6 +2440,13 @@ fieldset:nth-of-type(2) .segmented {
   letter-spacing: 0;
 }
 
+.plant-checklist-disclosure {
+  margin: -2px 0 0;
+  color: #667062;
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
 .plant-checklist-list {
   display: grid;
   margin: 0;
