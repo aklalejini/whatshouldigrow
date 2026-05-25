@@ -1960,9 +1960,8 @@ fieldset:nth-of-type(2) .segmented {
 
 .calendar-header {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(330px, 0.42fr);
-  gap: 22px;
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
   padding: 28px;
   border: 1px solid var(--soft-line);
   border-radius: 22px;
@@ -1994,10 +1993,10 @@ fieldset:nth-of-type(2) .segmented {
   gap: 9px;
   align-content: center;
   min-width: 0;
-  padding: 16px;
+  padding: 12px;
   border: 1px solid #dfe6d8;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.72);
+  border-radius: 14px;
+  background: #f3f8ee;
 }
 
 .calendar-zip-card label,
@@ -2070,8 +2069,15 @@ fieldset:nth-of-type(2) .segmented {
 
 .calendar-controls {
   display: grid;
-  grid-template-columns: minmax(160px, 1.15fr) minmax(190px, 1.35fr) minmax(140px, 0.85fr) minmax(150px, 0.9fr);
+  grid-template-columns:
+    minmax(260px, 1.35fr)
+    minmax(145px, 0.85fr)
+    minmax(180px, 1fr)
+    minmax(170px, 0.95fr)
+    minmax(140px, 0.8fr)
+    minmax(150px, 0.85fr);
   gap: 10px;
+  align-items: stretch;
   padding: 14px;
   border: 1px solid #dfe6d8;
   border-radius: 18px;
@@ -2083,6 +2089,43 @@ fieldset:nth-of-type(2) .segmented {
   display: grid;
   gap: 6px;
   min-width: 0;
+}
+
+.calendar-expand-control {
+  display: flex;
+  align-items: center;
+  align-self: end;
+  gap: 8px;
+  min-width: 0;
+  min-height: 42px;
+  padding: 0 10px;
+  border: 1px solid #ccd8c6;
+  border-radius: 10px;
+  color: var(--leaf-dark);
+  background: #fff;
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.calendar-expand-control input {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--leaf);
+}
+
+.calendar-expand-control:focus-within {
+  outline: 3px solid rgba(223, 123, 79, 0.22);
+  border-color: rgba(39, 88, 58, 0.45);
+}
+
+.calendar-expand-control.is-disabled {
+  color: #7a8577;
+  background: #f3f0e8;
+  cursor: not-allowed;
 }
 
 .calendar-dashboard {
@@ -3883,25 +3926,26 @@ fieldset:nth-of-type(2) .segmented {
 .article-body a[rel~="sponsored"] {
   display: inline-flex;
   align-items: center;
-  min-height: 34px;
-  margin: 2px 2px 3px 0;
-  padding: 0 12px;
-  border: 1px solid rgba(21, 55, 33, 0.18);
+  min-height: 29px;
+  margin: 1px 2px 2px 0;
+  padding: 1px 10px;
+  border: 1px solid rgba(39, 88, 58, 0.24);
   border-radius: 999px;
-  color: #fff;
-  background: linear-gradient(135deg, var(--leaf), var(--leaf-dark));
-  box-shadow: 0 8px 16px rgba(21, 55, 33, 0.16);
-  font-size: 0.94rem;
-  font-weight: 850;
+  color: var(--leaf-dark);
+  background: #f3f8ee;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  font-size: 0.92rem;
+  font-weight: 800;
   line-height: 1.2;
   text-decoration: none;
   vertical-align: baseline;
 }
 
 .article-body a[rel~="sponsored"]:hover {
-  background: linear-gradient(135deg, #326d49, var(--leaf-dark));
-  box-shadow: 0 10px 20px rgba(21, 55, 33, 0.22);
-  transform: translateY(-1px);
+  border-color: rgba(39, 88, 58, 0.42);
+  color: #153721;
+  background: #e8f2e2;
+  box-shadow: 0 3px 8px rgba(21, 55, 33, 0.08);
 }
 
 .article-body a[rel~="sponsored"]:focus-visible {
@@ -4011,6 +4055,10 @@ fieldset:nth-of-type(2) .segmented {
 
   .calendar-controls {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .calendar-controls .calendar-zip-card {
+    grid-column: 1 / -1;
   }
 
   .calendar-dashboard {
@@ -4466,7 +4514,6 @@ fieldset:nth-of-type(2) .segmented {
     grid-template-columns: 1fr;
   }
 
-  .calendar-zip-row,
   .calendar-event,
   .calendar-event-title {
     grid-template-columns: 1fr;
