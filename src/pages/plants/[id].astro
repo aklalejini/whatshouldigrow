@@ -234,7 +234,7 @@ const hasDirectAffiliateListing = Boolean(plant.affiliateUrl);
 const partnerSearchUrl = plant.affiliateUrl ?? partnerSearchHref(partner, plant.query);
 const partnerLinkRel = hasDirectAffiliateListing ? "sponsored noopener noreferrer" : "noopener noreferrer";
 const partnerSourceLabel = hasDirectAffiliateListing ? "Affiliate listing" : "Source listing";
-const partnerActionLabel = hasDirectAffiliateListing ? `View ${partnerName}` : `Search ${partnerName}`;
+const partnerActionLabel = hasDirectAffiliateListing ? "Seed link" : `Search ${partnerName}`;
 const planningNotes = planningNotesForPlant(plant);
 const plantingChecklist = plantingChecklistForPlant(plant, metrics, plantingChecklistItems);
 const yieldCurve = metrics.yieldCurve ?? [];
@@ -353,7 +353,7 @@ const plantJsonLd = {
             <div class="plant-page-hero-actions">
               {partnerSearchUrl && (
                 <a class="plant-page-action is-primary" href={partnerSearchUrl} target="_blank" rel={partnerLinkRel}>
-                  Check {partnerName}
+                  {partnerActionLabel}
                 </a>
               )}
               <button class="plant-page-action is-secondary" type="button" data-print-profile>
