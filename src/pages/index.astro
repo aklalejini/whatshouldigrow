@@ -131,6 +131,16 @@ const webAppJsonLd = {
           type="button"
           role="tab"
           aria-selected="false"
+          aria-controls="zone-map-view"
+          data-view="zone-map"
+        >
+          Zone map
+        </button>
+        <button
+          class="site-tab"
+          type="button"
+          role="tab"
+          aria-selected="false"
           aria-controls="screener-view"
           data-view="screener"
         >
@@ -549,6 +559,144 @@ const webAppJsonLd = {
       </section>
 
       <section
+        id="zone-map-view"
+        class="view-panel zone-map-view"
+        role="tabpanel"
+        data-view-panel="zone-map"
+        aria-labelledby="zone-map-title"
+        hidden
+      >
+        <div class="zone-map-shell">
+          <header class="zone-map-header">
+            <div>
+              <p class="eyebrow">USDA zone explorer</p>
+              <h1 id="zone-map-title">Interactive Gardening Zone Map</h1>
+              <p>
+                Look up a ZIP, scan the national hardiness pattern, and translate the USDA zone
+                into frost timing, heat load, chill-hour risk, moisture pattern, and practical plant choices.
+              </p>
+            </div>
+            <form id="zone-map-form" class="zone-map-lookup">
+              <label for="zone-map-zip">ZIP code</label>
+              <div class="zone-map-zip-row">
+                <input
+                  id="zone-map-zip"
+                  name="zone-map-zip"
+                  inputmode="numeric"
+                  pattern="[0-9]{5}"
+                  maxlength="5"
+                  autocomplete="postal-code"
+                  placeholder="38635"
+                  required
+                />
+                <button type="submit">Find zone</button>
+              </div>
+              <p id="zone-map-status">Enter a ZIP code to place your garden on the map.</p>
+            </form>
+          </header>
+
+          <section class="zone-map-dashboard" aria-label="Zone map climate summary">
+            <article>
+              <span>Hardiness zone</span>
+              <strong id="zone-map-zone-value">--</strong>
+              <small id="zone-map-temp-range">Average annual extreme minimum</small>
+            </article>
+            <article>
+              <span>Frost window</span>
+              <strong id="zone-map-frost-value">--</strong>
+              <small id="zone-map-frost-note">10/50/90 estimates after lookup</small>
+            </article>
+            <article>
+              <span>Heat load</span>
+              <strong id="zone-map-heat-value">--</strong>
+              <small id="zone-map-heat-note">AHS-style days above 86F</small>
+            </article>
+            <article>
+              <span>Fruit chill</span>
+              <strong id="zone-map-chill-value">--</strong>
+              <small id="zone-map-chill-note">Winter chill-hour proxy</small>
+            </article>
+          </section>
+
+          <section class="zone-map-main" aria-label="Interactive U.S. hardiness map">
+            <article class="zone-map-card">
+              <div class="zone-map-card-head">
+                <div>
+                  <p class="eyebrow">Map view</p>
+                  <h2>Hardiness is only the first layer</h2>
+                </div>
+                <p>
+                  Click a region or use ZIP lookup. The colored bands show colder-to-warmer USDA
+                  hardiness patterns; your ZIP pin is approximate on this simplified garden map.
+                </p>
+              </div>
+              <div id="zone-map-canvas" class="zone-map-canvas" aria-label="Simplified United States gardening zone map">
+                <div class="zone-map-contiguous" aria-hidden="true"></div>
+                <div class="zone-map-inset zone-map-alaska" aria-hidden="true">Alaska</div>
+                <div class="zone-map-inset zone-map-hawaii" aria-hidden="true">HI / PR</div>
+                <div id="zone-map-region-layer" class="zone-map-region-layer"></div>
+                <span id="zone-map-pin" class="zone-map-pin" hidden><span></span></span>
+              </div>
+              <div class="zone-map-legend" aria-label="Zone color guide">
+                <span><i class="zone-swatch zone-cold"></i>Short season / cold winter</span>
+                <span><i class="zone-swatch zone-cool"></i>Cold-hardy temperate</span>
+                <span><i class="zone-swatch zone-mild"></i>Long shoulder seasons</span>
+                <span><i class="zone-swatch zone-hot"></i>Warm winter / heat-driven</span>
+              </div>
+            </article>
+
+            <aside class="zone-map-advice" aria-live="polite">
+              <p class="eyebrow">Regional reality check</p>
+              <h2 id="zone-map-region-title">Choose a region</h2>
+              <p id="zone-map-region-summary">
+                USDA zones describe winter lows. Click a map region to see what else usually matters there.
+              </p>
+              <div id="zone-map-region-checks" class="zone-map-check-list"></div>
+            </aside>
+          </section>
+
+          <section class="zone-map-tools" aria-label="Zone planning tools">
+            <article class="zone-map-zone-panel">
+              <div class="zone-map-panel-head">
+                <div>
+                  <p class="eyebrow">Zone selector</p>
+                  <h2>Explore a hardiness zone</h2>
+                </div>
+                <p>Click any zone to see its winter-low range and what it means in the garden.</p>
+              </div>
+              <div id="zone-map-zone-buttons" class="zone-map-zone-buttons" aria-label="USDA hardiness zone selector"></div>
+              <div id="zone-map-zone-detail" class="zone-map-zone-detail"></div>
+            </article>
+
+            <article class="zone-map-plant-panel">
+              <div class="zone-map-panel-head">
+                <div>
+                  <p class="eyebrow">Garden next steps</p>
+                  <h2 id="zone-map-plant-title">Use the map to plan, not just label</h2>
+                </div>
+                <p id="zone-map-plant-summary">
+                  After ZIP lookup, this panel shows zone-fit starters from the plant database and links into the matcher or calendar.
+                </p>
+              </div>
+              <div id="zone-map-plant-list" class="zone-map-plant-list">
+                <p>Enter a ZIP code to see useful plants and planning moves for that zone.</p>
+              </div>
+              <div class="zone-map-actions">
+                <button id="zone-map-use-matcher" type="button" disabled>Use in matcher</button>
+                <button id="zone-map-use-calendar" type="button" disabled>Build calendar</button>
+              </div>
+            </article>
+          </section>
+
+          <p class="zone-map-source-note">
+            This is a Plant by ZIP decision map, not the official USDA GIS layer. Use the
+            <a href="https://planthardiness.ars.usda.gov/" target="_blank" rel="noopener noreferrer">official USDA Plant Hardiness Zone Map</a>
+            for exact boundary inspection; use this tab to interpret what your ZIP-based zone means for planting.
+          </p>
+        </div>
+      </section>
+
+      <section
         id="screener-view"
         class="view-panel screener-view"
         role="tabpanel"
@@ -862,6 +1010,29 @@ const webAppJsonLd = {
       const calendarSummaryEl = document.getElementById("calendar-summary");
       const calendarEventsEl = document.getElementById("calendar-events");
       const calendarEmptyEl = document.getElementById("calendar-empty");
+      const zoneMapFormEl = document.getElementById("zone-map-form");
+      const zoneMapZipEl = document.getElementById("zone-map-zip");
+      const zoneMapStatusEl = document.getElementById("zone-map-status");
+      const zoneMapZoneValueEl = document.getElementById("zone-map-zone-value");
+      const zoneMapTempRangeEl = document.getElementById("zone-map-temp-range");
+      const zoneMapFrostValueEl = document.getElementById("zone-map-frost-value");
+      const zoneMapFrostNoteEl = document.getElementById("zone-map-frost-note");
+      const zoneMapHeatValueEl = document.getElementById("zone-map-heat-value");
+      const zoneMapHeatNoteEl = document.getElementById("zone-map-heat-note");
+      const zoneMapChillValueEl = document.getElementById("zone-map-chill-value");
+      const zoneMapChillNoteEl = document.getElementById("zone-map-chill-note");
+      const zoneMapRegionLayerEl = document.getElementById("zone-map-region-layer");
+      const zoneMapPinEl = document.getElementById("zone-map-pin");
+      const zoneMapRegionTitleEl = document.getElementById("zone-map-region-title");
+      const zoneMapRegionSummaryEl = document.getElementById("zone-map-region-summary");
+      const zoneMapRegionChecksEl = document.getElementById("zone-map-region-checks");
+      const zoneMapZoneButtonsEl = document.getElementById("zone-map-zone-buttons");
+      const zoneMapZoneDetailEl = document.getElementById("zone-map-zone-detail");
+      const zoneMapPlantTitleEl = document.getElementById("zone-map-plant-title");
+      const zoneMapPlantSummaryEl = document.getElementById("zone-map-plant-summary");
+      const zoneMapPlantListEl = document.getElementById("zone-map-plant-list");
+      const zoneMapUseMatcherEl = document.getElementById("zone-map-use-matcher");
+      const zoneMapUseCalendarEl = document.getElementById("zone-map-use-calendar");
       const screenerSearchEl = document.getElementById("screener-search");
       const screenerTypeEl = document.getElementById("screener-type");
       const screenerZoneEl = document.getElementById("screener-zone");
@@ -911,6 +1082,9 @@ const webAppJsonLd = {
       let calendarEvents = [];
       let calendarMonthFilter = "";
       let calendarDisplayYear = new Date().getFullYear();
+      let zoneMapZoneData = null;
+      let zoneMapSelectedRegion = "humid-east";
+      let zoneMapSelectedZone = "7b";
       const screenerPageSize = 120;
       const screenerColumnCount = 20;
       const zoneCache = new Map();
@@ -1248,8 +1422,9 @@ const webAppJsonLd = {
         button.addEventListener("click", () => {
           const view = button.dataset.view;
           if (view === "calendar") syncCalendarZipFromMatcher();
+          if (view === "zone-map") syncZoneMapZipFromMatcher();
           setActiveView(view);
-          const viewHash = { blog: "#blog", calendar: "#calendar", screener: "#screener" };
+          const viewHash = { blog: "#blog", calendar: "#calendar", screener: "#screener", "zone-map": "#zone-map" };
           const hash = viewHash[view] ?? window.location.pathname;
           history.replaceState(null, "", hash);
         });
@@ -1262,8 +1437,9 @@ const webAppJsonLd = {
       const hasInitialMatcherQuery = matcherParamKeys.some((key) => initialParams.has(key));
       const initialWantsScreener = hasInitialScreenerQuery || window.location.hash === "#screener" || window.location.hash === "#screener-view";
       const initialWantsCalendar = window.location.hash === "#calendar" || window.location.hash === "#calendar-view";
+      const initialWantsZoneMap = window.location.hash === "#zone-map" || window.location.hash === "#zone-map-view";
       const initialWantsBlog = Boolean(initialBlogQuery) || window.location.hash === "#blog" || window.location.hash === "#blog-view";
-      const initialWantsMatcher = hasInitialMatcherQuery && !initialWantsScreener && !initialWantsCalendar && !initialWantsBlog;
+      const initialWantsMatcher = hasInitialMatcherQuery && !initialWantsScreener && !initialWantsCalendar && !initialWantsZoneMap && !initialWantsBlog;
       if (initialBlogQuery) {
         articleSearchEl.value = initialBlogQuery;
         filterArticles();
@@ -1272,6 +1448,8 @@ const webAppJsonLd = {
         setActiveView("screener");
       } else if (initialWantsCalendar) {
         setActiveView("calendar");
+      } else if (initialWantsZoneMap) {
+        setActiveView("zone-map");
       } else if (initialWantsBlog) {
         setActiveView("blog");
       }
@@ -1914,11 +2092,110 @@ function outputSortValue(metrics) {
         }
       ];
       const humidDiseaseTerms = ["apple", "peach", "pear", "plum", "cherry", "apricot", "grape", "rose", "tomato", "blueberry"];
+      const zoneMapRegions = [
+        {
+          id: "pacific",
+          label: "Pacific coast",
+          range: "8a-10b",
+          style: "--x: 7%; --y: 26%; --w: 14%; --h: 39%;",
+          summary: "Marine air, fog, slope, and summer-dry soil can matter more than the printed USDA zone.",
+          checks: ["Use Sunset or local coastal guidance for ornamentals.", "Verify chill hours before buying fruit trees.", "Plan irrigation even where winter rainfall is generous."]
+        },
+        {
+          id: "mountain-west",
+          label: "Mountain West",
+          range: "3a-7b",
+          style: "--x: 20%; --y: 22%; --w: 22%; --h: 43%;",
+          summary: "Elevation, wind, snow cover, and late spring freezes create sharp local differences.",
+          checks: ["Favor cold-hardy roots and wind-tolerant structure.", "Treat valley floors and slopes as different gardens.", "Use short-season vegetables unless your frost window is proven."]
+        },
+        {
+          id: "desert-southwest",
+          label: "Desert Southwest",
+          range: "8a-11a",
+          style: "--x: 18%; --y: 60%; --w: 24%; --h: 22%;",
+          summary: "Warm winter zones do not mean easy growing; heat, alkaline soil, and irrigation drive success.",
+          checks: ["Low-water plants still need establishment water.", "Use afternoon shade for many edibles.", "Check salt, pH, and drainage before planting fruit."]
+        },
+        {
+          id: "plains",
+          label: "Plains",
+          range: "3b-8a",
+          style: "--x: 42%; --y: 25%; --w: 18%; --h: 47%;",
+          summary: "Wind, drought swings, hail, and fast temperature changes make hardiness margins important.",
+          checks: ["Mulch and wind protection often matter as much as zone.", "Choose drought- and cold-tolerant woody plants.", "Time transplants around wind and hardening-off, not just frost."]
+        },
+        {
+          id: "midwest",
+          label: "Midwest / Great Lakes",
+          range: "4a-7a",
+          style: "--x: 58%; --y: 25%; --w: 18%; --h: 31%;",
+          summary: "Winter lows are useful, but freeze-thaw cycles, wet spring soil, and lake effects complicate timing.",
+          checks: ["Wait for workable soil before direct sowing.", "Use disease-resistant fruit cultivars in humid summers.", "Watch late frost pockets around bloom time."]
+        },
+        {
+          id: "northeast",
+          label: "Northeast",
+          range: "3b-7b",
+          style: "--x: 74%; --y: 20%; --w: 18%; --h: 26%;",
+          summary: "Shorter seasons, snow cover, and coastal moderation can change the real garden window.",
+          checks: ["Use frost dates for vegetables and bloom risk.", "Protect broadleaf evergreens from winter wind.", "Match fruit cultivars to chill and disease pressure."]
+        },
+        {
+          id: "mid-atlantic",
+          label: "Mid-Atlantic / Appalachia",
+          range: "5b-8a",
+          style: "--x: 71%; --y: 45%; --w: 19%; --h: 22%;",
+          summary: "Elevation and humidity can move a garden from easy to difficult within a few miles.",
+          checks: ["Drainage and airflow are key for fruit and roses.", "Use native-range checks for habitat plantings.", "Account for mountain frost pockets before tender crops."]
+        },
+        {
+          id: "southeast",
+          label: "Southeast",
+          range: "7a-9a",
+          style: "--x: 62%; --y: 62%; --w: 27%; --h: 22%;",
+          summary: "The USDA zone is often less limiting than heat, humidity, disease pressure, and low chill.",
+          checks: ["Choose low-chill fruit cultivars where winters are mild.", "Prioritize disease resistance and airflow.", "Use spring and fall as prime vegetable seasons."]
+        },
+        {
+          id: "gulf-florida",
+          label: "Gulf & Florida",
+          range: "8b-11b",
+          style: "--x: 59%; --y: 80%; --w: 28%; --h: 14%;",
+          summary: "Rare freezes still happen, but warm nights, rainfall timing, and low chill drive many decisions.",
+          checks: ["Plan freeze protection for tender perennials.", "Treat cool-season vegetables as winter crops.", "Verify chill needs before buying peaches, apples, or blueberries."]
+        },
+        {
+          id: "alaska",
+          label: "Alaska",
+          range: "1a-8b",
+          style: "--x: 4%; --y: 79%; --w: 17%; --h: 12%;",
+          summary: "Day length, snow cover, and microclimate can matter as much as the hardiness label.",
+          checks: ["Use local extension calendars for vegetables.", "Favor very hardy perennials and shrubs.", "Protect roots from freeze-thaw and winter desiccation."]
+        },
+        {
+          id: "hawaii-pr",
+          label: "Hawaii / Caribbean",
+          range: "10a-13b",
+          style: "--x: 24%; --y: 84%; --w: 18%; --h: 10%;",
+          summary: "USDA zones mostly confirm frost is rare; rainfall, elevation, wind, and salt exposure decide the garden.",
+          checks: ["Use local tropical crop guidance.", "Map wet and dry sides separately.", "Match plants to rainfall, salt, and elevation."]
+        }
+      ];
+      const zoneMapZoneIds = Array.from({ length: 13 }, (_, index) => index + 1)
+        .flatMap((zone) => ["a", "b"].map((suffix) => `${zone}${suffix}`));
 
       function syncCalendarZipFromMatcher() {
         const suggestedZip = currentInputs?.zip ?? zipEl.value.trim();
         if (/^\d{5}$/.test(suggestedZip) && !calendarZipEl.value.trim()) {
           calendarZipEl.value = suggestedZip;
+        }
+      }
+
+      function syncZoneMapZipFromMatcher() {
+        const suggestedZip = currentInputs?.zip || zipEl.value.trim() || calendarZipEl.value.trim();
+        if (/^\d{5}$/.test(suggestedZip) && !zoneMapZipEl.value.trim()) {
+          zoneMapZipEl.value = suggestedZip;
         }
       }
 
@@ -2153,6 +2430,323 @@ function outputSortValue(metrics) {
 
       function formatFrostBand(band) {
         return `10/50/90 ${formatCalendarDate(band.p10)} / ${formatCalendarDate(band.p50)} / ${formatCalendarDate(band.p90)}`;
+      }
+
+      function zoneMapTemperatureRange(zone) {
+        const match = String(zone).trim().toLowerCase().match(/^(\d{1,2})([ab])$/);
+        if (!match) return null;
+        const base = -60 + (Number(match[1]) - 1) * 10 + (match[2] === "b" ? 5 : 0);
+        return {
+          min: base,
+          max: base + 5,
+          label: `${base} to ${base + 5} F`
+        };
+      }
+
+      function zoneMapGuidanceForZone(zone) {
+        const zoneNumber = zoneToNumber(zone);
+        if (!Number.isFinite(zoneNumber)) {
+          return {
+            title: "Choose a zone",
+            notes: ["Pick a hardiness zone to see its winter-low meaning."]
+          };
+        }
+        if (zoneNumber <= 3.5) {
+          return {
+            title: "Very cold winter, short season",
+            notes: [
+              "Prioritize proven cold-hardy perennials, shrubs, and trees.",
+              "Start warm-season vegetables indoors and use short-season varieties.",
+              "Snow cover, wind exposure, and root protection can decide overwintering."
+            ]
+          };
+        }
+        if (zoneNumber <= 5.5) {
+          return {
+            title: "Cold-temperate garden",
+            notes: [
+              "USDA hardiness is a strong first filter for woody plants.",
+              "Late spring frost still matters for fruit bloom and tender transplants.",
+              "Use season extenders for tomatoes, peppers, melons, and other heat lovers."
+            ]
+          };
+        }
+        if (zoneNumber <= 7.5) {
+          return {
+            title: "Long shoulder seasons",
+            notes: [
+              "Many fruit trees and perennials fit, but bloom frost and disease pressure still matter.",
+              "Spring and fall are prime windows for greens, roots, perennials, shrubs, and trees.",
+              "Heat load can decide whether cool-season plants behave well through summer."
+            ]
+          };
+        }
+        if (zoneNumber <= 9.5) {
+          return {
+            title: "Mild winter, heat-aware planting",
+            notes: [
+              "Hardiness is rarely the only limit; summer heat, humidity, or drought often dominate.",
+              "Use low-chill fruit cultivars where winters are mild.",
+              "Shift many vegetables into fall, winter, and early spring instead of midsummer."
+            ]
+          };
+        }
+        return {
+          title: "Warm winter or frost-light garden",
+          notes: [
+            "USDA zone mostly says freezes are limited; rainfall, heat, and local exposure drive success.",
+            "Fruit decisions depend heavily on chill hours, humidity, and cultivar selection.",
+            "Use shade, irrigation, drainage, and wind exposure as primary design constraints."
+          ]
+        };
+      }
+
+      function zoneMapRegionForLocation(lat, lon) {
+        if (Number.isFinite(lat) && Number.isFinite(lon)) {
+          if (lat >= 50 && lon <= -125) return "alaska";
+          if (lat <= 23 && (lon <= -145 || lon >= -70)) return "hawaii-pr";
+          if (isPacificCoastal(lat, lon)) return "pacific";
+          if (isDesertSouthwest(lat, lon)) return "desert-southwest";
+          if (lon <= -105) return "mountain-west";
+          if (lon <= -95) return "plains";
+          if (lat <= 30.5 && lon > -100) return "gulf-florida";
+          if (lon >= -83 && lat <= 36) return "southeast";
+          if (lon >= -82 && lat >= 39) return "northeast";
+          if (lon >= -88 && lat >= 36) return "mid-atlantic";
+          if (lon >= -95 && lat >= 39) return "midwest";
+        }
+        return "humid-east";
+      }
+
+      function zoneMapPinPosition(lat, lon, regionId) {
+        if (regionId === "alaska") return { x: 12, y: 86 };
+        if (regionId === "hawaii-pr") return { x: 33, y: 89 };
+        if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+        return {
+          x: clamp(((lon + 125) / 59) * 100, 5, 94),
+          y: clamp(((49 - lat) / 25) * 100, 9, 88)
+        };
+      }
+
+      function zoneMapRegionById(id) {
+        return zoneMapRegions.find((region) => region.id === id) ?? zoneMapRegions.find((region) => region.id === "mid-atlantic") ?? zoneMapRegions[0];
+      }
+
+      function renderZoneMapRegion(id = zoneMapSelectedRegion) {
+        const region = zoneMapRegionById(id);
+        zoneMapSelectedRegion = region.id;
+        zoneMapRegionTitleEl.textContent = region.label;
+        zoneMapRegionSummaryEl.textContent = `${region.summary} Typical USDA range: ${region.range}.`;
+        zoneMapRegionChecksEl.innerHTML = region.checks
+          .map((check) => `<p><span></span>${escapeHtml(check)}</p>`)
+          .join("");
+        zoneMapRegionLayerEl.querySelectorAll("[data-zone-map-region]").forEach((button) => {
+          const isActive = button.dataset.zoneMapRegion === region.id;
+          button.classList.toggle("is-active", isActive);
+          button.setAttribute("aria-pressed", String(isActive));
+        });
+      }
+
+      function renderZoneMapRegions() {
+        zoneMapRegionLayerEl.innerHTML = zoneMapRegions
+          .map((region) => `
+            <button
+              class="zone-map-region"
+              type="button"
+              style="${region.style}"
+              data-zone-map-region="${region.id}"
+              aria-pressed="false"
+            >
+              <strong>${escapeHtml(region.label)}</strong>
+              <span>${escapeHtml(region.range)}</span>
+            </button>
+          `)
+          .join("");
+        zoneMapRegionLayerEl.querySelectorAll("[data-zone-map-region]").forEach((button) => {
+          button.addEventListener("click", () => renderZoneMapRegion(button.dataset.zoneMapRegion));
+        });
+        renderZoneMapRegion(zoneMapSelectedRegion);
+      }
+
+      function renderZoneMapZoneButtons() {
+        zoneMapZoneButtonsEl.innerHTML = zoneMapZoneIds
+          .map((zone) => `
+            <button
+              class="${zone === zoneMapSelectedZone ? "is-active" : ""}"
+              type="button"
+              data-zone-map-zone="${zone}"
+              aria-pressed="${zone === zoneMapSelectedZone}"
+            >${zone}</button>
+          `)
+          .join("");
+        zoneMapZoneButtonsEl.querySelectorAll("[data-zone-map-zone]").forEach((button) => {
+          button.addEventListener("click", () => {
+            zoneMapSelectedZone = button.dataset.zoneMapZone;
+            renderZoneMapZoneButtons();
+            renderZoneMapZoneDetail(zoneMapSelectedZone);
+            renderZoneMapPlants();
+          });
+        });
+      }
+
+      function renderZoneMapZoneDetail(zone = zoneMapSelectedZone) {
+        const range = zoneMapTemperatureRange(zone);
+        const guidance = zoneMapGuidanceForZone(zone);
+        zoneMapZoneDetailEl.innerHTML = `
+          <div>
+            <span>Zone ${escapeHtml(zone)}</span>
+            <strong>${escapeHtml(range?.label ?? "Unknown winter range")}</strong>
+            <small>Average annual extreme minimum temperature</small>
+          </div>
+          <div>
+            <h3>${escapeHtml(guidance.title)}</h3>
+            ${guidance.notes.map((note) => `<p>${escapeHtml(note)}</p>`).join("")}
+          </div>
+        `;
+      }
+
+      function zoneMapFormatRegionClimate(zoneData) {
+        const climate = estimateLocationClimate(zoneData);
+        const frost = estimateCalendarFrost(zoneData, calendarPlanningYear(zoneData));
+        const frostText = frost.isFrostFree
+          ? "Rare freeze"
+          : `${formatCalendarDate(frost.lastFrost)} to ${formatCalendarDate(frost.firstFrost)}`;
+        return { climate, frost, frostText };
+      }
+
+      function renderZoneMapDashboard(zoneData) {
+        if (!zoneData) {
+          zoneMapZoneValueEl.textContent = "--";
+          zoneMapTempRangeEl.textContent = "Average annual extreme minimum";
+          zoneMapFrostValueEl.textContent = "--";
+          zoneMapFrostNoteEl.textContent = "10/50/90 estimates after lookup";
+          zoneMapHeatValueEl.textContent = "--";
+          zoneMapHeatNoteEl.textContent = "AHS-style days above 86F";
+          zoneMapChillValueEl.textContent = "--";
+          zoneMapChillNoteEl.textContent = "Winter chill-hour proxy";
+          zoneMapPinEl.hidden = true;
+          return;
+        }
+        const { climate, frost, frostText } = zoneMapFormatRegionClimate(zoneData);
+        const tempRange = zoneData.temperature_range ? `${zoneData.temperature_range} F` : zoneMapTemperatureRange(zoneData.zone)?.label;
+        zoneMapZoneValueEl.textContent = zoneData.zone;
+        zoneMapTempRangeEl.textContent = tempRange ? `${tempRange} average extreme minimum` : "Average annual extreme minimum";
+        zoneMapFrostValueEl.textContent = frostText;
+        zoneMapFrostNoteEl.textContent = frost.isFrostFree
+          ? "Frost is uncommon; track rare cold snaps and exposure."
+          : `${formatFrostBand(frost.lastFrostBand)} last; ${formatFrostBand(frost.firstFrostBand)} first.`;
+        zoneMapHeatValueEl.textContent = `AHS ${climate.heatZone}`;
+        zoneMapHeatNoteEl.textContent = `${formatNumberRange(climate.heatDays, "days >86F")} per year, estimated.`;
+        zoneMapChillValueEl.textContent = climate.chillLabel;
+        zoneMapChillNoteEl.textContent = `${formatNumberRange(climate.chillHours, "winter chill hrs")} proxy; verify fruit cultivars.`;
+      }
+
+      function renderZoneMapPin(zoneData) {
+        if (!zoneData) {
+          zoneMapPinEl.hidden = true;
+          return;
+        }
+        const climate = estimateLocationClimate(zoneData);
+        const position = zoneMapPinPosition(climate.lat, climate.lon, zoneMapSelectedRegion);
+        if (!position) {
+          zoneMapPinEl.hidden = true;
+          return;
+        }
+        zoneMapPinEl.style.left = `${position.x}%`;
+        zoneMapPinEl.style.top = `${position.y}%`;
+        zoneMapPinEl.title = `ZIP zone ${zoneData.zone}`;
+        zoneMapPinEl.hidden = false;
+      }
+
+      function zoneMapPlantScore(plant, climate) {
+        const metrics = metricFor(plant);
+        const fit = climateFitForPlant(plant, climate);
+        const reliability = metrics.reliabilityScore ?? 2;
+        const difficulty = metrics.difficultyScore ?? 4;
+        const nativeBoost = hasNativeCue(plant) ? 0.5 : 0;
+        return reliability * 12 - difficulty * 4 + (fit?.score ?? 0) + nativeBoost;
+      }
+
+      function renderZoneMapPlants(zoneData = null) {
+        const zone = zoneData?.zone ?? zoneMapSelectedZone;
+        const zoneNumber = zoneToNumber(zone);
+        const climate = zoneData ? estimateLocationClimate(zoneData) : null;
+        const matchingPlants = plants
+          .filter((plant) => {
+            const minZone = zoneToNumber(plant.zones[0]);
+            const maxZone = zoneToNumber(plant.zones[1]);
+            return Number.isFinite(zoneNumber) && zoneNumber >= minZone && zoneNumber <= maxZone;
+          })
+          .sort((a, b) => zoneMapPlantScore(b, climate) - zoneMapPlantScore(a, climate) || a.name.localeCompare(b.name));
+        const featured = matchingPlants.slice(0, 6);
+        const counts = matchingPlants.reduce((summary, plant) => {
+          const type = plant.type.toLowerCase();
+          const key = type.includes("tree") ? "trees"
+            : type.includes("shrub") ? "shrubs"
+            : type.includes("vine") ? "vines"
+            : type.includes("vegetable") ? "vegetables"
+            : "flowersHerbs";
+          summary[key] = (summary[key] ?? 0) + 1;
+          return summary;
+        }, {});
+        zoneMapPlantTitleEl.textContent = zoneData ? `Zone ${zone} planning moves` : `Explore zone ${zone}`;
+        zoneMapPlantSummaryEl.textContent = zoneData && climate
+          ? `${matchingPlants.length} database plants fit the USDA range. ${climate.regionLabel}; ${climate.moistureLabel.toLowerCase()}.`
+          : `${matchingPlants.length} database plants fit this hardiness range. Enter a ZIP to add frost, heat, chill, and rainfall context.`;
+        zoneMapPlantListEl.innerHTML = `
+          <div class="zone-map-fit-counts">
+            <span><strong>${matchingPlants.length}</strong> total fits</span>
+            <span><strong>${counts.trees ?? 0}</strong> trees</span>
+            <span><strong>${counts.shrubs ?? 0}</strong> shrubs</span>
+            <span><strong>${counts.vegetables ?? 0}</strong> vegetables</span>
+          </div>
+          <div class="zone-map-plant-links">
+            ${featured.map((plant) => {
+              const metrics = metricFor(plant);
+              return `
+                <a href="${plantPagePath(plant)}">
+                  <strong>${escapeHtml(plant.name)}</strong>
+                  <span>${escapeHtml(plant.type)} | ${escapeHtml(metrics.display?.difficulty ?? "difficulty n/a")} difficulty</span>
+                </a>
+              `;
+            }).join("") || "<p>No plants match this hardiness zone yet.</p>"}
+          </div>
+        `;
+      }
+
+      function renderZoneMapForLookup(zoneData, zip) {
+        zoneMapZoneData = zoneData;
+        zoneMapSelectedZone = zoneData.zone;
+        const climate = estimateLocationClimate(zoneData);
+        zoneMapSelectedRegion = zoneMapRegionForLocation(climate.lat, climate.lon);
+        renderZoneMapDashboard(zoneData);
+        renderZoneMapRegion(zoneMapSelectedRegion);
+        renderZoneMapZoneButtons();
+        renderZoneMapZoneDetail(zoneMapSelectedZone);
+        renderZoneMapPin(zoneData);
+        renderZoneMapPlants(zoneData);
+        zoneMapUseMatcherEl.disabled = false;
+        zoneMapUseCalendarEl.disabled = false;
+        zoneMapStatusEl.textContent = `ZIP ${zip} is zone ${zoneData.zone}. Map pin and local planning signals are ready.`;
+      }
+
+      async function runZoneMapLookup(event) {
+        event?.preventDefault();
+        const zip = zoneMapZipEl.value.trim();
+        if (!/^\d{5}$/.test(zip)) {
+          zoneMapStatusEl.textContent = "Enter a five-digit U.S. ZIP code.";
+          zoneMapZipEl.focus();
+          return false;
+        }
+        zoneMapStatusEl.textContent = "Looking up USDA hardiness zone...";
+        try {
+          const zoneData = await lookupZone(zip);
+          renderZoneMapForLookup(zoneData, zip);
+          return true;
+        } catch (error) {
+          zoneMapStatusEl.textContent = "The zone lookup did not respond. Try again in a moment.";
+          return false;
+        }
       }
 
       function plantHeatPreference(plant) {
@@ -3440,6 +4034,38 @@ function outputSortValue(metrics) {
         }
       }
 
+      function initializeZoneMap() {
+        renderZoneMapRegions();
+        renderZoneMapZoneButtons();
+        renderZoneMapZoneDetail(zoneMapSelectedZone);
+        renderZoneMapPlants();
+        zoneMapFormEl.addEventListener("submit", runZoneMapLookup);
+        zoneMapZipEl.addEventListener("input", () => {
+          zoneMapUseMatcherEl.disabled = true;
+          zoneMapUseCalendarEl.disabled = true;
+          zoneMapStatusEl.textContent = /^\d{5}$/.test(zoneMapZipEl.value.trim())
+            ? "Ready to look up this ZIP."
+            : "Enter a ZIP code to place your garden on the map.";
+        });
+        zoneMapUseMatcherEl.addEventListener("click", () => {
+          const zip = zoneMapZipEl.value.trim();
+          if (!/^\d{5}$/.test(zip)) return;
+          applyMatcherPlanParams({ ...matcherPlanParamsFromForm(), zip });
+          setActiveView("matcher");
+          const matcherUrl = matcherUrlForPlan(matcherPlanParamsFromForm());
+          history.replaceState(null, "", `${matcherUrl.pathname}${matcherUrl.search}`);
+          runMatcher({ writeUrl: true, scrollToResults: true });
+        });
+        zoneMapUseCalendarEl.addEventListener("click", () => {
+          const zip = zoneMapZipEl.value.trim();
+          if (!/^\d{5}$/.test(zip)) return;
+          calendarZipEl.value = zip;
+          setActiveView("calendar");
+          history.replaceState(null, "", "#calendar");
+          handleCalendarSubmit({ preventDefault() {} });
+        });
+      }
+
       function initializeCalendar() {
         let calendarResizeTimer = null;
         calendarFormEl.addEventListener("submit", handleCalendarSubmit);
@@ -3842,6 +4468,7 @@ function outputSortValue(metrics) {
         renderScreener();
       }
 
+      initializeZoneMap();
       initializeCalendar();
       initializeScreener();
 
@@ -4402,6 +5029,10 @@ function outputSortValue(metrics) {
           goal: initialParams.get("goal") ?? matcherDefaults.goal
         });
         runMatcher({ writeUrl: false });
+      }
+      if (initialWantsZoneMap && /^\d{5}$/.test(initialParams.get("zip") ?? "")) {
+        zoneMapZipEl.value = initialParams.get("zip");
+        runZoneMapLookup();
       }
     </script>
   </body>
