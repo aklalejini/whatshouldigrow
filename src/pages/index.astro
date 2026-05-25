@@ -1937,6 +1937,10 @@ function outputSortValue(metrics) {
         return option?.textContent?.trim() ?? "";
       }
 
+      function calendarSearchDisplayLabel(option) {
+        return calendarOptionTextWithoutCount(calendarSearchOptionLabel(option));
+      }
+
       function calendarSearchOptionList(selectEl) {
         return Array.from(selectEl.options).map((option, index) => ({
           option,
@@ -2001,7 +2005,7 @@ function outputSortValue(metrics) {
         combo.input.disabled = isDisabled;
         combo.input.setAttribute("aria-disabled", String(isDisabled));
         combo.input.placeholder = placeholder;
-        combo.input.value = isDisabled ? "" : calendarSearchOptionLabel(combo.select.selectedOptions[0]);
+        combo.input.value = isDisabled ? "" : calendarSearchDisplayLabel(combo.select.selectedOptions[0]);
         combo.clear.hidden = isDisabled || combo.select.value === "all";
         combo.toggle.disabled = isDisabled;
         combo.root.classList.toggle("is-disabled", isDisabled);
@@ -2078,10 +2082,13 @@ function outputSortValue(metrics) {
       function initializeCalendarCombobox(combo) {
         combo.input.addEventListener("focus", () => {
           setCalendarComboboxOpen(combo, true);
-          combo.input.select();
+          if (combo.select.value === "all") combo.input.value = "";
+          renderCalendarComboboxOptions(combo);
         });
         combo.input.addEventListener("click", () => {
           setCalendarComboboxOpen(combo, true);
+          if (combo.select.value === "all") combo.input.value = "";
+          renderCalendarComboboxOptions(combo);
         });
         combo.input.addEventListener("input", () => {
           combo.activeIndex = 0;
@@ -2105,10 +2112,15 @@ function outputSortValue(metrics) {
             closeCalendarCombobox(combo);
           }
         });
+        combo.toggle.addEventListener("mousedown", (event) => {
+          event.preventDefault();
+        });
         combo.toggle.addEventListener("click", () => {
-          combo.input.focus();
-          setCalendarComboboxOpen(combo, !combo.root.classList.contains("is-open"));
-          combo.input.select();
+          const shouldOpen = !combo.root.classList.contains("is-open");
+          if (shouldOpen) combo.input.focus();
+          setCalendarComboboxOpen(combo, shouldOpen);
+          if (combo.root.classList.contains("is-open") && combo.select.value === "all") combo.input.value = "";
+          renderCalendarComboboxOptions(combo);
         });
         combo.clear.addEventListener("click", () => {
           resetCalendarCombobox(combo);
