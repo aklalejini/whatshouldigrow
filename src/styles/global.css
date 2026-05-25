@@ -2404,9 +2404,127 @@ fieldset:nth-of-type(2) .segmented {
 
 .plant-page-relationships,
 .plant-page-yield-chart,
+.plant-page-checklist,
 .plant-page-comparables,
 .plant-page-methodology {
   grid-column: 1 / -1;
+}
+
+.plant-page-checklist {
+  display: grid;
+  gap: 14px;
+  border-radius: 8px;
+}
+
+.plant-checklist-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.plant-checklist-head h2 {
+  margin: 0;
+  color: #24352a;
+  font-size: 0.76rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.plant-checklist-head > span {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border: 1px solid #dfe7d8;
+  border-radius: 999px;
+  color: var(--leaf-dark);
+  background: #fff;
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.plant-checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid #edf1e9;
+}
+
+.plant-checklist-item {
+  display: grid;
+  grid-template-rows: auto auto minmax(72px, 1fr) auto;
+  gap: 8px;
+  min-width: 0;
+  padding: 13px 12px 0;
+  border-left: 1px solid #edf1e9;
+}
+
+.plant-checklist-item:nth-child(4n + 1) {
+  border-left: 0;
+}
+
+.plant-checklist-item:nth-child(n + 5) {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #edf1e9;
+}
+
+.plant-checklist-item-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.plant-checklist-item-head strong {
+  color: #7a6f60;
+  font-size: 0.66rem;
+}
+
+.plant-checklist-item h3 {
+  margin: 0;
+  color: var(--leaf-dark);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.plant-checklist-item p {
+  margin: 0;
+  color: #3f4d43;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.plant-checklist-link {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 10px;
+  border: 1px solid rgba(39, 88, 58, 0.24);
+  border-radius: 999px;
+  color: var(--leaf-dark);
+  background: #f8fbf4;
+  font-size: 0.74rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.plant-checklist-link:not(.is-disabled):hover {
+  color: var(--terracotta);
+  border-color: rgba(223, 123, 79, 0.42);
+}
+
+.plant-checklist-link.is-disabled {
+  color: #6d776b;
+  background: #fffdf8;
 }
 
 .plant-page-yield-chart {
@@ -2980,6 +3098,25 @@ fieldset:nth-of-type(2) .segmented {
     min-width: 520px;
   }
 
+  .plant-checklist-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .plant-checklist-item,
+  .plant-checklist-item:nth-child(4n + 1) {
+    border-left: 1px solid #edf1e9;
+  }
+
+  .plant-checklist-item:nth-child(2n + 1) {
+    border-left: 0;
+  }
+
+  .plant-checklist-item:nth-child(n + 3) {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #edf1e9;
+  }
+
   .screener-search {
     grid-column: 1 / -1;
   }
@@ -3243,6 +3380,26 @@ fieldset:nth-of-type(2) .segmented {
 
   .plant-page-hero-actions {
     flex-direction: column;
+  }
+
+  .plant-checklist-head {
+    flex-direction: column;
+  }
+
+  .plant-checklist-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plant-checklist-item,
+  .plant-checklist-item:nth-child(4n + 1),
+  .plant-checklist-item:nth-child(2n + 1) {
+    border-left: 0;
+  }
+
+  .plant-checklist-item:nth-child(n + 2) {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #edf1e9;
   }
 
   .intro-panel {

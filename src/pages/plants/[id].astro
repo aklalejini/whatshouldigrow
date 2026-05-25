@@ -2,6 +2,7 @@
 import plants from "../../data/plants.json";
 import partners from "../../data/affiliatePartners.json";
 import plantArtEntries from "../../data/plantArt.json";
+import plantingChecklistItems from "../../data/plantingChecklist.json";
 import plantMetricSources from "../../data/plantMetricSources.json";
 import plantMetrics from "../../data/plantMetrics.json";
 import plantRelationships from "../../data/plantRelationships.json";
@@ -12,6 +13,7 @@ import {
   SITE_URL,
   siteUrl
 } from "../../lib/site";
+import { plantingChecklistForPlant } from "../../lib/plantChecklist";
 import {
   formatGoal,
   formatGoalList,
@@ -230,6 +232,7 @@ function buildYieldChart(curve) {
 
 const partnerSearchUrl = partnerSearchHref(partner, plant.query);
 const planningNotes = planningNotesForPlant(plant);
+const plantingChecklist = plantingChecklistForPlant(plant, metrics, plantingChecklistItems);
 const yieldCurve = metrics.yieldCurve ?? [];
 const hasYieldChart = yieldCurve.length > 0 && metrics.yieldLbsMin !== null && metrics.yieldLbsMax !== null;
 const yieldChart = hasYieldChart ? buildYieldChart(yieldCurve) : null;
@@ -501,6 +504,35 @@ const plantJsonLd = {
               {plant.goals.includes("privacy-screening") && <li>For screening, repeat compatible plants and confirm mature spacing before buying.</li>}
               {relatedPlantCount > 0 && <li>Use the pairing map below to choose nearby companions or compatible varieties.</li>}
             </ul>
+          </section>
+
+          <section class="detail-panel plant-page-checklist" aria-labelledby="planting-checklist-heading">
+            <div class="plant-checklist-head">
+              <div>
+                <p class="eyebrow">Gear and supplies</p>
+                <h2 id="planting-checklist-heading">Planting Checklist</h2>
+              </div>
+              <span>{plantingChecklist.length} items</span>
+            </div>
+            <div class="plant-checklist-grid">
+              {plantingChecklist.map((item) => (
+                <article class="plant-checklist-item">
+                  <div class="plant-checklist-item-head">
+                    <span>{item.category}</span>
+                    <strong>{item.timing}</strong>
+                  </div>
+                  <h3>{item.name}</h3>
+                  <p>{item.use}</p>
+                  {item.affiliateUrl ? (
+                    <a class="plant-checklist-link" href={item.affiliateUrl} target="_blank" rel="noopener noreferrer">
+                      View item
+                    </a>
+                  ) : (
+                    <span class="plant-checklist-link is-disabled">Link pending</span>
+                  )}
+                </article>
+              ))}
+            </div>
           </section>
 
           <section class="detail-panel plant-page-panel">

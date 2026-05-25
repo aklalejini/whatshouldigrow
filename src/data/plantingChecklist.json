@@ -1,0 +1,380 @@
+[
+  {
+    "id": "soil-test-lab-mailer",
+    "name": "Soil test kit or lab mailer",
+    "category": "Site prep",
+    "use": "Check pH and baseline nutrients before adding amendments, especially for fruiting crops, native beds, and acid-loving plants.",
+    "timing": "Before planting",
+    "affiliateUrl": "",
+    "rules": [
+      { "allPlants": true, "score": 8 },
+      { "goalsAny": ["fruit", "vegetables-herbs"], "score": 23 },
+      { "goalsAny": ["pollinators-wildlife", "low-maintenance-natives", "privacy-screening"], "score": 13 },
+      { "identityIncludes": ["blueberry", "cranberry", "lingonberry", "huckleberry"], "score": 32 }
+    ]
+  },
+  {
+    "id": "finished-compost",
+    "name": "Finished compost",
+    "category": "Soil",
+    "use": "Improve bed structure and organic matter before planting annuals, perennials, shrubs, and trees.",
+    "timing": "Bed prep",
+    "affiliateUrl": "",
+    "rules": [
+      { "allPlants": true, "score": 10 },
+      { "typeIncludes": ["annual", "perennial", "vegetable", "flower", "herb"], "score": 20 },
+      { "soilsAny": ["sandy", "clay"], "score": 21 }
+    ]
+  },
+  {
+    "id": "organic-mulch",
+    "name": "Organic mulch",
+    "category": "Soil",
+    "use": "Hold soil moisture, suppress weeds, moderate soil temperature, and protect shallow roots.",
+    "timing": "After planting",
+    "affiliateUrl": "",
+    "rules": [
+      { "allPlants": true, "score": 10 },
+      { "typeIncludes": ["tree", "shrub", "cane", "berry", "perennial"], "score": 22 },
+      { "waterAny": ["medium", "high"], "score": 18 }
+    ]
+  },
+  {
+    "id": "garden-gloves",
+    "name": "Garden gloves",
+    "category": "Tools",
+    "use": "Protect hands while digging, mulching, pruning, and handling thorny or rough-stemmed plants.",
+    "timing": "Planting day",
+    "affiliateUrl": "",
+    "rules": [
+      { "allPlants": true, "score": 5 },
+      { "typeIncludes": ["cane", "shrub", "tree", "rose", "cactus"], "score": 14 },
+      { "identityIncludes": ["blackberry", "raspberry", "gooseberry", "rose", "prickly pear"], "score": 24 }
+    ]
+  },
+  {
+    "id": "digging-spade",
+    "name": "Digging spade or shovel",
+    "category": "Tools",
+    "use": "Open planting holes, loosen compacted soil, and shape beds for larger transplants.",
+    "timing": "Planting day",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["tree", "shrub", "cane", "grass"], "score": 23 },
+      { "typeIncludes": ["perennial"], "score": 17 },
+      { "goalsAny": ["privacy-screening"], "score": 20 }
+    ]
+  },
+  {
+    "id": "hand-trowel",
+    "name": "Hand trowel",
+    "category": "Tools",
+    "use": "Plant starts, herbs, flowers, bulbs, and smaller container plants at the right depth.",
+    "timing": "Planting day",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["annual", "perennial", "vegetable", "flower", "herb"], "score": 22 },
+      { "containerSuitabilityAny": ["good", "workable", "limited"], "score": 19 }
+    ]
+  },
+  {
+    "id": "watering-wand",
+    "name": "Watering wand or can",
+    "category": "Watering",
+    "use": "Water new transplants gently without washing soil away from the crown or roots.",
+    "timing": "Planting day",
+    "affiliateUrl": "",
+    "rules": [
+      { "allPlants": true, "score": 9 },
+      { "typeIncludes": ["annual", "vegetable", "herb", "flower"], "score": 18 },
+      { "containerSuitabilityAny": ["good", "workable", "limited"], "score": 21 }
+    ]
+  },
+  {
+    "id": "drip-irrigation-kit",
+    "name": "Drip irrigation kit",
+    "category": "Watering",
+    "use": "Deliver steady root-zone moisture with less leaf wetness and less water loss.",
+    "timing": "Install at planting",
+    "affiliateUrl": "",
+    "rules": [
+      { "waterAny": ["high"], "score": 25 },
+      { "goalsAny": ["fruit", "vegetables-herbs"], "waterAny": ["medium", "high"], "score": 21 },
+      { "typeIncludes": ["berry", "fruit tree", "citrus"], "score": 20 }
+    ]
+  },
+  {
+    "id": "hose-timer",
+    "name": "Hose timer",
+    "category": "Watering",
+    "use": "Keep new plantings and containers from drying out during establishment.",
+    "timing": "Install at planting",
+    "affiliateUrl": "",
+    "rules": [
+      { "waterAny": ["high"], "score": 27 },
+      { "containerSuitabilityAny": ["good", "workable"], "score": 19 },
+      { "typeIncludes": ["annual vegetable", "berry", "citrus"], "score": 20 }
+    ]
+  },
+  {
+    "id": "drainage-container",
+    "name": "Right-size container with drainage",
+    "category": "Containers",
+    "use": "Use a container large enough for mature roots, with open drainage holes to prevent root rot.",
+    "timing": "Before planting",
+    "affiliateUrl": "",
+    "rules": [
+      { "containerSuitabilityAny": ["good"], "score": 30 },
+      { "containerSuitabilityAny": ["workable"], "score": 27 },
+      { "containerSuitabilityAny": ["limited"], "score": 20 }
+    ]
+  },
+  {
+    "id": "container-potting-mix",
+    "name": "Container potting mix",
+    "category": "Containers",
+    "use": "Use a lighter container medium instead of dense garden soil in pots and grow bags.",
+    "timing": "Before planting",
+    "affiliateUrl": "",
+    "rules": [
+      { "containerSuitabilityAny": ["good"], "score": 29 },
+      { "containerSuitabilityAny": ["workable"], "score": 26 },
+      { "containerSuitabilityAny": ["limited"], "score": 19 }
+    ]
+  },
+  {
+    "id": "plant-labels",
+    "name": "Plant labels",
+    "category": "Planning",
+    "use": "Track cultivar, planting date, and variety when comparing harvests or pollination partners.",
+    "timing": "Planting day",
+    "affiliateUrl": "",
+    "rules": [
+      { "goalsAny": ["fruit", "vegetables-herbs"], "score": 23 },
+      { "typeIncludes": ["annual", "berry", "fruit", "nut"], "score": 22 },
+      { "allPlants": true, "score": 4 }
+    ]
+  },
+  {
+    "id": "seed-starting-trays",
+    "name": "Seed-starting trays",
+    "category": "Propagation",
+    "use": "Start annual vegetables, herbs, and flowers ahead of transplant season.",
+    "timing": "Pre-season",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["annual vegetable", "annual herb", "annual flower"], "score": 28 },
+      { "identityIncludes": ["tomato", "pepper", "eggplant", "zinnia", "cosmos", "marigold"], "score": 27 }
+    ]
+  },
+  {
+    "id": "grow-light",
+    "name": "Seedling grow light",
+    "category": "Propagation",
+    "use": "Keep indoor seedlings compact and sturdy before they move outside.",
+    "timing": "Pre-season",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["annual vegetable", "annual herb", "annual flower"], "score": 25 },
+      { "identityIncludes": ["tomato", "pepper", "eggplant", "basil"], "score": 27 }
+    ]
+  },
+  {
+    "id": "floating-row-cover",
+    "name": "Floating row cover",
+    "category": "Protection",
+    "use": "Protect young crops from wind, light frost, and early pest pressure while still letting light and water through.",
+    "timing": "At planting",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["annual vegetable", "perennial vegetable", "annual herb"], "score": 25 },
+      { "identityIncludes": ["lettuce", "spinach", "kale", "collards", "broccoli", "cabbage", "carrot", "radish", "beet"], "score": 28 },
+      { "waterAny": ["high"], "score": 16 }
+    ]
+  },
+  {
+    "id": "frost-blanket",
+    "name": "Frost blanket",
+    "category": "Protection",
+    "use": "Extend the season or protect tender plants during cold snaps.",
+    "timing": "Cold nights",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["citrus", "annual vegetable", "annual herb", "annual flower"], "score": 22 },
+      { "identityIncludes": ["fig", "pomegranate", "olive", "loquat", "guava", "starfruit", "dragon fruit", "calamondin", "lemon", "satsuma", "kumquat", "yuzu"], "score": 25 }
+    ]
+  },
+  {
+    "id": "insect-netting",
+    "name": "Insect netting",
+    "category": "Protection",
+    "use": "Exclude common chewing and flying pests from vulnerable vegetables, herbs, and young fruit plantings.",
+    "timing": "At planting",
+    "affiliateUrl": "",
+    "rules": [
+      { "goalsAny": ["vegetables-herbs"], "score": 22 },
+      { "typeIncludes": ["annual vegetable", "perennial vegetable", "berry"], "score": 20 },
+      { "identityIncludes": ["brassica", "cabbage", "broccoli", "cauliflower", "kale", "collards", "eggplant", "potato", "cucumber"], "score": 27 }
+    ]
+  },
+  {
+    "id": "bird-netting",
+    "name": "Bird netting",
+    "category": "Protection",
+    "use": "Protect ripening berries, grapes, cherries, figs, and other bird-attractive fruit.",
+    "timing": "Before ripening",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["berry", "grape", "fruit tree", "fruit shrub", "fruit vine"], "score": 22 },
+      { "identityIncludes": ["blueberry", "strawberry", "raspberry", "blackberry", "cherry", "fig", "grape", "mulberry", "serviceberry", "currant"], "score": 28 }
+    ]
+  },
+  {
+    "id": "trellis-netting",
+    "name": "Trellis or trellis netting",
+    "category": "Support",
+    "use": "Train vining crops upward to save space, improve airflow, and keep fruit cleaner.",
+    "timing": "Install early",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["vine"], "score": 30 },
+      { "identityIncludes": ["bean", "pea", "cucumber", "grape", "kiwi", "passionfruit", "melon", "squash"], "score": 29 }
+    ]
+  },
+  {
+    "id": "tomato-cage-stakes",
+    "name": "Cage, stake, or spiral support",
+    "category": "Support",
+    "use": "Support upright fruiting vegetables and tall flowering annuals before stems get heavy.",
+    "timing": "Install at planting",
+    "affiliateUrl": "",
+    "rules": [
+      { "identityIncludes": ["tomato", "pepper", "eggplant", "okra", "zinnia", "sunflower"], "score": 28 },
+      { "typeIncludes": ["annual vegetable", "annual flower"], "score": 16 }
+    ]
+  },
+  {
+    "id": "soft-plant-ties",
+    "name": "Soft plant ties or clips",
+    "category": "Support",
+    "use": "Fasten stems to stakes, cages, trellises, or young-tree supports without girdling growth.",
+    "timing": "As needed",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["vine", "tree"], "score": 20 },
+      { "identityIncludes": ["tomato", "pepper", "eggplant", "grape", "kiwi", "passionfruit"], "score": 24 },
+      { "goalsAny": ["privacy-screening"], "score": 14 }
+    ]
+  },
+  {
+    "id": "tree-stake-kit",
+    "name": "Tree stake kit",
+    "category": "Support",
+    "use": "Stabilize newly planted trees only where wind, slope, or root-ball movement makes support necessary.",
+    "timing": "Planting day",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["tree"], "score": 23 },
+      { "typeIncludes": ["citrus"], "score": 18 }
+    ]
+  },
+  {
+    "id": "trunk-guard",
+    "name": "Tree trunk guard",
+    "category": "Protection",
+    "use": "Protect young trunks from mower damage, sunscald, rabbits, and rubbing injury.",
+    "timing": "After planting",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["tree"], "score": 25 },
+      { "identityIncludes": ["apple", "pear", "plum", "cherry", "peach", "persimmon", "pawpaw", "fig", "maple", "oak"], "score": 27 }
+    ]
+  },
+  {
+    "id": "animal-protection",
+    "name": "Rabbit or deer protection",
+    "category": "Protection",
+    "use": "Guard young edible, native, and ornamental plants until they can tolerate browsing.",
+    "timing": "After planting",
+    "affiliateUrl": "",
+    "rules": [
+      { "goalsAny": ["fruit", "vegetables-herbs", "pollinators-wildlife", "low-maintenance-natives"], "score": 21 },
+      { "typeIncludes": ["tree", "shrub", "flower", "vegetable"], "score": 18 }
+    ]
+  },
+  {
+    "id": "bypass-pruners",
+    "name": "Bypass pruners",
+    "category": "Maintenance",
+    "use": "Make clean cuts for harvesting, deadheading, shaping, and light pruning.",
+    "timing": "First season",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["tree", "shrub", "cane", "vine", "perennial", "flower", "herb"], "score": 20 },
+      { "goalsAny": ["fruit", "curb-appeal", "privacy-screening"], "score": 19 }
+    ]
+  },
+  {
+    "id": "loppers-pruning-saw",
+    "name": "Loppers or pruning saw",
+    "category": "Maintenance",
+    "use": "Handle woody stems and branches too large for hand pruners.",
+    "timing": "First dormant season",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["tree", "shrub", "cane", "vine"], "score": 21 },
+      { "goalsAny": ["privacy-screening"], "score": 19 }
+    ]
+  },
+  {
+    "id": "acid-soil-amendment",
+    "name": "Acid-soil amendment",
+    "category": "Soil",
+    "use": "Keep acid-loving crops and ornamentals in the pH range they need.",
+    "timing": "After soil test",
+    "affiliateUrl": "",
+    "rules": [
+      { "identityIncludes": ["blueberry", "cranberry", "lingonberry", "huckleberry", "azalea", "rhododendron", "camellia", "gardenia"], "score": 32 },
+      { "identityIncludes": ["hydrangea", "holly", "pine", "spruce"], "score": 20 }
+    ]
+  },
+  {
+    "id": "balanced-fertilizer",
+    "name": "Balanced garden fertilizer",
+    "category": "Nutrition",
+    "use": "Feed annual vegetables, herbs, flowers, and hungry container crops according to soil or label guidance.",
+    "timing": "During growth",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["annual vegetable", "annual herb", "annual flower"], "score": 24 },
+      { "containerSuitabilityAny": ["good", "workable"], "score": 20 },
+      { "goalsAny": ["vegetables-herbs"], "score": 22 }
+    ]
+  },
+  {
+    "id": "fruit-tree-fertilizer",
+    "name": "Fruit tree and berry fertilizer",
+    "category": "Nutrition",
+    "use": "Support fruiting wood, bloom, and recovery after establishment once soil needs are known.",
+    "timing": "After establishment",
+    "affiliateUrl": "",
+    "rules": [
+      { "typeIncludes": ["fruit tree", "nut tree", "berry", "fruit shrub", "fruit vine", "citrus"], "score": 24 },
+      { "goalsAny": ["fruit"], "score": 22 }
+    ]
+  },
+  {
+    "id": "shade-cloth",
+    "name": "Shade cloth",
+    "category": "Protection",
+    "use": "Reduce heat stress for cool-season greens, tender transplants, and containers in hot sun.",
+    "timing": "Heat waves",
+    "affiliateUrl": "",
+    "rules": [
+      { "identityIncludes": ["lettuce", "spinach", "cilantro", "parsley", "arugula", "mizuna", "chard", "kale"], "score": 26 },
+      { "identityIncludes": ["tomato", "pepper", "eggplant", "cucumber"], "score": 21 },
+      { "containerSuitabilityAny": ["good", "workable"], "waterAny": ["high"], "score": 22 },
+      { "typeIncludes": ["annual herb", "annual vegetable"], "waterAny": ["high"], "score": 22 }
+    ]
+  }
+]
