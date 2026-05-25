@@ -77,7 +77,18 @@ button {
 .screener-empty[hidden],
 .climate-panel[hidden],
 .sample-preview[hidden],
-.share-plan-button[hidden] {
+.share-plan-button[hidden],
+.zone-preview[hidden] {
+  display: none;
+}
+
+.view-panel:not(.is-active) {
+  display: none;
+}
+
+.app-shell:not(.has-started) .site-tabs,
+.app-shell:not(.has-started) .results-band,
+.app-shell:not(.has-started) .public-notes {
   display: none;
 }
 
@@ -128,6 +139,13 @@ button {
   align-items: stretch;
 }
 
+.app-shell:not(.has-started) .workspace {
+  width: min(1100px, calc(100% - 40px));
+  min-height: 100vh;
+  padding: 42px 0 34px;
+  align-items: center;
+}
+
 .intro-panel {
   position: relative;
   display: grid;
@@ -144,6 +162,11 @@ button {
     linear-gradient(90deg, rgba(255, 253, 248, 0.96) 0 54%, rgba(239, 244, 233, 0.86)),
     var(--panel);
   box-shadow: var(--shadow);
+}
+
+.app-shell:not(.has-started) .intro-panel {
+  min-height: min(560px, calc(100vh - 84px));
+  padding: 52px;
 }
 
 .intro-panel::after {
@@ -203,6 +226,15 @@ h1 {
   color: #405246;
   font-size: 1.1rem;
   line-height: 1.7;
+}
+
+.app-shell:not(.has-started) .intro-panel p {
+  max-width: 540px;
+  font-size: 1.16rem;
+}
+
+.app-shell:not(.has-started) h1 {
+  margin-top: 58px;
 }
 
 .hero-plate {
@@ -325,8 +357,16 @@ h1 {
   padding: 24px;
 }
 
+.app-shell:not(.has-started) .matcher-panel {
+  align-self: center;
+}
+
 .form-heading {
   margin-bottom: 20px;
+}
+
+.app-shell:not(.has-started) .form-heading {
+  margin-bottom: 16px;
 }
 
 .eyebrow {
@@ -385,6 +425,11 @@ legend {
 fieldset {
   padding: 0;
   border: 0;
+}
+
+.app-shell:not(.has-started) .detail-field,
+.app-shell:not(.has-started) .sample-link-button {
+  display: none;
 }
 
 input[type="text"],
@@ -474,6 +519,23 @@ fieldset:nth-of-type(2) .segmented {
 .goal-grid .option-help {
   max-width: 22ch;
   margin-inline: auto;
+}
+
+.app-shell:not(.has-started) .starter-goal-field {
+  margin-bottom: 18px;
+}
+
+.app-shell:not(.has-started) .starter-goal-field .goal-grid {
+  grid-template-columns: 1fr;
+}
+
+.app-shell:not(.has-started) .starter-goal-field .goal-grid label:nth-child(n+4) {
+  display: none;
+}
+
+.app-shell:not(.has-started) .starter-goal-field .option-card {
+  min-height: 58px;
+  border-radius: 999px;
 }
 
 .segmented label {
@@ -4319,12 +4381,21 @@ input.calendar-filter-search[type="search"]:focus {
     grid-template-columns: 1fr 1fr;
   }
 
+  .app-shell:not(.has-started) .workspace {
+    grid-template-columns: minmax(0, 1fr) minmax(310px, 0.72fr);
+  }
+
   .intro-panel {
     grid-column: 1 / -1;
   }
 
   .matcher-panel {
     grid-column: 1 / -1;
+  }
+
+  .app-shell:not(.has-started) .intro-panel,
+  .app-shell:not(.has-started) .matcher-panel {
+    grid-column: auto;
   }
 
   .result-card {
@@ -4376,6 +4447,30 @@ input.calendar-filter-search[type="search"]:focus {
   .workspace {
     padding-top: 12px;
     gap: 14px;
+  }
+
+  .app-shell:not(.has-started) .workspace {
+    min-height: auto;
+    padding: 14px 0 24px;
+  }
+
+  .app-shell:not(.has-started) .intro-panel {
+    min-height: auto;
+    padding: 24px;
+  }
+
+  .app-shell:not(.has-started) .hero-plate {
+    display: none;
+  }
+
+  .app-shell:not(.has-started) h1 {
+    margin-top: 30px;
+    font-size: 2.8rem;
+  }
+
+  .app-shell:not(.has-started) .intro-panel p {
+    font-size: 1rem;
+    line-height: 1.55;
   }
 
   .sample-preview-actions {

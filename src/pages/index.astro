@@ -104,7 +104,7 @@ const webAppJsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(webAppJsonLd)}></script>
   </head>
   <body>
-    <main class="app-shell">
+    <main class="app-shell" data-progressive-shell>
       <nav class="site-tabs" aria-label="Primary sections" role="tablist">
         <button
           class="site-tab is-active"
@@ -157,8 +157,8 @@ const webAppJsonLd = {
           </div>
           <h1 id="app-title">What should I grow here?</h1>
           <p>
-            Enter your ZIP code and a few garden conditions. Get a ranked field-guide of edible,
-            wildlife-friendly, useful, and good-looking plants that are actually worth considering.
+            Enter a ZIP code and garden goal to get climate-aware plant picks, planting windows,
+            and practical next steps for your place.
           </p>
           <figure class="hero-plate hero-gallery" aria-hidden="true">
             <span class="hero-frame" style="--hero-image: url('/plant-art/fig.webp'); --i: 0"></span>
@@ -187,7 +187,7 @@ const webAppJsonLd = {
         <form class="matcher-panel" id="matcher-form">
           <div class="form-heading">
             <p class="eyebrow">Plot conditions</p>
-            <h2>Start with your place.</h2>
+            <h2>Start with your ZIP.</h2>
           </div>
           <div class="zip-row">
             <div>
@@ -207,7 +207,7 @@ const webAppJsonLd = {
             <div id="zone-preview" class="zone-preview" hidden></div>
           </div>
 
-          <fieldset>
+          <fieldset class="detail-field">
             <legend>Sun exposure</legend>
             <div class="segmented">
               <label>
@@ -225,7 +225,7 @@ const webAppJsonLd = {
             </div>
           </fieldset>
 
-          <fieldset>
+          <fieldset class="detail-field">
             <legend>Soil type</legend>
             <div class="segmented">
               <label>
@@ -247,7 +247,7 @@ const webAppJsonLd = {
             </div>
           </fieldset>
 
-          <fieldset>
+          <fieldset class="detail-field">
             <legend>Water availability</legend>
             <div class="segmented">
               <label>
@@ -265,7 +265,7 @@ const webAppJsonLd = {
             </div>
           </fieldset>
 
-          <fieldset>
+          <fieldset class="starter-goal-field">
             <legend>Goal</legend>
             <div class="segmented goal-grid">
               <label>
@@ -275,6 +275,10 @@ const webAppJsonLd = {
               <label>
                 <input type="radio" name="goal" value="vegetables-herbs" />
                 <span class="option-card"><span class="option-label">Vegetables &amp; herbs</span><span class="option-help">Kitchen crops</span></span>
+              </label>
+              <label>
+                <input type="radio" name="goal" value="native-plants" />
+                <span class="option-card"><span class="option-label">Native plants</span><span class="option-help">Habitat &amp; region fit</span></span>
               </label>
               <label>
                 <input type="radio" name="goal" value="pollinators-wildlife" />
@@ -287,10 +291,6 @@ const webAppJsonLd = {
               <label>
                 <input type="radio" name="goal" value="privacy-screening" />
                 <span class="option-card"><span class="option-label">Privacy &amp; screening</span><span class="option-help">Screens &amp; buffers</span></span>
-              </label>
-              <label>
-                <input type="radio" name="goal" value="native-plants" />
-                <span class="option-card"><span class="option-label">Native plants</span><span class="option-help">Habitat &amp; region fit</span></span>
               </label>
             </div>
           </fieldset>
@@ -801,6 +801,7 @@ const webAppJsonLd = {
       const plantRelationships = JSON.parse(document.getElementById("plant-relationship-data").textContent);
       const blogSearchData = JSON.parse(document.getElementById("blog-search-data").textContent);
       const plantArtById = Object.fromEntries(plantArtEntries.map((entry) => [entry.id, entry]));
+      const appShellEl = document.querySelector("[data-progressive-shell]");
       const form = document.getElementById("matcher-form");
       const statusEl = document.getElementById("status");
       const titleEl = document.getElementById("results-title");
@@ -1238,6 +1239,10 @@ const webAppJsonLd = {
         { label: "Sedge", plural: "Sedges", terms: ["sedge"] }
       ];
 
+      function setLandingStarted(started = true) {
+        appShellEl?.classList.toggle("has-started", started);
+      }
+
       function setActiveView(view) {
         tabButtons.forEach((button) => {
           const isActive = button.dataset.view === view;
@@ -1249,6 +1254,8 @@ const webAppJsonLd = {
           panel.classList.toggle("is-active", isActive);
           panel.hidden = !isActive;
         });
+        appShellEl?.setAttribute("data-active-view", view);
+        if (view !== "matcher") setLandingStarted(true);
       }
 
       function filterArticles() {
@@ -4344,11 +4351,20 @@ function outputSortValue(metrics) {
         const zip = planParams.zip;
 
         if (!/^\d{5}$/.test(zip)) {
+          zonePreviewEl.hidden = false;
+          zonePreviewEl.textContent = "Enter a five-digit ZIP";
+          zonePreviewEl.classList.add("is-error");
           statusEl.textContent = "Enter a five-digit U.S. ZIP code.";
           zipEl.focus();
           return false;
         }
 
+        setLandingStarted(true);
+        titleEl.textContent = "Building your plant list...";
+        zoneNoteEl.textContent = "Checking the ZIP, estimating local climate signals, and ranking plants against your goal.";
+        zonePreviewEl.hidden = false;
+        zonePreviewEl.textContent = "Looking up USDA zone...";
+        zonePreviewEl.classList.remove("is-error");
         statusEl.textContent = "Looking up your USDA hardiness zone...";
         resultsEl.replaceChildren();
         climatePanelEl.hidden = true;
@@ -4359,6 +4375,7 @@ function outputSortValue(metrics) {
 
         try {
           const zoneData = await lookupZone(zip);
+          zonePreviewEl.textContent = `Zone ${zoneData.zone} detected`;
           const inputs = normalizedMatcherInputs(zoneData, planParams);
           currentPlanParams = planParams;
           statusEl.textContent = planParams.soil === "not-sure" ? "Soil set to loam because you selected not sure." : "";
@@ -4372,6 +4389,8 @@ function outputSortValue(metrics) {
           titleEl.textContent = "The zone lookup did not respond.";
           zoneNoteEl.textContent = "Try again in a moment, or swap the lookup function to another USDA-zone provider.";
           statusEl.textContent = "No recommendations shown because hardiness zone is required for ranking.";
+          zonePreviewEl.textContent = "Zone lookup needs another try";
+          zonePreviewEl.classList.add("is-error");
           climatePanelEl.hidden = true;
           samplePreviewEl.hidden = false;
           return false;
@@ -4413,7 +4432,7 @@ function outputSortValue(metrics) {
 
       form.addEventListener("submit", (event) => {
         event.preventDefault();
-        runMatcher({ writeUrl: true });
+        runMatcher({ writeUrl: true, scrollToResults: true });
       });
 
       if (initialWantsMatcher) {
