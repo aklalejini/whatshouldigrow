@@ -41,8 +41,9 @@ const featuredEntries = hubEntries.slice(0, 24);
 const sourcedYieldCount = hubEntries.filter(({ metrics }) => isSourcedValue(metrics.display?.yieldLbs)).length;
 const sourceReadyCount = hubEntries.filter(({ metrics }) => isSourcedValue(metrics.display?.firstOutput)).length;
 const hubLinks = hubInternalLinks().filter((link) => link.href !== hub.path);
-const tabClass = (slug) => slug === hub.slug ? "site-tab is-active" : "site-tab";
-const tabCurrent = (slug) => slug === hub.slug ? "page" : undefined;
+const isCalendarHub = hub.slug === "planting-calendar";
+const matcherTabClass = isCalendarHub ? "site-tab" : "site-tab is-active";
+const calendarTabClass = isCalendarHub ? "site-tab is-active" : "site-tab";
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -105,10 +106,10 @@ const itemListJsonLd = {
   <body>
     <main class="app-shell">
       <nav class="site-tabs" aria-label="Primary sections">
-        <a class="site-tab" href="/">Plant matcher</a>
-        <a class={tabClass("planting-calendar")} aria-current={tabCurrent("planting-calendar")} href="/planting-calendar/">Calendar</a>
-        <a class={tabClass("native-plants")} aria-current={tabCurrent("native-plants")} href="/native-plants/">Native plants</a>
-        <a class={tabClass("fruit-trees")} aria-current={tabCurrent("fruit-trees")} href="/fruit-trees/">Fruit trees</a>
+        <a class={matcherTabClass} aria-current={isCalendarHub ? undefined : "page"} href="/">Plant matcher</a>
+        <a class={calendarTabClass} aria-current={isCalendarHub ? "page" : undefined} href="/planting-calendar/">Calendar</a>
+        <a class="site-tab" href="/#zone-map">Zone map</a>
+        <a class="site-tab" href="/#screener">Screener</a>
         <a class="site-tab" href="/blog/">Blog</a>
       </nav>
 
