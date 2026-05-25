@@ -3,6 +3,7 @@ const { title, text, url, imageUrl = "", placement = "top" } = Astro.props;
 
 const encodedUrl = encodeURIComponent(url);
 const encodedTitle = encodeURIComponent(title);
+const encodedShareText = encodeURIComponent(`${title} ${url}`);
 const encodedImageUrl = encodeURIComponent(imageUrl);
 const emailBody = encodeURIComponent(`${title}\n\n${text}\n\n${url}`);
 const className = placement === "footer" ? "article-share article-share-footer" : "article-share";
@@ -28,6 +29,16 @@ const shareLinks = [
     external: true
   },
   {
+    label: "Text",
+    href: `sms:?&body=${encodedShareText}`,
+    external: false
+  },
+  {
+    label: "WhatsApp",
+    href: `https://wa.me/?text=${encodedShareText}`,
+    external: true
+  },
+  {
     label: "Email",
     href: `mailto:?subject=${encodedTitle}&body=${emailBody}`,
     external: false
@@ -49,9 +60,8 @@ const shareLinks = [
     data-share-text={text}
     data-share-url={url}
     title="Share to apps on this device"
-    hidden
   >
-    More apps
+    Share apps
   </button>
   {shareLinks.map((link) => (
     <a
@@ -74,88 +84,131 @@ const shareLinks = [
   <span class="article-share-status" data-share-status role="status" aria-live="polite"></span>
 </div>
 
-<script>
-  const statusFor = (button) =>
-    button.closest("[data-share-root]")?.querySelector("[data-share-status]");
+<script is:inline>
+  (function () {
+    if (window.__plantByZipArticleShareReady) return;
+    window.__plantByZipArticleShareReady = true;
 
-  const setShareStatus = (button, message) => {
-    const status = statusFor(button);
-    if (!status) return;
-
-    status.textContent = message;
-    if (message) {
-      window.setTimeout(() => {
-        if (status.textContent === message) {
-          status.textContent = "";
+    function closestShareRoot(element) {
+      while (element && element !== document) {
+        if (element.getAttribute && element.hasAttribute("data-share-root")) {
+          return element;
         }
-      }, 2400);
+        element = element.parentNode;
+      }
+      return null;
     }
-  };
 
-  const copyText = async (text) => {
-    if (navigator.clipboard?.writeText) {
-      try {
-        await navigator.clipboard.writeText(text);
-        return;
-      } catch {
-        // Some embedded browsers expose the Clipboard API but deny writes.
+    function statusFor(button) {
+      var root = closestShareRoot(button);
+      return root ? root.querySelector("[data-share-status]") : null;
+    }
+
+    function setShareStatus(button, message) {
+      var status = statusFor(button);
+      if (!status) return;
+
+      status.textContent = message;
+      if (message) {
+        window.setTimeout(function () {
+          if (status.textContent === message) {
+            status.textContent = "";
+          }
+        }, 2400);
       }
     }
 
-    const field = document.createElement("textarea");
-    field.value = text;
-    field.setAttribute("readonly", "");
-    field.style.position = "fixed";
-    field.style.left = "-9999px";
-    field.style.top = "0";
-    document.body.appendChild(field);
-    field.focus();
-    field.select();
-    field.setSelectionRange(0, field.value.length);
-    const copied = document.execCommand("copy");
-    field.remove();
+    function copyWithTextarea(text) {
+      var field = document.createElement("textarea");
+      field.value = text;
+      field.setAttribute("readonly", "");
+      field.style.position = "fixed";
+      field.style.left = "-9999px";
+      field.style.top = "0";
+      document.body.appendChild(field);
+      field.focus();
+      field.select();
+      field.setSelectionRange(0, field.value.length);
+      var copied = document.execCommand("copy");
+      field.remove();
 
-    if (!copied) {
-      throw new Error("Copy command failed");
+      if (!copied) {
+        throw new Error("Copy command failed");
+      }
     }
-  };
 
-  document.querySelectorAll("[data-native-share]").forEach((button) => {
-    if (!navigator.share) return;
-
-    button.hidden = false;
-    button.addEventListener("click", async () => {
-      try {
-        await navigator.share({
-          title: button.dataset.shareTitle || document.title,
-          text: button.dataset.shareText || "",
-          url: button.dataset.shareUrl || window.location.href
+    function copyText(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text).catch(function () {
+          copyWithTextarea(text);
         });
-      } catch (error) {
-        if (error?.name !== "AbortError") {
-          setShareStatus(button, "Share unavailable");
+      }
+
+      return new Promise(function (resolve, reject) {
+        try {
+          copyWithTextarea(text);
+          resolve();
+        } catch (error) {
+          reject(error);
         }
+      });
+    }
+
+    function resetCopyLabel(button, originalLabel) {
+      window.setTimeout(function () {
+        button.textContent = originalLabel;
+        button.classList.remove("is-copied");
+      }, 1800);
+    }
+
+    document.addEventListener("click", function (event) {
+      var button = event.target && event.target.closest
+        ? event.target.closest("[data-native-share], [data-copy-share]")
+        : null;
+      if (!button) return;
+
+      if (button.hasAttribute("data-native-share")) {
+        if (navigator.share) {
+          navigator.share({
+            title: button.getAttribute("data-share-title") || document.title,
+            text: button.getAttribute("data-share-text") || "",
+            url: button.getAttribute("data-share-url") || window.location.href
+          }).catch(function (error) {
+            if (error && error.name === "AbortError") return;
+            copyText(button.getAttribute("data-share-url") || window.location.href)
+              .then(function () {
+                setShareStatus(button, "Link copied");
+              })
+              .catch(function () {
+                setShareStatus(button, "Share unavailable");
+              });
+          });
+          return;
+        }
+
+        copyText(button.getAttribute("data-share-url") || window.location.href)
+          .then(function () {
+            setShareStatus(button, "Link copied");
+          })
+          .catch(function () {
+            setShareStatus(button, "Share unavailable");
+          });
+        return;
+      }
+
+      if (button.hasAttribute("data-copy-share")) {
+        var originalLabel = button.textContent ? button.textContent.trim() : "Copy link";
+        copyText(button.getAttribute("data-share-url") || window.location.href)
+          .then(function () {
+            button.textContent = "Copied";
+            button.classList.add("is-copied");
+            setShareStatus(button, "Link copied");
+            resetCopyLabel(button, originalLabel);
+          })
+          .catch(function () {
+            setShareStatus(button, "Copy failed");
+          });
       }
     });
-  });
-
-  document.querySelectorAll("[data-copy-share]").forEach((button) => {
-    const originalLabel = button.textContent?.trim() || "Copy link";
-
-    button.addEventListener("click", async () => {
-      try {
-        await copyText(button.dataset.shareUrl || window.location.href);
-        button.textContent = "Copied";
-        button.classList.add("is-copied");
-        setShareStatus(button, "Link copied");
-
-        window.setTimeout(() => {
-          button.textContent = originalLabel;
-          button.classList.remove("is-copied");
-        }, 1800);
-      } catch {
-        setShareStatus(button, "Copy failed");
-      }
-    });
-  });
+  })();
 </script>
