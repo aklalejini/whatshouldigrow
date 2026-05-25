@@ -230,7 +230,11 @@ function buildYieldChart(curve) {
   };
 }
 
-const partnerSearchUrl = partnerSearchHref(partner, plant.query);
+const hasDirectAffiliateListing = Boolean(plant.affiliateUrl);
+const partnerSearchUrl = plant.affiliateUrl ?? partnerSearchHref(partner, plant.query);
+const partnerLinkRel = hasDirectAffiliateListing ? "sponsored noopener noreferrer" : "noopener noreferrer";
+const partnerSourceLabel = hasDirectAffiliateListing ? "Affiliate listing" : "Source listing";
+const partnerActionLabel = hasDirectAffiliateListing ? `View ${partnerName}` : `Search ${partnerName}`;
 const planningNotes = planningNotesForPlant(plant);
 const plantingChecklist = plantingChecklistForPlant(plant, metrics, plantingChecklistItems);
 const yieldCurve = metrics.yieldCurve ?? [];
@@ -348,7 +352,7 @@ const plantJsonLd = {
             </div>
             <div class="plant-page-hero-actions">
               {partnerSearchUrl && (
-                <a class="plant-page-action is-primary" href={partnerSearchUrl} target="_blank" rel="noopener noreferrer">
+                <a class="plant-page-action is-primary" href={partnerSearchUrl} target="_blank" rel={partnerLinkRel}>
                   Check {partnerName}
                 </a>
               )}
@@ -398,10 +402,10 @@ const plantJsonLd = {
             </dl>
             <p>{harvestInsight}</p>
             <div class="plant-page-source-action">
-              <span>Source listing: {partnerName}</span>
+              <span>{partnerSourceLabel}: {partnerName}</span>
               {partnerSearchUrl ? (
-                <a class="plant-page-action" href={partnerSearchUrl} target="_blank" rel="noopener noreferrer">
-                  Search {partnerName}
+                <a class="plant-page-action" href={partnerSearchUrl} target="_blank" rel={partnerLinkRel}>
+                  {partnerActionLabel}
                 </a>
               ) : (
                 <span class="nursery-placeholder">Source search coming soon</span>
@@ -649,8 +653,8 @@ const plantJsonLd = {
               </p>
             )}
             <p>
-              Source listing: {partnerName}. Nursery search links are not paid placements
-              unless explicitly marked. Last reviewed: {metrics.lastReviewed ?? "May 2026"}.
+              {partnerSourceLabel}: {partnerName}. Search links are not paid placements
+              unless explicitly marked; affiliate listings may earn a commission. Last reviewed: {metrics.lastReviewed ?? "May 2026"}.
             </p>
           </section>
         </div>
