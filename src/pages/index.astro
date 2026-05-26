@@ -712,6 +712,15 @@ const webAppJsonLd = {
               </div>
               <div id="zone-map-canvas" class="zone-map-canvas" aria-label="Interactive United States gardening zone map">
                 <div class="zone-map-image-frame">
+                  <div
+                    id="zone-map-live-map"
+                    class="zone-map-live-map"
+                    aria-label="Live GIS map of USDA plant hardiness zones"
+                  ></div>
+                  <div id="zone-map-live-status" class="zone-map-live-status" role="status" hidden>
+                    Loading live GIS zone layer...
+                  </div>
+                  <div id="zone-map-identify" class="zone-map-identify" hidden></div>
                   <div id="zone-map-image-stage" class="zone-map-image-stage">
                     <img
                       class="zone-map-image"
@@ -916,9 +925,9 @@ const webAppJsonLd = {
           </section>
 
           <p class="zone-map-source-note">
-            Map image is from the
+            Interactive zone polygons use a public ArcGIS feature layer derived from USDA ARS 2023 Plant Hardiness Zone Map data. Static fallback image is from the
             <a href="https://planthardiness.ars.usda.gov/index.php/pages/map-downloads" target="_blank" rel="noopener noreferrer">2023 USDA ARS Plant Hardiness Zone Map downloads</a>.
-            Plant by ZIP overlays an approximate ZIP pin and local planning signals to help translate the map into planting decisions.
+            Plant by ZIP overlays approximate ZIP and local planning signals to help translate the map into planting decisions.
           </p>
         </div>
       </section>
@@ -1263,6 +1272,9 @@ const webAppJsonLd = {
       const zoneMapChillNoteEl = document.getElementById("zone-map-chill-note");
       const zoneMapRegionLayerEl = document.getElementById("zone-map-region-layer");
       const zoneMapCanvasEl = document.getElementById("zone-map-canvas");
+      const zoneMapLiveMapEl = document.getElementById("zone-map-live-map");
+      const zoneMapLiveStatusEl = document.getElementById("zone-map-live-status");
+      const zoneMapIdentifyEl = document.getElementById("zone-map-identify");
       const zoneMapImageStageEl = document.getElementById("zone-map-image-stage");
       const zoneMapPinEl = document.getElementById("zone-map-pin");
       const zoneMapPinLabelEl = document.getElementById("zone-map-pin-label");
@@ -1338,6 +1350,12 @@ const webAppJsonLd = {
       let zoneMapPanX = 0;
       let zoneMapPanY = 0;
       let zoneMapPointer = null;
+      let zoneMapLibraryPromise = null;
+      let zoneMapLiveInitPromise = null;
+      let zoneMapMapModules = null;
+      let zoneMapView = null;
+      let zoneMapHardinessLayer = null;
+      let zoneMapZipGraphicsLayer = null;
       const screenerPageSize = 120;
       const screenerColumnCount = 20;
       const zoneCache = new Map();
@@ -1359,6 +1377,10 @@ const webAppJsonLd = {
       const screenerParamKeys = [...Object.keys(screenerParamMap), "ssort", "sdir", "sgroup"];
       const matcherParamKeys = ["zip", "sun", "soil", "water", "goal"];
       const savedPlanStorageKey = "plantbyzip.savedPlan.v1";
+      const leafletCssUrl = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+      const leafletJsUrl = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+      const esriLeafletJsUrl = "https://unpkg.com/esri-leaflet@3.0.14/dist/esri-leaflet.js";
+      const hardinessFeatureLayerUrl = "https://services8.arcgis.com/1WIA3UeOTguiTsKg/arcgis/rest/services/USDS_2023_Plant_Hardiness_Zones_Vector_Tile_From_Pro/FeatureServer/0";
       const matcherDefaults = {
         zip: "",
         sun: "full",
@@ -1664,6 +1686,10 @@ const webAppJsonLd = {
         });
         appShellEl?.setAttribute("data-active-view", view);
         if (view !== "matcher") setLandingStarted(true);
+        if (view === "zone-map") {
+          ensureZoneMapLiveMap();
+          queueZoneMapResize();
+        }
       }
 
       function filterArticles() {
@@ -3022,7 +3048,270 @@ function outputSortValue(metrics) {
         return zoneMapRegions.find((region) => region.id === id) ?? zoneMapRegions.find((region) => region.id === "mid-atlantic") ?? zoneMapRegions[0];
       }
 
+      function zoneMapFullZone(zone) {
+        const match = String(zone ?? "").trim().toLowerCase().match(/^(\d{1,2})/);
+        return match ? match[1] : null;
+      }
+
+      function zoneMapZoneForFullZone(fullZone) {
+        const normalized = zoneMapFullZone(fullZone);
+        if (!normalized) return zoneMapSelectedZone;
+        if (zoneMapZoneData && zoneMapFullZone(zoneMapZoneData.zone) === normalized) {
+          return zoneMapZoneData.zone;
+        }
+        return [`${normalized}b`, `${normalized}a`].find((zone) => zoneMapZoneIds.includes(zone)) ?? zoneMapSelectedZone;
+      }
+
+      function zoneMapFullZoneColor(fullZone) {
+        const colors = {
+          "1": [77, 83, 162, 0.78],
+          "2": [104, 88, 188, 0.76],
+          "3": [138, 118, 210, 0.74],
+          "4": [88, 153, 203, 0.72],
+          "5": [104, 184, 197, 0.7],
+          "6": [89, 171, 134, 0.7],
+          "7": [114, 181, 97, 0.7],
+          "8": [198, 190, 90, 0.72],
+          "9": [225, 171, 82, 0.74],
+          "10": [228, 130, 74, 0.75],
+          "11": [210, 91, 74, 0.76],
+          "12": [185, 72, 91, 0.76],
+          "13": [153, 62, 105, 0.76]
+        };
+        return colors[String(fullZone)] ?? [114, 181, 97, 0.68];
+      }
+
+      function loadStylesheetOnce(id, href) {
+        if (document.getElementById(id)) return;
+        const link = document.createElement("link");
+        link.id = id;
+        link.rel = "stylesheet";
+        link.href = href;
+        document.head.appendChild(link);
+      }
+
+      function loadScriptOnce(id, src) {
+        return new Promise((resolve, reject) => {
+          const existing = document.getElementById(id);
+          if (existing?.dataset.loaded === "true") {
+            resolve();
+            return;
+          }
+          if (existing) {
+            existing.addEventListener("load", () => resolve(), { once: true });
+            existing.addEventListener("error", () => reject(new Error(`Could not load ${src}`)), { once: true });
+            return;
+          }
+          const script = document.createElement("script");
+          script.id = id;
+          script.src = src;
+          script.async = true;
+          script.addEventListener("load", () => {
+            script.dataset.loaded = "true";
+            resolve();
+          }, { once: true });
+          script.addEventListener("error", () => reject(new Error(`Could not load ${src}`)), { once: true });
+          document.head.appendChild(script);
+        });
+      }
+
+      function zoneMapRgbaCss(color, fallback = "#72b561") {
+        if (!Array.isArray(color)) return fallback;
+        return `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3] ?? 1})`;
+      }
+
+      function zoneMapLeafletStyle(feature) {
+        const fullZone = zoneMapFullZone(feature?.properties?.full_zone);
+        const isActive = fullZone && fullZone === zoneMapFullZone(zoneMapSelectedZone);
+        return {
+          color: isActive ? "#173820" : "rgba(31, 67, 43, 0.32)",
+          weight: isActive ? 1.4 : 0.55,
+          fillColor: zoneMapRgbaCss(zoneMapFullZoneColor(fullZone)),
+          fillOpacity: isActive ? 0.82 : 0.68,
+          opacity: isActive ? 0.75 : 0.36
+        };
+      }
+
+      async function loadZoneMapLibraries() {
+        if (zoneMapMapModules) return zoneMapMapModules;
+        if (!zoneMapLibraryPromise) {
+          zoneMapLibraryPromise = (async () => {
+            loadStylesheetOnce("plantbyzip-leaflet-css", leafletCssUrl);
+            await loadScriptOnce("plantbyzip-leaflet-js", leafletJsUrl);
+            await loadScriptOnce("plantbyzip-esri-leaflet-js", esriLeafletJsUrl);
+            if (!window.L?.esri?.featureLayer) {
+              throw new Error("Leaflet GIS layer loader unavailable.");
+            }
+            zoneMapMapModules = { L: window.L };
+            return zoneMapMapModules;
+          })().catch((error) => {
+            zoneMapLibraryPromise = null;
+            throw error;
+          });
+        }
+        return zoneMapLibraryPromise;
+      }
+
+      function queueZoneMapResize() {
+        if (!zoneMapView) return;
+        window.setTimeout(() => {
+          if (typeof zoneMapView.invalidateSize === "function") zoneMapView.invalidateSize();
+        }, 80);
+      }
+
+      function highlightZoneMapFullZone(fullZone) {
+        const normalized = zoneMapFullZone(fullZone);
+        if (!zoneMapHardinessLayer || !normalized) return;
+        if (typeof zoneMapHardinessLayer.setStyle === "function") {
+          zoneMapHardinessLayer.setStyle(zoneMapLeafletStyle);
+        }
+      }
+
+      function renderZoneMapIdentify(attributes, mode = "hover") {
+        const fullZone = zoneMapFullZone(attributes?.full_zone);
+        if (!fullZone || !zoneMapIdentifyEl) return;
+        const trange = attributes?.trange ? `${attributes.trange} F` : `${zoneMapTemperatureRange(zoneMapZoneForFullZone(fullZone))?.label ?? "winter-low range"}`;
+        const lookupZone = zoneMapZoneData && zoneMapFullZone(zoneMapZoneData.zone) === fullZone
+          ? `Your ZIP lookup refines this to zone ${zoneMapZoneData.zone}.`
+          : "Use ZIP lookup to refine the a/b subzone, frost windows, heat, and chill.";
+        zoneMapIdentifyEl.innerHTML = `
+          <span>${mode === "click" ? "Selected GIS zone" : "Hovered GIS zone"}</span>
+          <strong>USDA zone ${escapeHtml(fullZone)}</strong>
+          <small>${escapeHtml(trange)} average annual extreme minimum.</small>
+          <p>${escapeHtml(lookupZone)}</p>
+        `;
+        zoneMapIdentifyEl.hidden = false;
+      }
+
+      function selectZoneMapFromFullZone(fullZone, source = "map_click") {
+        const selectedZone = zoneMapZoneForFullZone(fullZone);
+        zoneMapSelectedZone = selectedZone;
+        renderZoneMapZoneButtons();
+        renderZoneMapZoneDetail(selectedZone);
+        const contextZoneData = zoneMapZoneData && zoneMapFullZone(zoneMapZoneData.zone) === zoneMapFullZone(fullZone)
+          ? zoneMapZoneData
+          : null;
+        renderZoneMapPlants(contextZoneData);
+        highlightZoneMapFullZone(fullZone);
+        trackEvent("zone_map_identify", {
+          full_zone: zoneMapFullZone(fullZone),
+          selected_zone: selectedZone,
+          source
+        });
+      }
+
+      function renderZoneMapLiveMarker(zoneData, shouldNavigate = false) {
+        if (!zoneMapView || !zoneMapZipGraphicsLayer || !zoneMapMapModules) return;
+        const { L } = zoneMapMapModules;
+        zoneMapZipGraphicsLayer.clearLayers();
+        if (!zoneData) return;
+        const climate = estimateLocationClimate(zoneData);
+        if (!Number.isFinite(climate.lat) || !Number.isFinite(climate.lon)) return;
+        const latLng = [climate.lat, climate.lon];
+        const marker = L.marker(latLng, {
+          icon: L.divIcon({
+            className: "zone-map-leaflet-pin",
+            html: "<span></span>",
+            iconSize: [28, 28],
+            iconAnchor: [14, 28]
+          })
+        }).bindTooltip(`Approximate ZIP area: zone ${zoneData.zone}`, {
+          permanent: true,
+          direction: "top",
+          offset: [0, -18],
+          className: "zone-map-leaflet-label"
+        });
+        marker.addTo(zoneMapZipGraphicsLayer);
+        if (shouldNavigate) {
+          const targetZoom = zoneMapCanvasEl.classList.contains("is-fullscreen") ? 7 : 6;
+          zoneMapView.flyTo(latLng, Math.max(zoneMapView.getZoom(), targetZoom), { duration: 0.85 });
+        }
+      }
+
+      async function initializeZoneMapLiveMap() {
+        if (zoneMapView || !zoneMapLiveMapEl) return;
+        zoneMapCanvasEl.classList.add("is-loading-live-map");
+        zoneMapLiveStatusEl.hidden = false;
+        zoneMapLiveStatusEl.textContent = "Loading live GIS zone layer...";
+        try {
+          const { L } = await loadZoneMapLibraries();
+          zoneMapCanvasEl.classList.add("has-live-map");
+          zoneMapView = L.map(zoneMapLiveMapEl, {
+            center: [38.5, -96],
+            zoom: 4,
+            minZoom: 3,
+            maxZoom: 12,
+            zoomControl: false,
+            scrollWheelZoom: true,
+            worldCopyJump: false
+          });
+          const topoLayer = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}", {
+            attribution: "Tiles &copy; Esri, USGS, NOAA",
+            maxZoom: 12
+          }).addTo(zoneMapView);
+          const imageryLayer = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+            attribution: "Imagery &copy; Esri",
+            maxZoom: 12
+          });
+          zoneMapHardinessLayer = L.esri.featureLayer({
+            url: hardinessFeatureLayerUrl,
+            fields: ["full_zone", "trange"],
+            simplifyFactor: 0.6,
+            precision: 5,
+            style: zoneMapLeafletStyle,
+            onEachFeature(feature, layer) {
+              const attrs = feature.properties ?? {};
+              layer.bindTooltip(`USDA zone ${attrs.full_zone}: ${attrs.trange} F`, {
+                sticky: true,
+                className: "zone-map-leaflet-tooltip"
+              });
+              layer.on("mouseover", () => renderZoneMapIdentify(attrs, "hover"));
+              layer.on("click", () => {
+                renderZoneMapIdentify(attrs, "click");
+                selectZoneMapFromFullZone(attrs.full_zone, "map_click");
+              });
+            }
+          }).addTo(zoneMapView);
+          zoneMapZipGraphicsLayer = L.layerGroup().addTo(zoneMapView);
+          L.control.zoom({ position: "topleft" }).addTo(zoneMapView);
+          L.control.layers(
+            { "Topo": topoLayer, "Imagery": imageryLayer },
+            { "Hardiness zones": zoneMapHardinessLayer, "ZIP marker": zoneMapZipGraphicsLayer },
+            { position: "topleft", collapsed: true }
+          ).addTo(zoneMapView);
+          L.control.scale({ position: "bottomleft", imperial: true, metric: true }).addTo(zoneMapView);
+          zoneMapView.on("mouseout", () => {
+            if (!zoneMapZoneData && zoneMapIdentifyEl) zoneMapIdentifyEl.hidden = true;
+          });
+          zoneMapLiveStatusEl.hidden = true;
+          zoneMapCanvasEl.classList.remove("is-loading-live-map", "has-live-map-error");
+          highlightZoneMapFullZone(zoneMapFullZone(zoneMapSelectedZone));
+          renderZoneMapLiveMarker(zoneMapZoneData, false);
+          queueZoneMapResize();
+        } catch (error) {
+          console.warn("Live GIS zone map failed to initialize", error);
+          zoneMapCanvasEl.classList.remove("has-live-map", "is-loading-live-map");
+          zoneMapCanvasEl.classList.add("has-live-map-error");
+          zoneMapLiveStatusEl.hidden = false;
+          zoneMapLiveStatusEl.textContent = "Live GIS layer could not load; static USDA map remains available.";
+        }
+      }
+
+      function ensureZoneMapLiveMap() {
+        if (zoneMapView || !zoneMapLiveMapEl) {
+          queueZoneMapResize();
+          return Promise.resolve();
+        }
+        if (!zoneMapLiveInitPromise) {
+          zoneMapLiveInitPromise = initializeZoneMapLiveMap().finally(() => {
+            if (!zoneMapView) zoneMapLiveInitPromise = null;
+          });
+        }
+        return zoneMapLiveInitPromise;
+      }
+
       function updateZoneMapTransform() {
+        if (zoneMapView) return;
         zoneMapImageStageEl.style.transform = `translate(${zoneMapPanX}px, ${zoneMapPanY}px) scale(${zoneMapScale})`;
         zoneMapImageStageEl.style.cursor = zoneMapScale > 1 || zoneMapCanvasEl.classList.contains("is-fullscreen") ? "grab" : "";
       }
@@ -3031,10 +3320,32 @@ function outputSortValue(metrics) {
         zoneMapScale = 1;
         zoneMapPanX = 0;
         zoneMapPanY = 0;
+        if (zoneMapView) {
+          const zoneData = zoneMapZoneData;
+          if (zoneData) {
+            const climate = estimateLocationClimate(zoneData);
+            if (Number.isFinite(climate.lat) && Number.isFinite(climate.lon)) {
+              zoneMapView.flyTo([climate.lat, climate.lon], 6, { duration: 0.5 });
+              return;
+            }
+          }
+          zoneMapView.flyTo([38.5, -96], 4, { duration: 0.5 });
+          return;
+        }
         updateZoneMapTransform();
       }
 
       function setZoneMapScale(nextScale) {
+        if (zoneMapView) {
+          const direction = nextScale > zoneMapScale ? 1 : -1;
+          zoneMapScale = clamp(nextScale, 1, 3);
+          if (direction > 0) {
+            zoneMapView.zoomIn(1);
+          } else {
+            zoneMapView.zoomOut(1);
+          }
+          return;
+        }
         zoneMapScale = clamp(nextScale, 1, 3);
         if (zoneMapScale === 1) {
           zoneMapPanX = 0;
@@ -3048,6 +3359,7 @@ function outputSortValue(metrics) {
         document.body.classList.toggle("has-zone-map-fullscreen", isFullscreen);
         zoneMapExpandEl.setAttribute("aria-pressed", String(isFullscreen));
         zoneMapExpandEl.textContent = isFullscreen ? "Collapse map" : "Expand map";
+        queueZoneMapResize();
         if (!isFullscreen) resetZoneMapView();
       }
 
@@ -3087,6 +3399,20 @@ function outputSortValue(metrics) {
         renderZoneMapRegion(zoneMapSelectedRegion);
       }
 
+      function selectZoneMapZone(zone, source = "selector") {
+        zoneMapSelectedZone = zone;
+        renderZoneMapZoneButtons();
+        renderZoneMapZoneDetail(zoneMapSelectedZone);
+        const contextZoneData = zoneMapZoneData && zoneMapZoneData.zone === zone ? zoneMapZoneData : null;
+        renderZoneMapPlants(contextZoneData);
+        highlightZoneMapFullZone(zoneMapFullZone(zone));
+        trackEvent("zone_map_select", {
+          selected_zone: zone,
+          full_zone: zoneMapFullZone(zone),
+          source
+        });
+      }
+
       function renderZoneMapZoneButtons() {
         zoneMapZoneButtonsEl.innerHTML = zoneMapZoneIds
           .map((zone) => `
@@ -3101,10 +3427,7 @@ function outputSortValue(metrics) {
           .join("");
         zoneMapZoneButtonsEl.querySelectorAll("[data-zone-map-zone]").forEach((button) => {
           button.addEventListener("click", () => {
-            zoneMapSelectedZone = button.dataset.zoneMapZone;
-            renderZoneMapZoneButtons();
-            renderZoneMapZoneDetail(zoneMapSelectedZone);
-            renderZoneMapPlants();
+            selectZoneMapZone(button.dataset.zoneMapZone, "selector");
           });
         });
       }
@@ -3146,6 +3469,8 @@ function outputSortValue(metrics) {
           zoneMapChillNoteEl.textContent = "Winter chill-hour proxy";
           zoneMapPinEl.hidden = true;
           zoneMapPinLabelEl.hidden = true;
+          renderZoneMapLiveMarker(null);
+          if (zoneMapIdentifyEl) zoneMapIdentifyEl.hidden = true;
           return;
         }
         const { climate, frost, frostText } = zoneMapFormatRegionClimate(zoneData);
@@ -3307,6 +3632,14 @@ function outputSortValue(metrics) {
         renderZoneMapZoneButtons();
         renderZoneMapZoneDetail(zoneMapSelectedZone);
         renderZoneMapPin(zoneData);
+        renderZoneMapLiveMarker(zoneData, true);
+        highlightZoneMapFullZone(zoneMapFullZone(zoneData.zone));
+        if (zoneMapIdentifyEl) {
+          renderZoneMapIdentify({
+            full_zone: zoneMapFullZone(zoneData.zone),
+            trange: zoneData.temperature_range
+          }, "click");
+        }
         renderZoneMapPlants(zoneData);
         zoneMapUseMatcherEl.disabled = false;
         zoneMapUseCalendarEl.disabled = false;
@@ -4641,6 +4974,7 @@ function outputSortValue(metrics) {
         renderZoneMapZoneDetail(zoneMapSelectedZone);
         renderZoneMapPlants();
         updateZoneMapTransform();
+        if (!document.getElementById("zone-map-view")?.hidden) ensureZoneMapLiveMap();
         zoneMapFormEl.addEventListener("submit", runZoneMapLookup);
         zoneMapZipEl.addEventListener("input", () => {
           zoneMapUseMatcherEl.disabled = true;
