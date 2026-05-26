@@ -2859,12 +2859,16 @@ fieldset:nth-of-type(2) .segmented {
 
 .zone-map-plant-overlay-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   gap: 8px;
   min-width: 0;
 }
 
-.zone-map-plant-overlay-row select {
+.zone-map-plant-overlay-combobox {
+  width: 100%;
+}
+
+.zone-map-plant-overlay-row > select {
   min-width: 0;
   height: 46px;
   padding: 0 38px 0 14px;
@@ -2875,13 +2879,17 @@ fieldset:nth-of-type(2) .segmented {
   font-weight: 800;
 }
 
-.zone-map-plant-overlay-row select:focus {
+.zone-map-plant-overlay-search {
+  border-radius: 999px;
+}
+
+.zone-map-plant-overlay-row > select:focus {
   border-color: var(--leaf);
   box-shadow: 0 0 0 4px rgba(39, 88, 58, 0.12);
   outline: none;
 }
 
-.zone-map-plant-overlay-row button {
+.zone-map-plant-overlay-row > button {
   min-height: 46px;
   padding: 0 15px;
   border: 1px solid rgba(39, 88, 58, 0.28);
@@ -2892,7 +2900,7 @@ fieldset:nth-of-type(2) .segmented {
   cursor: pointer;
 }
 
-.zone-map-plant-overlay-row button:disabled {
+.zone-map-plant-overlay-row > button:disabled {
   color: #7b8577;
   background: #e8ede3;
   cursor: not-allowed;

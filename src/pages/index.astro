@@ -716,10 +716,26 @@ const webAppJsonLd = {
                   <small>Choose one plant to shade USDA zones by database hardiness fit.</small>
                 </div>
                 <div class="zone-map-plant-overlay-row">
-                  <select id="zone-map-plant-overlay-select">
-                    <option value="">No plant selected</option>
-                  </select>
-                  <button id="zone-map-plant-overlay-clear" type="button" disabled>Clear</button>
+                  <div class="calendar-combobox zone-map-plant-overlay-combobox" data-zone-map-combobox="plant-overlay">
+                    <input
+                      id="zone-map-plant-overlay-search"
+                      class="calendar-filter-search zone-map-plant-overlay-search"
+                      type="search"
+                      role="combobox"
+                      aria-autocomplete="list"
+                      aria-expanded="false"
+                      aria-controls="zone-map-plant-overlay-options"
+                      aria-haspopup="listbox"
+                      autocomplete="off"
+                      placeholder="Search plants"
+                    />
+                    <button class="calendar-combobox-clear" type="button" aria-label="Clear plant overlay" hidden>Clear</button>
+                    <button class="calendar-combobox-toggle" type="button" aria-label="Show plant options" aria-controls="zone-map-plant-overlay-options"></button>
+                    <div id="zone-map-plant-overlay-options" class="calendar-combobox-options" role="listbox"></div>
+                    <select id="zone-map-plant-overlay-select" class="calendar-hidden-select" tabindex="-1" aria-hidden="true">
+                      <option value="">No plant selected</option>
+                    </select>
+                  </div>
                 </div>
                 <div id="zone-map-plant-overlay-summary" class="zone-map-plant-overlay-summary" hidden></div>
               </div>
@@ -1302,8 +1318,25 @@ const webAppJsonLd = {
       const zoneMapZoneButtonsEl = document.getElementById("zone-map-zone-buttons");
       const zoneMapZoneDetailEl = document.getElementById("zone-map-zone-detail");
       const zoneMapPlantOverlaySelectEl = document.getElementById("zone-map-plant-overlay-select");
-      const zoneMapPlantOverlayClearEl = document.getElementById("zone-map-plant-overlay-clear");
+      const zoneMapPlantOverlayComboboxEl = document.querySelector("[data-zone-map-combobox='plant-overlay']");
+      const zoneMapPlantOverlaySearchEl = document.getElementById("zone-map-plant-overlay-search");
+      const zoneMapPlantOverlayListEl = document.getElementById("zone-map-plant-overlay-options");
+      const zoneMapPlantOverlayClearEl = zoneMapPlantOverlayComboboxEl?.querySelector(".calendar-combobox-clear");
       const zoneMapPlantOverlaySummaryEl = document.getElementById("zone-map-plant-overlay-summary");
+      const zoneMapPlantOverlayCombo = {
+        root: zoneMapPlantOverlayComboboxEl,
+        input: zoneMapPlantOverlaySearchEl,
+        list: zoneMapPlantOverlayListEl,
+        select: zoneMapPlantOverlaySelectEl,
+        clear: zoneMapPlantOverlayClearEl,
+        toggle: zoneMapPlantOverlayComboboxEl?.querySelector(".calendar-combobox-toggle"),
+        placeholder: "Search plants",
+        disabledPlaceholder: "Search plants",
+        emptyLabel: "plants",
+        defaultValue: "",
+        activeIndex: 0
+      };
+      if (zoneMapPlantOverlayCombo.root) calendarComboboxes.push(zoneMapPlantOverlayCombo);
       const zoneMapPlantTitleEl = document.getElementById("zone-map-plant-title");
       const zoneMapPlantSummaryEl = document.getElementById("zone-map-plant-summary");
       const zoneMapPlantListEl = document.getElementById("zone-map-plant-list");
@@ -3364,6 +3397,7 @@ function outputSortValue(metrics) {
           .join("");
         zoneMapPlantOverlaySelectEl.innerHTML = `<option value="">No plant selected</option>${options}`;
         renderZoneMapPlantOverlaySummary();
+        syncCalendarCombobox(zoneMapPlantOverlayCombo, "Search plants");
       }
 
       function setZoneMapPlantRangeOverlay(plantId, source = "picker") {
@@ -3372,6 +3406,7 @@ function outputSortValue(metrics) {
           zoneMapPlantOverlaySelectEl.value = zoneMapSelectedPlantOverlay?.id ?? "";
         }
         updateZoneMapPlantRangeOverlay();
+        syncCalendarCombobox(zoneMapPlantOverlayCombo, "Search plants");
         if (zoneMapSelectedPlantOverlay) {
           ensureZoneMapLiveMap();
           const range = zoneMapPlantRange(zoneMapSelectedPlantOverlay);
@@ -4339,11 +4374,12 @@ function outputSortValue(metrics) {
 
       function syncCalendarCombobox(combo, placeholder) {
         const isDisabled = combo.select.disabled;
+        const defaultValue = combo.defaultValue ?? "all";
         combo.input.disabled = isDisabled;
         combo.input.setAttribute("aria-disabled", String(isDisabled));
         combo.input.placeholder = placeholder;
         combo.input.value = isDisabled ? "" : calendarSearchDisplayLabel(combo.select.selectedOptions[0]);
-        combo.clear.hidden = isDisabled || combo.select.value === "all";
+        combo.clear.hidden = isDisabled || combo.select.value === defaultValue;
         combo.toggle.disabled = isDisabled;
         combo.root.classList.toggle("is-disabled", isDisabled);
         renderCalendarComboboxOptions(combo);
@@ -4419,12 +4455,12 @@ function outputSortValue(metrics) {
       function initializeCalendarCombobox(combo) {
         combo.input.addEventListener("focus", () => {
           setCalendarComboboxOpen(combo, true);
-          if (combo.select.value === "all") combo.input.value = "";
+          if (combo.select.value === (combo.defaultValue ?? "all")) combo.input.value = "";
           renderCalendarComboboxOptions(combo);
         });
         combo.input.addEventListener("click", () => {
           setCalendarComboboxOpen(combo, true);
-          if (combo.select.value === "all") combo.input.value = "";
+          if (combo.select.value === (combo.defaultValue ?? "all")) combo.input.value = "";
           renderCalendarComboboxOptions(combo);
         });
         combo.input.addEventListener("input", () => {
@@ -4456,7 +4492,7 @@ function outputSortValue(metrics) {
           const shouldOpen = !combo.root.classList.contains("is-open");
           if (shouldOpen) combo.input.focus();
           setCalendarComboboxOpen(combo, shouldOpen);
-          if (combo.root.classList.contains("is-open") && combo.select.value === "all") combo.input.value = "";
+          if (combo.root.classList.contains("is-open") && combo.select.value === (combo.defaultValue ?? "all")) combo.input.value = "";
           renderCalendarComboboxOptions(combo);
         });
         combo.clear.addEventListener("click", () => {
@@ -5273,12 +5309,11 @@ function outputSortValue(metrics) {
             : "Enter a ZIP code to place your garden on the map.";
           renderZoneMapPlantOverlaySummary();
         });
-        zoneMapPlantOverlaySelectEl.addEventListener("change", () => {
+        const handleZoneMapPlantOverlayChange = () => {
           setZoneMapPlantRangeOverlay(zoneMapPlantOverlaySelectEl.value, "picker");
-        });
-        zoneMapPlantOverlayClearEl.addEventListener("click", () => {
-          setZoneMapPlantRangeOverlay("", "clear_button");
-        });
+        };
+        zoneMapPlantOverlaySelectEl.addEventListener("input", handleZoneMapPlantOverlayChange);
+        zoneMapPlantOverlaySelectEl.addEventListener("change", handleZoneMapPlantOverlayChange);
         zoneMapExpandEl.addEventListener("click", () => {
           const isOpening = !zoneMapCanvasEl.classList.contains("is-fullscreen");
           setZoneMapFullscreen(isOpening);
