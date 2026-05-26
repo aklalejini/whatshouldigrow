@@ -925,7 +925,7 @@ const webAppJsonLd = {
           </section>
 
           <p class="zone-map-source-note">
-            Interactive zone polygons use a public ArcGIS feature layer derived from USDA ARS 2023 Plant Hardiness Zone Map data. Static fallback image is from the
+            Interactive zone overlay uses public ArcGIS vector tiles adapted from USDA/OSU 2023 hardiness data and feature data derived from USDA ARS 2023 Plant Hardiness Zone Map data. Static fallback image is from the
             <a href="https://planthardiness.ars.usda.gov/index.php/pages/map-downloads" target="_blank" rel="noopener noreferrer">2023 USDA ARS Plant Hardiness Zone Map downloads</a>.
             Plant by ZIP overlays approximate ZIP and local planning signals to help translate the map into planting decisions.
           </p>
@@ -1355,6 +1355,7 @@ const webAppJsonLd = {
       let zoneMapMapModules = null;
       let zoneMapView = null;
       let zoneMapHardinessLayer = null;
+      let zoneMapHardinessTileLayer = null;
       let zoneMapZipGraphicsLayer = null;
       const screenerPageSize = 120;
       const screenerColumnCount = 20;
@@ -1379,8 +1380,10 @@ const webAppJsonLd = {
       const savedPlanStorageKey = "plantbyzip.savedPlan.v1";
       const leafletCssUrl = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
       const leafletJsUrl = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+      const leafletVectorGridJsUrl = "https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js";
       const esriLeafletJsUrl = "https://unpkg.com/esri-leaflet@3.0.14/dist/esri-leaflet.js";
       const hardinessFeatureLayerUrl = "https://services8.arcgis.com/1WIA3UeOTguiTsKg/arcgis/rest/services/USDS_2023_Plant_Hardiness_Zones_Vector_Tile_From_Pro/FeatureServer/0";
+      const hardinessVectorTileServerUrl = "https://vectortileservices1.arcgis.com/rKbpcgHXWYYaP4pQ/arcgis/rest/services/phzm_us_zones_shp_2023_view/VectorTileServer";
       const matcherDefaults = {
         zip: "",
         sun: "full",
@@ -3053,7 +3056,45 @@ function outputSortValue(metrics) {
         return match ? match[1] : null;
       }
 
+      function zoneMapExactOrFullZone(zone) {
+        const match = String(zone ?? "").trim().toLowerCase().match(/^(\d{1,2}[ab]?)/);
+        return match ? match[1] : null;
+      }
+
+      const zoneMapVectorSymbolToZone = {
+        "0": "3a",
+        "1": "3b",
+        "2": "4a",
+        "3": "4b",
+        "4": "5a",
+        "5": "5b",
+        "6": "6a",
+        "7": "6b",
+        "8": "7a",
+        "9": "7b",
+        "10": "8a",
+        "11": "8b",
+        "12": "9a",
+        "13": "9b",
+        "14": "10a",
+        "15": "10b",
+        "16": "11a",
+        "17": "11b",
+        "18": "12a"
+      };
+
+      function zoneMapFullZoneFromProperties(properties = {}) {
+        const directZone = zoneMapExactOrFullZone(properties.full_zone ?? properties.fullZone ?? properties.zone);
+        if (directZone) return directZone;
+        const symbol = properties._symbol ?? properties.symbol;
+        return zoneMapVectorSymbolToZone[String(symbol)] ?? null;
+      }
+
       function zoneMapZoneForFullZone(fullZone) {
+        const exactZone = String(fullZone ?? "").trim().toLowerCase();
+        if (/^\d{1,2}[ab]$/.test(exactZone) && zoneMapZoneIds.includes(exactZone)) {
+          return exactZone;
+        }
         const normalized = zoneMapFullZone(fullZone);
         if (!normalized) return zoneMapSelectedZone;
         if (zoneMapZoneData && zoneMapFullZone(zoneMapZoneData.zone) === normalized) {
@@ -3062,23 +3103,53 @@ function outputSortValue(metrics) {
         return [`${normalized}b`, `${normalized}a`].find((zone) => zoneMapZoneIds.includes(zone)) ?? zoneMapSelectedZone;
       }
 
-      function zoneMapFullZoneColor(fullZone) {
+      function zoneMapFullZoneHex(fullZone) {
         const colors = {
-          "1": [77, 83, 162, 0.78],
-          "2": [104, 88, 188, 0.76],
-          "3": [138, 118, 210, 0.74],
-          "4": [88, 153, 203, 0.72],
-          "5": [104, 184, 197, 0.7],
-          "6": [89, 171, 134, 0.7],
-          "7": [114, 181, 97, 0.7],
-          "8": [198, 190, 90, 0.72],
-          "9": [225, 171, 82, 0.74],
-          "10": [228, 130, 74, 0.75],
-          "11": [210, 91, 74, 0.76],
-          "12": [185, 72, 91, 0.76],
-          "13": [153, 62, 105, 0.76]
+          "1": "#d6d6ff",
+          "3a": "#d99ae1",
+          "3b": "#c684ce",
+          "2": "#ababd9",
+          "3": "#e091eb",
+          "4a": "#c684ce",
+          "4b": "#6a81e1",
+          "4": "#a66bff",
+          "5a": "#7ca2ed",
+          "5b": "#70c5d9",
+          "5": "#73a1ff",
+          "6a": "#4bb948",
+          "6b": "#72c34c",
+          "6": "#49ad4a",
+          "7a": "#abd76a",
+          "7b": "#cddb72",
+          "7": "#abd669",
+          "8a": "#ebd983",
+          "8b": "#e7cc5b",
+          "8": "#ede185",
+          "9a": "#deb54b",
+          "9b": "#f6b678",
+          "9": "#debb47",
+          "10a": "#eb9c37",
+          "10b": "#e6781f",
+          "10": "#e58026",
+          "11a": "#e75622",
+          "11b": "#e78665",
+          "11": "#e88e6c",
+          "12a": "#d45a4f",
+          "12": "#d4594e",
+          "13": "#962f1e"
         };
-        return colors[String(fullZone)] ?? [114, 181, 97, 0.68];
+        const zone = String(fullZone ?? "").trim().toLowerCase();
+        return colors[zone] ?? colors[zoneMapFullZone(zone)] ?? "#abd669";
+      }
+
+      function zoneMapFullZoneRangeLabel(fullZone) {
+        const exactZone = String(fullZone ?? "").trim().toLowerCase();
+        const exactRange = zoneMapTemperatureRange(exactZone);
+        if (exactRange) return exactRange.label;
+        const zoneNumber = Number(zoneMapFullZone(fullZone));
+        if (!Number.isFinite(zoneNumber)) return "winter-low range";
+        const base = -60 + (zoneNumber - 1) * 10;
+        return `${base} to ${base + 10} F`;
       }
 
       function loadStylesheetOnce(id, href) {
@@ -3115,20 +3186,33 @@ function outputSortValue(metrics) {
         });
       }
 
-      function zoneMapRgbaCss(color, fallback = "#72b561") {
-        if (!Array.isArray(color)) return fallback;
-        return `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3] ?? 1})`;
-      }
-
       function zoneMapLeafletStyle(feature) {
         const fullZone = zoneMapFullZone(feature?.properties?.full_zone);
         const isActive = fullZone && fullZone === zoneMapFullZone(zoneMapSelectedZone);
         return {
           color: isActive ? "#173820" : "rgba(31, 67, 43, 0.32)",
-          weight: isActive ? 1.4 : 0.55,
-          fillColor: zoneMapRgbaCss(zoneMapFullZoneColor(fullZone)),
-          fillOpacity: isActive ? 0.82 : 0.68,
-          opacity: isActive ? 0.75 : 0.36
+          weight: isActive ? 1.8 : 0.6,
+          fillColor: zoneMapFullZoneHex(fullZone),
+          fillOpacity: isActive ? 0.08 : 0.01,
+          opacity: isActive ? 0.85 : 0.22
+        };
+      }
+
+      function zoneMapVectorTileStyle(properties) {
+        const fullZone = zoneMapFullZoneFromProperties(properties);
+        const isExactSubzone = /^\d{1,2}[ab]$/.test(fullZone ?? "");
+        const isActive = fullZone && (
+          isExactSubzone
+            ? fullZone === zoneMapSelectedZone
+            : zoneMapFullZone(fullZone) === zoneMapFullZone(zoneMapSelectedZone)
+        );
+        return {
+          fill: true,
+          fillColor: zoneMapFullZoneHex(fullZone),
+          fillOpacity: isActive ? 0.82 : 0.72,
+          color: isActive ? "#153721" : "rgba(255, 253, 248, 0.58)",
+          opacity: isActive ? 0.78 : 0.42,
+          weight: isActive ? 1.2 : 0.45
         };
       }
 
@@ -3138,8 +3222,9 @@ function outputSortValue(metrics) {
           zoneMapLibraryPromise = (async () => {
             loadStylesheetOnce("plantbyzip-leaflet-css", leafletCssUrl);
             await loadScriptOnce("plantbyzip-leaflet-js", leafletJsUrl);
+            await loadScriptOnce("plantbyzip-leaflet-vectorgrid-js", leafletVectorGridJsUrl);
             await loadScriptOnce("plantbyzip-esri-leaflet-js", esriLeafletJsUrl);
-            if (!window.L?.esri?.featureLayer) {
+            if (!window.L?.vectorGrid?.protobuf || !window.L?.esri?.featureLayer) {
               throw new Error("Leaflet GIS layer loader unavailable.");
             }
             zoneMapMapModules = { L: window.L };
@@ -3161,17 +3246,20 @@ function outputSortValue(metrics) {
 
       function highlightZoneMapFullZone(fullZone) {
         const normalized = zoneMapFullZone(fullZone);
-        if (!zoneMapHardinessLayer || !normalized) return;
-        if (typeof zoneMapHardinessLayer.setStyle === "function") {
+        if (!normalized) return;
+        if (zoneMapHardinessLayer && typeof zoneMapHardinessLayer.setStyle === "function") {
           zoneMapHardinessLayer.setStyle(zoneMapLeafletStyle);
+        }
+        if (zoneMapHardinessTileLayer && typeof zoneMapHardinessTileLayer.redraw === "function") {
+          zoneMapHardinessTileLayer.redraw();
         }
       }
 
       function renderZoneMapIdentify(attributes, mode = "hover") {
-        const fullZone = zoneMapFullZone(attributes?.full_zone);
+        const fullZone = zoneMapFullZoneFromProperties(attributes) ?? zoneMapFullZone(attributes?.full_zone);
         if (!fullZone || !zoneMapIdentifyEl) return;
-        const trange = attributes?.trange ? `${attributes.trange} F` : `${zoneMapTemperatureRange(zoneMapZoneForFullZone(fullZone))?.label ?? "winter-low range"}`;
-        const lookupZone = zoneMapZoneData && zoneMapFullZone(zoneMapZoneData.zone) === fullZone
+        const trange = attributes?.trange ? `${attributes.trange} F` : zoneMapFullZoneRangeLabel(fullZone);
+        const lookupZone = zoneMapZoneData && zoneMapFullZone(zoneMapZoneData.zone) === zoneMapFullZone(fullZone)
           ? `Your ZIP lookup refines this to zone ${zoneMapZoneData.zone}.`
           : "Use ZIP lookup to refine the a/b subzone, frost windows, heat, and chill.";
         zoneMapIdentifyEl.innerHTML = `
@@ -3253,10 +3341,32 @@ function outputSortValue(metrics) {
             attribution: "Imagery &copy; Esri",
             maxZoom: 12
           });
+          zoneMapView.createPane("zoneMapHardinessPane");
+          zoneMapView.getPane("zoneMapHardinessPane").style.zIndex = 375;
+          zoneMapHardinessTileLayer = L.vectorGrid.protobuf(`${hardinessVectorTileServerUrl}/tile/{z}/{y}/{x}.pbf`, {
+            rendererFactory: L.canvas.tile,
+            pane: "zoneMapHardinessPane",
+            interactive: true,
+            maxNativeZoom: 12,
+            vectorTileLayerStyles: {
+              "phzm_us_zones_shp_2023": zoneMapVectorTileStyle,
+              "USDA 2023 Plant Hardiness Full Zones": zoneMapVectorTileStyle
+            }
+          }).addTo(zoneMapView);
+          zoneMapHardinessTileLayer.on("mouseover", (event) => {
+            renderZoneMapIdentify(event.layer?.properties ?? {}, "hover");
+          });
+          zoneMapHardinessTileLayer.on("click", (event) => {
+            const attrs = event.layer?.properties ?? {};
+            const fullZone = zoneMapFullZoneFromProperties(attrs);
+            if (!fullZone) return;
+            renderZoneMapIdentify(attrs, "click");
+            selectZoneMapFromFullZone(fullZone, "map_click");
+          });
           zoneMapHardinessLayer = L.esri.featureLayer({
             url: hardinessFeatureLayerUrl,
             fields: ["full_zone", "trange"],
-            simplifyFactor: 0.6,
+            simplifyFactor: 0.8,
             precision: 5,
             style: zoneMapLeafletStyle,
             onEachFeature(feature, layer) {
@@ -3276,7 +3386,7 @@ function outputSortValue(metrics) {
           L.control.zoom({ position: "topleft" }).addTo(zoneMapView);
           L.control.layers(
             { "Topo": topoLayer, "Imagery": imageryLayer },
-            { "Hardiness zones": zoneMapHardinessLayer, "ZIP marker": zoneMapZipGraphicsLayer },
+            { "Hardiness zones": zoneMapHardinessTileLayer, "ZIP marker": zoneMapZipGraphicsLayer },
             { position: "topleft", collapsed: true }
           ).addTo(zoneMapView);
           L.control.scale({ position: "bottomleft", imperial: true, metric: true }).addTo(zoneMapView);
@@ -3636,7 +3746,7 @@ function outputSortValue(metrics) {
         highlightZoneMapFullZone(zoneMapFullZone(zoneData.zone));
         if (zoneMapIdentifyEl) {
           renderZoneMapIdentify({
-            full_zone: zoneMapFullZone(zoneData.zone),
+            full_zone: zoneData.zone,
             trange: zoneData.temperature_range
           }, "click");
         }
