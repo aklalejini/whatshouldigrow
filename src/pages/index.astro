@@ -710,6 +710,19 @@ const webAppJsonLd = {
                   Expand map
                 </button>
               </div>
+              <div class="zone-map-plant-overlay-control" aria-label="Selected plant range overlay">
+                <div>
+                  <label for="zone-map-plant-overlay-select">Plant range overlay</label>
+                  <small>Choose one plant to shade USDA zones by database hardiness fit.</small>
+                </div>
+                <div class="zone-map-plant-overlay-row">
+                  <select id="zone-map-plant-overlay-select">
+                    <option value="">No plant selected</option>
+                  </select>
+                  <button id="zone-map-plant-overlay-clear" type="button" disabled>Clear</button>
+                </div>
+                <div id="zone-map-plant-overlay-summary" class="zone-map-plant-overlay-summary" hidden></div>
+              </div>
               <div id="zone-map-canvas" class="zone-map-canvas" aria-label="Interactive United States gardening zone map">
                 <div class="zone-map-image-frame">
                   <div
@@ -927,7 +940,7 @@ const webAppJsonLd = {
           <p class="zone-map-source-note">
             Interactive zone overlay uses public ArcGIS vector tiles adapted from USDA/OSU 2023 hardiness data and feature data derived from USDA ARS 2023 Plant Hardiness Zone Map data. Static fallback image is from the
             <a href="https://planthardiness.ars.usda.gov/index.php/pages/map-downloads" target="_blank" rel="noopener noreferrer">2023 USDA ARS Plant Hardiness Zone Map downloads</a>.
-            Plant by ZIP overlays approximate ZIP and local planning signals to help translate the map into planting decisions.
+            Selected plant overlays use Plant by ZIP database hardiness ranges; they are suitability cues, not county-level native range maps. Plant by ZIP overlays approximate ZIP and local planning signals to help translate the map into planting decisions.
           </p>
         </div>
       </section>
@@ -1288,6 +1301,9 @@ const webAppJsonLd = {
       const zoneMapRegionChecksEl = document.getElementById("zone-map-region-checks");
       const zoneMapZoneButtonsEl = document.getElementById("zone-map-zone-buttons");
       const zoneMapZoneDetailEl = document.getElementById("zone-map-zone-detail");
+      const zoneMapPlantOverlaySelectEl = document.getElementById("zone-map-plant-overlay-select");
+      const zoneMapPlantOverlayClearEl = document.getElementById("zone-map-plant-overlay-clear");
+      const zoneMapPlantOverlaySummaryEl = document.getElementById("zone-map-plant-overlay-summary");
       const zoneMapPlantTitleEl = document.getElementById("zone-map-plant-title");
       const zoneMapPlantSummaryEl = document.getElementById("zone-map-plant-summary");
       const zoneMapPlantListEl = document.getElementById("zone-map-plant-list");
@@ -1356,7 +1372,9 @@ const webAppJsonLd = {
       let zoneMapView = null;
       let zoneMapHardinessLayer = null;
       let zoneMapHardinessTileLayer = null;
+      let zoneMapPlantRangeTileLayer = null;
       let zoneMapZipGraphicsLayer = null;
+      let zoneMapSelectedPlantOverlay = null;
       const screenerPageSize = 120;
       const screenerColumnCount = 20;
       const zoneCache = new Map();
@@ -3152,6 +3170,66 @@ function outputSortValue(metrics) {
         return `${base} to ${base + 10} F`;
       }
 
+      function zoneMapExactZoneId(zone) {
+        const exactZone = zoneMapExactOrFullZone(zone);
+        if (!exactZone) return null;
+        if (/^\d{1,2}[ab]$/.test(exactZone)) {
+          return zoneMapZoneIds.includes(exactZone) ? exactZone : null;
+        }
+        return [`${exactZone}a`, `${exactZone}b`].find((zoneId) => zoneMapZoneIds.includes(zoneId)) ?? null;
+      }
+
+      function zoneMapPlantRange(plant) {
+        if (!plant?.zones?.length) return null;
+        const minZone = zoneMapExactZoneId(plant.zones[0]);
+        const maxZone = zoneMapExactZoneId(plant.zones[1]);
+        const minIndex = zoneMapZoneIds.indexOf(minZone);
+        const maxIndex = zoneMapZoneIds.indexOf(maxZone);
+        if (minIndex < 0 || maxIndex < 0) return null;
+        return {
+          minZone,
+          maxZone,
+          minIndex: Math.min(minIndex, maxIndex),
+          maxIndex: Math.max(minIndex, maxIndex)
+        };
+      }
+
+      function zoneMapPlantRangeFit(plant, zone) {
+        const range = zoneMapPlantRange(plant);
+        const zoneId = zoneMapExactZoneId(zone);
+        const zoneIndex = zoneMapZoneIds.indexOf(zoneId);
+        if (!range || zoneIndex < 0) return "unknown";
+        if (zoneIndex < range.minIndex - 1 || zoneIndex > range.maxIndex + 1) return "outside";
+        if (zoneIndex < range.minIndex || zoneIndex > range.maxIndex) return "near";
+        if (zoneIndex === range.minIndex || zoneIndex === range.maxIndex) return "edge";
+        return "core";
+      }
+
+      function zoneMapPlantRangeFitLabel(fit) {
+        if (fit === "core") return "strong hardiness fit";
+        if (fit === "edge") return "edge of database range";
+        if (fit === "near") return "near the listed range";
+        if (fit === "outside") return "outside listed range";
+        return "range unknown";
+      }
+
+      function zoneMapPlantRangeTileStyle(properties) {
+        const fullZone = zoneMapFullZoneFromProperties(properties);
+        const fit = zoneMapSelectedPlantOverlay ? zoneMapPlantRangeFit(zoneMapSelectedPlantOverlay, fullZone) : "outside";
+        const active = fullZone && zoneMapFullZone(fullZone) === zoneMapFullZone(zoneMapSelectedZone);
+        const styles = {
+          core: { fillColor: "#1f8f5a", fillOpacity: 0.46, color: "#0f5937", opacity: 0.68, weight: active ? 1.4 : 0.7 },
+          edge: { fillColor: "#d0a642", fillOpacity: 0.5, color: "#8c6717", opacity: 0.75, weight: active ? 1.5 : 0.75 },
+          near: { fillColor: "#f1d784", fillOpacity: 0.25, color: "#b68424", opacity: 0.5, weight: active ? 1.2 : 0.55 },
+          outside: { fillColor: "#ffffff", fillOpacity: 0, color: "#ffffff", opacity: 0, weight: 0 },
+          unknown: { fillColor: "#ffffff", fillOpacity: 0, color: "#ffffff", opacity: 0, weight: 0 }
+        };
+        return {
+          fill: true,
+          ...styles[fit]
+        };
+      }
+
       function loadStylesheetOnce(id, href) {
         if (document.getElementById(id)) return;
         const link = document.createElement("link");
@@ -3253,6 +3331,9 @@ function outputSortValue(metrics) {
         if (zoneMapHardinessTileLayer && typeof zoneMapHardinessTileLayer.redraw === "function") {
           zoneMapHardinessTileLayer.redraw();
         }
+        if (zoneMapPlantRangeTileLayer && typeof zoneMapPlantRangeTileLayer.redraw === "function") {
+          zoneMapPlantRangeTileLayer.redraw();
+        }
       }
 
       function renderZoneMapIdentify(attributes, mode = "hover") {
@@ -3269,6 +3350,86 @@ function outputSortValue(metrics) {
           <p>${escapeHtml(lookupZone)}</p>
         `;
         zoneMapIdentifyEl.hidden = false;
+      }
+
+      function initializeZoneMapPlantOverlayPicker() {
+        if (!zoneMapPlantOverlaySelectEl) return;
+        const options = plants
+          .slice()
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((plant) => {
+            const zoneLabel = plant.zones?.length ? `${plant.zones[0]}-${plant.zones[1]}` : "zone range n/a";
+            return `<option value="${escapeHtml(plant.id)}">${escapeHtml(plant.name)} (${escapeHtml(zoneLabel)})</option>`;
+          })
+          .join("");
+        zoneMapPlantOverlaySelectEl.innerHTML = `<option value="">No plant selected</option>${options}`;
+        renderZoneMapPlantOverlaySummary();
+      }
+
+      function setZoneMapPlantRangeOverlay(plantId, source = "picker") {
+        zoneMapSelectedPlantOverlay = plants.find((plant) => plant.id === plantId) ?? null;
+        if (zoneMapPlantOverlaySelectEl && zoneMapPlantOverlaySelectEl.value !== (zoneMapSelectedPlantOverlay?.id ?? "")) {
+          zoneMapPlantOverlaySelectEl.value = zoneMapSelectedPlantOverlay?.id ?? "";
+        }
+        updateZoneMapPlantRangeOverlay();
+        if (zoneMapSelectedPlantOverlay) {
+          ensureZoneMapLiveMap();
+          const range = zoneMapPlantRange(zoneMapSelectedPlantOverlay);
+          trackEvent("plant_range_overlay_select", {
+            plant_id: zoneMapSelectedPlantOverlay.id,
+            min_zone: range?.minZone,
+            max_zone: range?.maxZone,
+            source
+          });
+        } else {
+          trackEvent("plant_range_overlay_clear", { source });
+        }
+      }
+
+      function renderZoneMapPlantOverlaySummary() {
+        if (!zoneMapPlantOverlaySummaryEl || !zoneMapPlantOverlayClearEl) return;
+        zoneMapPlantOverlayClearEl.disabled = !zoneMapSelectedPlantOverlay;
+        if (!zoneMapSelectedPlantOverlay) {
+          zoneMapPlantOverlaySummaryEl.hidden = true;
+          zoneMapPlantOverlaySummaryEl.innerHTML = "";
+          return;
+        }
+        const plant = zoneMapSelectedPlantOverlay;
+        const range = zoneMapPlantRange(plant);
+        const zipFit = zoneMapZoneData ? zoneMapPlantRangeFit(plant, zoneMapZoneData.zone) : null;
+        const zipFitText = zoneMapZoneData
+          ? `ZIP zone ${zoneMapZoneData.zone}: ${zoneMapPlantRangeFitLabel(zipFit)}.`
+          : "Enter a ZIP to compare your local zone to this plant.";
+        const nativeNote = hasNativeCue(plant)
+          ? "Native cue present; verify county/ecoregion range before habitat planting."
+          : "This shades hardiness suitability, not a wild native or observation range.";
+        zoneMapPlantOverlaySummaryEl.innerHTML = `
+          <div>
+            <strong>${escapeHtml(plant.name)}</strong>
+            <span>${escapeHtml(plant.type)} | database range ${escapeHtml(range ? `${range.minZone}-${range.maxZone}` : "n/a")}</span>
+          </div>
+          <p>${escapeHtml(zipFitText)} ${escapeHtml(nativeNote)}</p>
+          <div class="zone-map-plant-overlay-legend" aria-label="Plant range overlay legend">
+            <span><i class="is-core"></i>Core fit</span>
+            <span><i class="is-edge"></i>Range edge</span>
+            <span><i class="is-near"></i>Near range</span>
+          </div>
+        `;
+        zoneMapPlantOverlaySummaryEl.hidden = false;
+      }
+
+      function updateZoneMapPlantRangeOverlay() {
+        renderZoneMapPlantOverlaySummary();
+        if (!zoneMapPlantRangeTileLayer || !zoneMapView) return;
+        const hasLayer = zoneMapView.hasLayer(zoneMapPlantRangeTileLayer);
+        if (zoneMapSelectedPlantOverlay) {
+          if (!hasLayer) zoneMapPlantRangeTileLayer.addTo(zoneMapView);
+          if (typeof zoneMapPlantRangeTileLayer.redraw === "function") {
+            zoneMapPlantRangeTileLayer.redraw();
+          }
+          return;
+        }
+        if (hasLayer) zoneMapView.removeLayer(zoneMapPlantRangeTileLayer);
       }
 
       function selectZoneMapFromFullZone(fullZone, source = "map_click") {
@@ -3363,6 +3524,19 @@ function outputSortValue(metrics) {
             renderZoneMapIdentify(attrs, "click");
             selectZoneMapFromFullZone(fullZone, "map_click");
           });
+          zoneMapView.createPane("zoneMapPlantRangePane");
+          zoneMapView.getPane("zoneMapPlantRangePane").style.zIndex = 390;
+          zoneMapView.getPane("zoneMapPlantRangePane").style.pointerEvents = "none";
+          zoneMapPlantRangeTileLayer = L.vectorGrid.protobuf(`${hardinessVectorTileServerUrl}/tile/{z}/{y}/{x}.pbf`, {
+            rendererFactory: L.canvas.tile,
+            pane: "zoneMapPlantRangePane",
+            interactive: false,
+            maxNativeZoom: 12,
+            vectorTileLayerStyles: {
+              "phzm_us_zones_shp_2023": zoneMapPlantRangeTileStyle,
+              "USDA 2023 Plant Hardiness Full Zones": zoneMapPlantRangeTileStyle
+            }
+          });
           zoneMapHardinessLayer = L.esri.featureLayer({
             url: hardinessFeatureLayerUrl,
             fields: ["full_zone", "trange"],
@@ -3396,6 +3570,7 @@ function outputSortValue(metrics) {
           zoneMapLiveStatusEl.hidden = true;
           zoneMapCanvasEl.classList.remove("is-loading-live-map", "has-live-map-error");
           highlightZoneMapFullZone(zoneMapFullZone(zoneMapSelectedZone));
+          updateZoneMapPlantRangeOverlay();
           renderZoneMapLiveMarker(zoneMapZoneData, false);
           queueZoneMapResize();
         } catch (error) {
@@ -3516,6 +3691,7 @@ function outputSortValue(metrics) {
         const contextZoneData = zoneMapZoneData && zoneMapZoneData.zone === zone ? zoneMapZoneData : null;
         renderZoneMapPlants(contextZoneData);
         highlightZoneMapFullZone(zoneMapFullZone(zone));
+        updateZoneMapPlantRangeOverlay();
         trackEvent("zone_map_select", {
           selected_zone: zone,
           full_zone: zoneMapFullZone(zone),
@@ -3581,6 +3757,7 @@ function outputSortValue(metrics) {
           zoneMapPinLabelEl.hidden = true;
           renderZoneMapLiveMarker(null);
           if (zoneMapIdentifyEl) zoneMapIdentifyEl.hidden = true;
+          renderZoneMapPlantOverlaySummary();
           return;
         }
         const { climate, frost, frostText } = zoneMapFormatRegionClimate(zoneData);
@@ -3595,6 +3772,7 @@ function outputSortValue(metrics) {
         zoneMapHeatNoteEl.textContent = `${formatNumberRange(climate.heatDays, "days >86 F")} per year, estimated.`;
         zoneMapChillValueEl.textContent = climate.chillLabel;
         zoneMapChillNoteEl.textContent = `${formatRoundedNumberRange(climate.chillHours, "chill hours")} proxy; verify fruit cultivars.`;
+        renderZoneMapPlantOverlaySummary();
       }
 
       function renderZoneMapPin(zoneData) {
@@ -5082,6 +5260,7 @@ function outputSortValue(metrics) {
         renderZoneMapRegions();
         renderZoneMapZoneButtons();
         renderZoneMapZoneDetail(zoneMapSelectedZone);
+        initializeZoneMapPlantOverlayPicker();
         renderZoneMapPlants();
         updateZoneMapTransform();
         if (!document.getElementById("zone-map-view")?.hidden) ensureZoneMapLiveMap();
@@ -5092,6 +5271,13 @@ function outputSortValue(metrics) {
           zoneMapStatusEl.textContent = /^\d{5}$/.test(zoneMapZipEl.value.trim())
             ? "Ready to look up this ZIP."
             : "Enter a ZIP code to place your garden on the map.";
+          renderZoneMapPlantOverlaySummary();
+        });
+        zoneMapPlantOverlaySelectEl.addEventListener("change", () => {
+          setZoneMapPlantRangeOverlay(zoneMapPlantOverlaySelectEl.value, "picker");
+        });
+        zoneMapPlantOverlayClearEl.addEventListener("click", () => {
+          setZoneMapPlantRangeOverlay("", "clear_button");
         });
         zoneMapExpandEl.addEventListener("click", () => {
           const isOpening = !zoneMapCanvasEl.classList.contains("is-fullscreen");
