@@ -7,7 +7,8 @@ import { DEFAULT_SOCIAL_IMAGE, SITE_NAME, SITE_URL, siteUrl } from "../../lib/si
 import {
   plantsForZoneTarget,
   relatedZoneTargets,
-  targetsForFamily
+  targetsForFamily,
+  zonePageFaqs
 } from "../../lib/zonePageData";
 import "../../styles/global.css";
 
@@ -23,6 +24,7 @@ const canonicalUrl = siteUrl(target.path);
 const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
 const entries = plantsForZoneTarget(target, plants, plantMetrics);
 const relatedTargets = relatedZoneTargets(target);
+const faqs = zonePageFaqs(target, entries);
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -31,6 +33,32 @@ const breadcrumbJsonLd = {
     { "@type": "ListItem", position: 2, name: "Fruit trees", item: siteUrl("/fruit-trees/") },
     { "@type": "ListItem", position: 3, name: target.title, item: canonicalUrl }
   ]
+};
+const itemListJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: target.title,
+  description: target.description,
+  url: canonicalUrl,
+  numberOfItems: entries.slice(0, 24).length,
+  itemListElement: entries.slice(0, 24).map(({ plant }, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: plant.name,
+    url: siteUrl(`/plants/${plant.id}/`)
+  }))
+};
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer
+    }
+  }))
 };
 ---
 
@@ -62,6 +90,8 @@ const breadcrumbJsonLd = {
     <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
     <title>{target.title} | {SITE_NAME}</title>
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(itemListJsonLd)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>
   </head>
   <body>
     <main class="app-shell">

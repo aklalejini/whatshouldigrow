@@ -8,7 +8,11 @@ import {
   sentenceCase
 } from "../lib/plantUtils";
 import {
+  zonePageFaqs,
   zonePageAdvice,
+  zonePageHighlightGroups,
+  zonePagePlanningWindows,
+  zoneProfileForTarget,
   zonePageStats,
   zonePlantSummary
 } from "../lib/zonePageData";
@@ -16,7 +20,11 @@ import {
 const { target, entries, relatedTargets = [] } = Astro.props;
 const featuredEntries = entries.slice(0, 24);
 const stats = zonePageStats(entries);
+const profile = zoneProfileForTarget(target);
 const advice = zonePageAdvice(target);
+const planningWindows = zonePagePlanningWindows(target);
+const highlightGroups = zonePageHighlightGroups(target, entries);
+const faqs = zonePageFaqs(target, entries);
 const familyPath = target.family === "what-to-plant-now" ? target.path : `/${target.family}/`;
 ---
 
@@ -26,7 +34,7 @@ const familyPath = target.family === "what-to-plant-now" ? target.path : `/${tar
     <span aria-hidden="true">/</span>
     <a href={familyPath}>{target.family.replaceAll("-", " ")}</a>
     <span aria-hidden="true">/</span>
-    <span>{target.zone.toUpperCase()}</span>
+    <span>{target.zone}</span>
   </nav>
 
   <header class="hub-hero zone-intent-hero">
@@ -80,11 +88,100 @@ const familyPath = target.family === "what-to-plant-now" ? target.path : `/${tar
     </div>
   </section>
 
+  <section class="hub-section zone-snapshot-section" aria-labelledby="zone-snapshot-title">
+    <div class="hub-section-head">
+      <div>
+        <p class="eyebrow">Zone snapshot</p>
+        <h2 id="zone-snapshot-title">Zone {target.zone} in practical garden terms</h2>
+      </div>
+      <p>
+        Hardiness zones describe winter lows. The planning value comes from combining that winter-low gate
+        with frost timing, heat load, moisture, and plant-specific needs.
+      </p>
+    </div>
+    <dl class="zone-snapshot-grid">
+      <div>
+        <dt>Winter-low range</dt>
+        <dd>{profile.tempRange}</dd>
+      </div>
+      <div>
+        <dt>Last frost cue</dt>
+        <dd>{profile.lastFrost}</dd>
+      </div>
+      <div>
+        <dt>First frost cue</dt>
+        <dd>{profile.firstFrost}</dd>
+      </div>
+      <div>
+        <dt>Season length</dt>
+        <dd>{profile.seasonLength}</dd>
+      </div>
+      <div>
+        <dt>Heat signal</dt>
+        <dd>{profile.heatCue}</dd>
+      </div>
+      <div>
+        <dt>Fruit chill cue</dt>
+        <dd>{profile.chillCue}</dd>
+      </div>
+    </dl>
+    <p class="zone-snapshot-note">{profile.regionCue}. {profile.caution}</p>
+  </section>
+
+  <section class="hub-section" aria-labelledby="zone-windows-title">
+    <div class="hub-section-head">
+      <div>
+        <p class="eyebrow">Planning windows</p>
+        <h2 id="zone-windows-title">What the timing signals mean</h2>
+      </div>
+      <p>
+        Use these as zone-level guardrails. The ZIP calendar and individual plant profiles narrow them down.
+      </p>
+    </div>
+    <div class="zone-window-grid">
+      {planningWindows.map((item) => (
+        <article>
+          <span>{item.label}</span>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="hub-section" aria-labelledby="zone-shortlists-title">
+    <div class="hub-section-head">
+      <div>
+        <p class="eyebrow">Intent shortlists</p>
+        <h2 id="zone-shortlists-title">Start with the plants that match the job</h2>
+      </div>
+      <p>
+        Each group is pulled from the same ranked database results and links directly to full plant profiles.
+      </p>
+    </div>
+    <div class="zone-shortlist-grid">
+      {highlightGroups.map((group) => (
+        <article>
+          <h3>{group.title}</h3>
+          <p>{group.description}</p>
+          <ol>
+            {group.entries.map(({ plant, metrics, timing }) => (
+              <li>
+                <a href={plantUrl(plant)}>{plant.name}</a>
+                <span>{zonePlantSummary(plant, metrics, timing)}</span>
+              </li>
+            ))}
+          </ol>
+        </article>
+      ))}
+    </div>
+  </section>
+
   <section class="hub-section" aria-labelledby="zone-featured-title">
     <div class="hub-section-head">
       <div>
         <p class="eyebrow">Database-backed picks</p>
-        <h2 id="zone-featured-title">{featuredEntries.length} useful options for {target.zone.toUpperCase()}</h2>
+        <h2 id="zone-featured-title">{featuredEntries.length} useful options for zone {target.zone}</h2>
       </div>
       <p>
         Sorted by hardiness fit, sourced planning data, water practicality, and relevance to this page's intent.
@@ -117,6 +214,27 @@ const familyPath = target.family === "what-to-plant-now" ? target.path : `/${tar
           </a>
         );
       })}
+    </div>
+  </section>
+
+  <section class="hub-section zone-faq-section" aria-labelledby="zone-faq-title">
+    <div class="hub-section-head">
+      <div>
+        <p class="eyebrow">Practical questions</p>
+        <h2 id="zone-faq-title">Read this before you plant</h2>
+      </div>
+      <p>
+        These answers keep the zone pages honest: they are useful planning pages, not substitutes for local
+        observation, extension advice, or the ZIP-level matcher.
+      </p>
+    </div>
+    <div class="zone-faq-grid">
+      {faqs.map((item) => (
+        <article>
+          <h3>{item.question}</h3>
+          <p>{item.answer}</p>
+        </article>
+      ))}
     </div>
   </section>
 
