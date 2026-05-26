@@ -3293,7 +3293,10 @@ function outputSortValue(metrics) {
             <p>${escapeHtml(plantDetails.note)}</p>
           `;
         }
-        return `USDA zone ${escapeHtml(fullZone)}: ${escapeHtml(trange)} average annual extreme minimum`;
+        return `
+          <strong>USDA zone ${escapeHtml(fullZone)}</strong>
+          <small>${escapeHtml(trange)} average annual extreme minimum</small>
+        `;
       }
 
       function zoneMapPlantRangeTileStyle(properties) {
