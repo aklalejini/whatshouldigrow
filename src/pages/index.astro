@@ -1407,6 +1407,7 @@ const webAppJsonLd = {
       let zoneMapHardinessTileLayer = null;
       let zoneMapPlantRangeTileLayer = null;
       let zoneMapZipGraphicsLayer = null;
+      let zoneMapHoverTooltip = null;
       let zoneMapSelectedPlantOverlay = null;
       const screenerPageSize = 120;
       const screenerColumnCount = 20;
@@ -3246,6 +3247,55 @@ function outputSortValue(metrics) {
         return "range unknown";
       }
 
+      function zoneMapPlantRangeFitBadge(fit) {
+        if (fit === "core") return "Core fit";
+        if (fit === "edge") return "Range edge";
+        if (fit === "near") return "Near range";
+        if (fit === "outside") return "Outside range";
+        return "Range unknown";
+      }
+
+      function zoneMapPlantRangeFitNote(fit) {
+        if (fit === "core") return "This zone sits inside the plant's database hardiness range.";
+        if (fit === "edge") return "This zone is at the cold or warm edge of the listed range.";
+        if (fit === "near") return "This zone is one subzone outside the listed range; microclimate matters.";
+        if (fit === "outside") return "This zone is outside the listed hardiness range.";
+        return "Hardiness fit could not be calculated for this zone.";
+      }
+
+      function zoneMapPlantRangeTooltipDetails(attributes) {
+        if (!zoneMapSelectedPlantOverlay) return null;
+        const fullZone = zoneMapFullZoneFromProperties(attributes) ?? zoneMapFullZone(attributes?.full_zone);
+        if (!fullZone) return null;
+        const range = zoneMapPlantRange(zoneMapSelectedPlantOverlay);
+        const fit = zoneMapPlantRangeFit(zoneMapSelectedPlantOverlay, fullZone);
+        const rangeLabel = range ? `${range.minZone}-${range.maxZone}` : "n/a";
+        return {
+          fit,
+          fullZone,
+          rangeLabel,
+          plant: zoneMapSelectedPlantOverlay,
+          badge: zoneMapPlantRangeFitBadge(fit),
+          note: zoneMapPlantRangeFitNote(fit)
+        };
+      }
+
+      function zoneMapLayerTooltipContent(attributes) {
+        const fullZone = zoneMapFullZoneFromProperties(attributes) ?? zoneMapFullZone(attributes?.full_zone);
+        if (!fullZone) return "";
+        const trange = attributes?.trange ? `${attributes.trange} F` : zoneMapFullZoneRangeLabel(fullZone);
+        const plantDetails = zoneMapPlantRangeTooltipDetails(attributes);
+        if (plantDetails) {
+          return `
+            <span class="zone-map-tooltip-kicker">Plant range overlay</span>
+            <strong>${escapeHtml(plantDetails.plant.name)}: ${escapeHtml(plantDetails.badge)}</strong>
+            <small>USDA zone ${escapeHtml(plantDetails.fullZone)} | database range ${escapeHtml(plantDetails.rangeLabel)}</small>
+            <p>${escapeHtml(plantDetails.note)}</p>
+          `;
+        }
+        return `USDA zone ${escapeHtml(fullZone)}: ${escapeHtml(trange)} average annual extreme minimum`;
+      }
+
       function zoneMapPlantRangeTileStyle(properties) {
         const fullZone = zoneMapFullZoneFromProperties(properties);
         const fit = zoneMapSelectedPlantOverlay ? zoneMapPlantRangeFit(zoneMapSelectedPlantOverlay, fullZone) : "outside";
@@ -3376,13 +3426,46 @@ function outputSortValue(metrics) {
         const lookupZone = zoneMapZoneData && zoneMapFullZone(zoneMapZoneData.zone) === zoneMapFullZone(fullZone)
           ? `Your ZIP lookup refines this to zone ${zoneMapZoneData.zone}.`
           : "Use ZIP lookup to refine the a/b subzone, frost windows, heat, and chill.";
+        const plantDetails = zoneMapPlantRangeTooltipDetails(attributes);
+        const plantFit = plantDetails
+          ? `<p class="zone-map-identify-fit"><b>${escapeHtml(plantDetails.plant.name)}:</b> ${escapeHtml(plantDetails.badge)}. ${escapeHtml(plantDetails.note)}</p>`
+          : "";
         zoneMapIdentifyEl.innerHTML = `
           <span>${mode === "click" ? "Selected GIS zone" : "Hovered GIS zone"}</span>
           <strong>USDA zone ${escapeHtml(fullZone)}</strong>
           <small>${escapeHtml(trange)} average annual extreme minimum.</small>
           <p>${escapeHtml(lookupZone)}</p>
+          ${plantFit}
         `;
         zoneMapIdentifyEl.hidden = false;
+      }
+
+      function showZoneMapHoverTooltip(attributes, latlng) {
+        if (!zoneMapView || !latlng) return;
+        const content = zoneMapLayerTooltipContent(attributes);
+        if (!content) return;
+        const L = zoneMapMapModules?.L ?? window.L;
+        if (!L?.tooltip) return;
+        if (!zoneMapHoverTooltip) {
+          zoneMapHoverTooltip = L.tooltip({
+            direction: "top",
+            offset: [0, -8],
+            opacity: 1,
+            sticky: true,
+            className: "zone-map-leaflet-tooltip"
+          });
+        }
+        zoneMapHoverTooltip.setContent(content);
+        zoneMapHoverTooltip.setLatLng(latlng);
+        if (!zoneMapView.hasLayer(zoneMapHoverTooltip)) {
+          zoneMapHoverTooltip.addTo(zoneMapView);
+        }
+      }
+
+      function hideZoneMapHoverTooltip() {
+        if (zoneMapView && zoneMapHoverTooltip && zoneMapView.hasLayer(zoneMapHoverTooltip)) {
+          zoneMapView.removeLayer(zoneMapHoverTooltip);
+        }
       }
 
       function initializeZoneMapPlantOverlayPicker() {
@@ -3550,7 +3633,15 @@ function outputSortValue(metrics) {
             }
           }).addTo(zoneMapView);
           zoneMapHardinessTileLayer.on("mouseover", (event) => {
-            renderZoneMapIdentify(event.layer?.properties ?? {}, "hover");
+            const attrs = event.layer?.properties ?? {};
+            renderZoneMapIdentify(attrs, "hover");
+            showZoneMapHoverTooltip(attrs, event.latlng);
+          });
+          zoneMapHardinessTileLayer.on("mousemove", (event) => {
+            showZoneMapHoverTooltip(event.layer?.properties ?? {}, event.latlng);
+          });
+          zoneMapHardinessTileLayer.on("mouseout", () => {
+            hideZoneMapHoverTooltip();
           });
           zoneMapHardinessTileLayer.on("click", (event) => {
             const attrs = event.layer?.properties ?? {};
@@ -3580,11 +3671,12 @@ function outputSortValue(metrics) {
             style: zoneMapLeafletStyle,
             onEachFeature(feature, layer) {
               const attrs = feature.properties ?? {};
-              layer.bindTooltip(`USDA zone ${attrs.full_zone}: ${attrs.trange} F`, {
-                sticky: true,
-                className: "zone-map-leaflet-tooltip"
+              layer.on("mouseover", (event) => {
+                renderZoneMapIdentify(attrs, "hover");
+                showZoneMapHoverTooltip(attrs, event.latlng);
               });
-              layer.on("mouseover", () => renderZoneMapIdentify(attrs, "hover"));
+              layer.on("mousemove", (event) => showZoneMapHoverTooltip(attrs, event.latlng));
+              layer.on("mouseout", hideZoneMapHoverTooltip);
               layer.on("click", () => {
                 renderZoneMapIdentify(attrs, "click");
                 selectZoneMapFromFullZone(attrs.full_zone, "map_click");
@@ -3600,6 +3692,7 @@ function outputSortValue(metrics) {
           ).addTo(zoneMapView);
           L.control.scale({ position: "bottomleft", imperial: true, metric: true }).addTo(zoneMapView);
           zoneMapView.on("mouseout", () => {
+            hideZoneMapHoverTooltip();
             if (!zoneMapZoneData && zoneMapIdentifyEl) zoneMapIdentifyEl.hidden = true;
           });
           zoneMapLiveStatusEl.hidden = true;
