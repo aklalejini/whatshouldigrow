@@ -2951,7 +2951,7 @@ body.has-zone-map-fullscreen {
   padding: 14px;
   border: 1px solid rgba(31, 67, 43, 0.24);
   border-radius: 24px;
-  background: rgba(255, 253, 248, 0.98);
+  background: #fffdf8;
   box-shadow: 0 30px 80px rgba(31, 45, 35, 0.32);
 }
 
@@ -5990,13 +5990,14 @@ input.calendar-filter-search[type="search"]:focus {
 
   .zone-map-canvas.is-fullscreen {
     inset: 8px;
+    align-content: start;
     padding: 8px;
     border-radius: 18px;
   }
 
   .zone-map-canvas.is-fullscreen .zone-map-image-frame {
-    align-self: center;
     height: auto;
+    margin-top: 44px;
   }
 
   .zone-map-canvas.is-fullscreen .zone-map-image-stage {
