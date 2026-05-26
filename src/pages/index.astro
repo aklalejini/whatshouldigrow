@@ -673,22 +673,22 @@ const webAppJsonLd = {
           </header>
 
           <section class="zone-map-dashboard" aria-label="Zone map climate summary">
-            <article>
+            <article class="zone-map-tooltip" tabindex="0" data-tooltip="USDA hardiness zone is based on the average annual extreme minimum temperature, not summer heat or soil.">
               <span>Hardiness zone</span>
               <strong id="zone-map-zone-value">--</strong>
               <small id="zone-map-temp-range">Average annual extreme minimum</small>
             </article>
-            <article>
+            <article class="zone-map-tooltip" tabindex="0" data-tooltip="Frost windows are planning estimates. Use the near-term forecast before planting tender crops.">
               <span>Frost window</span>
               <strong id="zone-map-frost-value">--</strong>
-              <small id="zone-map-frost-note">10/50/90 estimates after lookup</small>
+              <small id="zone-map-frost-note">Likely/range estimates after lookup</small>
             </article>
-            <article>
+            <article class="zone-map-tooltip" tabindex="0" data-tooltip="AHS heat load estimates how many days rise above 86 F, a useful stress cue for cool-season crops.">
               <span>Heat load</span>
               <strong id="zone-map-heat-value">--</strong>
-              <small id="zone-map-heat-note">AHS-style days above 86F</small>
+              <small id="zone-map-heat-note">AHS-style days above 86 F</small>
             </article>
-            <article>
+            <article class="zone-map-tooltip" tabindex="0" data-tooltip="Fruit chill is a rough winter chill proxy. Always confirm cultivar requirements before buying.">
               <span>Fruit chill</span>
               <strong id="zone-map-chill-value">--</strong>
               <small id="zone-map-chill-note">Winter chill-hour proxy</small>
@@ -706,10 +706,13 @@ const webAppJsonLd = {
                   Use ZIP lookup to place your garden on the official USDA hardiness pattern, then
                   use the region checks below to interpret what the zone does not tell you.
                 </p>
+                <button id="zone-map-expand" class="zone-map-expand" type="button" aria-pressed="false">
+                  Expand map
+                </button>
               </div>
               <div id="zone-map-canvas" class="zone-map-canvas" aria-label="Interactive United States gardening zone map">
                 <div class="zone-map-image-frame">
-                  <div class="zone-map-image-stage">
+                  <div id="zone-map-image-stage" class="zone-map-image-stage">
                     <img
                       class="zone-map-image"
                       src="/maps/usda-plant-hardiness-all-states-hillshade.png"
@@ -829,7 +832,20 @@ const webAppJsonLd = {
                     <rect x="764" y="181" width="24" height="12" class="legend-hot" /><text x="795" y="191">Zones 9-13</text>
                   </g>
                 </svg>
-                <span id="zone-map-pin" class="zone-map-pin" hidden><span></span></span>
+                <span
+                  id="zone-map-pin"
+                  class="zone-map-pin zone-map-tooltip"
+                  tabindex="0"
+                  data-tooltip="Approximate ZIP area, not a parcel-level location."
+                  hidden
+                ><span></span></span>
+                <span id="zone-map-pin-label" class="zone-map-pin-label" hidden>Approx. ZIP area</span>
+                  </div>
+                  <div class="zone-map-map-controls" aria-label="Map controls">
+                    <button id="zone-map-zoom-out" type="button" aria-label="Zoom out">-</button>
+                    <button id="zone-map-zoom-in" type="button" aria-label="Zoom in">+</button>
+                    <button id="zone-map-reset" type="button">Reset</button>
+                    <button id="zone-map-close" type="button">Close</button>
                   </div>
                 </div>
                 <p class="zone-map-caption">
@@ -843,6 +859,16 @@ const webAppJsonLd = {
                 <span><i class="zone-swatch zone-cool"></i>Cold-hardy temperate</span>
                 <span><i class="zone-swatch zone-mild"></i>Long shoulder seasons</span>
                 <span><i class="zone-swatch zone-hot"></i>Warm winter / heat-driven</span>
+              </div>
+              <div class="zone-map-limits" aria-label="What USDA hardiness zone does not tell you">
+                <strong>Zone does not tell you:</strong>
+                <span>summer heat</span>
+                <span>humidity</span>
+                <span>soil drainage</span>
+                <span>chill hours</span>
+                <span>deer pressure</span>
+                <span>native range</span>
+                <span>frost pockets</span>
               </div>
             </article>
 
@@ -1236,7 +1262,15 @@ const webAppJsonLd = {
       const zoneMapChillValueEl = document.getElementById("zone-map-chill-value");
       const zoneMapChillNoteEl = document.getElementById("zone-map-chill-note");
       const zoneMapRegionLayerEl = document.getElementById("zone-map-region-layer");
+      const zoneMapCanvasEl = document.getElementById("zone-map-canvas");
+      const zoneMapImageStageEl = document.getElementById("zone-map-image-stage");
       const zoneMapPinEl = document.getElementById("zone-map-pin");
+      const zoneMapPinLabelEl = document.getElementById("zone-map-pin-label");
+      const zoneMapExpandEl = document.getElementById("zone-map-expand");
+      const zoneMapZoomInEl = document.getElementById("zone-map-zoom-in");
+      const zoneMapZoomOutEl = document.getElementById("zone-map-zoom-out");
+      const zoneMapResetEl = document.getElementById("zone-map-reset");
+      const zoneMapCloseEl = document.getElementById("zone-map-close");
       const zoneMapRegionTitleEl = document.getElementById("zone-map-region-title");
       const zoneMapRegionSummaryEl = document.getElementById("zone-map-region-summary");
       const zoneMapRegionChecksEl = document.getElementById("zone-map-region-checks");
@@ -1300,6 +1334,10 @@ const webAppJsonLd = {
       let zoneMapZoneData = null;
       let zoneMapSelectedRegion = "humid-east";
       let zoneMapSelectedZone = "7b";
+      let zoneMapScale = 1;
+      let zoneMapPanX = 0;
+      let zoneMapPanY = 0;
+      let zoneMapPointer = null;
       const screenerPageSize = 120;
       const screenerColumnCount = 20;
       const zoneCache = new Map();
@@ -2831,6 +2869,12 @@ function outputSortValue(metrics) {
         return `${Math.round(range.min)}-${Math.round(range.max)} ${unit}`;
       }
 
+      function formatRoundedNumberRange(range, unit, step = 100) {
+        const min = Math.max(0, Math.round(range.min / step) * step);
+        const max = Math.max(min + step, Math.round(range.max / step) * step);
+        return `roughly ${min}-${max} ${unit}`;
+      }
+
       function frostUncertaintyDays(zoneData) {
         const climate = estimateLocationClimate(zoneData);
         let spread = 14;
@@ -2850,6 +2894,10 @@ function outputSortValue(metrics) {
 
       function formatFrostBand(band) {
         return `10/50/90 ${formatCalendarDate(band.p10)} / ${formatCalendarDate(band.p50)} / ${formatCalendarDate(band.p90)}`;
+      }
+
+      function formatPlainFrostRange(band) {
+        return `${formatCalendarDate(band.p10)}-${formatCalendarDate(band.p90)}`;
       }
 
       function zoneMapTemperatureRange(zone) {
@@ -2974,6 +3022,35 @@ function outputSortValue(metrics) {
         return zoneMapRegions.find((region) => region.id === id) ?? zoneMapRegions.find((region) => region.id === "mid-atlantic") ?? zoneMapRegions[0];
       }
 
+      function updateZoneMapTransform() {
+        zoneMapImageStageEl.style.transform = `translate(${zoneMapPanX}px, ${zoneMapPanY}px) scale(${zoneMapScale})`;
+        zoneMapImageStageEl.style.cursor = zoneMapScale > 1 || zoneMapCanvasEl.classList.contains("is-fullscreen") ? "grab" : "";
+      }
+
+      function resetZoneMapView() {
+        zoneMapScale = 1;
+        zoneMapPanX = 0;
+        zoneMapPanY = 0;
+        updateZoneMapTransform();
+      }
+
+      function setZoneMapScale(nextScale) {
+        zoneMapScale = clamp(nextScale, 1, 3);
+        if (zoneMapScale === 1) {
+          zoneMapPanX = 0;
+          zoneMapPanY = 0;
+        }
+        updateZoneMapTransform();
+      }
+
+      function setZoneMapFullscreen(isFullscreen) {
+        zoneMapCanvasEl.classList.toggle("is-fullscreen", isFullscreen);
+        document.body.classList.toggle("has-zone-map-fullscreen", isFullscreen);
+        zoneMapExpandEl.setAttribute("aria-pressed", String(isFullscreen));
+        zoneMapExpandEl.textContent = isFullscreen ? "Collapse map" : "Expand map";
+        if (!isFullscreen) resetZoneMapView();
+      }
+
       function renderZoneMapRegion(id = zoneMapSelectedRegion) {
         const region = zoneMapRegionById(id);
         zoneMapSelectedRegion = region.id;
@@ -2993,9 +3070,10 @@ function outputSortValue(metrics) {
         zoneMapRegionLayerEl.innerHTML = zoneMapRegions
           .map((region) => `
             <button
-              class="zone-map-region"
+              class="zone-map-region zone-map-tooltip"
               type="button"
               data-zone-map-region="${region.id}"
+              data-tooltip="${escapeHtml(`${region.summary} Typical USDA range: ${region.range}.`)}"
               aria-pressed="false"
             >
               <strong>${escapeHtml(region.label)}</strong>
@@ -3013,9 +3091,10 @@ function outputSortValue(metrics) {
         zoneMapZoneButtonsEl.innerHTML = zoneMapZoneIds
           .map((zone) => `
             <button
-              class="${zone === zoneMapSelectedZone ? "is-active" : ""}"
+              class="zone-map-tooltip ${zone === zoneMapSelectedZone ? "is-active" : ""}"
               type="button"
               data-zone-map-zone="${zone}"
+              data-tooltip="${escapeHtml(`${zoneMapTemperatureRange(zone)?.label ?? "Unknown winter range"} average annual extreme minimum.`)}"
               aria-pressed="${zone === zoneMapSelectedZone}"
             >${zone}</button>
           `)
@@ -3060,12 +3139,13 @@ function outputSortValue(metrics) {
           zoneMapZoneValueEl.textContent = "--";
           zoneMapTempRangeEl.textContent = "Average annual extreme minimum";
           zoneMapFrostValueEl.textContent = "--";
-          zoneMapFrostNoteEl.textContent = "10/50/90 estimates after lookup";
+          zoneMapFrostNoteEl.textContent = "Likely/range estimates after lookup";
           zoneMapHeatValueEl.textContent = "--";
-          zoneMapHeatNoteEl.textContent = "AHS-style days above 86F";
+          zoneMapHeatNoteEl.textContent = "AHS-style days above 86 F";
           zoneMapChillValueEl.textContent = "--";
           zoneMapChillNoteEl.textContent = "Winter chill-hour proxy";
           zoneMapPinEl.hidden = true;
+          zoneMapPinLabelEl.hidden = true;
           return;
         }
         const { climate, frost, frostText } = zoneMapFormatRegionClimate(zoneData);
@@ -3075,28 +3155,35 @@ function outputSortValue(metrics) {
         zoneMapFrostValueEl.textContent = frostText;
         zoneMapFrostNoteEl.textContent = frost.isFrostFree
           ? "Frost is uncommon; track rare cold snaps and exposure."
-          : `${formatFrostBand(frost.lastFrostBand)} last; ${formatFrostBand(frost.firstFrostBand)} first.`;
+          : `Last spring frost: likely ${formatCalendarDate(frost.lastFrost)}, range ${formatPlainFrostRange(frost.lastFrostBand)}. First fall frost: likely ${formatCalendarDate(frost.firstFrost)}, range ${formatPlainFrostRange(frost.firstFrostBand)}.`;
         zoneMapHeatValueEl.textContent = `AHS ${climate.heatZone}`;
-        zoneMapHeatNoteEl.textContent = `${formatNumberRange(climate.heatDays, "days >86F")} per year, estimated.`;
+        zoneMapHeatNoteEl.textContent = `${formatNumberRange(climate.heatDays, "days >86 F")} per year, estimated.`;
         zoneMapChillValueEl.textContent = climate.chillLabel;
-        zoneMapChillNoteEl.textContent = `${formatNumberRange(climate.chillHours, "winter chill hrs")} proxy; verify fruit cultivars.`;
+        zoneMapChillNoteEl.textContent = `${formatRoundedNumberRange(climate.chillHours, "chill hours")} proxy; verify fruit cultivars.`;
       }
 
       function renderZoneMapPin(zoneData) {
         if (!zoneData) {
           zoneMapPinEl.hidden = true;
+          zoneMapPinLabelEl.hidden = true;
           return;
         }
         const climate = estimateLocationClimate(zoneData);
         const position = zoneMapPinPosition(climate.lat, climate.lon, zoneMapSelectedRegion);
         if (!position) {
           zoneMapPinEl.hidden = true;
+          zoneMapPinLabelEl.hidden = true;
           return;
         }
         zoneMapPinEl.style.left = `${position.x}%`;
         zoneMapPinEl.style.top = `${position.y}%`;
         zoneMapPinEl.title = `ZIP zone ${zoneData.zone}`;
+        zoneMapPinEl.dataset.tooltip = `Approximate ZIP area. USDA zone ${zoneData.zone}.`;
         zoneMapPinEl.hidden = false;
+        zoneMapPinLabelEl.style.left = `${position.x}%`;
+        zoneMapPinLabelEl.style.top = `${position.y}%`;
+        zoneMapPinLabelEl.textContent = `Approx. zone ${zoneData.zone}`;
+        zoneMapPinLabelEl.hidden = false;
       }
 
       function zoneMapPlantScore(plant, climate) {
@@ -3106,6 +3193,53 @@ function outputSortValue(metrics) {
         const difficulty = metrics.difficultyScore ?? 4;
         const nativeBoost = hasNativeCue(plant) ? 0.5 : 0;
         return reliability * 12 - difficulty * 4 + (fit?.score ?? 0) + nativeBoost;
+      }
+
+      function zoneMapPlantReason(plant, climate) {
+        const type = plant.type.toLowerCase();
+        const goals = plant.goals.join(" ");
+        const metrics = metricFor(plant);
+        if (climate?.moistureKey?.includes("humid") && isHumiditySensitive(plant)) {
+          return "Choose disease-resistant cultivars and keep airflow open.";
+        }
+        if (hasNativeCue(plant)) {
+          return "Native cue; verify local range before habitat planting.";
+        }
+        if (type.includes("vegetable") || type.includes("herb")) {
+          return "Use local frost windows to time seed-starting and transplanting.";
+        }
+        if (type.includes("fruit") || goals.includes("fruit")) {
+          return climate?.chillLabel
+            ? `${climate.chillLabel} cue; verify cultivar chill and pollination.`
+            : "Verify cultivar chill and pollination before buying.";
+        }
+        if ((metrics.difficultyScore ?? 4) <= 2) {
+          return "Reliable starter for building confidence in this zone.";
+        }
+        return "Good hardiness fit; check light, water, and soil before planting.";
+      }
+
+      function zoneMapPlantGroups(matchingPlants, climate) {
+        const usedPlants = new Set();
+        const take = (label, predicate, limit = 3) => {
+          const groupPlants = [];
+          matchingPlants.forEach((plant) => {
+            if (groupPlants.length >= limit || usedPlants.has(plant.id) || !predicate(plant)) return;
+            usedPlants.add(plant.id);
+            groupPlants.push(plant);
+          });
+          return { label, plants: groupPlants };
+        };
+
+        return [
+          take("Easy starters", (plant) => (metricFor(plant).difficultyScore ?? 4) <= 2),
+          take("Fruit and berries", (plant) => {
+            const type = plant.type.toLowerCase();
+            return type.includes("fruit") || plant.goals.includes("fruit");
+          }),
+          take("Native / pollinator", (plant) => hasNativeCue(plant) || plant.goals.includes("pollinators-wildlife")),
+          take("Vegetables / herbs", (plant) => /vegetable|herb|annual/.test(plant.type.toLowerCase()))
+        ].filter((group) => group.plants.length);
       }
 
       function renderZoneMapPlants(zoneData = null) {
@@ -3119,7 +3253,7 @@ function outputSortValue(metrics) {
             return Number.isFinite(zoneNumber) && zoneNumber >= minZone && zoneNumber <= maxZone;
           })
           .sort((a, b) => zoneMapPlantScore(b, climate) - zoneMapPlantScore(a, climate) || a.name.localeCompare(b.name));
-        const featured = matchingPlants.slice(0, 6);
+        const plantGroups = zoneMapPlantGroups(matchingPlants, climate);
         const counts = matchingPlants.reduce((summary, plant) => {
           const type = plant.type.toLowerCase();
           const key = type.includes("tree") ? "trees"
@@ -3141,16 +3275,24 @@ function outputSortValue(metrics) {
             <span><strong>${counts.shrubs ?? 0}</strong> shrubs</span>
             <span><strong>${counts.vegetables ?? 0}</strong> vegetables</span>
           </div>
-          <div class="zone-map-plant-links">
-            ${featured.map((plant) => {
-              const metrics = metricFor(plant);
-              return `
-                <a href="${plantPagePath(plant)}">
-                  <strong>${escapeHtml(plant.name)}</strong>
-                  <span>${escapeHtml(plant.type)} | ${escapeHtml(metrics.display?.difficulty ?? "difficulty n/a")} difficulty</span>
-                </a>
-              `;
-            }).join("") || "<p>No plants match this hardiness zone yet.</p>"}
+          <div class="zone-map-plant-groups">
+            ${plantGroups.map((group) => `
+              <section class="zone-map-plant-group">
+                <h3>${escapeHtml(group.label)}</h3>
+                <div class="zone-map-plant-links">
+                  ${group.plants.map((plant) => {
+                    const metrics = metricFor(plant);
+                    return `
+                      <a href="${plantPagePath(plant)}">
+                        <strong>${escapeHtml(plant.name)}</strong>
+                        <span>${escapeHtml(plant.type)} | ${escapeHtml(metrics.display?.difficulty ?? "difficulty n/a")} difficulty</span>
+                        <em>${escapeHtml(zoneMapPlantReason(plant, climate))}</em>
+                      </a>
+                    `;
+                  }).join("")}
+                </div>
+              </section>
+            `).join("") || "<p>No plants match this hardiness zone yet.</p>"}
           </div>
         `;
       }
@@ -3245,7 +3387,7 @@ function outputSortValue(metrics) {
         if (heat?.preference === "cool" && climate.heatDays.mid >= 120) {
           score -= 18;
           value = Math.min(value, 30);
-          note = `summer heat likely limits performance (${formatNumberRange(climate.heatDays, "days >86F")})`;
+          note = `summer heat likely limits performance (${formatNumberRange(climate.heatDays, "days >86 F")})`;
         } else if (heat?.preference === "cool" && climate.heatDays.mid >= 90) {
           score -= 8;
           value = Math.min(value, 58);
@@ -4498,6 +4640,7 @@ function outputSortValue(metrics) {
         renderZoneMapZoneButtons();
         renderZoneMapZoneDetail(zoneMapSelectedZone);
         renderZoneMapPlants();
+        updateZoneMapTransform();
         zoneMapFormEl.addEventListener("submit", runZoneMapLookup);
         zoneMapZipEl.addEventListener("input", () => {
           zoneMapUseMatcherEl.disabled = true;
@@ -4505,6 +4648,63 @@ function outputSortValue(metrics) {
           zoneMapStatusEl.textContent = /^\d{5}$/.test(zoneMapZipEl.value.trim())
             ? "Ready to look up this ZIP."
             : "Enter a ZIP code to place your garden on the map.";
+        });
+        zoneMapExpandEl.addEventListener("click", () => {
+          const isOpening = !zoneMapCanvasEl.classList.contains("is-fullscreen");
+          setZoneMapFullscreen(isOpening);
+          trackEvent("zone_map_expand", { state: isOpening ? "open" : "closed" });
+        });
+        zoneMapCloseEl.addEventListener("click", () => {
+          setZoneMapFullscreen(false);
+          trackEvent("zone_map_expand", { state: "closed" });
+        });
+        zoneMapZoomInEl.addEventListener("click", () => {
+          setZoneMapScale(zoneMapScale + 0.25);
+          trackEvent("zone_map_zoom", { level: zoneMapScale });
+        });
+        zoneMapZoomOutEl.addEventListener("click", () => {
+          setZoneMapScale(zoneMapScale - 0.25);
+          trackEvent("zone_map_zoom", { level: zoneMapScale });
+        });
+        zoneMapResetEl.addEventListener("click", () => {
+          resetZoneMapView();
+          trackEvent("zone_map_zoom", { level: zoneMapScale, action: "reset" });
+        });
+        zoneMapImageStageEl.addEventListener("pointerdown", (event) => {
+          if (!zoneMapCanvasEl.classList.contains("is-fullscreen") && zoneMapScale <= 1) return;
+          zoneMapPointer = {
+            id: event.pointerId,
+            x: event.clientX,
+            y: event.clientY,
+            panX: zoneMapPanX,
+            panY: zoneMapPanY
+          };
+          if (zoneMapImageStageEl.setPointerCapture) zoneMapImageStageEl.setPointerCapture(event.pointerId);
+          zoneMapImageStageEl.style.cursor = "grabbing";
+        });
+        zoneMapImageStageEl.addEventListener("pointermove", (event) => {
+          if (!zoneMapPointer || event.pointerId !== zoneMapPointer.id) return;
+          zoneMapPanX = clamp(zoneMapPointer.panX + event.clientX - zoneMapPointer.x, -520, 520);
+          zoneMapPanY = clamp(zoneMapPointer.panY + event.clientY - zoneMapPointer.y, -380, 380);
+          updateZoneMapTransform();
+        });
+        ["pointerup", "pointercancel", "pointerleave"].forEach((eventName) => {
+          zoneMapImageStageEl.addEventListener(eventName, (event) => {
+            if (!zoneMapPointer || event.pointerId !== zoneMapPointer.id) return;
+            if (
+              zoneMapImageStageEl.releasePointerCapture
+              && (!zoneMapImageStageEl.hasPointerCapture || zoneMapImageStageEl.hasPointerCapture(event.pointerId))
+            ) {
+              zoneMapImageStageEl.releasePointerCapture(event.pointerId);
+            }
+            zoneMapPointer = null;
+            updateZoneMapTransform();
+          });
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && zoneMapCanvasEl.classList.contains("is-fullscreen")) {
+            setZoneMapFullscreen(false);
+          }
         });
         zoneMapUseMatcherEl.addEventListener("click", () => {
           const zip = zoneMapZipEl.value.trim();

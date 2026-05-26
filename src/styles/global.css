@@ -2807,6 +2807,65 @@ fieldset:nth-of-type(2) .segmented {
   font-size: 0.94rem;
 }
 
+.zone-map-expand {
+  flex: 0 0 auto;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid rgba(39, 88, 58, 0.34);
+  border-radius: 999px;
+  color: var(--leaf-dark);
+  background: rgba(255, 253, 248, 0.88);
+  font-weight: 850;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(31, 45, 35, 0.08);
+}
+
+.zone-map-expand:hover,
+.zone-map-expand[aria-pressed="true"] {
+  color: #fff;
+  border-color: var(--leaf);
+  background: var(--leaf);
+}
+
+.zone-map-tooltip {
+  position: relative;
+}
+
+.zone-map-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 9px);
+  z-index: 30;
+  width: max-content;
+  max-width: min(280px, calc(100dvw - 36px));
+  padding: 9px 11px;
+  border: 1px solid rgba(31, 67, 43, 0.18);
+  border-radius: 10px;
+  color: #223428;
+  background: rgba(255, 253, 248, 0.98);
+  box-shadow: 0 12px 28px rgba(31, 45, 35, 0.16);
+  font-size: 0.78rem;
+  font-weight: 750;
+  line-height: 1.35;
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.zone-map-tooltip:hover::after,
+.zone-map-tooltip:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.zone-map-pin.zone-map-tooltip::after {
+  display: none;
+}
+
 .zone-map-canvas {
   position: relative;
   display: grid;
@@ -2833,6 +2892,9 @@ fieldset:nth-of-type(2) .segmented {
   position: relative;
   width: 100%;
   aspect-ratio: 3300 / 2550;
+  transform-origin: center;
+  transition: transform 120ms ease;
+  will-change: transform;
 }
 
 .zone-map-image {
@@ -2840,6 +2902,80 @@ fieldset:nth-of-type(2) .segmented {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.zone-map-map-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 8;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.zone-map-map-controls button {
+  min-width: 38px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid rgba(31, 67, 43, 0.28);
+  border-radius: 999px;
+  color: var(--leaf-dark);
+  background: rgba(255, 253, 248, 0.92);
+  font-weight: 850;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(31, 45, 35, 0.12);
+}
+
+.zone-map-map-controls button:hover {
+  color: #fff;
+  border-color: var(--leaf);
+  background: var(--leaf);
+}
+
+#zone-map-close {
+  display: none;
+}
+
+body.has-zone-map-fullscreen {
+  overflow: hidden;
+}
+
+.zone-map-canvas.is-fullscreen {
+  position: fixed;
+  inset: 14px;
+  z-index: 2000;
+  display: grid;
+  gap: 0;
+  padding: 14px;
+  border: 1px solid rgba(31, 67, 43, 0.24);
+  border-radius: 24px;
+  background: rgba(255, 253, 248, 0.98);
+  box-shadow: 0 30px 80px rgba(31, 45, 35, 0.32);
+}
+
+.zone-map-canvas.is-fullscreen .zone-map-image-frame {
+  display: grid;
+  place-items: center;
+  height: calc(100dvh - 58px);
+  border-radius: 18px;
+}
+
+.zone-map-canvas.is-fullscreen .zone-map-image-stage {
+  width: min(100%, calc((100dvh - 86px) * 1.294));
+  max-height: 100%;
+  touch-action: none;
+}
+
+.zone-map-canvas.is-fullscreen .zone-map-caption,
+.zone-map-canvas.is-fullscreen .zone-map-region-layer {
+  display: none;
+}
+
+.zone-map-canvas.is-fullscreen #zone-map-close {
+  display: inline-flex;
+  align-items: center;
 }
 
 .zone-map-caption {
@@ -3096,6 +3232,23 @@ fieldset:nth-of-type(2) .segmented {
   background: #fff;
 }
 
+.zone-map-pin-label {
+  position: absolute;
+  z-index: 6;
+  max-width: 150px;
+  padding: 5px 8px;
+  border: 1px solid rgba(31, 67, 43, 0.2);
+  border-radius: 999px;
+  color: var(--leaf-dark);
+  background: rgba(255, 253, 248, 0.95);
+  box-shadow: 0 8px 18px rgba(31, 45, 35, 0.16);
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1;
+  pointer-events: none;
+  transform: translate(12px, -34px);
+}
+
 .zone-map-legend {
   display: flex;
   flex-wrap: wrap;
@@ -3115,6 +3268,28 @@ fieldset:nth-of-type(2) .segmented {
   background: #fff;
   font-size: 0.8rem;
   font-weight: 800;
+}
+
+.zone-map-limits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+  color: #405246;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.zone-map-limits strong {
+  color: var(--leaf-dark);
+}
+
+.zone-map-limits span {
+  padding: 5px 9px;
+  border: 1px solid #dce5d4;
+  border-radius: 999px;
+  background: rgba(255, 253, 248, 0.86);
 }
 
 .zone-swatch {
@@ -3189,10 +3364,10 @@ fieldset:nth-of-type(2) .segmented {
 
 .zone-map-zone-buttons {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  overflow-x: auto;
-  padding: 2px 0 10px;
-  scroll-snap-type: x proximity;
+  overflow: visible;
+  padding: 2px 0 0;
 }
 
 .zone-map-zone-buttons button {
@@ -3205,7 +3380,6 @@ fieldset:nth-of-type(2) .segmented {
   background: #fff;
   font-weight: 850;
   cursor: pointer;
-  scroll-snap-align: start;
 }
 
 .zone-map-zone-buttons button:hover,
@@ -3284,9 +3458,35 @@ fieldset:nth-of-type(2) .segmented {
   text-decoration: none;
 }
 
+.zone-map-plant-links a em {
+  color: #526356;
+  font-size: 0.78rem;
+  font-style: normal;
+  line-height: 1.35;
+}
+
 .zone-map-plant-links a:hover {
   border-color: rgba(39, 88, 58, 0.42);
   background: #f4f8ef;
+}
+
+.zone-map-plant-groups {
+  display: grid;
+  gap: 14px;
+}
+
+.zone-map-plant-group {
+  display: grid;
+  gap: 8px;
+}
+
+.zone-map-plant-group h3 {
+  margin: 0;
+  color: var(--leaf-dark);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
 }
 
 .zone-map-actions {
@@ -5771,18 +5971,51 @@ input.calendar-filter-search[type="search"]:focus {
     align-items: start;
   }
 
+  .zone-map-expand {
+    justify-self: start;
+  }
+
   .zone-map-canvas {
     min-height: 0;
   }
 
   .zone-map-image-frame {
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     -webkit-overflow-scrolling: touch;
   }
 
   .zone-map-image-stage {
     min-width: 0;
+  }
+
+  .zone-map-canvas.is-fullscreen {
+    inset: 8px;
+    padding: 8px;
+    border-radius: 18px;
+  }
+
+  .zone-map-canvas.is-fullscreen .zone-map-image-frame {
+    align-self: center;
+    height: auto;
+  }
+
+  .zone-map-canvas.is-fullscreen .zone-map-image-stage {
+    width: 100%;
+  }
+
+  .zone-map-map-controls {
+    top: 8px;
+    right: 8px;
+    left: 8px;
+  }
+
+  .zone-map-map-controls button {
+    min-height: 34px;
+    padding-inline: 10px;
+  }
+
+  .zone-map-tooltip::after {
+    display: none;
   }
 
   .zone-map-region {
