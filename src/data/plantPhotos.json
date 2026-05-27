@@ -15,6 +15,21 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "alaska-nasturtium",
+    "primary": {
+      "src": "/plant-photos/alaska-nasturtium/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Nasturtium plant showing round leaves and flowers.",
+      "caption": "Nasturtium plant showing round leaves and flowers.",
+      "credit": "Sabina Bajracharya / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ANasturtium%20-%20Spitfire%2001.jpg",
+      "bytes": 439822
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "all-in-one-almond",
     "primary": {
       "src": "/plant-photos/all-in-one-almond/primary.jpg",
@@ -30,6 +45,36 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "ambrosia-cantaloupe",
+    "primary": {
+      "src": "/plant-photos/ambrosia-cantaloupe/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Cantaloupe vine showing leaves and melon fruit.",
+      "caption": "Cantaloupe vine showing leaves and melon fruit.",
+      "credit": "Rob Duval / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACantaloupe%20plant.JPG",
+      "bytes": 1048240
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "american-hazelnut",
+    "primary": {
+      "src": "/plant-photos/american-hazelnut/primary.jpg",
+      "label": "Plant photo",
+      "alt": "American hazelnut shrub showing leaves and nut clusters.",
+      "caption": "American hazelnut shrub showing leaves and nut clusters.",
+      "credit": "Krzysztof Ziarnek, Kenraiz / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACorylus%20americana%20kz01.jpg",
+      "bytes": 473734
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "anise-hyssop",
     "primary": {
       "src": "/plant-photos/anise-hyssop/primary.jpg",
@@ -40,6 +85,21 @@
       "license": "CC BY-SA 4.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAnise%20Hyssop%20P7010483.jpg",
       "bytes": 491059
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "anna-apple",
+    "primary": {
+      "src": "/plant-photos/anna-apple/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Apple branch showing leaves and fruit.",
+      "caption": "Apple branch showing leaves and fruit.",
+      "credit": "User:Doncsecz / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AJablan%20na%20Verici.JPG",
+      "bytes": 1716835
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -71,6 +131,21 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "arbequina-olive",
+    "primary": {
+      "src": "/plant-photos/arbequina-olive/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Olive branch showing narrow leaves and olives.",
+      "caption": "Olive branch showing narrow leaves and olives.",
+      "credit": "Manfred Werner - Tsui / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlumeng%C3%A4rten%20Hirschstetten%20Wien%202014%20Garten%20der%20Provence.jpg",
+      "bytes": 762069
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "arkansas-black-apple",
     "primary": {
       "src": "/plant-photos/arkansas-black-apple/primary.jpg",
@@ -81,6 +156,21 @@
       "license": "CC BY-SA 4.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arkansas_Black_Apple.jpg",
       "bytes": 1671301
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "arnold-promise-witch-hazel",
+    "primary": {
+      "src": "/plant-photos/arnold-promise-witch-hazel/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Witch hazel shrub showing branches, leaves, and yellow flowers.",
+      "caption": "Witch hazel shrub showing branches, leaves, and yellow flowers.",
+      "credit": "Si Griffiths / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AWitch-hazel%20(Hamamelis).jpg",
+      "bytes": 343703
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -101,6 +191,21 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "ayers-pear",
+    "primary": {
+      "src": "/plant-photos/ayers-pear/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Pear tree showing leaves and fruiting branches.",
+      "caption": "Pear tree showing leaves and fruiting branches.",
+      "credit": "Mleprince / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AComice%20plantation%20thomas%20le%20prince.jpg",
+      "bytes": 1146980
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "bartlett-pear",
     "primary": {
       "src": "/plant-photos/bartlett-pear/primary.jpg",
@@ -111,6 +216,21 @@
       "license": "Public domain",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pyrus_communis_cvar._Max_red_Barlett_21_juliol_06_001.jpg",
       "bytes": 2403063
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "beauregard-sweet-potato",
+    "primary": {
+      "src": "/plant-photos/beauregard-sweet-potato/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Sweet potato vine showing trailing stems and leaves.",
+      "caption": "Sweet potato vine showing trailing stems and leaves.",
+      "credit": "Bubai Bera / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AIpomoea%20batatas%2001%20Bubai%20Bera.jpg",
+      "bytes": 932383
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -146,6 +266,51 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "belle-of-georgia-peach",
+    "primary": {
+      "src": "/plant-photos/belle-of-georgia-peach/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Peach tree showing leaves, stems, and fruit or blossoms.",
+      "caption": "Peach tree showing leaves, stems, and fruit or blossoms.",
+      "credit": "jjron / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ANectarine%20Fruit%20Development.jpg",
+      "bytes": 504128
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "benary-zinnia",
+    "primary": {
+      "src": "/plant-photos/benary-zinnia/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Zinnia plant showing colorful flowers, stems, and leaves.",
+      "caption": "Zinnia plant showing colorful flowers, stems, and leaves.",
+      "credit": "Jeevan Jose, Kerala, India / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AZinnia%20elegans%20at%20Kadavoor.jpg",
+      "bytes": 256735
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "black-beauty-zucchini",
+    "primary": {
+      "src": "/plant-photos/black-beauty-zucchini/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Zucchini plant showing large leaves and squash fruit.",
+      "caption": "Zucchini plant showing large leaves and squash fruit.",
+      "credit": "Rasbak / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACourgette%20plant%20begin%20augustus%20(Cucurbita%20pepo%20in%20August)%20(1).jpg",
+      "bytes": 1010712
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "black-eyed-susan",
     "primary": {
       "src": "/plant-photos/black-eyed-susan/primary.jpg",
@@ -156,6 +321,51 @@
       "license": "CC0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A20140827Rudbeckia%20hirta2.jpg",
       "bytes": 434789
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "blanket-flower",
+    "primary": {
+      "src": "/plant-photos/blanket-flower/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Blanket flower plant showing daisy-like flowers and leaves.",
+      "caption": "Blanket flower plant showing daisy-like flowers and leaves.",
+      "credit": "A. J. T. Johnsingh, WWF-India and NCF / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AHarsil%2C%209000%20feet%2C%20Uttatakhand%2C%20Indian%20tortoise%20shell%2C%20AJT%20Johnsingh.%20IMG%201205.jpg",
+      "bytes": 520701
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "bloodgood-japanese-maple",
+    "primary": {
+      "src": "/plant-photos/bloodgood-japanese-maple/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Japanese maple tree showing lobed leaves and branching habit.",
+      "caption": "Japanese maple tree showing lobed leaves and branching habit.",
+      "credit": "James St. John / Wikimedia Commons",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAcer%20palmatum%20(Japanese%20maple%20tree)%20(Newark%2C%20Ohio%2C%20USA)%201%20(17170501100).jpg",
+      "bytes": 853071
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "bloomsdale-spinach",
+    "primary": {
+      "src": "/plant-photos/bloomsdale-spinach/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Spinach plant showing dark green leaves.",
+      "caption": "Spinach plant showing dark green leaves.",
+      "credit": "Rameshng / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APalak%20-%20spinach%20plant%20from%20lalbagh%202349.JPG",
+      "bytes": 565296
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -176,6 +386,21 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "bright-lights-chard",
+    "primary": {
+      "src": "/plant-photos/bright-lights-chard/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Swiss chard plant showing colorful stems and broad leaves.",
+      "caption": "Swiss chard plant showing colorful stems and broad leaves.",
+      "credit": "Forest & Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080103-1263%20Beta%20vulgaris%20subsp.%20cicla.jpg",
+      "bytes": 702196
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "brightwell-blueberry",
     "primary": {
       "src": "/plant-photos/brightwell-blueberry/primary.jpg",
@@ -191,6 +416,36 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "brown-turkey-fig",
+    "primary": {
+      "src": "/plant-photos/brown-turkey-fig/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Fig branch showing broad leaves and fruit.",
+      "caption": "Fig branch showing broad leaves and fruit.",
+      "credit": "Joe Mabel / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABucharest%20Botanical%20Garden%20-%20Fig%20tree.jpg",
+      "bytes": 1144358
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "buttercrunch-lettuce",
+    "primary": {
+      "src": "/plant-photos/buttercrunch-lettuce/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Lettuce plant showing leafy rosette growth.",
+      "caption": "Lettuce plant showing leafy rosette growth.",
+      "credit": "Leon Brooks / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AHydroponic%20lettuce%20leaves%20green.jpg",
+      "bytes": 347076
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "butterfly-weed",
     "primary": {
       "src": "/plant-photos/butterfly-weed/primary.jpg",
@@ -201,6 +456,81 @@
       "license": "Public domain",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAsclepias%20tuberosa%20(44143985134).jpg",
       "bytes": 254020
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "california-wonder-pepper",
+    "primary": {
+      "src": "/plant-photos/california-wonder-pepper/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Bell pepper plant showing leaves and peppers.",
+      "caption": "Bell pepper plant showing leaves and peppers.",
+      "credit": "H. Zell / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACapsicum%20annuum%20003.JPG",
+      "bytes": 891036
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "caramel-heuchera",
+    "primary": {
+      "src": "/plant-photos/caramel-heuchera/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Coral bells plant showing rounded leaves and flower stems.",
+      "caption": "Coral bells plant showing rounded leaves and flower stems.",
+      "credit": "F. D. Richards from Clinton, MI / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AHeuchera%20'Amethyst%20Mist'%205%202021%20Coral%20Bells-%20(51181257963).jpg",
+      "bytes": 1339320
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "carlos-muscadine",
+    "primary": {
+      "src": "/plant-photos/carlos-muscadine/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Muscadine grape vine showing leaves and grape clusters.",
+      "caption": "Muscadine grape vine showing leaves and grape clusters.",
+      "credit": "not provided by the original uploader; it is guessed that the photo is by: User:Pollinator / Wikimedia Commons",
+      "license": "CC BY 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AWild%20muscadine.jpg",
+      "bytes": 410283
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "carmine-goumi",
+    "primary": {
+      "src": "/plant-photos/carmine-goumi/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Goumi shrub showing leaves and red fruit.",
+      "caption": "Goumi shrub showing leaves and red fruit.",
+      "credit": "Krzysztof Ziarnek, Kenraiz / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AElaeagnus%20multiflora%20kz5.jpg",
+      "bytes": 1059234
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "caroline-raspberry",
+    "primary": {
+      "src": "/plant-photos/caroline-raspberry/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Raspberry cane showing leaves and berries.",
+      "caption": "Raspberry cane showing leaves and berries.",
+      "credit": "Fpipeotero / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFrambuesas%20Villa%20Cacique.jpg",
+      "bytes": 1322857
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -232,6 +562,21 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "cherokee-purple-tomato",
+    "primary": {
+      "src": "/plant-photos/cherokee-purple-tomato/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Tomato plant showing leaves, stems, and fruit.",
+      "caption": "Tomato plant showing leaves, stems, and fruit.",
+      "credit": "Forest and Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0 us",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
+      "bytes": 988733
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "chicago-hardy-fig",
     "primary": {
       "src": "/plant-photos/chicago-hardy-fig/primary.jpg",
@@ -257,6 +602,21 @@
       "license": "CC BY-SA 3.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ripening_Chickasaw_Plum.JPG",
       "bytes": 1444906
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "cilantro",
+    "primary": {
+      "src": "/plant-photos/cilantro/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Cilantro plant showing leafy stems and flowers where visible.",
+      "caption": "Cilantro plant showing leafy stems and flowers where visible.",
+      "credit": "Kuldeep Singh Deep / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABeautiful%20Coriander%20plant%20Flowers.jpg",
+      "bytes": 636594
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -333,6 +693,171 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "crimson-star-goji",
+    "primary": {
+      "src": "/plant-photos/crimson-star-goji/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Goji berry shrub showing leaves and red fruit.",
+      "caption": "Goji berry shrub showing leaves and red fruit.",
+      "credit": "Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ALyciumBarbarum-plant-hr.jpg",
+      "bytes": 767888
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "crimson-sweet-watermelon",
+    "primary": {
+      "src": "/plant-photos/crimson-sweet-watermelon/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Watermelon vine showing lobed leaves and fruit.",
+      "caption": "Watermelon vine showing lobed leaves and fruit.",
+      "credit": "Famartin / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A2023-09-17%2016%2015%2000%20An%20overgrown%20watermelon%20vine%20growing%20out%20of%20the%20crack%20in%20a%20concrete%20patio%20along%20Mercer%20County%20Route%20526%20(Robbinsville-Edinburg%20Road)%20in%20Robbinsville%20Township%2C%20Mercer%20County%2C%20New%20Jersey.jpg",
+      "bytes": 1358314
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "danvers-carrot",
+    "primary": {
+      "src": "/plant-photos/danvers-carrot/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Carrot plant showing fern-like leaves and roots where visible.",
+      "caption": "Carrot plant showing fern-like leaves and roots where visible.",
+      "credit": "Rasbak / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADaucus%20carota%20flowers%2C%20peen%20'Napoli'.jpg",
+      "bytes": 835030
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "detroit-beet",
+    "primary": {
+      "src": "/plant-photos/detroit-beet/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Beet plant showing leafy tops and roots where visible.",
+      "caption": "Beet plant showing leafy tops and roots where visible.",
+      "credit": "Dwight Sipler from Stow, MA, USA / Wikimedia Commons",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABeets%20starting%20to%20push%20up%20the%20covering%20medium%20(5595844295).jpg",
+      "bytes": 1100401
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "dunstan-chestnut",
+    "primary": {
+      "src": "/plant-photos/dunstan-chestnut/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Chestnut tree showing long leaves and burrs.",
+      "caption": "Chestnut tree showing long leaves and burrs.",
+      "credit": "Ростислав Александрович Луценко / Wikimedia Commons",
+      "license": "CC BY 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A%D0%A6%D0%B2%D0%B5%D1%82%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BA%D0%B0%D1%88%D1%82%D0%B0%D0%BD%D0%B0%20%D0%B2%20%D0%BA%D0%BE%D0%BD%D1%86%D0%B5%20%D0%B2%D0%B5%D1%81%D0%BD%D1%8B%20%D1%81%20%D0%B1%D0%BB%D0%B8%D0%B7%D0%BA%D0%BE%D0%B3%D0%BE%20%D1%80%D0%B0%D1%81%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%B8%D1%8F.jpg",
+      "bytes": 1036934
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "durango-marigold",
+    "primary": {
+      "src": "/plant-photos/durango-marigold/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Marigold plant showing divided leaves and orange flowers.",
+      "caption": "Marigold plant showing divided leaves and orange flowers.",
+      "credit": "Dinesh Valke from Thane, India / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ATagetes%20erecta%20(405633315).jpg",
+      "bytes": 406934
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "dwarf-yaupon-holly",
+    "primary": {
+      "src": "/plant-photos/dwarf-yaupon-holly/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Yaupon holly shrub showing small evergreen leaves and berries where visible.",
+      "caption": "Yaupon holly shrub showing small evergreen leaves and berries where visible.",
+      "credit": "Photo by David J. Stang / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AIlex%20vomitoria%203zz.jpg",
+      "bytes": 347667
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "earliglow-strawberry",
+    "primary": {
+      "src": "/plant-photos/earliglow-strawberry/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Strawberry plant showing leaves and fruit.",
+      "caption": "Strawberry plant showing leaves and fruit.",
+      "credit": "Marc Ryckaert (MJJR) / Wikimedia Commons",
+      "license": "CC BY 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAardbeienplant%20R01.jpg",
+      "bytes": 712785
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "ein-shemer-apple",
+    "primary": {
+      "src": "/plant-photos/ein-shemer-apple/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Apple tree showing leaves and fruiting branches.",
+      "caption": "Apple tree showing leaves and fruiting branches.",
+      "credit": "User:Doncsecz / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AJablan%20na%20Verici.JPG",
+      "bytes": 1716835
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "elberta-peach",
+    "primary": {
+      "src": "/plant-photos/elberta-peach/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Peach branch showing narrow leaves and fruit.",
+      "caption": "Peach branch showing narrow leaves and fruit.",
+      "credit": "Harry Van den Bulck / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APeach%20tree%20branch%20with%20fruits.jpg",
+      "bytes": 2172641
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "elliott-pecan",
+    "primary": {
+      "src": "/plant-photos/elliott-pecan/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Pecan branch showing compound leaves and nuts.",
+      "caption": "Pecan branch showing compound leaves and nuts.",
+      "credit": "James St. John / Wikimedia Commons",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACarya%20illinoinensis%20(pecan%20tree)%202%20(39629039592).jpg",
+      "bytes": 1011867
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "english-thyme",
     "primary": {
       "src": "/plant-photos/english-thyme/primary.jpg",
@@ -343,6 +868,21 @@
       "license": "CC BY 2.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AP1090314-24x15-Thymus%20vulgaris%20(41870296675).jpg",
       "bytes": 830215
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "fireworks-goldenrod",
+    "primary": {
+      "src": "/plant-photos/fireworks-goldenrod/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Goldenrod plant showing yellow flower sprays and leaves.",
+      "caption": "Goldenrod plant showing yellow flower sprays and leaves.",
+      "credit": "Daniel McClosky / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ASolidago%20canadensis%20var.%20hargeri%20section%20of%20capitulescence.jpg",
+      "bytes": 431919
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -389,6 +929,81 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "georgia-collards",
+    "primary": {
+      "src": "/plant-photos/georgia-collards/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Collard greens plant showing broad leaves and upright growth.",
+      "caption": "Collard greens plant showing broad leaves and upright growth.",
+      "credit": "Kaweesaesther / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AMature%20collard%20plants.jpg",
+      "bytes": 130949
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "gold-nugget-loquat",
+    "primary": {
+      "src": "/plant-photos/gold-nugget-loquat/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Loquat branch showing leaves and fruit clusters.",
+      "caption": "Loquat branch showing leaves and fruit clusters.",
+      "credit": "Forest and Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0 us",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-110331-4392-Eriobotrya%20japonica-fruit%20and%20leaves-Shibuya%20Farm%20Kula-Maui%20(24714009919).jpg",
+      "bytes": 1236071
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "green-globe-artichoke",
+    "primary": {
+      "src": "/plant-photos/green-globe-artichoke/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Artichoke plant showing large leaves and flower buds.",
+      "caption": "Artichoke plant showing large leaves and flower buds.",
+      "credit": "Rhododendrites / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AArtichoke%20thistle%20at%20BBG%20(70713)b.jpg",
+      "bytes": 948106
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "hachiya-persimmon",
+    "primary": {
+      "src": "/plant-photos/hachiya-persimmon/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Asian persimmon branch showing leaves and fruit.",
+      "caption": "Asian persimmon branch showing leaves and fruit.",
+      "credit": "512bits / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADiospyros%20kaki%20'Tamopan'%20%2B2months.jpg",
+      "bytes": 830865
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "harrow-sweet-pear",
+    "primary": {
+      "src": "/plant-photos/harrow-sweet-pear/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Pear branch showing leaves and fruit.",
+      "caption": "Pear branch showing leaves and fruit.",
+      "credit": "Mleprince / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AComice%20plantation%20thomas%20le%20prince.jpg",
+      "bytes": 1146980
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "heritage-raspberry",
     "primary": {
       "src": "/plant-photos/heritage-raspberry/primary.jpg",
@@ -399,6 +1014,36 @@
       "license": "CC0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A20130710Rubus%20idaeus3.jpg",
       "bytes": 364610
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "honeycrisp-apple",
+    "primary": {
+      "src": "/plant-photos/honeycrisp-apple/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Apple branch showing leaves and fruit.",
+      "caption": "Apple branch showing leaves and fruit.",
+      "credit": "User:Doncsecz / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AJablan%20na%20Verici.JPG",
+      "bytes": 1716835
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "husker-red-penstemon",
+    "primary": {
+      "src": "/plant-photos/husker-red-penstemon/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Penstemon plant showing flower stems and leaves.",
+      "caption": "Penstemon plant showing flower stems and leaves.",
+      "credit": "Fritzflohrreynolds / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APenstemon%20digitalis%20-%20Foxglove%20Beardtongue.jpg",
+      "bytes": 686478
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -419,6 +1064,186 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "improved-meyer-lemon",
+    "primary": {
+      "src": "/plant-photos/improved-meyer-lemon/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Lemon tree showing evergreen leaves and fruit.",
+      "caption": "Lemon tree showing evergreen leaves and fruit.",
+      "credit": "Derk29 / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APromise%20in%20Green%20(lemon).jpg",
+      "bytes": 900455
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "italian-parsley",
+    "primary": {
+      "src": "/plant-photos/italian-parsley/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Flat-leaf parsley plant showing leafy stems.",
+      "caption": "Flat-leaf parsley plant showing leafy stems.",
+      "credit": "H. Zell / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APetroselinum%20crispum%20002.JPG",
+      "bytes": 830196
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "jalapeno-pepper",
+    "primary": {
+      "src": "/plant-photos/jalapeno-pepper/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Jalapeno pepper plant showing leaves and peppers.",
+      "caption": "Jalapeno pepper plant showing leaves and peppers.",
+      "credit": "Salicyna / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACapsicum%20annuum%202020-07-28%201200.jpg",
+      "bytes": 536150
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "jeana-phlox",
+    "primary": {
+      "src": "/plant-photos/jeana-phlox/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Garden phlox plant showing flower clusters and leaves.",
+      "caption": "Garden phlox plant showing flower clusters and leaves.",
+      "credit": "Dinesh Valke from Thane, India / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APerrenial%20phlox%20(372199176).jpg",
+      "bytes": 610802
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "jersey-knight-asparagus",
+    "primary": {
+      "src": "/plant-photos/jersey-knight-asparagus/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Asparagus plant showing upright spears or ferny stems.",
+      "caption": "Asparagus plant showing upright spears or ferny stems.",
+      "credit": "Shuvaev / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAsparagus%20officinalis%20'Jersey%20Knight'%2C%20Longwood%20Gardens%202022%2001.jpg",
+      "bytes": 1919845
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "joe-pye-weed",
+    "primary": {
+      "src": "/plant-photos/joe-pye-weed/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Joe Pye weed plant showing tall stems, leaves, and flower clusters.",
+      "caption": "Joe Pye weed plant showing tall stems, leaves, and flower clusters.",
+      "credit": "Charles de Mille-Isles from Mille-Isles, Canada / Wikimedia Commons",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AEutrochium%20purpureum%20(6014019908).jpg",
+      "bytes": 932066
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "kentucky-colonel-mint",
+    "primary": {
+      "src": "/plant-photos/kentucky-colonel-mint/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Spearmint plant showing square stems and mint leaves.",
+      "caption": "Spearmint plant showing square stems and mint leaves.",
+      "credit": "Globetrotter19 / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AMentha%20spicata%20-%20Gr%C3%BCne%20Minze%2C%20Kloster%2C%202024%20Bakonyb%C3%A9l.jpg",
+      "bytes": 1029731
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "kieffer-pear",
+    "primary": {
+      "src": "/plant-photos/kieffer-pear/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Pear branch showing leaves and fruit.",
+      "caption": "Pear branch showing leaves and fruit.",
+      "credit": "Mleprince / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AComice%20plantation%20thomas%20le%20prince.jpg",
+      "bytes": 1146980
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "kobold-liatris",
+    "primary": {
+      "src": "/plant-photos/kobold-liatris/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Blazing star plant showing upright purple flower spikes and leaves.",
+      "caption": "Blazing star plant showing upright purple flower spikes and leaves.",
+      "credit": "Agnieszka Kwiecień, Nova / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ALiatris%20spicata%20Liatra%20k%C5%82osowa%202023-07-21%2001.jpg",
+      "bytes": 803398
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "lacinato-kale",
+    "primary": {
+      "src": "/plant-photos/lacinato-kale/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Lacinato kale plant showing upright dark leaves.",
+      "caption": "Lacinato kale plant showing upright dark leaves.",
+      "credit": "Frank Vincentz / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AKluse%20-%20Brassica%20oleracea%20var.%20palmifolia%20-%20Ostfriesische%20Palme%2001%20ies.jpg",
+      "bytes": 935298
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "lang-jujube",
+    "primary": {
+      "src": "/plant-photos/lang-jujube/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Jujube branch showing small leaves and fruit.",
+      "caption": "Jujube branch showing small leaves and fruit.",
+      "credit": "Beasthwaite / Wikimedia Commons",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AZiziphus%20jujuba%20'Li'%20with%20fruit%20in%20mid-summer%20-%20live%20oak%20in%20background.JPG",
+      "bytes": 881349
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "legacy-blueberry",
+    "primary": {
+      "src": "/plant-photos/legacy-blueberry/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Blueberry shrub showing leaves and berry clusters.",
+      "caption": "Blueberry shrub showing leaves and berry clusters.",
+      "credit": "小石川人晃 / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AVaccinium%20corymbosum%20'Chandler'%20at%20Tsukuba%20Botanical%20Garden.jpg",
+      "bytes": 506809
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "li-jujube",
     "primary": {
       "src": "/plant-photos/li-jujube/primary.jpg",
@@ -429,6 +1254,36 @@
       "license": "CC BY 3.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E6%A3%97%E6%A8%B9_Jujube_Tree_-_panoramio.jpg",
       "bytes": 780544
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "liberty-apple",
+    "primary": {
+      "src": "/plant-photos/liberty-apple/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Apple tree showing leaves, branches, and fruit.",
+      "caption": "Apple tree showing leaves, branches, and fruit.",
+      "credit": "User:Doncsecz / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AJablan%20na%20Verici.JPG",
+      "bytes": 1716835
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "limelight-hydrangea",
+    "primary": {
+      "src": "/plant-photos/limelight-hydrangea/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Panicle hydrangea shrub showing large flower clusters and leaves.",
+      "caption": "Panicle hydrangea shrub showing large flower clusters and leaves.",
+      "credit": "Famartin / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A2023-07-14%2019%2039%2018%20Tree%20hydrangea%20flowers%20along%20Delaware%20Avenue%20in%20the%20Mountainview%20section%20of%20Ewing%20Township%2C%20Mercer%20County%2C%20New%20Jersey.jpg",
+      "bytes": 675406
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -449,6 +1304,21 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "lsu-purple-fig",
+    "primary": {
+      "src": "/plant-photos/lsu-purple-fig/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Fig branch showing broad leaves and fruit.",
+      "caption": "Fig branch showing broad leaves and fruit.",
+      "credit": "Александровы АГ / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A0137Fb.%20Botanical%20Garden%20of%20Peter%20the%20Great%20in%20St.%20Petersburg.jpg",
+      "bytes": 1458918
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "mammoth-sunflower",
     "primary": {
       "src": "/plant-photos/mammoth-sunflower/primary.jpg",
@@ -464,6 +1334,66 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "marketmore-cucumber",
+    "primary": {
+      "src": "/plant-photos/marketmore-cucumber/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Cucumber vine showing leaves, tendrils, and fruit.",
+      "caption": "Cucumber vine showing leaves, tendrils, and fruit.",
+      "credit": "Stephen Ausmus, USDA ARS / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AARS%20cucumber.jpg",
+      "bytes": 2078591
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "mars-grape",
+    "primary": {
+      "src": "/plant-photos/mars-grape/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Grape vine showing leaves and clusters.",
+      "caption": "Grape vine showing leaves and clusters.",
+      "credit": "Takkk / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ARed%20Grape%20-%20Vitis%20labrusca%20-%20Kiszombor%2C%20Hungary.jpg",
+      "bytes": 489071
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "may-night-salvia",
+    "primary": {
+      "src": "/plant-photos/may-night-salvia/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Salvia plant showing flower spikes and leaves.",
+      "caption": "Salvia plant showing flower spikes and leaves.",
+      "credit": "MOs810 / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABotanical%20Garden%20in%20Poznan%20(Salvia%20nemorosa%2C%20Blauhugel)%20(1).jpg",
+      "bytes": 1667421
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "mayhaw-superberry",
+    "primary": {
+      "src": "/plant-photos/mayhaw-superberry/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Mayhaw tree showing leaves, stems, and fruit.",
+      "caption": "Mayhaw tree showing leaves, stems, and fruit.",
+      "credit": "René Hourdry / Wikimedia Commons",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAub%C3%A9pine%20Fruits%2021.jpg",
+      "bytes": 831428
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "maypop-passionfruit",
     "primary": {
       "src": "/plant-photos/maypop-passionfruit/primary.jpg",
@@ -474,6 +1404,36 @@
       "license": "Public domain",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:Passiflora_incarnata_2.jpg",
       "bytes": 558667
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "meader-persimmon",
+    "primary": {
+      "src": "/plant-photos/meader-persimmon/primary.jpg",
+      "label": "Plant photo",
+      "alt": "American persimmon branch showing leaves and fruit.",
+      "caption": "American persimmon branch showing leaves and fruit.",
+      "credit": "Puddin Tain / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADiospyros%20virginiana%20FS4%2030%20Oct%202018%20-%20Flickr%20-%20Puddin%20Tain.jpg",
+      "bytes": 388616
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "methley-plum",
+    "primary": {
+      "src": "/plant-photos/methley-plum/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Plum branch showing leaves and fruit.",
+      "caption": "Plum branch showing leaves and fruit.",
+      "credit": "Forest & Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080405-3956%20Prunus%20salicina.jpg",
+      "bytes": 596572
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -505,6 +1465,21 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "moonshine-yarrow",
+    "primary": {
+      "src": "/plant-photos/moonshine-yarrow/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Yarrow plant showing fern-like leaves and flower clusters.",
+      "caption": "Yarrow plant showing fern-like leaves and flower clusters.",
+      "credit": "Dinesh Valke from Thane, India / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFern-leaf%20Yarrow%20(2573464836).jpg",
+      "bytes": 398389
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "mountain-mint",
     "primary": {
       "src": "/plant-photos/mountain-mint/primary.jpg",
@@ -520,6 +1495,21 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "munstead-lavender",
+    "primary": {
+      "src": "/plant-photos/munstead-lavender/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Lavender plant showing silver foliage and purple flower spikes.",
+      "caption": "Lavender plant showing silver foliage and purple flower spikes.",
+      "credit": "Kate Branch / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAustralian%20Lavender.jpg",
+      "bytes": 314969
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "music-garlic",
     "primary": {
       "src": "/plant-photos/music-garlic/primary.jpg",
@@ -530,6 +1520,111 @@
       "license": "CC0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAllium%20sativum%20-%20Copenhagen%20Botanical%20Garden%20-%20DSC07941.JPG",
       "bytes": 2013799
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "natchez-crape-myrtle",
+    "primary": {
+      "src": "/plant-photos/natchez-crape-myrtle/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Crape myrtle tree showing branching habit, leaves, and flowers.",
+      "caption": "Crape myrtle tree showing branching habit, leaves, and flowers.",
+      "credit": "Dinesh Valke from Thane, India / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABonnet%20flower%20(620673243).jpg",
+      "bytes": 631785
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "navajo-blackberry",
+    "primary": {
+      "src": "/plant-photos/navajo-blackberry/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Blackberry cane showing leaves and berries.",
+      "caption": "Blackberry cane showing leaves and berries.",
+      "credit": "Rosser1954 / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlackberry%20(Rubus%20fruticosus)%20flower%20-%20Shewalton.JPG",
+      "bytes": 642281
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "nesbitt-muscadine",
+    "primary": {
+      "src": "/plant-photos/nesbitt-muscadine/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Muscadine grape vine showing leaves and grape clusters.",
+      "caption": "Muscadine grape vine showing leaves and grape clusters.",
+      "credit": "Douglas Goldman / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AVitisRotundifolia2.jpg",
+      "bytes": 524062
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "north-star-cherry",
+    "primary": {
+      "src": "/plant-photos/north-star-cherry/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Tart cherry branch showing leaves and fruit.",
+      "caption": "Tart cherry branch showing leaves and fruit.",
+      "credit": "Montanabw / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AEvansCherry2.JPG",
+      "bytes": 2032609
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "northwind-switchgrass",
+    "primary": {
+      "src": "/plant-photos/northwind-switchgrass/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Switchgrass clump showing upright grass blades and seed stems.",
+      "caption": "Switchgrass clump showing upright grass blades and seed stems.",
+      "credit": "Krzysztof Ziarnek, Kenraiz / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APanicum%20virgatum%20Cheyenne%20Sky%20kz1.jpg",
+      "bytes": 1937096
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "oakleaf-hydrangea",
+    "primary": {
+      "src": "/plant-photos/oakleaf-hydrangea/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Oakleaf hydrangea shrub showing lobed leaves and flower clusters.",
+      "caption": "Oakleaf hydrangea shrub showing lobed leaves and flower clusters.",
+      "credit": "Famartin / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A2023-06-15%2008%2057%2038%20Oak%20Leaf%20Hydrangea%20flowers%20along%20Lochatong%20Road%20in%20the%20Mountainview%20section%20of%20Ewing%20Township%2C%20Mercer%20County%2C%20New%20Jersey.jpg",
+      "bytes": 555537
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "october-skies-aster",
+    "primary": {
+      "src": "/plant-photos/october-skies-aster/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Aromatic aster plant showing purple flowers and leafy stems.",
+      "caption": "Aromatic aster plant showing purple flowers and leafy stems.",
+      "credit": "Dr. Thomas G. Barnes, U.S. Fish and Wildlife Service / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAromatic%20aster.jpg",
+      "bytes": 442606
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -561,6 +1656,96 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "owari-satsuma",
+    "primary": {
+      "src": "/plant-photos/owari-satsuma/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Mandarin branch showing evergreen leaves and orange fruit.",
+      "caption": "Mandarin branch showing evergreen leaves and orange fruit.",
+      "credit": "Horacio Cambeiro / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A%C3%81rbol%20de%20mandarinas%20en%20temporada%20de%20cosecha.jpg",
+      "bytes": 762676
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "patriot-hosta",
+    "primary": {
+      "src": "/plant-photos/patriot-hosta/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Variegated hosta plant showing broad leaves and clumping growth.",
+      "caption": "Variegated hosta plant showing broad leaves and clumping growth.",
+      "credit": "F. D. Richards from Clinton, MI / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AHosta%20'Wide%20Brim'%205%202021%20Plantain%20Lily-%20(51185761581).jpg",
+      "bytes": 575476
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "pawnee-pecan",
+    "primary": {
+      "src": "/plant-photos/pawnee-pecan/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Pecan tree showing compound leaves and nuts.",
+      "caption": "Pecan tree showing compound leaves and nuts.",
+      "credit": "James St. John / Wikimedia Commons",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACarya%20illinoinensis%20(pecan%20tree)%202%20(39629039592).jpg",
+      "bytes": 1011867
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "peaches-cream-corn",
+    "primary": {
+      "src": "/plant-photos/peaches-cream-corn/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Sweet corn plant showing tall stalks and leaves.",
+      "caption": "Sweet corn plant showing tall stalks and leaves.",
+      "credit": "Dinesh Valke from Thane, India / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABhutta%20(Hindi-%20%E0%A4%AD%E0%A5%81%E0%A4%9F%E0%A5%8D%E0%A4%9F%E0%A4%BE)%20(4666717168).jpg",
+      "bytes": 617448
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "poblano-pepper",
+    "primary": {
+      "src": "/plant-photos/poblano-pepper/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Pepper plant showing leaves and green peppers.",
+      "caption": "Pepper plant showing leaves and green peppers.",
+      "credit": "H. Zell / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACapsicum%20annuum%20003.JPG",
+      "bytes": 891036
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "provider-bush-bean",
+    "primary": {
+      "src": "/plant-photos/provider-bush-bean/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Bush bean plant showing leaves and pods.",
+      "caption": "Bush bean plant showing leaves and pods.",
+      "credit": "Amina aziyan 123 / Wikimedia Commons",
+      "license": "CC BY 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AA%20plant.jpg",
+      "bytes": 287088
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "purple-coneflower",
     "primary": {
       "src": "/plant-photos/purple-coneflower/primary.jpg",
@@ -571,6 +1756,51 @@
       "license": "CC0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AEchinacea%20purpurea%20(232612641).jpg",
       "bytes": 142407
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "red-gem-goumi",
+    "primary": {
+      "src": "/plant-photos/red-gem-goumi/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Goumi shrub showing leaves and red fruit.",
+      "caption": "Goumi shrub showing leaves and red fruit.",
+      "credit": "Krzysztof Ziarnek, Kenraiz / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AElaeagnus%20multiflora%20kz6.jpg",
+      "bytes": 1901931
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "red-twig-dogwood",
+    "primary": {
+      "src": "/plant-photos/red-twig-dogwood/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Red twig dogwood shrub showing red stems and leaves.",
+      "caption": "Red twig dogwood shrub showing red stems and leaves.",
+      "credit": "Matt Lavin from Bozeman, Montana, USA / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACornus%20sericea%20(5258215438).jpg",
+      "bytes": 1504678
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "redhaven-peach",
+    "primary": {
+      "src": "/plant-photos/redhaven-peach/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Peach branch showing narrow leaves and fruit.",
+      "caption": "Peach branch showing narrow leaves and fruit.",
+      "credit": "jjron / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ANectarine%20Fruit%20Development-BIG.jpg",
+      "bytes": 506522
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -591,6 +1821,36 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "reliance-grape",
+    "primary": {
+      "src": "/plant-photos/reliance-grape/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Grape vine showing leaves and clusters.",
+      "caption": "Grape vine showing leaves and clusters.",
+      "credit": "harum.koh from Kobe city, Japan / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AGrape%20(21923402289).jpg",
+      "bytes": 584698
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "roma-tomato",
+    "primary": {
+      "src": "/plant-photos/roma-tomato/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Tomato plant showing leaves, stems, and fruit.",
+      "caption": "Tomato plant showing leaves, stems, and fruit.",
+      "credit": "Forest and Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0 us",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
+      "bytes": 988733
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "russian-26-pomegranate",
     "primary": {
       "src": "/plant-photos/russian-26-pomegranate/primary.jpg",
@@ -601,6 +1861,36 @@
       "license": "CC BY-SA 3.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pomegranate_tree,_Dobhi,_Kullu_district.jpg",
       "bytes": 922367
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "russian-sage",
+    "primary": {
+      "src": "/plant-photos/russian-sage/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Russian sage plant showing silver stems and purple flowers.",
+      "caption": "Russian sage plant showing silver stems and purple flowers.",
+      "credit": "James St. John / Wikimedia Commons",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APerovskia%20atriplicifolia%20(Russian%20sage)%202%20(49081270646).jpg",
+      "bytes": 1841825
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "santa-rosa-plum",
+    "primary": {
+      "src": "/plant-photos/santa-rosa-plum/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Plum branch showing leaves and fruit.",
+      "caption": "Plum branch showing leaves and fruit.",
+      "credit": "Forest & Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
+      "bytes": 405553
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -632,6 +1922,21 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "sensation-cosmos",
+    "primary": {
+      "src": "/plant-photos/sensation-cosmos/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Cosmos plant showing airy leaves and flowers.",
+      "caption": "Cosmos plant showing airy leaves and flowers.",
+      "credit": "Arivumathi / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A%22flowers%22.JPG",
+      "bytes": 731843
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "shenandoah-pawpaw",
     "primary": {
       "src": "/plant-photos/shenandoah-pawpaw/primary.jpg",
@@ -642,6 +1947,81 @@
       "license": "Public domain",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:Asimina_triloba3.jpg",
       "bytes": 1947609
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "softneck-garlic",
+    "primary": {
+      "src": "/plant-photos/softneck-garlic/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Garlic plant showing upright leaves and young scape.",
+      "caption": "Garlic plant showing upright leaves and young scape.",
+      "credit": "Ermell / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AKnoblauch%20(Allium%20sativum)-20200621-RM-085344.jpg",
+      "bytes": 138723
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "stanley-plum",
+    "primary": {
+      "src": "/plant-photos/stanley-plum/primary.jpg",
+      "label": "Plant photo",
+      "alt": "European plum branch showing leaves and fruit.",
+      "caption": "European plum branch showing leaves and fruit.",
+      "credit": "Maxime Laterreur / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFruits%20du%20prunier%20Mont-Royal%20(Prunus%20domestica%20'Mont-Royal').jpg",
+      "bytes": 684313
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "stella-cherry",
+    "primary": {
+      "src": "/plant-photos/stella-cherry/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Sweet cherry branch showing leaves and fruit.",
+      "caption": "Sweet cherry branch showing leaves and fruit.",
+      "credit": "D-Kuru / Wikimedia Commons",
+      "license": "CC BY-SA 3.0 at",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFlower%20of%20sweet%20cherry%20after%20sherry%20grew%20out%20PNr%C2%B00023.jpg",
+      "bytes": 382513
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "sugar-snap-pea",
+    "primary": {
+      "src": "/plant-photos/sugar-snap-pea/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Pea vine showing tendrils, leaves, and pods.",
+      "caption": "Pea vine showing tendrils, leaves, and pods.",
+      "credit": "Rudolphous / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A20210620%20Hortus%20botanicus%20Leiden%20-%20Pisum%20sativum%20(leave%20and%20fruit).jpg",
+      "bytes": 741706
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "sungold-tomato",
+    "primary": {
+      "src": "/plant-photos/sungold-tomato/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Cherry tomato plant showing leaves, stems, and fruit clusters.",
+      "caption": "Cherry tomato plant showing leaves, stems, and fruit clusters.",
+      "credit": "Joanna Boisse / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAtlas%20roslin%20pl%20Pomidor%20zwyczajny%2010793%207349.jpg",
+      "bytes": 594426
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -662,6 +2042,21 @@
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
+    "id": "susquehanna-pawpaw",
+    "primary": {
+      "src": "/plant-photos/susquehanna-pawpaw/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Pawpaw tree showing large leaves and branching structure.",
+      "caption": "Pawpaw tree showing large leaves and branching structure.",
+      "credit": "James St. John / Wikimedia Commons",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAsimina%20triloba%20(pawpaw%20tree)%202%20(27705591799).jpg",
+      "bytes": 1006612
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
     "id": "swamp-milkweed",
     "primary": {
       "src": "/plant-photos/swamp-milkweed/primary.jpg",
@@ -672,6 +2067,111 @@
       "license": "CC BY-SA 4.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAsclepias%20incarnata%201zz.jpg",
       "bytes": 301889
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "sweet-scarlet-goumi",
+    "primary": {
+      "src": "/plant-photos/sweet-scarlet-goumi/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Goumi shrub showing leaves and red fruit.",
+      "caption": "Goumi shrub showing leaves and red fruit.",
+      "credit": "Krzysztof Ziarnek, Kenraiz / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AElaeagnus%20multiflora%20kz6.jpg",
+      "bytes": 1901931
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "victoria-rhubarb",
+    "primary": {
+      "src": "/plant-photos/victoria-rhubarb/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Rhubarb plant showing large leaves and stalks.",
+      "caption": "Rhubarb plant showing large leaves and stalks.",
+      "credit": "Michiel1972 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AForceerpotten%20voor%20rabarber.jpg",
+      "bytes": 1203915
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "viking-aronia",
+    "primary": {
+      "src": "/plant-photos/viking-aronia/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Aronia shrub showing leaves and dark berry clusters.",
+      "caption": "Aronia shrub showing leaves and dark berry clusters.",
+      "credit": "W.carter / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAronia%20leaves%20on%20a%20rainy%20autumn%20day%20in%20Tuntorp%202.jpg",
+      "bytes": 439274
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "waltham-butternut",
+    "primary": {
+      "src": "/plant-photos/waltham-butternut/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Butternut squash vine showing large leaves and fruit.",
+      "caption": "Butternut squash vine showing large leaves and fruit.",
+      "credit": "Yercaud-elango / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
+      "bytes": 1494503
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "wonderful-pomegranate",
+    "primary": {
+      "src": "/plant-photos/wonderful-pomegranate/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Pomegranate shrub showing leaves, stems, and fruit or flowers.",
+      "caption": "Pomegranate shrub showing leaves, stems, and fruit or flowers.",
+      "credit": "Nesaj210 / Wikimedia Commons",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AClose-up%20of%20Pomegranate%20Tree%20Branch.jpg",
+      "bytes": 391998
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "yukon-gold-potato",
+    "primary": {
+      "src": "/plant-photos/yukon-gold-potato/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Potato plant showing leafy stems and flowers.",
+      "caption": "Potato plant showing leafy stems and flowers.",
+      "credit": "Forest and Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0 us",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-110731-8134-Solanum%20tuberosum-flowers%20and%20leaves-Hawea%20Pl%20Olinda-Maui%20(24475427753).jpg",
+      "bytes": 627202
+    },
+    "details": [],
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+  },
+  {
+    "id": "zagreb-coreopsis",
+    "primary": {
+      "src": "/plant-photos/zagreb-coreopsis/primary.jpg",
+      "label": "Plant photo",
+      "alt": "Coreopsis plant showing yellow flowers and leafy stems.",
+      "caption": "Coreopsis plant showing yellow flowers and leafy stems.",
+      "credit": "Fritzmann2002 / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACoreopsis%20verticillata%20in%20Eastport.jpg",
+      "bytes": 1280352
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
