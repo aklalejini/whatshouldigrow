@@ -3,6 +3,7 @@ import AnalyticsEvents from "../../components/AnalyticsEvents.astro";
 import plants from "../../data/plants.json";
 import partners from "../../data/affiliatePartners.json";
 import plantArtEntries from "../../data/plantArt.json";
+import plantPhotoEntries from "../../data/plantPhotos.json";
 import plantingChecklistItems from "../../data/plantingChecklist.json";
 import plantMetricSources from "../../data/plantMetricSources.json";
 import plantMetrics from "../../data/plantMetrics.json";
@@ -52,6 +53,13 @@ const hasImage = Boolean(artEntry?.image);
 const photoStyle = plantPhotoStyle(artEntry);
 const canonicalUrl = siteUrl(plantUrl(plant));
 const socialImageUrl = hasImage ? siteUrl(`/plant-art/${artEntry.image}`) : siteUrl(DEFAULT_SOCIAL_IMAGE);
+const plantPhotoEntry = plantPhotoEntries.find((entry) => entry.id === plant.id);
+const plantPhotoDetails = plantPhotoEntry?.details ?? [];
+const plantPhotoSources = plantPhotoEntry
+  ? [plantPhotoEntry.primary, ...plantPhotoDetails]
+      .filter((photo, index, list) => photo?.sourceUrl && list.findIndex((candidate) => candidate.sourceUrl === photo.sourceUrl) === index)
+  : [];
+const plantPhotoImageUrl = plantPhotoEntry?.primary?.src ? siteUrl(plantPhotoEntry.primary.src) : socialImageUrl;
 const metricDescription = metrics.yieldLbsMin !== null && metricDisplay.yieldLbs
   ? ` Planning metrics include ${metricDisplay.yieldLbs}, ${metricDisplay.spacing}, and ${metricDisplay.firstOutput}.`
   : "";
@@ -300,6 +308,7 @@ const plantJsonLd = {
   name: `${plant.name} growing profile`,
   description,
   url: canonicalUrl,
+  image: plantPhotoImageUrl,
   isPartOf: {
     "@type": "WebSite",
     name: SITE_NAME,
@@ -466,6 +475,61 @@ const breadcrumbJsonLd = {
               )}
             </div>
           </section>
+
+          {plantPhotoEntry && (
+            <section class="detail-panel plant-page-photo-reference" aria-labelledby="plant-photo-reference-heading">
+              <div class="plant-photo-reference-head">
+                <div>
+                  <p class="eyebrow">Real-world reference</p>
+                  <h2 id="plant-photo-reference-heading">What it looks like in the garden</h2>
+                </div>
+                <p>
+                  The primary photo for {plant.name} is vetted to show living plant structure: stems, branches, leaves, and fruit where available.
+                </p>
+              </div>
+
+              <div class={`plant-photo-layout ${plantPhotoDetails.length === 0 ? "is-single" : ""}`}>
+                <figure class="plant-photo-primary">
+                  <img src={plantPhotoEntry.primary.src} alt={plantPhotoEntry.primary.alt} loading="lazy" decoding="async" />
+                  <figcaption>
+                    <strong>{plantPhotoEntry.primary.label}</strong>
+                    <span>{plantPhotoEntry.primary.caption}</span>
+                  </figcaption>
+                </figure>
+
+                {plantPhotoDetails.length > 0 && (
+                  <div class="plant-photo-detail-grid" aria-label={`${plant.name} supplemental photo references`}>
+                    {plantPhotoDetails.map((photo) => (
+                      <figure class="plant-photo-detail">
+                        <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+                        <figcaption>
+                          <strong>{photo.label}</strong>
+                          <span>{photo.caption}</span>
+                        </figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div class="plant-photo-reference-foot">
+                <p>{plantPhotoEntry.note}</p>
+                {plantPhotoSources.length > 0 && (
+                  <p class="plant-photo-credit">
+                    <span>Photo sources:</span>
+                    {plantPhotoSources.map((photo, index) => (
+                      <>
+                        {index > 0 && <span aria-hidden="true"> / </span>}
+                        <a href={photo.sourceUrl} target="_blank" rel="noopener noreferrer">
+                          {photo.credit} ({photo.license})
+                        </a>
+                      </>
+                    ))}
+                  </p>
+                )}
+              </div>
+            </section>
+          )}
 
           <section class="detail-panel plant-page-panel">
             <h2>Quantitative Profile</h2>

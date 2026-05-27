@@ -5542,6 +5542,7 @@ input.calendar-filter-search[type="search"]:focus {
 
 .plant-page-panel h2,
 .plant-page-yield-chart h2,
+.plant-page-photo-reference h2,
 .plant-page-relationships h2,
 .plant-page-comparables h2,
 .plant-page-methodology h2 {
@@ -5661,9 +5662,135 @@ input.calendar-filter-search[type="search"]:focus {
 
 .plant-page-relationships,
 .plant-page-yield-chart,
+.plant-page-photo-reference,
 .plant-page-comparables,
 .plant-page-methodology {
   grid-column: 1 / -1;
+}
+
+.plant-page-photo-reference {
+  display: grid;
+  gap: 14px;
+  border-radius: 8px;
+}
+
+.plant-photo-reference-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.plant-photo-reference-head h2 {
+  margin-bottom: 0;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.plant-photo-reference-head > p {
+  max-width: 520px;
+  margin: 0;
+  color: #3f4d43;
+  line-height: 1.55;
+}
+
+.plant-photo-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.42fr) minmax(220px, 0.58fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.plant-photo-layout.is-single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.plant-photo-primary,
+.plant-photo-detail {
+  margin: 0;
+}
+
+.plant-photo-primary img,
+.plant-photo-detail img {
+  display: block;
+  width: 100%;
+  border: 1px solid #dfe7d8;
+  border-radius: 10px;
+  background: #eef3e9;
+  object-fit: cover;
+}
+
+.plant-photo-primary img {
+  height: clamp(300px, 38vw, 520px);
+}
+
+.plant-photo-layout.is-single .plant-photo-primary img {
+  height: clamp(300px, 34vw, 470px);
+}
+
+.plant-photo-detail-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.plant-photo-detail img {
+  height: 188px;
+}
+
+.plant-photo-primary figcaption,
+.plant-photo-detail figcaption {
+  display: grid;
+  gap: 3px;
+  margin-top: 8px;
+  color: #536255;
+  font-size: 0.78rem;
+  line-height: 1.42;
+}
+
+.plant-photo-primary figcaption strong,
+.plant-photo-detail figcaption strong {
+  color: var(--leaf-dark);
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.plant-photo-reference-foot {
+  display: grid;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.plant-photo-reference-foot p {
+  margin: 0;
+  color: #536255;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.plant-photo-credit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+
+.plant-photo-credit > span:first-child {
+  color: var(--muted);
+  font-weight: 850;
+}
+
+.plant-photo-credit a {
+  color: var(--leaf-dark);
+  font-weight: 750;
+  text-decoration-color: rgba(39, 88, 58, 0.32);
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.plant-photo-credit a:hover {
+  color: var(--terracotta);
 }
 
 .plant-page-checklist {
@@ -6430,6 +6557,29 @@ input.calendar-filter-search[type="search"]:focus {
   .public-notes {
     border-radius: 18px;
     padding: 20px;
+  }
+
+  .plant-photo-reference-head {
+    display: grid;
+    gap: 10px;
+  }
+
+  .plant-photo-reference-head > p {
+    max-width: none;
+  }
+
+  .plant-photo-layout,
+  .plant-photo-layout.is-single {
+    grid-template-columns: 1fr;
+  }
+
+  .plant-photo-primary img,
+  .plant-photo-layout.is-single .plant-photo-primary img {
+    height: clamp(235px, 64vw, 360px);
+  }
+
+  .plant-photo-detail img {
+    height: clamp(170px, 48vw, 240px);
   }
 
   .hub-hero h1,

@@ -1,0 +1,379 @@
+[
+  {
+    "id": "adams-elderberry",
+    "primary": {
+      "src": "/plant-photos/adams-elderberry/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Elderberry fruit clusters on leafy stems.",
+      "caption": "Living elderberry stems with foliage and ripe fruit clusters.",
+      "credit": "Rison Thumboor / Wikimedia Commons",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:American_elderberry_(Sambucus_canadensis)_(23663427868).jpg",
+      "bytes": 360958
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "all-in-one-almond",
+    "primary": {
+      "src": "/plant-photos/all-in-one-almond/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Almond branch with green almonds and leaves.",
+      "caption": "Almond branch structure with leaves and developing nuts.",
+      "credit": "LBM1948 / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:El_Carpio_de_Tajo_(2024)_03.jpg",
+      "bytes": 1359559
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "anna-hardy-kiwi",
+    "primary": {
+      "src": "/plant-photos/anna-hardy-kiwi/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Hardy kiwi vine foliage on living stems.",
+      "caption": "Hardy kiwi vine foliage and stem habit.",
+      "credit": "Sten Porse / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Actinidia-arguta-foliage.jpg",
+      "bytes": 872530
+    },
+    "details": [
+      {
+        "src": "/plant-photos/anna-hardy-kiwi/detail-fruit.jpg",
+        "label": "Fruit detail",
+        "alt": "Hardy kiwi fruit cut open to show the green interior.",
+        "caption": "Fruit detail for harvest identification.",
+        "credit": "Rillke / Wikimedia Commons",
+        "license": "CC BY 3.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Actinidia_arguta_fruit_-_hardy_kiwi_-_Kiwibeere_03.jpg",
+        "bytes": 284357
+      }
+    ],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "arkansas-black-apple",
+    "primary": {
+      "src": "/plant-photos/arkansas-black-apple/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Arkansas Black apple tree with leafy canopy.",
+      "caption": "Whole-tree habit and foliage for Arkansas Black apple.",
+      "credit": "Dr. Kai Oesterreich / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arkansas_Black_Apple.jpg",
+      "bytes": 1671301
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "bartlett-pear",
+    "primary": {
+      "src": "/plant-photos/bartlett-pear/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Pear fruit hanging from a leafy branch.",
+      "caption": "Pear fruit held on a living branch with leaves.",
+      "credit": "Victor M. Vicente Selvas / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pyrus_communis_cvar._Max_red_Barlett_21_juliol_06_001.jpg",
+      "bytes": 2403063
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "brightwell-blueberry",
+    "primary": {
+      "src": "/plant-photos/brightwell-blueberry/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Rabbiteye blueberry cluster on a leafy stem.",
+      "caption": "Blueberry fruit cluster on living stems and leaves.",
+      "credit": "Judy Gallagher / Wikimedia Commons",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:High-bush_Blueberry_-_Vaccinium_corymbosum,_Julie_Metz_Wetlands,_Woodbridge,_Virginia.jpg",
+      "bytes": 508884
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "celeste-fig",
+    "primary": {
+      "src": "/plant-photos/celeste-fig/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Common fig leaves and green figs on living stems.",
+      "caption": "Fig foliage, stems, and developing fruit.",
+      "credit": "Daniel Capilla / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Common_fig_(Ficus_carica),_leaves_and_fruits.jpg",
+      "bytes": 363284
+    },
+    "details": [
+      {
+        "src": "/plant-photos/celeste-fig/detail-fruit.jpg",
+        "label": "Fruit detail",
+        "alt": "Cut fig showing the interior fruit color.",
+        "caption": "Fruit detail for ripeness and harvest recognition.",
+        "credit": "Ivar Leidus / Wikimedia Commons",
+        "license": "CC BY-SA 4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fig_(Ficus_carica)_fruit_halved.jpg",
+        "bytes": 691612
+      }
+    ],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "chickasaw-plum",
+    "primary": {
+      "src": "/plant-photos/chickasaw-plum/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Ripening Chickasaw plum fruit on leafy branches.",
+      "caption": "Ripening plum fruit carried on leafy branches.",
+      "credit": "Lm13700 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ripening_Chickasaw_Plum.JPG",
+      "bytes": 1444906
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "concord-grape",
+    "primary": {
+      "src": "/plant-photos/concord-grape/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Grape cluster hanging from a leafy vine.",
+      "caption": "Grape vine structure with leaves, stems, and fruit cluster.",
+      "credit": "Zeynel Cebeci / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vitis_labrusca_-_Isabella_grapevine_02.jpg",
+      "bytes": 451938
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "contender-peach",
+    "primary": {
+      "src": "/plant-photos/contender-peach/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Peach tree branch with leaves and developing peaches.",
+      "caption": "Peach foliage, branch structure, and fruit set.",
+      "credit": "Prianxi / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Peach_tree_2.jpg",
+      "bytes": 769675
+    },
+    "details": [
+      {
+        "src": "/plant-photos/contender-peach/detail-fruit.jpg",
+        "label": "Fruit detail",
+        "alt": "Cut peach showing ripe flesh and pit.",
+        "caption": "Fruit detail for harvest and use.",
+        "credit": "Jack Dykinga, USDA / Wikimedia Commons",
+        "license": "Public domain",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Autumn_Red_peaches.jpg",
+        "bytes": 448213
+      }
+    ],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "fuyu-persimmon",
+    "primary": {
+      "src": "/plant-photos/fuyu-persimmon/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Persimmon leaves and fruit on living stems.",
+      "caption": "Persimmon foliage with fruit on the plant.",
+      "credit": "Abrahami / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Diospyros_kaki_leaves_fruit.jpg",
+      "bytes": 180575
+    },
+    "details": [
+      {
+        "src": "/plant-photos/fuyu-persimmon/detail-fruit.jpg",
+        "label": "Fruit detail",
+        "alt": "Cut persimmon fruit showing the interior flesh.",
+        "caption": "Fruit detail for harvest recognition.",
+        "credit": "Rodrigo.Argenton / Wikimedia Commons",
+        "license": "CC BY-SA 4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Caqui_chocolate_em_fundo_preto_03.jpg",
+        "bytes": 531756
+      }
+    ],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "illinois-everbearing-mulberry",
+    "primary": {
+      "src": "/plant-photos/illinois-everbearing-mulberry/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Mulberry tree branches with leaves and dark fruit.",
+      "caption": "Mulberry foliage and fruiting branch habit.",
+      "credit": "Kolforn / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:-2021-07-31_Mulberry_tree,_St_Botolph%E2%80%99s_churchyard,_Trunch,_Norfolk.JPG",
+      "bytes": 851233
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "li-jujube",
+    "primary": {
+      "src": "/plant-photos/li-jujube/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Jujube tree branches with leaves and small fruit.",
+      "caption": "Jujube branch structure with foliage and developing fruit.",
+      "credit": "lienyuan lee / Wikimedia Commons",
+      "license": "CC BY 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E6%A3%97%E6%A8%B9_Jujube_Tree_-_panoramio.jpg",
+      "bytes": 780544
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "maypop-passionfruit",
+    "primary": {
+      "src": "/plant-photos/maypop-passionfruit/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Maypop passionflower vine with leaves and flower.",
+      "caption": "Maypop vine foliage and flower structure.",
+      "credit": "Jhenderson777 / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Passiflora_incarnata_2.jpg",
+      "bytes": 558667
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "montmorency-cherry",
+    "primary": {
+      "src": "/plant-photos/montmorency-cherry/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Tart cherry fruit hanging from leafy branches.",
+      "caption": "Tart cherry fruit on living stems and leaves.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 394388
+    },
+    "details": [
+      {
+        "src": "/plant-photos/montmorency-cherry/detail-fruit.jpg",
+        "label": "Fruit detail",
+        "alt": "Red tart cherries close up on the tree.",
+        "caption": "Fruit detail for harvest recognition.",
+        "credit": "Martha Dol. / Wikimedia Commons",
+        "license": "CC BY 2.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Montmorency_cherries_(3648681426).jpg",
+        "bytes": 462080
+      }
+    ],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "ouachita-blackberry",
+    "primary": {
+      "src": "/plant-photos/ouachita-blackberry/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Blackberries ripening on a cane with leaves.",
+      "caption": "Blackberry cane with leaves and ripening fruit.",
+      "credit": "George Chernilevsky / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blackberry_fruits_2008_G1.jpg",
+      "bytes": 1776157
+    },
+    "details": [
+      {
+        "src": "/plant-photos/ouachita-blackberry/detail-fruit.jpg",
+        "label": "Fruit detail",
+        "alt": "Harvested blackberries in small produce baskets.",
+        "caption": "Fruit detail showing harvested berry form.",
+        "credit": "Dwight Sipler from Stow, MA, USA / Wikimedia Commons",
+        "license": "CC BY 2.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blackberries_(3821343779).jpg",
+        "bytes": 665023
+      }
+    ],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "regent-serviceberry",
+    "primary": {
+      "src": "/plant-photos/regent-serviceberry/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Serviceberry blossoms on woody stems with leaves.",
+      "caption": "Serviceberry flowers, stems, and emerging leaves.",
+      "credit": "brewbooks / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Serviceberry_-_Flickr_-_brewbooks_(1).jpg",
+      "bytes": 375392
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "russian-26-pomegranate",
+    "primary": {
+      "src": "/plant-photos/russian-26-pomegranate/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Pomegranate fruit on a leafy tree branch.",
+      "caption": "Pomegranate branch structure with foliage and fruit.",
+      "credit": "Yann Forget / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pomegranate_tree,_Dobhi,_Kullu_district.jpg",
+      "bytes": 922367
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "seascape-strawberry",
+    "primary": {
+      "src": "/plant-photos/seascape-strawberry/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Strawberry plant with leaves, flower, and developing fruit.",
+      "caption": "Strawberry plant habit with foliage, flower, and developing fruit.",
+      "credit": "Suninkiri aru kamani / Wikimedia Commons",
+      "license": "CC BY 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Planta_de_frutilla.jpg",
+      "bytes": 587949
+    },
+    "details": [
+      {
+        "src": "/plant-photos/seascape-strawberry/detail-fruit.jpg",
+        "label": "Fruit detail",
+        "alt": "Ripe strawberry fruit close up.",
+        "caption": "Fruit detail for harvest recognition.",
+        "credit": "Ermell / Wikimedia Commons",
+        "license": "CC BY-SA 4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Walderdbeere_Frucht-20210617-RM-124006.jpg",
+        "bytes": 1214045
+      }
+    ],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  },
+  {
+    "id": "shenandoah-pawpaw",
+    "primary": {
+      "src": "/plant-photos/shenandoah-pawpaw/primary.jpg",
+      "label": "Primary reference",
+      "alt": "Pawpaw fruit on a branch with large green leaves.",
+      "caption": "Pawpaw fruit, branch, and large leaves.",
+      "credit": "Scott Bauer, USDA ARS / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Asimina_triloba3.jpg",
+      "bytes": 1947609
+    },
+    "details": [],
+    "note": "Pilot photo reference. Most images are cultivar or species-level public-media references; exact cultivar, fruit color, and habit can vary by nursery source, season, and site."
+  }
+]
