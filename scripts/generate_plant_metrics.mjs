@@ -950,7 +950,7 @@ const cropRules = [
     outputUnit: "lb/plant/season",
     reliabilityScore: 4
   }),
-  rule(["bush bean", "blue lake bush", "provider"], {
+  rule(["bush bean", "blue lake bush", "provider", "dragon tongue"], {
     daysToMaturityMin: 50,
     daysToMaturityMax: 60,
     matureHeightFtMin: 1.5,
@@ -968,7 +968,7 @@ const cropRules = [
     harvestWindowWeeksMax: 5,
     reliabilityScore: 4
   }),
-  rule(["pole bean", "runner bean", "rattlesnake"], {
+  rule(["pole bean", "runner bean", "rattlesnake", "yardlong"], {
     daysToMaturityMin: 60,
     daysToMaturityMax: 75,
     matureHeightFtMin: 6,
@@ -1002,6 +1002,22 @@ const cropRules = [
     outputUnit: "lb/plant/season",
     reliabilityScore: 4
   }),
+  rule(["edamame", "soybean"], {
+    daysToMaturityMin: 75,
+    daysToMaturityMax: 95,
+    matureHeightFtMin: 1.5,
+    matureHeightFtMax: 3,
+    matureSpreadFtMin: 1,
+    matureSpreadFtMax: 2,
+    spacingPlantFtMin: 0.25,
+    spacingPlantFtMax: 0.5,
+    spacingRowFtMin: 2,
+    spacingRowFtMax: 3,
+    outputMin: 0.3,
+    outputMax: 0.7,
+    outputUnit: "lb/plant/season",
+    reliabilityScore: 3
+  }),
   rule(["pea"], {
     daysToMaturityMin: 60,
     daysToMaturityMax: 70,
@@ -1019,7 +1035,7 @@ const cropRules = [
     harvestWindowWeeksMin: 2,
     harvestWindowWeeksMax: 5
   }),
-  rule(["kale", "collards", "chard", "mizuna", "arugula", "spinach", "malabar", "new zealand spinach", "miner"], {
+  rule(["kale", "collards", "chard", "mizuna", "arugula", "spinach", "malabar", "new zealand spinach", "miner", "tatsoi", "bok choy", "choi", "komatsuna", "mustard"], {
     daysToMaturityMin: 35,
     daysToMaturityMax: 70,
     matureHeightFtMin: 0.75,
@@ -1037,7 +1053,7 @@ const cropRules = [
     harvestWindowWeeksMax: 14,
     reliabilityScore: 4
   }),
-  rule(["lettuce"], {
+  rule(["lettuce", "radicchio"], {
     daysToMaturityMin: 45,
     daysToMaturityMax: 85,
     matureHeightFtMin: 0.5,
@@ -1102,7 +1118,7 @@ const cropRules = [
     harvestWindowWeeksMax: 3,
     reliabilityScore: 5
   }),
-  rule(["turnip", "daikon"], {
+  rule(["turnip", "daikon", "rutabaga"], {
     daysToMaturityMin: 45,
     daysToMaturityMax: 65,
     matureHeightFtMin: 0.75,
@@ -1116,6 +1132,53 @@ const cropRules = [
     outputMin: 0.4,
     outputMax: 0.6,
     outputUnit: "lb/plant/season"
+  }),
+  rule(["parsnip"], {
+    daysToMaturityMin: 95,
+    daysToMaturityMax: 120,
+    matureHeightFtMin: 1,
+    matureHeightFtMax: 2,
+    matureSpreadFtMin: 0.5,
+    matureSpreadFtMax: 1,
+    spacingPlantFtMin: 0.25,
+    spacingPlantFtMax: 0.5,
+    spacingRowFtMin: 1.5,
+    spacingRowFtMax: 2,
+    outputMin: 0.25,
+    outputMax: 0.5,
+    outputUnit: "lb/plant/season"
+  }),
+  rule(["celeriac"], {
+    daysToMaturityMin: 100,
+    daysToMaturityMax: 120,
+    matureHeightFtMin: 1,
+    matureHeightFtMax: 2,
+    matureSpreadFtMin: 1,
+    matureSpreadFtMax: 1.5,
+    spacingPlantFtMin: 0.75,
+    spacingPlantFtMax: 1,
+    spacingRowFtMin: 1.5,
+    spacingRowFtMax: 2,
+    outputMin: 0.75,
+    outputMax: 1.5,
+    outputUnit: "lb/plant/season",
+    difficultyScore: 3
+  }),
+  rule(["florence fennel"], {
+    daysToMaturityMin: 80,
+    daysToMaturityMax: 100,
+    matureHeightFtMin: 2,
+    matureHeightFtMax: 4,
+    matureSpreadFtMin: 1,
+    matureSpreadFtMax: 1.5,
+    spacingPlantFtMin: 0.5,
+    spacingPlantFtMax: 1,
+    spacingRowFtMin: 1.5,
+    spacingRowFtMax: 2,
+    outputMin: 0.5,
+    outputMax: 1,
+    outputUnit: "lb/plant/season",
+    difficultyScore: 3
   }),
   rule(["broccoli", "cauliflower"], {
     daysToMaturityMin: 55,
@@ -1171,7 +1234,7 @@ const cropRules = [
     reliabilityScore: 4,
     sourceKeys: ["umn-vegetable-field-planning", "umaine-vegetable-yield", "lsu-vegetable-yields"]
   }),
-  rule(["butternut", "winter squash", "delicata", "kabocha", "pumpkin"], {
+  rule(["butternut", "winter squash", "delicata", "kabocha", "pumpkin", "spaghetti squash"], {
     daysToMaturityMin: 85,
     daysToMaturityMax: 120,
     matureHeightFtMin: 1,
@@ -1406,7 +1469,7 @@ const cropRules = [
     difficultyScore: 3,
     sourceKeys: ["purdue-midwest-fruit", "psu-stone-spacing-yield", "umn-stone-fruit"]
   }),
-  rule(["sweet cherry", "bing cherry", "rainier", "stella", "blackgold"], {
+  rule(["sweet cherry", "bing cherry", "rainier", "stella", "blackgold", "sweetheart"], {
     firstYieldYearsMin: 4,
     firstYieldYearsMax: 7,
     fullYieldYearsMin: 7,
@@ -2460,7 +2523,7 @@ const yieldConversionRules = [
     yieldLbsMethod: "ear-count range converted to pounds for stock-style return comparison",
     sourceKeys: ["umaine-vegetable-yield", "lsu-vegetable-yields"]
   }),
-  rule(["lettuce"], {
+  rule(["lettuce", "radicchio"], {
     conversionMin: 0.5,
     conversionMax: 1,
     conversionUnit: "lb/head",
