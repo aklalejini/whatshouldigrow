@@ -6309,6 +6309,46 @@ input.calendar-filter-search[type="search"]:focus {
   line-height: 1.78;
 }
 
+.article-body figure,
+.article-image-grid figure {
+  margin: 0;
+}
+
+.article-image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 28px 0 30px;
+}
+
+.article-image-grid figure {
+  overflow: hidden;
+  border: 1px solid #dfe7d8;
+  border-radius: 14px;
+  background: #fbfdf8;
+}
+
+.article-image-grid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.article-image-grid figcaption {
+  padding: 10px 12px 12px;
+  color: #4f5f54;
+  font-size: 0.82rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.article-image-grid figcaption a {
+  color: var(--leaf-dark);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
 .article-body a[rel~="sponsored"] {
   display: inline-flex;
   align-items: center;
@@ -6580,6 +6620,10 @@ input.calendar-filter-search[type="search"]:focus {
 
   .plant-photo-detail img {
     height: clamp(170px, 48vw, 240px);
+  }
+
+  .article-image-grid {
+    grid-template-columns: 1fr;
   }
 
   .hub-hero h1,

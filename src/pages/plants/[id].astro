@@ -131,7 +131,7 @@ function peerReasonForPlant(candidate, context) {
   if (context.sharedSun > 0 && context.sharedSoils > 0) {
     return "Similar light and soil needs; practical substitute in the same site.";
   }
-  return "Comparable database profile; check site fit before choosing.";
+  return "Similar growing profile; check site fit before choosing.";
 }
 
 const comparablePlants = plants
@@ -197,7 +197,7 @@ function cleanMetric(value) {
   return isSourcedValue(value) ? value : null;
 }
 
-function metricRange(min, max, suffix = "", fallback = "Not yet modeled") {
+function metricRange(min, max, suffix = "", fallback = "Not available yet") {
   if (min === null || min === undefined || max === null || max === undefined) return fallback;
   if (min === max) return `${metricNumber(min)}${suffix}`;
   return `${metricNumber(min)}-${metricNumber(max)}${suffix}`;
@@ -471,7 +471,7 @@ const breadcrumbJsonLd = {
                   {partnerActionLabel}
                 </a>
               ) : (
-                <span class="nursery-placeholder">Source search coming soon</span>
+                <span class="nursery-placeholder">No source link available yet</span>
               )}
             </div>
           </section>
@@ -480,11 +480,11 @@ const breadcrumbJsonLd = {
             <section class="detail-panel plant-page-photo-reference" aria-labelledby="plant-photo-reference-heading">
               <div class="plant-photo-reference-head">
                 <div>
-                  <p class="eyebrow">Real-world reference</p>
+                  <p class="eyebrow">Plant photos</p>
                   <h2 id="plant-photo-reference-heading">What it looks like in the garden</h2>
                 </div>
                 <p>
-                  The primary photo for {plant.name} is vetted to show living plant structure: stems, branches, leaves, and fruit where available.
+                  Use these photos to compare the plant's leaves, stems, flowers, fruit, and overall habit before you buy or plant.
                 </p>
               </div>
 
@@ -498,7 +498,7 @@ const breadcrumbJsonLd = {
                 </figure>
 
                 {plantPhotoDetails.length > 0 && (
-                  <div class="plant-photo-detail-grid" aria-label={`${plant.name} supplemental photo references`}>
+                  <div class="plant-photo-detail-grid" aria-label={`${plant.name} supplemental plant photos`}>
                     {plantPhotoDetails.map((photo) => (
                       <figure class="plant-photo-detail">
                         <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
@@ -620,11 +620,11 @@ const breadcrumbJsonLd = {
                 <dl class="yield-chart-stats">
                   <div>
                     <dt>Year 1</dt>
-                    <dd>{yieldYearOne ? metricRange(yieldYearOne.min, yieldYearOne.max, " lb") : "Not yet modeled"}</dd>
+                    <dd>{yieldYearOne ? metricRange(yieldYearOne.min, yieldYearOne.max, " lb") : "Not available yet"}</dd>
                     {yieldYearOne && <small>{yieldYearOneNote}</small>}
                   </div>
-                  <div><dt>Year 5</dt><dd>{yieldYearFive ? metricRange(yieldYearFive.min, yieldYearFive.max, " lb") : "Not yet modeled"}</dd></div>
-                  <div><dt>Year 10</dt><dd>{yieldYearTen ? metricRange(yieldYearTen.min, yieldYearTen.max, " lb") : "Not yet modeled"}</dd></div>
+                  <div><dt>Year 5</dt><dd>{yieldYearFive ? metricRange(yieldYearFive.min, yieldYearFive.max, " lb") : "Not available yet"}</dd></div>
+                  <div><dt>Year 10</dt><dd>{yieldYearTen ? metricRange(yieldYearTen.min, yieldYearTen.max, " lb") : "Not available yet"}</dd></div>
                   {cleanMetric(metricDisplay.tenYearYieldLbs) && <div><dt>10-year total</dt><dd>{cleanMetric(metricDisplay.tenYearYieldLbs)}</dd></div>}
                 </dl>
               </div>
@@ -689,8 +689,8 @@ const breadcrumbJsonLd = {
                     <a class="plant-comparison-row" href={plantUrl(candidate)} role="row">
                       <span role="cell"><strong>{candidate.name}</strong></span>
                       <span role="cell" data-label="Zones">{candidate.zones[0]}-{candidate.zones[1]}</span>
-                      <span role="cell" data-label="First output">{cleanMetric(candidateMetrics.firstOutput) ?? "Not yet modeled"}</span>
-                      <span role="cell" data-label="Yield (lbs)">{cleanMetric(candidateMetrics.yieldLbs) ?? "Not yet modeled"}</span>
+                      <span role="cell" data-label="First output">{cleanMetric(candidateMetrics.firstOutput) ?? "Not available yet"}</span>
+                      <span role="cell" data-label="Yield (lbs)">{cleanMetric(candidateMetrics.yieldLbs) ?? "Not available yet"}</span>
                       <span role="cell" data-label="Difficulty">{candidateMetrics.difficulty ?? "-"}</span>
                       <span role="cell" data-label="Why peer">{reason}</span>
                     </a>
@@ -757,15 +757,14 @@ const breadcrumbJsonLd = {
           <section class="detail-panel plant-page-methodology">
             <h2>Sources & Methodology</h2>
             <p>
-              This profile is generated from the Plant by ZIP database: hardiness range,
-              light, soil, water, harvest timing, traits, source listing, relationship
-              rules, and quantitative planning metrics. Pairings are term-based and reviewed
-              to avoid obvious false positives.
+              This guide combines hardiness range, light, soil, water, harvest timing,
+              traits, source listings, plant relationships, and quantitative planning
+              metrics. Pairings are screened for practical garden fit.
             </p>
             <p>
-              Quantitative values use extension and botanical-reference ranges where available,
-              then crop-family templates when cultivar-level data is not defensible. Ranges are
-              intentionally broad to avoid false precision.
+              Quantitative values use extension and botanical-reference ranges where available.
+              For less-studied cultivars, similar crops fill gaps conservatively. Ranges are
+              intentionally broad so the profile stays useful without pretending to be exact.
             </p>
             {metricSources.length > 0 && (
               <p class="plant-page-source-links">
