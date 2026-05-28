@@ -4711,10 +4711,10 @@ input.calendar-filter-search[type="search"]:focus {
 }
 
 .calendar-legend-swatch {
-  width: 26px;
-  height: 12px;
+  width: 32px;
+  height: 8px;
   border: 1px solid rgba(21, 55, 33, 0.18);
-  border-radius: 999px;
+  border-radius: 3px;
 }
 
 .calendar-heatmap {

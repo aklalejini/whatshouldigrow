@@ -606,7 +606,7 @@ const webAppJsonLd = {
               <option value="all">All zone-fit plants</option>
             </select>
 
-            <div class="calendar-legend" aria-label="Timeline legend">
+            <div class="calendar-legend" aria-label="Timeline method colors">
               <span><i class="calendar-legend-swatch calendar-method-indoors"></i>Start indoors</span>
               <span><i class="calendar-legend-swatch calendar-method-direct"></i>Direct sow</span>
               <span><i class="calendar-legend-swatch calendar-method-transplant"></i>Transplant</span>
@@ -4835,7 +4835,6 @@ function outputSortValue(metrics) {
         const groups = new Map();
         events.forEach((event) => {
           const key = [
-            event.group,
             event.action,
             event.method,
             event.season,
@@ -4845,17 +4844,24 @@ function outputSortValue(metrics) {
           if (!groups.has(key)) {
             groups.set(key, {
               ...event,
-              plants: []
+              plantMap: new Map(),
+              notes: new Set(),
+              timingClasses: new Set()
             });
           }
-          groups.get(key).plants.push(event.plant);
+          const group = groups.get(key);
+          group.plantMap.set(event.plant.id, event.plant);
+          if (event.note) group.notes.add(event.note);
+          group.timingClasses.add(event.timingClass ?? calendarClassForPlant(event.plant));
         });
         return Array.from(groups.values())
-          .map((group) => ({
+          .map(({ plantMap, notes, timingClasses, ...group }) => ({
             ...group,
-            plants: group.plants.sort((a, b) => a.name.localeCompare(b.name))
+            plants: Array.from(plantMap.values()).sort((a, b) => a.name.localeCompare(b.name)),
+            notes: Array.from(notes),
+            timingClasses: Array.from(timingClasses)
           }))
-          .sort((a, b) => a.start - b.start || calendarMethodOrder[a.method] - calendarMethodOrder[b.method] || a.group.localeCompare(b.group));
+          .sort((a, b) => a.start - b.start || calendarMethodOrder[a.method] - calendarMethodOrder[b.method] || a.action.localeCompare(b.action));
       }
 
       function averageCalendarDate(dates) {
@@ -4911,6 +4917,30 @@ function outputSortValue(metrics) {
         const timingClass = group.timingClass
           ?? (group.plants?.[0] ? calendarClassForPlant(group.plants[0]) : group.plant ? calendarClassForPlant(group.plant) : "nursery");
         return calendarSoilTempGuidance[timingClass] ?? calendarSoilTempGuidance.nursery;
+      }
+
+      function calendarPlantCountLabel(count) {
+        return `${count} ${count === 1 ? "plant" : "plants"}`;
+      }
+
+      function calendarActionPlantSummary(group) {
+        const formSummary = summarizeForms(group.plants.map((plant) => ({ plant })));
+        const countLabel = calendarPlantCountLabel(group.plants.length);
+        return formSummary ? `${countLabel} - ${formSummary}` : countLabel;
+      }
+
+      function calendarActionGuidance(group) {
+        const notes = group.notes ?? [];
+        const note = notes.length === 1
+          ? notes[0]
+          : "Check individual plant profiles for crop-specific timing tweaks.";
+        const soilGuidance = (group.timingClasses ?? [])
+          .map((timingClass) => calendarSoilTempGuidance[timingClass] ?? calendarSoilTempGuidance.nursery)
+          .filter((label, index, labels) => labels.indexOf(label) === index);
+        const soilNote = soilGuidance.length === 1
+          ? soilGuidance[0]
+          : "Soil and establishment checks vary across this group.";
+        return `${note} ${soilNote}`;
       }
 
       function calendarTimingExplanation(events, today) {
@@ -5183,7 +5213,7 @@ function outputSortValue(metrics) {
               <div>
                 <p class="eyebrow">${focusLabel}</p>
                 <h3>${monthName} tasks</h3>
-                <p>No grouped windows match this month and filter set.</p>
+                <p>No action rows match this month and filter set.</p>
               </div>
               ${clearButton}
             </div>
@@ -5194,7 +5224,7 @@ function outputSortValue(metrics) {
               <div>
                 <p class="eyebrow">${focusLabel}</p>
                 <h3>${monthName} tasks</h3>
-                <p>${groups.length} grouped ${groups.length === 1 ? "window" : "windows"} for the current filters.</p>
+                <p>${groups.length} action ${groups.length === 1 ? "row" : "rows"} for the current filters.</p>
               </div>
               ${clearButton}
             </div>
@@ -5208,14 +5238,14 @@ function outputSortValue(metrics) {
                       <span class="calendar-method calendar-method-${escapeHtml(group.method)}">${calendarMethodLabels[group.method]}</span>
                     </div>
                     <h4>${escapeHtml(group.action)}</h4>
-                    <p>${escapeHtml(group.group)} - ${group.plants.length} ${group.plants.length === 1 ? "plant" : "plants"}</p>
-                    <small>${escapeHtml(calendarSoilTempLabel(group))}</small>
-                    ${renderCalendarPlantLinks(group.plants, 2)}
+                    <p>${escapeHtml(calendarActionPlantSummary(group))}</p>
+                    <small>${escapeHtml(calendarActionGuidance(group))}</small>
+                    ${renderCalendarPlantLinks(group.plants, 4)}
                   </article>
                 `;
               }).join("")}
             </div>
-            ${groups.length > visibleGroups.length ? `<p class="calendar-limit-note">Showing ${visibleGroups.length} of ${groups.length} month windows. Use the detail list below for the full month.</p>` : ""}
+            ${groups.length > visibleGroups.length ? `<p class="calendar-limit-note">Showing ${visibleGroups.length} of ${groups.length} month action rows. Use the detail list below for the full month.</p>` : ""}
           `;
         }
 
@@ -5254,9 +5284,9 @@ function outputSortValue(metrics) {
                   <span class="calendar-method calendar-method-${escapeHtml(group.method)}">${calendarMethodLabels[group.method]}</span>
                 </div>
               </div>
-              <p>${escapeHtml(group.group)} &middot; ${group.plants.length} ${group.plants.length === 1 ? "plant" : "plants"}</p>
-              ${renderCalendarPlantLinks(group.plants)}
-              <small>${escapeHtml(group.note)} ${escapeHtml(calendarSoilTempLabel(group))}</small>
+              <p>${escapeHtml(calendarActionPlantSummary(group))}</p>
+              ${renderCalendarPlantLinks(group.plants, 8)}
+              <small>${escapeHtml(calendarActionGuidance(group))}</small>
             </div>
           </article>
         `;
@@ -5282,7 +5312,7 @@ function outputSortValue(metrics) {
         const timingNote = calendarTimingExplanation(baseEvents, today);
         calendarNowTitleEl.textContent = `${formatCalendarDate(today)} in zone ${calendarZoneData.zone}`;
         calendarNowSummaryEl.textContent = activeGroups.length
-          ? `${activeGroups.length} grouped planting ${activeGroups.length === 1 ? "window overlaps" : "windows overlap"} this week. ${frostNote}`
+          ? `${activeGroups.length} planting ${activeGroups.length === 1 ? "action overlaps" : "actions overlap"} this week. ${frostNote}`
           : `No matching planting windows overlap this week. ${timingNote} ${frostNote}`;
         const groups = activeGroups.length ? activeGroups.slice(0, 3) : upcomingGroups.slice(0, 3);
         if (!groups.length) {
@@ -5296,7 +5326,7 @@ function outputSortValue(metrics) {
               <article class="calendar-now-item calendar-urgency-${escapeHtml(urgency)}">
                 <strong>${calendarUrgencyLabels[urgency]}</strong>
                 <span>${formatCalendarWindow(group.start, group.end)}</span>
-                <p>${escapeHtml(group.action)}: ${escapeHtml(group.group)}</p>
+                <p>${escapeHtml(group.action)}: ${escapeHtml(calendarPlantCountLabel(group.plants.length))}</p>
               </article>
             `;
           }).join("")}
@@ -5352,10 +5382,10 @@ function outputSortValue(metrics) {
         calendarResultsTitleEl.textContent = calendarMonthFilter === ""
           ? `${calendarDisplayYear} planting windows`
           : `${calendarMonthLabels[Number(calendarMonthFilter)]} detail`;
-        calendarSummaryEl.textContent = `Showing ${groups.length} grouped windows for ${plantFocusLabel}, ${seasonLabel.toLowerCase()}, ${methodLabel.toLowerCase()}.`;
+        calendarSummaryEl.textContent = `Showing ${groups.length} action rows for ${plantFocusLabel}, ${seasonLabel.toLowerCase()}, ${methodLabel.toLowerCase()}.`;
         calendarEventsEl.innerHTML = visibleGroups.map(renderCalendarGroup).join("")
           + (groups.length > visibleGroups.length
-            ? `<p class="calendar-limit-note">Showing the first ${visibleGroups.length} grouped windows. Narrow the filters to see a tighter list.</p>`
+            ? `<p class="calendar-limit-note">Showing the first ${visibleGroups.length} action rows. Narrow the filters to see a tighter list.</p>`
             : "");
         calendarEmptyEl.hidden = groups.length > 0;
       }

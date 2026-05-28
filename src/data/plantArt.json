@@ -210,6 +210,22 @@
     "plateBg": "linear-gradient(145deg, #d6dfc5, #f7efe0)"
   },
   {
+    "id": "eggplant",
+    "image": "eggplant.webp",
+    "source": "Eggplant.png",
+    "match": ["eggplant"],
+    "position": "50% 53%",
+    "plateBg": "linear-gradient(145deg, #ded7e3, #f7efe0)"
+  },
+  {
+    "id": "okra",
+    "image": "okra.webp",
+    "source": "Okra.png",
+    "match": ["okra"],
+    "position": "50% 52%",
+    "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
+  },
+  {
     "id": "artichoke",
     "image": "artichoke.webp",
     "source": "Artichoke.png",
@@ -273,6 +289,14 @@
     "match": ["peach"],
     "position": "56% 52%",
     "plateBg": "linear-gradient(145deg, #f1c7ab, #f7efe0)"
+  },
+  {
+    "id": "apricot",
+    "image": "apricot.webp",
+    "source": "Apricot.png",
+    "match": ["-apricot"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #f1c7a0, #f7efe0)"
   },
   {
     "id": "apple",
@@ -341,11 +365,27 @@
     "plateBg": "linear-gradient(145deg, #d7dfcb, #f7efe0)"
   },
   {
+    "id": "pecan",
+    "image": "pecan.webp",
+    "source": "Pecan.png",
+    "match": ["pecan"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d7dfcb, #f7efe0)"
+  },
+  {
     "id": "cherry-dogwood",
     "image": "cherry-dogwood.webp",
     "source": "Cherry Dogwood.png",
     "match": ["cornelian cherry", "cornelian-cherry", "cherry dogwood"],
     "position": "54% 52%",
+    "plateBg": "linear-gradient(145deg, #d8ddd0, #f7efe0)"
+  },
+  {
+    "id": "dogwood",
+    "image": "dogwood.webp",
+    "source": "Dogwood.png",
+    "match": ["dogwood-cherokee-princess", "cherokee princess", "dogwood-stellar-pink", "stellar pink"],
+    "position": "50% 52%",
     "plateBg": "linear-gradient(145deg, #d8ddd0, #f7efe0)"
   },
   {
@@ -397,6 +437,14 @@
     "plateBg": "linear-gradient(145deg, #d1dcc8, #f7efe0)"
   },
   {
+    "id": "groundsel-bush",
+    "image": "groundsel-bush.webp",
+    "source": "Groundsel Bush.png",
+    "match": ["groundsel bush", "groundsel-bush"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d6dfc5, #f7efe0)"
+  },
+  {
     "id": "pine-conifer",
     "image": "pine.webp",
     "source": "Pine.png",
@@ -404,6 +452,14 @@
     "exclude": ["pineapple"],
     "position": "52% 52%",
     "plateBg": "linear-gradient(145deg, #d2dbc5, #f7efe0)"
+  },
+  {
+    "id": "oak",
+    "image": "oak.webp",
+    "source": "Oak.png",
+    "match": ["oak-"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d7dfcb, #f7efe0)"
   },
   {
     "id": "bamboo",
