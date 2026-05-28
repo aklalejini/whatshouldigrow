@@ -2323,7 +2323,7 @@ const webAppJsonLd = {
               fitPercent: fit.percent,
               fitLabel: fit.label,
               url: plantPagePath(entry.plant),
-              note: explainPlant(entry.plant, currentInputs, index)
+              note: cardSummaryText(entry.plant)
             };
           })
         };
@@ -6089,106 +6089,64 @@ function outputSortValue(metrics) {
         return { percent, label, tone };
       }
 
-      function joinHumanList(values) {
-        if (values.length <= 1) return values[0] ?? "";
-        if (values.length === 2) return `${values[0]} and ${values[1]}`;
-        return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
-      }
-
-      function variantFromIndex(index, count) {
-        if (count <= 0) return 0;
-        return Math.abs(Number.isFinite(index) ? index : 0) % count;
-      }
-
       function sunLabel(value) {
         const labels = { full: "Full sun", partial: "Part sun", part: "Part sun", shade: "Shade" };
         return labels[value] ?? sentenceCase(value);
       }
 
-      function waterLabel(value) {
-        const labels = { low: "Low water", average: "Average water", high: "High water" };
-        return labels[value] ?? sentenceCase(value);
+      function cardSummaryText(plant) {
+        const note = plant.notes?.trim();
+        if (note) return note;
+        const trait = plant.traits?.[0] ?? plant.type.toLowerCase();
+        return `${plant.name} is worth comparing for ${trait}.`;
       }
 
-      function conditionWins(plant, inputs) {
-        const wins = [];
+      function zoneFactValue(plant, inputs) {
         const userZone = zoneToNumber(inputs.zone);
-        if (userZone >= zoneToNumber(plant.zones[0]) && userZone <= zoneToNumber(plant.zones[1])) {
-          wins.push(`zone ${inputs.zone} sits within its ${plant.zones[0]}-${plant.zones[1]} hardiness range`);
-        }
-        if (plant.sun.includes(inputs.sun)) {
-          wins.push(`${sunLabel(inputs.sun).toLowerCase()} suits its light needs`);
-        }
-        if (plant.soils.includes(inputs.soil)) wins.push(`${inputs.soil} soil works for it`);
-        if (plant.water === inputs.water) wins.push(`${waterLabel(inputs.water).toLowerCase()} fits its water need`);
-        const climateFit = climateFitForPlant(plant, inputs.climate);
-        if (climateFit?.score >= 14) wins.push("local heat and winter chill look compatible");
-        return wins;
+        const minZone = zoneToNumber(plant.zones[0]);
+        const maxZone = zoneToNumber(plant.zones[1]);
+        if (userZone >= minZone && userZone <= maxZone) return `${inputs.zone} in range`;
+        const distance = userZone < minZone ? minZone - userZone : userZone - maxZone;
+        return distance <= 0.5 ? `${inputs.zone} borderline` : `${inputs.zone} outside range`;
       }
 
-      function fitSentenceForPlant(plant, wins, index = 0) {
-        if (!wins.length) {
-          const fallbackTemplates = [
-            `${plant.name} fits the selected goal and basic growing conditions.`,
-            `${plant.name} stays in the list on goal fit and site tolerance.`,
-            `${plant.name} remains a workable match for these filters.`
-          ];
-          return fallbackTemplates[variantFromIndex(index, fallbackTemplates.length)];
-        }
-        const detail = joinHumanList(wins);
-        const templates = [
-          `${plant.name} checks the main boxes here: ${detail}.`,
-          `In this ZIP, ${plant.name} has the essentials in place: ${detail}.`,
-          `The growing-site fit is solid: ${detail}.`,
-          `${plant.name} is a practical match for these settings: ${detail}.`,
-          `The key conditions look workable for ${plant.name}: ${detail}.`,
-          `${plant.name} lines up with the selected conditions: ${detail}.`
-        ];
-        return templates[variantFromIndex(index, templates.length)];
+      function sunFactValue(plant, inputs) {
+        if (plant.sun.includes(inputs.sun)) return sunLabel(inputs.sun);
+        return `Prefers ${plant.sun.map(sunLabel).join("/")}`;
       }
 
-      function planningSentenceForPlant(planningDetails, plant, index = 0) {
-        if (!planningDetails.length) return "";
-        const detail = planningDetails.join("; ");
-        const templates = [
-          `Planning: ${detail}.`,
-          `For planning: ${detail}.`,
-          `Useful numbers: ${detail}.`
-        ];
-        return templates[variantFromIndex(index, templates.length)];
+      function soilFactValue(plant, inputs) {
+        if (plant.soils.includes(inputs.soil)) return `${sentenceCase(inputs.soil)} works`;
+        return `Prefers ${formatList(plant.soils)}`;
       }
 
-      function explainPlant(plant, inputs, index = 0) {
-        if (plant.id === "mango-pawpaw") {
-          return "Mango Pawpaw handles part shade and heavier soil better than many orchard fruits. Expect a slow start, often 4-6 years before fruit, then early-fall harvests with custardy fruit that needs gentle handling.";
-        }
-        const wins = conditionWins(plant, inputs).slice(0, 3);
-        const fitSentence = fitSentenceForPlant(plant, wins, index);
-        const trait = plant.traits[0] ?? plant.type.toLowerCase();
-        const goalNotes = {
-          "privacy-screening": `Use it where ${trait} can add screening, structure, or edge definition.`,
-          "pollinators-wildlife": `Its main habitat value is ${trait}; verify local nativity when habitat planting is the priority.`,
-          "curb-appeal": `Its main visual value is ${trait}, so place it where the form or seasonal display is easy to see.`,
-          "vegetables-herbs": `For a kitchen garden, the useful part is ${trait}; plan harvest timing around ${plant.harvest}.`,
-          "native-plants": `It has a native-plant flag in the database; confirm regional range and cultivar status before relying on it for habitat work.`
-        };
-        const metrics = metricFor(plant).display ?? {};
-        const firstOutput = metricDisplayValue(metrics.firstOutput, "");
-        const yieldValue = metricDisplayValue(metrics.yieldLbs, "") || metricDisplayValue(metrics.output, "");
-        const planningDetails = [
-          firstOutput ? `first output ${firstOutput}` : "",
-          yieldValue ? `typical output ${yieldValue}` : ""
+      function compactMetricValue(value) {
+        return metricDisplayValue(value, "")
+          .replace(/\s*\/plant\/year/g, "/yr")
+          .replace(/\s*\/plant\/season/g, "/season")
+          .replace(/\s*\/plant\/week/g, "/week")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function renderMatchFacts(plant, inputs, metrics) {
+        const firstOutput = compactMetricValue(metrics.display?.firstOutput);
+        const output = compactMetricValue(metrics.display?.yieldLbs) || compactMetricValue(metrics.display?.output);
+        const facts = [
+          { label: "Zone", value: zoneFactValue(plant, inputs) },
+          { label: "Sun", value: sunFactValue(plant, inputs) },
+          { label: "Soil", value: soilFactValue(plant, inputs) },
+          firstOutput ? { label: "First", value: firstOutput } : null,
+          output ? { label: "Output", value: output } : null
         ].filter(Boolean);
-        const planningSentence = planningSentenceForPlant(planningDetails, plant, index);
-        return [fitSentence, goalNotes[inputs.goal], plant.notes, planningSentence].filter(Boolean).join(" ");
-      }
 
-      function whyThisWon(plant, inputs) {
-        const wins = conditionWins(plant, inputs).slice(0, 2);
-        const trait = plant.traits[0];
-        return wins.length
-          ? `Why it rose: ${sentenceCase(joinHumanList(wins))}.`
-          : `Why it rose: ${sentenceCase(trait)} is a strong fit for this search.`;
+        return `
+          <div class="match-facts" aria-label="Key match facts">
+            ${facts
+              .map((fact) => `<span class="match-fact"><b>${escapeHtml(fact.label)}</b>${escapeHtml(fact.value)}</span>`)
+              .join("")}
+          </div>
+        `;
       }
 
       function renderFitRows(details) {
@@ -6271,8 +6229,8 @@ function outputSortValue(metrics) {
                 <strong>${fit.label}</strong>
               </div>
             </div>
-            ${index === 0 ? `<p class="winner-note">${whyThisWon(plant, inputs)}</p>` : ""}
-            <p>${explainPlant(plant, inputs, index)}</p>
+            <p class="result-summary">${escapeHtml(cardSummaryText(plant))}</p>
+            ${renderMatchFacts(plant, inputs, metrics)}
             <div class="trait-row">
               ${plant.traits.slice(0, 2).map((trait) => `<span>${trait}</span>`).join("")}
             </div>

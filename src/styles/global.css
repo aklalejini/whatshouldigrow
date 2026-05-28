@@ -1027,12 +1027,6 @@ fieldset:nth-of-type(2) .segmented {
   line-height: 1.1;
 }
 
-.winner-note {
-  margin: 0 0 10px;
-  color: var(--terracotta);
-  font-weight: 750;
-}
-
 .result-card p {
   margin-bottom: 14px;
   color: #3f4d43;
@@ -1040,9 +1034,42 @@ fieldset:nth-of-type(2) .segmented {
   line-height: 1.55;
 }
 
+.result-card .result-summary {
+  margin-bottom: 12px;
+}
+
 .top-card p {
   max-width: 680px;
   font-size: 1.05rem;
+}
+
+.match-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0 0 12px;
+}
+
+.match-fact {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid #dfe7d8;
+  border-radius: 999px;
+  color: #405044;
+  background: #f6faf2;
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.match-fact b {
+  color: var(--leaf-dark);
+  font-size: 0.66rem;
+  font-weight: 850;
+  text-transform: uppercase;
 }
 
 .trait-row {
