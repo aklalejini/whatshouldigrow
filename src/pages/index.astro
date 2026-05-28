@@ -5134,7 +5134,6 @@ function outputSortValue(metrics) {
                 return `
                   <article class="calendar-gantt-row calendar-form-${escapeHtml(formKey)}">
                     <div class="calendar-gantt-label">
-                      <span class="calendar-form-dot" aria-hidden="true"></span>
                       <strong>${escapeHtml(row.label)}</strong>
                       <small>${row.plants.length} ${row.plants.length === 1 ? "plant" : showingVarietyRows ? "plants" : "varieties"} - ${calendarFormLabels[formKey] ?? "Plant"}</small>
                     </div>
@@ -5208,7 +5207,7 @@ function outputSortValue(metrics) {
                       <span class="calendar-mobile-date">${formatCalendarWindow(group.start, group.end)}</span>
                       <span class="calendar-method calendar-method-${escapeHtml(group.method)}">${calendarMethodLabels[group.method]}</span>
                     </div>
-                    <h4><span class="calendar-form-dot" aria-hidden="true"></span>${escapeHtml(group.action)}</h4>
+                    <h4>${escapeHtml(group.action)}</h4>
                     <p>${escapeHtml(group.group)} - ${group.plants.length} ${group.plants.length === 1 ? "plant" : "plants"}</p>
                     <small>${escapeHtml(calendarSoilTempLabel(group))}</small>
                     ${renderCalendarPlantLinks(group.plants, 2)}
@@ -5249,7 +5248,7 @@ function outputSortValue(metrics) {
             </div>
             <div class="calendar-event-main">
               <div class="calendar-event-title">
-                <h3><span class="calendar-form-dot" aria-hidden="true"></span>${escapeHtml(group.action)}</h3>
+                <h3>${escapeHtml(group.action)}</h3>
                 <div class="calendar-event-badges">
                   <span class="calendar-urgency-badge calendar-urgency-badge-${escapeHtml(urgency)}">${calendarUrgencyLabels[urgency]}</span>
                   <span class="calendar-method calendar-method-${escapeHtml(group.method)}">${calendarMethodLabels[group.method]}</span>

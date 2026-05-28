@@ -4828,8 +4828,7 @@ input.calendar-filter-search[type="search"]:focus {
 
 .calendar-gantt-label {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 4px 8px;
+  gap: 4px;
   align-content: center;
   min-height: 70px;
   padding: 9px 10px;
@@ -4848,45 +4847,10 @@ input.calendar-filter-search[type="search"]:focus {
 }
 
 .calendar-gantt-label small {
-  grid-column: 2;
   color: var(--muted);
   font-size: 0.66rem;
   font-weight: 800;
   line-height: 1.2;
-}
-
-.calendar-form-dot {
-  width: 11px;
-  height: 11px;
-  margin-top: 2px;
-  border-radius: 50%;
-  background: var(--leaf);
-  box-shadow: 0 0 0 3px rgba(39, 88, 58, 0.1);
-}
-
-.calendar-form-tree .calendar-form-dot {
-  background: var(--leaf-dark);
-}
-
-.calendar-form-shrub .calendar-form-dot {
-  background: var(--moss);
-}
-
-.calendar-form-vine .calendar-form-dot {
-  background: #3f7360;
-}
-
-.calendar-form-vegetable .calendar-form-dot {
-  background: var(--terracotta);
-}
-
-.calendar-form-flowerHerb .calendar-form-dot {
-  background: var(--gold);
-}
-
-.calendar-form-cactus .calendar-form-dot,
-.calendar-form-fruiting .calendar-form-dot {
-  background: #6b7b4b;
 }
 
 .calendar-gantt-track {
@@ -5097,20 +5061,12 @@ input.calendar-filter-search[type="search"]:focus {
 }
 
 .calendar-event-title h3 {
-  display: inline-flex;
-  align-items: flex-start;
-  gap: 8px;
   min-width: 0;
   margin: 0;
   color: var(--leaf-dark);
   font-size: 1rem;
   line-height: 1.25;
   letter-spacing: 0;
-}
-
-.calendar-event-title h3 .calendar-form-dot {
-  flex: 0 0 auto;
-  margin-top: 0.22em;
 }
 
 .calendar-event-badges {
@@ -6918,18 +6874,10 @@ input.calendar-filter-search[type="search"]:focus {
   }
 
   .calendar-mobile-action h4 {
-    display: inline-flex;
-    align-items: flex-start;
-    gap: 8px;
     margin: 0;
     color: var(--leaf-dark);
     font-size: 0.94rem;
     line-height: 1.25;
-  }
-
-  .calendar-mobile-action h4 .calendar-form-dot {
-    flex: 0 0 auto;
-    margin-top: 0.24em;
   }
 
   .calendar-mobile-action p {
