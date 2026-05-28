@@ -1405,7 +1405,7 @@ const cropRules = [
     reliabilityScore: 3,
     sourceKeys: ["purdue-midwest-fruit", "psu-pome-spacing-yield"]
   }),
-  rule(["pear"], {
+  rule(["pear tree", "bartlett pear", "kieffer pear", "ayers pear", "asian pear", "bosc pear", "comice pear", "magness pear", "warren pear", "harrow sweet pear"], {
     firstYieldYearsMin: 4,
     firstYieldYearsMax: 5,
     fullYieldYearsMin: 7,
@@ -1844,7 +1844,7 @@ const cropRules = [
     dataConfidence: "low",
     sourceKeys: ["ncsu-plant-toolbox", "mobot-plant-finder"]
   }),
-  rule(["satsuma", "mandarin"], {
+  rule(["satsuma mandarin", "owari satsuma", "mandarin"], {
     firstYieldYearsMin: 3,
     firstYieldYearsMax: 4,
     fullYieldYearsMin: 5,
@@ -2752,7 +2752,7 @@ const containerRules = [
     containerConfidence: "medium",
     sourceKeys: ["umd-container-sizes"]
   }),
-  rule(["citrus", "lemon", "satsuma", "kumquat", "yuzu", "calamondin", "finger lime"], {
+  rule(["citrus", "kumquat", "yuzu", "calamondin", "finger lime", "lemon tree", "lime tree", "orange tree"], {
     containerMinGallons: 15,
     containerSuitability: "good",
     containerNote: "Use 15+ gal with excellent drainage and move indoors where winters are cold.",

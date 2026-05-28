@@ -110,8 +110,8 @@ export const ZONE_PAGE_TARGETS = [
     shortTitle: "Native plants 7",
     eyebrow: "Habitat plants",
     title: "Native Plants for Zone 7",
-    description: "Browse native-cue and habitat-friendly plants for USDA zone 7 gardens using Plant by ZIP hardiness, water, and profile data.",
-    summary: "This is a hardiness-based native-cue collection, not a county-level native range. Confirm local provenance before planting at scale.",
+    description: "Browse native-flagged and habitat-friendly plants for USDA zone 7 gardens using Plant by ZIP hardiness, water, and profile data.",
+    summary: "This is a hardiness-based native-flagged collection, not a county-level native range. Confirm local provenance before planting at scale.",
     intent: "native-plants",
     goal: "native-plants",
     ctaLabel: "Match natives by ZIP",
@@ -125,8 +125,8 @@ export const ZONE_PAGE_TARGETS = [
     shortTitle: "Native plants 7b",
     eyebrow: "Habitat plants",
     title: "Native Plants for Zone 7b",
-    description: "Browse native-cue and habitat-friendly plants for USDA zone 7b gardens using Plant by ZIP hardiness, water, and profile data.",
-    summary: "This is a hardiness-based native-cue collection for zone 7b, not a county-level native range map. Use it to shortlist habitat plants, then confirm local provenance.",
+    description: "Browse native-flagged and habitat-friendly plants for USDA zone 7b gardens using Plant by ZIP hardiness, water, and profile data.",
+    summary: "This is a hardiness-based native-flagged collection for zone 7b, not a county-level native range map. Use it to shortlist habitat plants, then confirm local provenance.",
     intent: "native-plants",
     goal: "native-plants",
     ctaLabel: "Match natives by ZIP",
@@ -189,7 +189,7 @@ export function zoneProfileForTarget(target) {
     lastFrost: "spring, based on your local frost date",
     firstFrost: "fall, based on your local frost date",
     seasonLength: "site-dependent",
-    heatCue: "local heat load can change plant performance",
+    heatCue: "local summer heat can change plant performance",
     chillCue: "verify cultivar chill requirements before planting fruit",
     regionCue: "varies by state, elevation, and nearby water",
     caution: "Use the ZIP tool and local extension guidance before planting at scale."
@@ -429,7 +429,7 @@ export function zonePagePlanningWindows(target) {
       {
         label: "Hardiness",
         title: "Zone fit is only the entry point",
-        text: `These native-cue plants fit zone ${zone}, but local range, ecoregion, soil moisture, and seed provenance still matter.`
+        text: `These native-flagged plants fit zone ${zone}, but local range, ecoregion, soil moisture, and seed provenance still matter.`
       },
       {
         label: "Habitat layers",
@@ -633,7 +633,7 @@ export function zonePageAdvice(target) {
   if (target.intent === "native-plants") {
     base[1] = {
       title: "Confirm local native range",
-      text: "Native cues here are hardiness and database signals, not county-level provenance. Check local extension, state native plant societies, or regional floras before large plantings."
+      text: "Native flags here are hardiness and database notes, not county-level provenance. Check local extension, state native plant societies, or regional floras before large plantings."
     };
   }
   if (target.intent === "fruit-trees") {
@@ -683,13 +683,13 @@ export function zonePageFaqs(target, entries = []) {
     });
   } else if (target.intent === "native-plants") {
     base.push({
-      question: `Does a zone ${zoneLabel} native-cue plant mean it is locally native?`,
-      answer: "No. These pages use hardiness and database cues to shortlist habitat-friendly plants. Confirm county or ecoregion range, provenance, and site conditions before planting at scale."
+      question: `Does a zone ${zoneLabel} native-flagged plant mean it is locally native?`,
+      answer: "No. These pages use hardiness and database notes to shortlist habitat-friendly plants. Confirm county or ecoregion range, provenance, and site conditions before planting at scale."
     });
   } else if (target.intent === "plant-now") {
     base.push({
       question: `Can I plant everything listed right now?`,
-      answer: "No. The list is sorted by zone fit and practical timing signals. Use the timing notes, local forecast, soil temperature, and plant profile before planting."
+      answer: "No. The list is sorted by zone fit and practical timing data. Use the timing notes, local forecast, soil temperature, and plant profile before planting."
     });
   } else {
     base.push({

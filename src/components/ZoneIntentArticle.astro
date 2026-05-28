@@ -57,7 +57,7 @@ const familyPath = target.family === "what-to-plant-now" ? target.path : `/${tar
         <dd>{stats.types}</dd>
       </div>
       <div>
-        <dt>Timing cues</dt>
+        <dt>Timing data</dt>
         <dd>{stats.sourced}</dd>
       </div>
       <div>
@@ -96,7 +96,7 @@ const familyPath = target.family === "what-to-plant-now" ? target.path : `/${tar
       </div>
       <p>
         Hardiness zones describe winter lows. The planning value comes from combining that winter-low gate
-        with frost timing, heat load, moisture, and plant-specific needs.
+        with frost timing, summer heat, moisture, and plant-specific needs.
       </p>
     </div>
     <dl class="zone-snapshot-grid">
@@ -105,11 +105,11 @@ const familyPath = target.family === "what-to-plant-now" ? target.path : `/${tar
         <dd>{profile.tempRange}</dd>
       </div>
       <div>
-        <dt>Last frost cue</dt>
+        <dt>Last frost estimate</dt>
         <dd>{profile.lastFrost}</dd>
       </div>
       <div>
-        <dt>First frost cue</dt>
+        <dt>First frost estimate</dt>
         <dd>{profile.firstFrost}</dd>
       </div>
       <div>
@@ -117,11 +117,11 @@ const familyPath = target.family === "what-to-plant-now" ? target.path : `/${tar
         <dd>{profile.seasonLength}</dd>
       </div>
       <div>
-        <dt>Heat signal</dt>
+        <dt>Summer heat</dt>
         <dd>{profile.heatCue}</dd>
       </div>
       <div>
-        <dt>Fruit chill cue</dt>
+        <dt>Fruit chill estimate</dt>
         <dd>{profile.chillCue}</dd>
       </div>
     </dl>
@@ -132,7 +132,7 @@ const familyPath = target.family === "what-to-plant-now" ? target.path : `/${tar
     <div class="hub-section-head">
       <div>
         <p class="eyebrow">Planning windows</p>
-        <h2 id="zone-windows-title">What the timing signals mean</h2>
+        <h2 id="zone-windows-title">What the timing data means</h2>
       </div>
       <p>
         Use these as zone-level guardrails. The ZIP calendar and individual plant profiles narrow them down.

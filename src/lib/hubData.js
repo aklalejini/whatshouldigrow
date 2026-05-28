@@ -25,11 +25,11 @@ export const HUB_PAGES = [
     shortTitle: "Native plants",
     eyebrow: "Habitat plants",
     title: "Native Plants for Real Yards",
-    description: "Browse native-cue plants that can support habitat, pollinators, edible landscapes, and lower-maintenance planting plans.",
-    summary: "These records use current Plant by ZIP native cues, traits, and notes. Confirm county-level nativity before planting at scale.",
+    description: "Browse native-flagged plants that can support habitat, pollinators, edible landscapes, and lower-maintenance planting plans.",
+    summary: "These records use current Plant by ZIP native flags, traits, and notes. Confirm county-level nativity before planting at scale.",
     ctaLabel: "Match natives by ZIP",
     ctaHref: "/",
-    filterLabel: "Native-cue plants",
+    filterLabel: "Native-flagged plants",
     match: (plant) => hasNativeCue(plant)
   },
   {
@@ -52,7 +52,7 @@ export const HUB_PAGES = [
     eyebrow: "Screens and buffers",
     title: "Privacy Shrubs, Vines, and Screening Plants",
     description: "Find plants for screening, edible hedges, visual buffers, and wildlife-friendly privacy by zone, water, soil, and mature size.",
-    summary: "This collection favors plants tagged for privacy or screening, then surfaces mature-size and spacing cues where the database has them.",
+    summary: "This collection favors plants tagged for privacy or screening, then surfaces mature-size and spacing data where the database has them.",
     ctaLabel: "Match privacy plants",
     ctaHref: "/",
     filterLabel: "Screening candidates",

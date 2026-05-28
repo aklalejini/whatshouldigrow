@@ -201,7 +201,7 @@
     "affiliateUrl": "https://amzn.to/3S02UID",
     "rules": [
       { "typeIncludes": ["citrus", "annual vegetable", "annual herb", "annual flower"], "score": 22 },
-      { "identityIncludes": ["fig", "pomegranate", "olive", "loquat", "guava", "starfruit", "dragon fruit", "calamondin", "lemon", "satsuma", "kumquat", "yuzu"], "score": 25 }
+      { "identityIncludes": ["fig", "pomegranate", "olive", "loquat", "guava", "starfruit", "dragon fruit", "calamondin", "lemon tree", "satsuma mandarin", "owari satsuma", "kumquat", "yuzu"], "score": 25 }
     ]
   },
   {

@@ -179,7 +179,7 @@ function planningNotesForPlant(entry) {
     notes.push("For screens and hedges, confirm mature size and spacing with the nursery label or local extension guidance.");
   }
   if (hasNativeGoal) {
-    notes.push("Native-plant cues are starting points; confirm regional nativity, straight-species versus cultivar status, and local invasive guidance.");
+    notes.push("Native-plant matches are starting points; confirm regional nativity, straight-species versus cultivar status, and local invasive guidance.");
   }
   if (metrics.dataConfidence === "low") {
     notes.push("Quantitative data quality is low for this record; verify before buying or planting at scale.");
@@ -253,8 +253,8 @@ function buildYieldChart(curve) {
 const hasDirectAffiliateListing = Boolean(plant.affiliateUrl);
 const partnerSearchUrl = plant.affiliateUrl ?? partnerSearchHref(partner, plant.query);
 const partnerLinkRel = hasDirectAffiliateListing ? "sponsored noopener noreferrer" : "noopener noreferrer";
-const partnerSourceLabel = hasDirectAffiliateListing ? "Affiliate listing" : "Source listing";
-const partnerActionLabel = hasDirectAffiliateListing ? "Seed link" : `Search ${partnerName}`;
+const partnerSourceLabel = hasDirectAffiliateListing ? "Affiliate listing" : "Supplier search";
+const partnerActionLabel = hasDirectAffiliateListing ? "View affiliate listing" : `Search ${partnerName}`;
 const planningNotes = planningNotesForPlant(plant);
 const plantingChecklist = plantingChecklistForPlant(plant, metrics, plantingChecklistItems);
 const yieldCurve = metrics.yieldCurve ?? [];
@@ -758,7 +758,7 @@ const breadcrumbJsonLd = {
             <h2>Sources & Methodology</h2>
             <p>
               This guide combines hardiness range, light, soil, water, harvest timing,
-              traits, source listings, plant relationships, and quantitative planning
+              traits, supplier links, plant relationships, and quantitative planning
               metrics. Pairings are screened for practical garden fit.
             </p>
             <p>

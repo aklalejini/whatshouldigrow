@@ -338,6 +338,10 @@ const webAppJsonLd = {
           <p id="zone-note">Not sure about soil defaults to loam. Recommendations are practical starting points, not local extension advice.</p>
         </div>
         <div id="status" class="status"></div>
+        <p class="source-disclosure">
+          Rankings are based on plant fit, not partner links. Direct affiliate listings are labeled and may earn a commission;
+          ordinary source links are supplier searches.
+        </p>
         <div id="climate-panel" class="climate-panel" hidden></div>
         <ol id="results" class="results-grid"></ol>
         <div class="results-actions">
@@ -399,8 +403,8 @@ const webAppJsonLd = {
           <article>
             <h3>Source links</h3>
             <p>
-              Some seed and supply links may be affiliate links. Source links do not affect rankings,
-              and native cues are not yet a county-level native-range database.
+              Direct affiliate listings are labeled before you click. Supplier search links are separate from rankings,
+              and native flags are not yet a county-level native-range database.
             </p>
           </article>
         </div>
@@ -650,7 +654,7 @@ const webAppJsonLd = {
               <h1 id="zone-map-title">Interactive Gardening Zone Map</h1>
               <p>
                 Look up a ZIP, scan the national hardiness pattern, and translate the USDA zone
-                into frost timing, heat load, chill-hour risk, moisture pattern, and practical plant choices.
+                into frost timing, summer heat, winter chill, moisture pattern, and practical plant choices.
               </p>
             </div>
             <form id="zone-map-form" class="zone-map-lookup">
@@ -683,15 +687,15 @@ const webAppJsonLd = {
               <strong id="zone-map-frost-value">--</strong>
               <small id="zone-map-frost-note">Likely/range estimates after lookup</small>
             </article>
-            <article class="zone-map-tooltip" tabindex="0" data-tooltip="AHS heat load estimates how many days rise above 86 F, a useful stress cue for cool-season crops.">
+            <article class="zone-map-tooltip" tabindex="0" data-tooltip="AHS heat estimates how many days rise above 86 F, which helps flag heat stress for cool-season crops.">
               <span>Heat load</span>
               <strong id="zone-map-heat-value">--</strong>
               <small id="zone-map-heat-note">AHS-style days above 86 F</small>
             </article>
-            <article class="zone-map-tooltip" tabindex="0" data-tooltip="Fruit chill is a rough winter chill proxy. Always confirm cultivar requirements before buying.">
+            <article class="zone-map-tooltip" tabindex="0" data-tooltip="Estimated winter chill helps screen fruit cultivars. Always confirm cultivar requirements before buying.">
               <span>Fruit chill</span>
               <strong id="zone-map-chill-value">--</strong>
-              <small id="zone-map-chill-note">Winter chill-hour proxy</small>
+              <small id="zone-map-chill-note">Estimated winter chill</small>
             </article>
           </section>
 
@@ -956,7 +960,7 @@ const webAppJsonLd = {
           <p class="zone-map-source-note">
             Interactive zone overlay uses public ArcGIS vector tiles adapted from USDA/OSU 2023 hardiness data and feature data derived from USDA ARS 2023 Plant Hardiness Zone Map data. Static fallback image is from the
             <a href="https://planthardiness.ars.usda.gov/index.php/pages/map-downloads" target="_blank" rel="noopener noreferrer">2023 USDA ARS Plant Hardiness Zone Map downloads</a>.
-            Selected plant overlays use Plant by ZIP database hardiness ranges; they are suitability cues, not county-level native range maps. Plant by ZIP overlays approximate ZIP and local planning signals to help translate the map into planting decisions.
+            Selected plant overlays use Plant by ZIP database hardiness ranges; they are suitability estimates, not county-level native range maps. Plant by ZIP overlays approximate ZIP and local climate context to help translate the map into planting decisions.
           </p>
         </div>
       </section>
@@ -976,7 +980,7 @@ const webAppJsonLd = {
               <h1 id="screener-title">Plant Screener</h1>
               <p>
                 Screen the full Plant by ZIP database like a compact market table:
-                filter by growing needs, sort by useful signals, and jump into any plant profile.
+                filter by growing needs, sort by practical fields, and jump into any plant profile.
               </p>
             </div>
             <div class="screener-metrics" aria-label="Screener database summary">
@@ -1073,10 +1077,10 @@ const webAppJsonLd = {
               </select>
             </label>
             <label class="screener-field" for="screener-flag">
-              <span title="Filter by native cues, low-water needs, or plant pairings.">Attribute</span>
+              <span title="Filter by native flags, low-water needs, or plant pairings.">Attribute</span>
               <select id="screener-flag">
                 <option value="">Any attribute</option>
-                <option value="native">Native cue</option>
+                <option value="native">Native flag</option>
                 <option value="low-water">Low water need</option>
                 <option value="pairings">Has pairings</option>
               </select>
@@ -1126,7 +1130,7 @@ const webAppJsonLd = {
                   <th scope="col"><button type="button" data-screener-sort="goals">Goals <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="harvest">Harvest/season <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="traits">Traits <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="native" title="Derived from current plant notes and goals, not a full native-range database.">Native cue <span class="sort-indicator"></span></button></th>
+                  <th scope="col"><button type="button" data-screener-sort="native" title="Derived from current plant notes and goals, not a full native-range database.">Native flag <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="lowMaintenance" title="Plants with low water needs.">Low water <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="pairings" title="Companion or placement pairing rules connected to this plant.">Pairings <span class="sort-indicator"></span></button></th>
                   <th scope="col"><button type="button" data-screener-sort="partner">Source <span class="sort-indicator"></span></button></th>
@@ -1533,7 +1537,7 @@ const webAppJsonLd = {
         { label: "Pecan", plural: "Pecans", terms: ["pecan"] },
         { label: "Chestnut", plural: "Chestnuts", terms: ["chestnut"] },
         { label: "Almond", plural: "Almonds", terms: ["almond"] },
-        { label: "Citrus", plural: "Citrus", terms: ["citrus", "lemon", "lime", "satsuma", "kumquat", "calamondin", "yuzu"], excludes: ["lemon balm"] },
+        { label: "Citrus", plural: "Citrus", types: ["citrus"], terms: ["citrus", "kumquat", "calamondin", "yuzu", "mandarin", "orange tree", "lemon tree", "lime tree"], excludes: ["lemon basil", "lemon balm", "lemon cucumber", "lemon thyme", "lemongrass"] },
         { label: "Olive", plural: "Olives", terms: ["olive"] },
         { label: "Prickly pear", plural: "Prickly pears", terms: ["prickly pear"] },
         { label: "Mayhaw", plural: "Mayhaws", terms: ["mayhaw"] },
@@ -2113,8 +2117,10 @@ const webAppJsonLd = {
 
       function calendarPlantClassForPlant(plant) {
         const identity = relationshipIdentity(plant);
+        const type = plant.type.toLowerCase();
         const matchedClass = calendarPlantClassTerms.find((plantClass) => {
-          const matches = plantClass.terms.some((term) => termMatchesIdentity(identity, term));
+          const typeMatches = (plantClass.types ?? []).some((term) => termMatchesIdentity(type, term));
+          const matches = typeMatches || plantClass.terms.some((term) => termMatchesIdentity(identity, term));
           const excluded = (plantClass.excludes ?? []).some((term) => termMatchesIdentity(identity, term));
           return matches && !excluded;
         });
@@ -2150,7 +2156,7 @@ const webAppJsonLd = {
         if (plant.affiliateUrl) {
           return {
             href: plant.affiliateUrl,
-            label: "Seed link",
+            label: "Affiliate listing",
             rel: "sponsored noopener noreferrer"
           };
         }
@@ -2228,8 +2234,8 @@ const webAppJsonLd = {
           : "Zone lookup succeeded.";
         const checks = ["Confirm drainage, soil pH, and any state invasive restrictions before buying."];
         if (inputs.climate) checks.push(`${inputs.climate.heatZoneLabel} and ${inputs.climate.chillLabel.toLowerCase()} are planning estimates, not station normals.`);
-        if (inputs.goal === "fruit") checks.push("For fruit, verify chill-hour needs and bloom frost risk by cultivar.");
-        if (inputs.goal === "native-plants") checks.push("Native scoring uses current database cues, not county-level native range yet.");
+        if (inputs.goal === "fruit") checks.push("For fruit, verify winter chill needs and bloom frost risk by cultivar.");
+        if (inputs.goal === "native-plants") checks.push("Native scoring uses current database notes, not county-level native range yet.");
         if (inputs.goal === "vegetables-herbs") checks.push("For direct sowing, soil temperature and the 10-day forecast still matter.");
         return `${base} ${checks.join(" ")}`;
       }
@@ -2505,9 +2511,9 @@ function outputSortValue(metrics) {
         { id: "kitchen", label: "Kitchen garden" },
         { id: "fruit", label: "Fruit and berries" },
         { id: "pollinator", label: "Pollinator plants" },
-        { id: "native", label: "Native cues" },
+        { id: "native", label: "Native flags" },
         { id: "containers", label: "Container-friendly" },
-        { id: "quick", label: "Quick payoff" }
+        { id: "quick", label: "Quick harvest" }
       ];
       const calendarMethodOrder = { indoors: 1, direct: 2, transplant: 3, nursery: 4 };
       const calendarUrgencyLabels = {
@@ -2559,7 +2565,7 @@ function outputSortValue(metrics) {
         coolTransplant: ["broccoli", "cabbage", "cauliflower", "kale", "collards", "chard", "brussels", "parsley", "onion", "leek", "celery"],
         potato: ["potato"],
         garlic: ["garlic"],
-        tenderContainer: ["citrus", "lemon", "lime", "orange", "mandarin", "kumquat", "pineapple", "banana"]
+        tenderContainer: ["citrus", "kumquat", "calamondin", "yuzu", "mandarin", "orange tree", "lemon tree", "lime tree", "banana", "dragon fruit"]
       };
       const heatZoneThresholds = [
         { zone: 1, min: 0, max: 0 },
@@ -2590,7 +2596,8 @@ function outputSortValue(metrics) {
         {
           preference: "hot",
           label: "heat lover",
-          terms: ["fig", "pomegranate", "jujube", "persimmon", "okra", "sweet potato", "eggplant", "pepper", "watermelon", "cantaloupe", "melon", "muscadine", "citrus", "lemon", "lime", "kumquat", "satsuma", "calamondin", "prickly pear", "olive", "guava", "dragon fruit", "starfruit", "sapodilla"]
+          terms: ["fig", "pomegranate", "jujube", "persimmon", "okra", "sweet potato", "eggplant", "pepper", "watermelon", "cantaloupe", "melon", "muscadine", "citrus", "kumquat", "calamondin", "yuzu", "mandarin", "orange tree", "lemon tree", "lime tree", "prickly pear", "olive", "guava", "dragon fruit", "starfruit", "sapodilla"],
+          excludes: ["lemon basil", "lemon cucumber", "lemon thyme", "lemon balm", "lemongrass"]
         },
         {
           preference: "warm",
@@ -2974,7 +2981,7 @@ function outputSortValue(metrics) {
       }
 
       function formatFrostBand(band) {
-        return `10/50/90 ${formatCalendarDate(band.p10)} / ${formatCalendarDate(band.p50)} / ${formatCalendarDate(band.p90)}`;
+        return `${formatCalendarDate(band.p50)} likely (${formatCalendarDate(band.p10)}-${formatCalendarDate(band.p90)} usual range)`;
       }
 
       function formatPlainFrostRange(band) {
@@ -3522,7 +3529,7 @@ function outputSortValue(metrics) {
           ? `ZIP zone ${zoneMapZoneData.zone}: ${zoneMapPlantRangeFitLabel(zipFit)}.`
           : "Enter a ZIP to compare your local zone to this plant.";
         const nativeNote = hasNativeCue(plant)
-          ? "Native cue present; verify county/ecoregion range before habitat planting."
+          ? "Native flag present; verify county/ecoregion range before habitat planting."
           : "This shades hardiness suitability, not a wild native or observation range.";
         zoneMapPlantOverlaySummaryEl.innerHTML = `
           <div>
@@ -3883,7 +3890,7 @@ function outputSortValue(metrics) {
           zoneMapHeatValueEl.textContent = "--";
           zoneMapHeatNoteEl.textContent = "AHS-style days above 86 F";
           zoneMapChillValueEl.textContent = "--";
-          zoneMapChillNoteEl.textContent = "Winter chill-hour proxy";
+          zoneMapChillNoteEl.textContent = "Estimated winter chill";
           zoneMapPinEl.hidden = true;
           zoneMapPinLabelEl.hidden = true;
           renderZoneMapLiveMarker(null);
@@ -3902,7 +3909,7 @@ function outputSortValue(metrics) {
         zoneMapHeatValueEl.textContent = `AHS ${climate.heatZone}`;
         zoneMapHeatNoteEl.textContent = `${formatNumberRange(climate.heatDays, "days >86 F")} per year, estimated.`;
         zoneMapChillValueEl.textContent = climate.chillLabel;
-        zoneMapChillNoteEl.textContent = `${formatRoundedNumberRange(climate.chillHours, "chill hours")} proxy; verify fruit cultivars.`;
+        zoneMapChillNoteEl.textContent = `${formatRoundedNumberRange(climate.chillHours, "chill hours")}; confirm fruit cultivar requirements.`;
         renderZoneMapPlantOverlaySummary();
       }
 
@@ -3947,14 +3954,14 @@ function outputSortValue(metrics) {
           return "Choose disease-resistant cultivars and keep airflow open.";
         }
         if (hasNativeCue(plant)) {
-          return "Native cue; verify local range before habitat planting.";
+          return "Native flag present; verify local range before habitat planting.";
         }
         if (type.includes("vegetable") || type.includes("herb")) {
           return "Use local frost windows to time seed-starting and transplanting.";
         }
         if (type.includes("fruit") || goals.includes("fruit")) {
           return climate?.chillLabel
-            ? `${climate.chillLabel} cue; verify cultivar chill and pollination.`
+            ? `${climate.chillLabel}; confirm cultivar chill and pollination needs.`
             : "Verify cultivar chill and pollination before buying.";
         }
         if ((metrics.difficultyScore ?? 4) <= 2) {
@@ -4011,7 +4018,7 @@ function outputSortValue(metrics) {
         zoneMapPlantTitleEl.textContent = zoneData ? `Zone ${zone} planning moves` : `Explore zone ${zone}`;
         zoneMapPlantSummaryEl.textContent = zoneData && climate
           ? `${matchingPlants.length} database plants fit the USDA range. ${climate.regionLabel}; ${climate.moistureLabel.toLowerCase()}.`
-          : `${matchingPlants.length} database plants fit this hardiness range. Enter a ZIP to add frost, heat, chill, and rainfall context.`;
+          : `${matchingPlants.length} database plants fit this hardiness range. Enter a ZIP to add frost dates, summer heat, winter chill, and rainfall context.`;
         zoneMapPlantListEl.innerHTML = `
           <div class="zone-map-fit-counts">
             <span><strong>${matchingPlants.length}</strong> total fits</span>
@@ -4062,7 +4069,7 @@ function outputSortValue(metrics) {
         renderZoneMapPlants(zoneData);
         zoneMapUseMatcherEl.disabled = false;
         zoneMapUseCalendarEl.disabled = false;
-        zoneMapStatusEl.textContent = `ZIP ${zip} is zone ${zoneData.zone}. Map pin and local planning signals are ready.`;
+        zoneMapStatusEl.textContent = `ZIP ${zip} is zone ${zoneData.zone}. Map pin and local climate estimates are ready.`;
       }
 
       async function runZoneMapLookup(event) {
@@ -4132,7 +4139,7 @@ function outputSortValue(metrics) {
           } else {
             score += 14;
             value = Math.max(value, 88);
-            note = `chill signal fits ${chill.label} needs`;
+            note = `estimated winter chill fits ${chill.label} needs`;
           }
         }
 
@@ -4147,7 +4154,7 @@ function outputSortValue(metrics) {
         } else if (heat?.preference === "hot" && climate.heatDays.mid >= 75) {
           score += 9;
           value = Math.max(value, 86);
-          if (!chill) note = `heat load suits this ${heat.label}`;
+          if (!chill) note = `summer heat suits this ${heat.label}`;
         } else if (heat?.preference === "hot" && climate.heatDays.mid < 35) {
           score -= 8;
           value = Math.min(value, 58);
@@ -4199,11 +4206,11 @@ function outputSortValue(metrics) {
           <div class="climate-panel-copy">
             <p class="eyebrow">Climate reality check</p>
             <h3>Beyond the USDA zone</h3>
-            <p>These signals now influence the ranking. They are ZIP-coordinate estimates until station-normal, chill, and precipitation datasets are wired in.</p>
+            <p>These estimates influence the ranking, but they still need local confirmation for microclimates and cultivar choices.</p>
           </div>
           <div class="climate-panel-grid">
-            ${climatePanelCard("Heat load", climate.heatZoneLabel, `${formatNumberRange(climate.heatDays, "days above 86F")} per year, estimated.`)}
-            ${climatePanelCard("Fruit chill", climate.chillLabel, `${formatNumberRange(climate.chillHours, "winter chill hrs")} proxy; verify fruit cultivars.`)}
+            ${climatePanelCard("Summer heat", climate.heatZoneLabel, `${formatNumberRange(climate.heatDays, "days above 86F")} per year, estimated.`)}
+            ${climatePanelCard("Winter chill", climate.chillLabel, `${formatNumberRange(climate.chillHours, "winter chill hours")}; confirm fruit cultivar needs.`)}
             ${climatePanelCard("Frost window", !frost ? "Needs lookup" : frost.isFrostFree ? "Rare freeze" : `${formatCalendarDate(frost.lastFrost)} to ${formatCalendarDate(frost.firstFrost)}`, frostNote)}
             ${climatePanelCard("Rainfall pattern", climate.moistureLabel, climate.moistureNote)}
           </div>
@@ -4222,16 +4229,16 @@ function outputSortValue(metrics) {
           notes.push(`Chill target: roughly ${chill.min}-${chill.max} hours; ${chill.note}.`);
         }
         if (heat) {
-          notes.push(`Heat read: ${heat.label}; local afternoon shade, reflected heat, or airflow can change this.`);
+          notes.push(`Heat preference: ${heat.label}; afternoon shade, reflected heat, or airflow can change performance.`);
         }
         if ((climate.moistureKey === "arid" || climate.moistureKey === "semi-arid") && plant.water !== "low") {
-          notes.push("Dry-region check: plan drip irrigation and mulch before counting this as low maintenance.");
+          notes.push("Dry climate: plan drip irrigation and mulch before counting this as low maintenance.");
         }
         if ((climate.moistureKey === "humid-hot" || climate.moistureKey === "humid-mixed") && isHumiditySensitive(plant)) {
-          notes.push("Humid-region check: disease-resistant cultivars and spacing matter as much as hardiness.");
+          notes.push("Humid climate: disease-resistant cultivars and wider spacing matter as much as hardiness.");
         }
         if (climate.westernClimateCritical && isWoodyOrPerennial(plant)) {
-          notes.push("Western check: USDA zones miss marine, desert, elevation, and valley effects; verify Sunset-style microclimate fit.");
+          notes.push("Western climates: USDA zones miss marine, desert, elevation, and valley effects; verify microclimate fit.");
         }
         return Array.from(new Set(notes)).slice(0, 4);
       }
@@ -5763,7 +5770,7 @@ function outputSortValue(metrics) {
             <td data-label="Goals">${renderScreenerPills(plant.goals, formatGoal, 2)}</td>
             <td data-label="Harvest">${escapeHtml(plant.harvest)}</td>
             <td data-label="Traits">${renderScreenerPills(plant.traits, (value) => value, 2)}</td>
-            <td data-label="Native cue"><span class="screener-pill ${native ? "is-positive" : "is-muted"}">${native ? "Yes" : "-"}</span></td>
+            <td data-label="Native flag"><span class="screener-pill ${native ? "is-positive" : "is-muted"}">${native ? "Yes" : "-"}</span></td>
             <td data-label="Low water"><span class="screener-pill ${lowWater ? "is-positive" : "is-muted"}">${lowWater ? "Yes" : "-"}</span></td>
             <td data-label="Pairings"><span class="screener-count" title="${pairings} plant ${pairings === 1 ? "pairing" : "pairings"}">${pairings}</span></td>
             <td data-label="Source">${escapeHtml(partnerName(plant.partner))}</td>
@@ -6089,110 +6096,65 @@ function outputSortValue(metrics) {
         return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
       }
 
+      function sunLabel(value) {
+        const labels = { full: "Full sun", part: "Part sun", shade: "Shade" };
+        return labels[value] ?? sentenceCase(value);
+      }
+
+      function waterLabel(value) {
+        const labels = { low: "Low water", average: "Average water", high: "High water" };
+        return labels[value] ?? sentenceCase(value);
+      }
+
       function conditionWins(plant, inputs) {
         const wins = [];
         const userZone = zoneToNumber(inputs.zone);
         if (userZone >= zoneToNumber(plant.zones[0]) && userZone <= zoneToNumber(plant.zones[1])) {
-          wins.push(`hardy in zone ${inputs.zone}`);
+          wins.push(`USDA zone ${inputs.zone} falls inside its ${plant.zones[0]}-${plant.zones[1]} range`);
         }
         if (plant.sun.includes(inputs.sun)) {
-          wins.push(inputs.sun === "full" ? "happy in full sun" : `comfortable in ${inputs.sun} sun`);
+          wins.push(`${sunLabel(inputs.sun).toLowerCase()} matches its light needs`);
         }
-        if (plant.soils.includes(inputs.soil)) wins.push(`not fussy about ${inputs.soil} soil`);
-        if (plant.water === inputs.water) wins.push(`${inputs.water} water is enough`);
+        if (plant.soils.includes(inputs.soil)) wins.push(`${inputs.soil} soil is listed as suitable`);
+        if (plant.water === inputs.water) wins.push(`${waterLabel(inputs.water).toLowerCase()} matches its water need`);
         const climateFit = climateFitForPlant(plant, inputs.climate);
-        if (climateFit?.score >= 14) wins.push("the heat/chill signal looks right");
+        if (climateFit?.score >= 14) wins.push("local heat and winter-chill estimates look compatible");
         return wins;
-      }
-
-      function articleFor(text) {
-        return /^[aeiou]/i.test(text) ? "an" : "a";
-      }
-
-      function traitPhrase(trait) {
-        const tangibleWords = ["fruit", "berries", "berry", "nut", "nuts", "flowers", "foliage", "bloom", "color", "flavor", "texture", "arils", "stems", "spears", "pods", "leaves", "roots", "tubers", "calyces"];
-        return tangibleWords.some((word) => trait.includes(word))
-          ? `its ${trait}`
-          : `being ${articleFor(trait)} ${trait}`;
-      }
-
-      function goalLead(plant, inputs) {
-        const trait = plant.traits[0];
-        const wins = conditionWins(plant, inputs);
-        const fit = wins.length ? `; it is ${joinHumanList(wins.slice(0, 2))}` : "";
-        if (inputs.goal === "privacy-screening") {
-          return `${plant.name} has the bones for screening: ${trait}${fit}.`;
-        }
-        if (inputs.goal === "pollinators-wildlife") {
-          return `${plant.name} earns its place for habitat first: ${trait}${fit}.`;
-        }
-        if (inputs.goal === "curb-appeal") {
-          return `${plant.name} is here because it looks intentional, not just useful: ${trait}${fit}.`;
-        }
-        if (inputs.goal === "vegetables-herbs") {
-          return `${plant.name} is a kitchen-garden pick with a real reason to grow it: ${trait}${fit}.`;
-        }
-        if (inputs.goal === "native-plants") {
-          return `${plant.name} fits the native-plant lane: ${trait}${fit}.`;
-        }
-        return `${plant.name} earns its slot for ${traitPhrase(trait)}${fit}.`;
-      }
-
-      function payoffPhrase(plant) {
-        const replacements = [
-          [/^ripens in /, "fruit in "],
-          [/^ripens from /, "fruit from "],
-          [/^often produces /, ""],
-          [/^drops ripe fruit in /, "ripe fruit in "],
-          [/^bears over /, "fruit over "],
-          [/^berries ripen in /, "berries in "],
-          [/^berries ripen /, "berries "],
-          [/^fruit ripens in /, "fruit in "],
-          [/^nuts mature in /, "nuts in "],
-          [/^nuts drop in /, "nuts in "],
-          [/^spears harvest in /, "spears in "],
-          [/^stalks harvest in /, "stalks in "],
-          [/^buds form in /, "buds in "],
-          [/^edible pads and fruit in /, "pads and fruit in "],
-          [/^green onions and bulbils /, "green onions and bulbils "]
-        ];
-        return replacements.reduce((text, [pattern, replacement]) => text.replace(pattern, replacement), plant.harvest);
-      }
-
-      function payoffSentence(plant, inputs) {
-        const trait = plant.traits[1] ?? plant.traits[0];
-        const payoff = payoffPhrase(plant);
-        if (inputs.goal === "pollinators-wildlife") {
-          return `The payoff is ${payoff}, plus the movement of bees, birds, or butterflies around it.`;
-        }
-        if (inputs.goal === "curb-appeal") {
-          return `The payoff is ${payoff}, with ${trait} carrying the look.`;
-        }
-        if (inputs.goal === "vegetables-herbs") {
-          return `The payoff is ${payoff}, the kind of harvest that makes the kitchen notice.`;
-        }
-        if (inputs.goal === "privacy-screening") {
-          return `The payoff is ${payoff}, while the plant earns its keep as living structure.`;
-        }
-        if (inputs.goal === "native-plants") {
-          return `The payoff is ${payoff}, with habitat value and local ecology in the decision.`;
-        }
-        return `The payoff is ${payoff}, with ${trait}.`;
       }
 
       function explainPlant(plant, inputs) {
         if (plant.id === "mango-pawpaw") {
-          return "One of the few large fruits that genuinely handles part shade - perfect for clay-heavy yards where peaches and plums struggle. Slow to fruit (4-6 years), worth the wait. The fruit ripens in early fall with a custardy texture and a flavor between mango and banana; nothing else in a Southern orchard tastes like it.";
+          return "Mango Pawpaw handles part shade and heavier soil better than many orchard fruits. Expect a slow start, often 4-6 years before fruit, then early-fall harvests with custardy fruit that needs gentle handling.";
         }
-        return `${goalLead(plant, inputs)} ${plant.notes} ${payoffSentence(plant, inputs)}`;
+        const wins = conditionWins(plant, inputs).slice(0, 3);
+        const fitSentence = wins.length
+          ? `${plant.name} matches this search because ${joinHumanList(wins)}.`
+          : `${plant.name} matches the selected goal and growing conditions.`;
+        const trait = plant.traits[0] ?? plant.type.toLowerCase();
+        const goalNotes = {
+          "privacy-screening": `Use it where ${trait} can add screening, structure, or edge definition.`,
+          "pollinators-wildlife": `Its main habitat value is ${trait}; verify local nativity when habitat planting is the priority.`,
+          "curb-appeal": `Its main visual value is ${trait}, so place it where the form or seasonal display is easy to see.`,
+          "vegetables-herbs": `For a kitchen garden, the useful part is ${trait}; plan harvest timing around ${plant.harvest}.`,
+          "native-plants": `It has a native-plant flag in the database; confirm regional range and cultivar status before relying on it for habitat work.`
+        };
+        const metrics = metricFor(plant).display ?? {};
+        const firstOutput = metricDisplayValue(metrics.firstOutput, "");
+        const yieldValue = metricDisplayValue(metrics.yieldLbs, "") || metricDisplayValue(metrics.output, "");
+        const planningDetails = [
+          firstOutput ? `first output ${firstOutput}` : "",
+          yieldValue ? `typical output ${yieldValue}` : ""
+        ].filter(Boolean);
+        const planningSentence = planningDetails.length ? `Planning data: ${planningDetails.join("; ")}.` : "";
+        return [fitSentence, goalNotes[inputs.goal], plant.notes, planningSentence].filter(Boolean).join(" ");
       }
 
       function whyThisWon(plant, inputs) {
         const wins = conditionWins(plant, inputs).slice(0, 2);
         const trait = plant.traits[0];
         return wins.length
-          ? `Why it rose: ${sentenceCase(joinHumanList(wins))}, and ${trait}.`
-          : `Why it rose: ${sentenceCase(trait)} gives it the strongest read in this search.`;
+          ? `Why it rose: ${sentenceCase(joinHumanList(wins))}.`
+          : `Why it rose: ${sentenceCase(trait)} is a strong fit for this search.`;
       }
 
       function renderFitRows(details) {
@@ -6465,7 +6427,7 @@ function outputSortValue(metrics) {
 
         setLandingStarted(true);
         titleEl.textContent = "Building your plant list...";
-        zoneNoteEl.textContent = "Checking the ZIP, estimating local climate signals, and ranking plants against your goal.";
+        zoneNoteEl.textContent = "Checking the ZIP, estimating local climate context, and ranking plants against your goal.";
         zonePreviewEl.hidden = false;
         zonePreviewEl.textContent = "Looking up USDA zone...";
         zonePreviewEl.classList.remove("is-error");
