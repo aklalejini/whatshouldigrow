@@ -9,6 +9,7 @@ import {
   SITE_URL,
   siteUrl
 } from "../../lib/site";
+import { BLOG_IMAGE_WIDTHS, optimizedImagePath, optimizedSrcset } from "../../lib/imageUtils";
 import "../../styles/global.css";
 
 export async function getStaticPaths() {
@@ -104,7 +105,11 @@ const articleJsonLd = {
           imageUrl={socialImageUrl}
         />
         <figure class="article-hero-photo">
-          <img src={post.data.heroImage} alt={post.data.heroAlt} loading="eager" />
+          <picture>
+            <source type="image/avif" srcset={optimizedSrcset(post.data.heroImage, BLOG_IMAGE_WIDTHS, "avif")} sizes="(max-width: 900px) 100vw, 900px" />
+            <source type="image/webp" srcset={optimizedSrcset(post.data.heroImage, BLOG_IMAGE_WIDTHS, "webp")} sizes="(max-width: 900px) 100vw, 900px" />
+            <img src={optimizedImagePath(post.data.heroImage, 1200, "webp")} alt={post.data.heroAlt} loading="eager" decoding="async" fetchpriority="high" />
+          </picture>
         </figure>
         <div class="article-body">
           <Content />

@@ -1,0 +1,90 @@
+---
+import AnalyticsEvents from "../components/AnalyticsEvents.astro";
+import { DEFAULT_SOCIAL_IMAGE, SITE_NAME, SITE_URL, siteUrl } from "../lib/site";
+import "../styles/global.css";
+
+const canonicalUrl = siteUrl("/affiliate-policy/");
+const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
+const description = "How Plant by ZIP labels affiliate links, supplier searches, and partner-related garden links.";
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: SITE_NAME, item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "Affiliate Policy", item: canonicalUrl }
+  ]
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`Affiliate Policy | ${SITE_NAME}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`Affiliate Policy | ${SITE_NAME}`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,750&family=Inter:wght@400;500;650;750;850&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
+    <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
+    <title>Affiliate Policy | {SITE_NAME}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
+  </head>
+  <body>
+    <AnalyticsEvents pageType="trust_page" topic="affiliate-policy" />
+    <main class="app-shell">
+      <nav class="site-tabs" aria-label="Primary sections">
+        <a class="site-tab" href="/">Plant matcher</a>
+        <a class="site-tab" href="/planting-calendar/">Calendar</a>
+        <a class="site-tab" href="/#zone-map">Zone map</a>
+        <a class="site-tab" href="/plants/">Plants</a>
+        <a class="site-tab" href="/blog/">Blog</a>
+      </nav>
+
+      <article class="trust-page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Plant by ZIP</a><span aria-hidden="true">/</span><span>Affiliate Policy</span>
+        </nav>
+        <header class="trust-hero">
+          <p class="eyebrow">Affiliate policy</p>
+          <h1>Plant recommendations are ranked by plant fit, not commission.</h1>
+          <p>
+            Some plant profile, checklist, or source links may earn a commission when clearly labeled. Rankings and profile data are separate from those links.
+          </p>
+        </header>
+        <section class="trust-grid" aria-label="Affiliate link standards">
+          <article>
+            <h2>Labels</h2>
+            <p>Direct affiliate listings are labeled before the click and use sponsored link attributes where appropriate.</p>
+          </article>
+          <article>
+            <h2>Supplier searches</h2>
+            <p>Some buttons are ordinary supplier searches, not direct product endorsements. Those are described separately from affiliate listings.</p>
+          </article>
+          <article>
+            <h2>Editorial separation</h2>
+            <p>Plant fit uses hardiness, light, soil, water, goal fit, timing, metrics, and practical risk notes. Partner availability does not decide the ranking.</p>
+          </article>
+        </section>
+        <section class="trust-panel">
+          <h2>Gardener-first use</h2>
+          <p>
+            Use source links as a starting point for availability. Confirm cultivar, plant size, shipping season, rootstock, invasive status, and local suitability before buying.
+          </p>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

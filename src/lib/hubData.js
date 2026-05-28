@@ -70,6 +70,97 @@ export const HUB_PAGES = [
     ctaHref: "/",
     filterLabel: "Low-water profiles",
     match: (plant) => plant.water === "low"
+  },
+  {
+    slug: "vegetables-herbs",
+    path: "/vegetables-herbs/",
+    shortTitle: "Vegetables & herbs",
+    eyebrow: "Kitchen garden",
+    title: "Vegetables and Herbs by Site Fit",
+    description: "Browse vegetable and herb profiles by hardiness range, light, soil, water, timing, spacing, container fit, and output data.",
+    summary: "Use this collection to compare annual crops, perennial herbs, and edible garden staples before running an exact ZIP calendar.",
+    ctaLabel: "Match kitchen crops",
+    ctaHref: "/",
+    filterLabel: "Kitchen-garden profiles",
+    match: (plant) => plant.goals.includes("vegetables-herbs")
+  },
+  {
+    slug: "pollinator-plants",
+    path: "/pollinator-plants/",
+    shortTitle: "Pollinator plants",
+    eyebrow: "Habitat and bloom",
+    title: "Pollinator Plants for Gardens",
+    description: "Compare flowers, herbs, shrubs, natives, and habitat plants that support pollinators and wildlife while fitting real garden conditions.",
+    summary: "This hub surfaces plants tagged for pollinators, wildlife, native planting, bloom value, or habitat structure.",
+    ctaLabel: "Match pollinator plants",
+    ctaHref: "/",
+    filterLabel: "Pollinator profiles",
+    match: (plant) => plant.goals.includes("pollinators-wildlife") || hasNativeCue(plant)
+  },
+  {
+    slug: "container-garden-plants",
+    path: "/container-garden-plants/",
+    shortTitle: "Container plants",
+    eyebrow: "Small-space growing",
+    title: "Container Garden Plants by Size and Yield",
+    description: "Find edible, ornamental, and habitat plants that can work in containers, patio beds, raised beds, and smaller spaces.",
+    summary: "These records favor compact forms, annual crops, herbs, berries, and plants with practical container notes in the profile data.",
+    ctaLabel: "Find container matches",
+    ctaHref: "/",
+    filterLabel: "Container-friendly profiles",
+    match: (plant) => /annual|herb|vegetable|berry|strawberry|pepper|tomato|eggplant|okra|fig|citrus|dwarf|container|patio/i.test(`${plant.id} ${plant.name} ${plant.type} ${plant.notes} ${(plant.traits ?? []).join(" ")}`)
+  },
+  {
+    slug: "shade-plants",
+    path: "/shade-plants/",
+    shortTitle: "Shade plants",
+    eyebrow: "Lower-light sites",
+    title: "Plants for Shade and Part Sun",
+    description: "Browse plants that tolerate shade or part sun, including edible, native, ornamental, and ground-layer options for lower-light gardens.",
+    summary: "Use this hub to shortlist plants for woodland edges, north sides, understories, and yards that do not receive all-day sun.",
+    ctaLabel: "Match shade plants",
+    ctaHref: "/",
+    filterLabel: "Shade-tolerant profiles",
+    match: (plant) => plant.sun.includes("shade") || plant.sun.includes("partial")
+  },
+  {
+    slug: "clay-soil-plants",
+    path: "/clay-soil-plants/",
+    shortTitle: "Clay soil plants",
+    eyebrow: "Heavy-soil planning",
+    title: "Plants That Can Handle Clay Soil",
+    description: "Compare plants marked suitable for clay soils, including native perennials, shrubs, fruiting plants, and practical garden crops.",
+    summary: "Clay soil still needs drainage judgment, but this collection gives you a better first shortlist than starting from generic plant lists.",
+    ctaLabel: "Match clay-soil plants",
+    ctaHref: "/",
+    filterLabel: "Clay-tolerant profiles",
+    match: (plant) => plant.soils.includes("clay")
+  },
+  {
+    slug: "sandy-soil-plants",
+    path: "/sandy-soil-plants/",
+    shortTitle: "Sandy soil plants",
+    eyebrow: "Fast-draining sites",
+    title: "Plants for Sandy or Fast-Draining Soil",
+    description: "Find plants that can work in sandy, fast-draining, or lower-moisture sites when water and mulch are managed well.",
+    summary: "This hub emphasizes plant records with sandy-soil fit and practical drought or drainage tolerance.",
+    ctaLabel: "Match sandy-soil plants",
+    ctaHref: "/",
+    filterLabel: "Sandy-soil profiles",
+    match: (plant) => plant.soils.includes("sandy")
+  },
+  {
+    slug: "edible-hedges",
+    path: "/edible-hedges/",
+    shortTitle: "Edible hedges",
+    eyebrow: "Food and structure",
+    title: "Edible Hedges, Screens, and Living Borders",
+    description: "Compare fruiting shrubs, cane fruit, vines, small trees, and screening plants that can add harvest value and structure.",
+    summary: "Use this page to find plants that can do more than one job: food, screening, wildlife value, and garden structure.",
+    ctaLabel: "Match edible screens",
+    ctaHref: "/",
+    filterLabel: "Edible structure profiles",
+    match: (plant) => plant.goals.includes("fruit") && (/shrub|cane|vine|tree/i.test(plant.type) || plant.goals.includes("privacy-screening"))
   }
 ];
 
@@ -81,6 +172,18 @@ export const TRUST_PAGES = [
   {
     path: "/methodology/",
     title: "Methodology"
+  },
+  {
+    path: "/editorial-policy/",
+    title: "Editorial Policy"
+  },
+  {
+    path: "/photo-sourcing-policy/",
+    title: "Photo Sourcing Policy"
+  },
+  {
+    path: "/affiliate-policy/",
+    title: "Affiliate Policy"
   }
 ];
 

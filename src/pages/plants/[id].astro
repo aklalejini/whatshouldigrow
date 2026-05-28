@@ -31,6 +31,11 @@ import {
   sentenceCase
 } from "../../lib/plantUtils";
 import { relatedHubsForPlant } from "../../lib/hubData";
+import {
+  optimizedImagePath,
+  optimizedSrcset,
+  PLANT_PHOTO_WIDTHS
+} from "../../lib/imageUtils";
 import "../../styles/global.css";
 
 export function getStaticPaths() {
@@ -63,7 +68,8 @@ const plantPhotoImageUrl = plantPhotoEntry?.primary?.src ? siteUrl(plantPhotoEnt
 const metricDescription = metrics.yieldLbsMin !== null && metricDisplay.yieldLbs
   ? ` Planning metrics include ${metricDisplay.yieldLbs}, ${metricDisplay.spacing}, and ${metricDisplay.firstOutput}.`
   : "";
-const description = `${plant.name} growing profile for ${SITE_NAME}: zones ${plant.zones[0]}-${plant.zones[1]}, ${formatList(plant.sun)} light, ${formatList(plant.soils)} soil, ${plant.water} water, and practical plant pairings.${metricDescription}`;
+const pageTitle = `${plant.name} Growing Guide: Zones ${plant.zones[0]}-${plant.zones[1]}, Spacing & Yield`;
+const description = `${plant.name} growing guide: USDA zones ${plant.zones[0]}-${plant.zones[1]}, ${formatList(plant.sun)} light, ${formatList(plant.soils)} soil, ${plant.water} water, spacing, harvest timing, yield notes, photos, and plant pairings.${metricDescription}`;
 const allRelationshipEntries = relationshipEntriesForPlant(plant, plantRelationships, plants);
 const relationshipEntries = allRelationshipEntries.slice(0, 5);
 const relatedPlantCount = new Set(allRelationshipEntries.flatMap(({ relatedPlants }) => relatedPlants.map((relatedPlant) => relatedPlant.id))).size;
@@ -305,7 +311,7 @@ const nearbyRelationshipEntries = relationshipEntries.filter(({ relationship }) 
 const plantJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: `${plant.name} growing profile`,
+  name: pageTitle,
   description,
   url: canonicalUrl,
   image: plantPhotoImageUrl,
@@ -335,7 +341,7 @@ const breadcrumbJsonLd = {
       "@type": "ListItem",
       position: 2,
       name: "Plants",
-      item: siteUrl("/#screener")
+      item: siteUrl("/plants/")
     },
     {
       "@type": "ListItem",
@@ -357,12 +363,12 @@ const breadcrumbJsonLd = {
     <meta name="robots" content="index, follow" />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={`${plant.name} | ${SITE_NAME}`} />
+    <meta property="og:title" content={`${pageTitle} | ${SITE_NAME}`} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={socialImageUrl} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={`${plant.name} | ${SITE_NAME}`} />
+    <meta name="twitter:title" content={`${pageTitle} | ${SITE_NAME}`} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -373,7 +379,7 @@ const breadcrumbJsonLd = {
     />
     <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
     <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
-    <title>{plant.name} | {SITE_NAME}</title>
+    <title>{pageTitle} | {SITE_NAME}</title>
     <script type="application/ld+json" set:html={JSON.stringify(plantJsonLd)}></script>
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
   </head>
@@ -388,7 +394,7 @@ const breadcrumbJsonLd = {
       </nav>
 
       <article class="plant-page">
-        <a class="back-link" href="/#screener">Browse all plants</a>
+        <a class="back-link" href="/plants/">Browse all plants</a>
 
         <header class="plant-page-hero">
           <figure
@@ -490,7 +496,11 @@ const breadcrumbJsonLd = {
 
               <div class={`plant-photo-layout ${plantPhotoDetails.length === 0 ? "is-single" : ""}`}>
                 <figure class="plant-photo-primary">
-                  <img src={plantPhotoEntry.primary.src} alt={plantPhotoEntry.primary.alt} loading="lazy" decoding="async" />
+                  <picture>
+                    <source type="image/avif" srcset={optimizedSrcset(plantPhotoEntry.primary.src, PLANT_PHOTO_WIDTHS, "avif")} sizes="(max-width: 760px) 100vw, 760px" />
+                    <source type="image/webp" srcset={optimizedSrcset(plantPhotoEntry.primary.src, PLANT_PHOTO_WIDTHS, "webp")} sizes="(max-width: 760px) 100vw, 760px" />
+                    <img src={optimizedImagePath(plantPhotoEntry.primary.src, 800, "webp")} alt={plantPhotoEntry.primary.alt} loading="lazy" decoding="async" />
+                  </picture>
                   <figcaption>
                     <strong>{plantPhotoEntry.primary.label}</strong>
                     <span>{plantPhotoEntry.primary.caption}</span>
@@ -501,7 +511,11 @@ const breadcrumbJsonLd = {
                   <div class="plant-photo-detail-grid" aria-label={`${plant.name} supplemental plant photos`}>
                     {plantPhotoDetails.map((photo) => (
                       <figure class="plant-photo-detail">
-                        <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+                        <picture>
+                          <source type="image/avif" srcset={optimizedSrcset(photo.src, PLANT_PHOTO_WIDTHS, "avif")} sizes="(max-width: 760px) 50vw, 360px" />
+                          <source type="image/webp" srcset={optimizedSrcset(photo.src, PLANT_PHOTO_WIDTHS, "webp")} sizes="(max-width: 760px) 50vw, 360px" />
+                          <img src={optimizedImagePath(photo.src, 480, "webp")} alt={photo.alt} loading="lazy" decoding="async" />
+                        </picture>
                         <figcaption>
                           <strong>{photo.label}</strong>
                           <span>{photo.caption}</span>

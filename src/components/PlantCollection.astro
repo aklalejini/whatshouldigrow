@@ -1,0 +1,46 @@
+---
+import plantArtEntries from "../data/plantArt.json";
+import {
+  plantArtEntry,
+  plantKind,
+  plantPhotoStyle,
+  plantUrl,
+  sentenceCase
+} from "../lib/plantUtils";
+import { hubPlantSummary, hubPlantTags } from "../lib/hubData";
+
+const { entries, limit = 72 } = Astro.props;
+const visibleEntries = entries.slice(0, limit);
+---
+
+<div class="hub-card-grid">
+  {visibleEntries.map(({ plant, metrics }) => {
+    const artEntry = plantArtEntry(plant, plantArtEntries);
+    const hasImage = Boolean(artEntry?.image);
+    const kind = plantKind(plant);
+    const tags = hubPlantTags(plant);
+    return (
+      <a class="hub-plant-card" href={plantUrl(plant)}>
+        <figure
+          class={`plant-visual hub-plant-visual ${kind} ${artEntry?.id ?? "generic-fruit"} ${hasImage ? "photo-plate" : ""}`}
+          aria-label={`${plant.name} botanical plate`}
+          style={plantPhotoStyle(artEntry)}
+        >
+          {!hasImage && <span class="plant-visual-icon"></span>}
+        </figure>
+        <div>
+          <span>{sentenceCase(plant.type)}</span>
+          <h3>{plant.name}</h3>
+          <p>{hubPlantSummary(plant, metrics)}</p>
+          <div class="hub-card-tags">
+            {tags.map((tag) => <span>{tag}</span>)}
+          </div>
+        </div>
+      </a>
+    );
+  })}
+</div>
+
+{entries.length > visibleEntries.length && (
+  <p class="calendar-limit-note">Showing {visibleEntries.length} of {entries.length} profiles. Use the plant screener for the full database table.</p>
+)}

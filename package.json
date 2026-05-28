@@ -5,7 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
-    "build": "astro build",
+    "data:build": "node scripts/build_public_data.mjs",
+    "images:optimize": "node scripts/optimize_images.mjs",
+    "photos:dedupe": "node scripts/dedupe_plant_photo_metadata.mjs",
+    "validate": "node scripts/validate_site_data.mjs",
+    "build": "npm run data:build && astro build",
     "preview": "astro preview --host 127.0.0.1",
     "art:import": "python scripts/import_plant_art.py",
     "metrics:generate": "node scripts/generate_plant_metrics.mjs"

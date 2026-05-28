@@ -1,0 +1,152 @@
+---
+import AnalyticsEvents from "../../components/AnalyticsEvents.astro";
+import PlantCollection from "../../components/PlantCollection.astro";
+import plants from "../../data/plants.json";
+import plantMetrics from "../../data/plantMetrics.json";
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  SITE_NAME,
+  SITE_URL,
+  siteUrl
+} from "../../lib/site";
+import {
+  directoryEntries,
+  goalGroups,
+  itemListJsonLd,
+  typeGroups,
+  zoneGroups
+} from "../../lib/plantDirectory";
+import "../../styles/global.css";
+
+const canonicalUrl = siteUrl("/plants/");
+const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
+const featuredEntries = directoryEntries(plants, plantMetrics, () => true).slice(0, 36);
+const typeLinks = typeGroups(plants);
+const goalLinks = goalGroups(plants);
+const zoneLinks = zoneGroups(plants);
+const description = `Browse ${plants.length} Plant by ZIP plant profiles by type, goal, and USDA hardiness zone.`;
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: SITE_NAME, item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "Plants", item: canonicalUrl }
+  ]
+};
+const collectionJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Plant Directory",
+  description,
+  url: canonicalUrl,
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: featuredEntries.length,
+    itemListElement: itemListJsonLd(featuredEntries, siteUrl)
+  }
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`Plant Directory | ${SITE_NAME}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`Plant Directory | ${SITE_NAME}`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,750&family=Inter:wght@400;500;650;750;850&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
+    <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
+    <title>Plant Directory | {SITE_NAME}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(collectionJsonLd)}></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <nav class="site-tabs" aria-label="Primary sections">
+        <a class="site-tab" href="/">Plant matcher</a>
+        <a class="site-tab" href="/planting-calendar/">Calendar</a>
+        <a class="site-tab" href="/#zone-map">Zone map</a>
+        <a class="site-tab is-active" aria-current="page" href="/plants/">Plants</a>
+        <a class="site-tab" href="/blog/">Blog</a>
+      </nav>
+
+      <article class="hub-page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Plant by ZIP</a>
+          <span aria-hidden="true">/</span>
+          <span>Plants</span>
+        </nav>
+
+        <header class="hub-hero">
+          <div>
+            <p class="eyebrow">Plant directory</p>
+            <h1>Browse plants by type, goal, and zone.</h1>
+            <p>{description} Use these pages for research, then run the matcher or calendar for ZIP-level context.</p>
+            <div class="hub-actions">
+              <a class="plant-page-action is-primary" href="/">Open ZIP matcher</a>
+              <a class="plant-page-action is-secondary" href="/#screener">Open plant screener</a>
+            </div>
+          </div>
+          <dl class="hub-stats" aria-label="Plant directory stats">
+            <div><dt>Profiles</dt><dd>{plants.length}</dd></div>
+            <div><dt>Types</dt><dd>{typeLinks.length}</dd></div>
+            <div><dt>Zones</dt><dd>{zoneLinks.length}</dd></div>
+          </dl>
+        </header>
+
+        <section class="hub-section hub-crosslinks" aria-labelledby="directory-paths-title">
+          <div class="hub-section-head">
+            <div>
+              <p class="eyebrow">Browse paths</p>
+              <h2 id="directory-paths-title">Choose a plant collection</h2>
+            </div>
+          </div>
+          <div class="home-hub-grid">
+            {goalLinks.map((link) => (
+              <a href={`/plants/goal/${link.slug}/`}><span>{link.label}</span><strong>{link.count} profiles</strong></a>
+            ))}
+          </div>
+          <div class="home-hub-grid">
+            {typeLinks.slice(0, 18).map((link) => (
+              <a href={`/plants/type/${link.slug}/`}><span>{link.label}</span><strong>{link.count} profiles</strong></a>
+            ))}
+          </div>
+          <div class="home-hub-grid">
+            {zoneLinks.map((link) => (
+              <a href={`/plants/zone/${link.slug}/`}><span>{link.label}</span><strong>{link.count} profiles</strong></a>
+            ))}
+          </div>
+        </section>
+
+        <section class="hub-section" aria-labelledby="directory-featured-title">
+          <div class="hub-section-head">
+            <div>
+              <p class="eyebrow">Featured profiles</p>
+              <h2 id="directory-featured-title">High-data plant profiles</h2>
+            </div>
+            <p>Sorted by available first-output, spacing, yield, and profile detail.</p>
+          </div>
+          <PlantCollection entries={featuredEntries} limit={36} />
+        </section>
+      </article>
+    </main>
+    <AnalyticsEvents pageType="plant_directory" topic="index" />
+  </body>
+</html>

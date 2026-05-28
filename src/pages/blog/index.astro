@@ -7,6 +7,7 @@ import {
   SITE_NAME,
   siteUrl
 } from "../../lib/site";
+import { BLOG_IMAGE_WIDTHS, optimizedImagePath, optimizedSrcset } from "../../lib/imageUtils";
 import "../../styles/global.css";
 
 const posts = (await getCollection("blog")).sort(
@@ -20,19 +21,7 @@ const articles = posts.map((post) => ({
   tags: post.data.tags,
   heroImage: post.data.heroImage,
   heroAlt: post.data.heroAlt,
-  bodyText: post.body ?? "",
   url: `/blog/${post.data.slug}/`
-}));
-const stripMarkdown = (value) =>
-  String(value)
-    .replace(/<[^>]*>/g, " ")
-    .replace(/[#*_`>\-[\]()]/g, " ");
-const searchData = articles.map((article) => ({
-  slug: article.slug,
-  searchableText: [article.title, article.excerpt, article.category, article.tags.join(" "), article.bodyText]
-    .map(stripMarkdown)
-    .join(" ")
-    .toLowerCase()
 }));
 const canonicalUrl = siteUrl("/blog/");
 const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
@@ -89,7 +78,11 @@ const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
               </p>
             </div>
             <figure class="blog-hero-photo">
-              <img src={articles[0].heroImage} alt={articles[0].heroAlt} loading="eager" />
+              <picture>
+                <source type="image/avif" srcset={optimizedSrcset(articles[0].heroImage, BLOG_IMAGE_WIDTHS, "avif")} sizes="(max-width: 760px) 100vw, 520px" />
+                <source type="image/webp" srcset={optimizedSrcset(articles[0].heroImage, BLOG_IMAGE_WIDTHS, "webp")} sizes="(max-width: 760px) 100vw, 520px" />
+                <img src={optimizedImagePath(articles[0].heroImage, 1200, "webp")} alt={articles[0].heroAlt} loading="eager" decoding="async" fetchpriority="high" />
+              </picture>
             </figure>
             <div class="blog-search">
               <label for="article-search">Search articles</label>
@@ -115,15 +108,31 @@ const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
       </section>
     </main>
 
-    <script is:inline type="application/json" id="blog-search-data" set:html={JSON.stringify(searchData)}></script>
     <script is:inline>
       const articleSearchEl = document.getElementById("article-search");
       const blogEmptyEl = document.getElementById("blog-empty");
       const articleCards = Array.from(document.querySelectorAll("[data-article-slug]"));
-      const blogSearchData = JSON.parse(document.getElementById("blog-search-data").textContent);
+      let blogSearchData = [];
+      let blogSearchPromise = null;
 
-      function filterArticles() {
+      async function ensureBlogSearchData() {
+        if (blogSearchData.length) return;
+        if (!blogSearchPromise) {
+          blogSearchPromise = fetch("/data/blog-search.json")
+            .then((response) => {
+              if (!response.ok) throw new Error("Blog search data failed");
+              return response.json();
+            })
+            .then((rows) => {
+              blogSearchData = rows;
+            });
+        }
+        await blogSearchPromise;
+      }
+
+      async function filterArticles() {
         const query = articleSearchEl.value.trim().toLowerCase();
+        if (query) await ensureBlogSearchData();
         let visibleArticles = 0;
         articleCards.forEach((card) => {
           const article = blogSearchData.find((entry) => entry.slug === card.dataset.articleSlug);
@@ -139,7 +148,9 @@ const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
         articleSearchEl.value = initialQuery;
         filterArticles();
       }
-      articleSearchEl.addEventListener("input", filterArticles);
+      articleSearchEl.addEventListener("input", () => {
+        filterArticles();
+      });
     </script>
   </body>
 </html>
