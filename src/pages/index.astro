@@ -994,6 +994,24 @@ const webAppJsonLd = {
               <label for="screener-search">Search</label>
               <input id="screener-search" type="search" placeholder="Name, trait, harvest, source" />
             </div>
+            <label class="screener-field" for="screener-column-preset">
+              <span>Column view</span>
+              <select id="screener-column-preset">
+                <option value="core">Core screener</option>
+                <option value="yield">Yield view</option>
+                <option value="space">Space efficiency</option>
+                <option value="container">Container view</option>
+                <option value="risk">Risk view</option>
+                <option value="ecology">Native/ecology</option>
+                <option value="all">All columns</option>
+              </select>
+            </label>
+            <label class="screener-field" for="screener-saved-screen">
+              <span>Saved screen</span>
+              <select id="screener-saved-screen">
+                <option value="">Choose a screen</option>
+              </select>
+            </label>
             <label class="screener-field" for="screener-type">
               <span>Type/form</span>
               <select id="screener-type">
@@ -1069,6 +1087,7 @@ const webAppJsonLd = {
                 <option value="native">Native flag</option>
                 <option value="low-water">Low water need</option>
                 <option value="pairings">Has pairings</option>
+                <option value="watchlist">Watchlist</option>
               </select>
             </label>
             <label class="screener-field" for="screener-partner">
@@ -1085,6 +1104,52 @@ const webAppJsonLd = {
                 <option value="low">Low only</option>
               </select>
             </label>
+            <details class="screener-range-panel" open>
+              <summary>Numeric filters</summary>
+              <div class="screener-range-grid">
+                <label class="screener-field" for="screener-min-yield">
+                  <span>Min yield lb</span>
+                  <input id="screener-min-yield" type="number" inputmode="decimal" min="0" step="1" placeholder="Any" />
+                </label>
+                <label class="screener-field" for="screener-min-yield-space">
+                  <span>Min lb / 100 sq ft</span>
+                  <input id="screener-min-yield-space" type="number" inputmode="decimal" min="0" step="1" placeholder="Any" />
+                </label>
+                <label class="screener-field" for="screener-max-first-output">
+                  <span>Max first output yrs</span>
+                  <input id="screener-max-first-output" type="number" inputmode="decimal" min="0" step="0.25" placeholder="Any" />
+                </label>
+                <label class="screener-field" for="screener-max-container">
+                  <span>Max container gal</span>
+                  <input id="screener-max-container" type="number" inputmode="decimal" min="0" step="1" placeholder="Any" />
+                </label>
+                <label class="screener-field" for="screener-max-difficulty">
+                  <span>Max difficulty</span>
+                  <input id="screener-max-difficulty" type="number" inputmode="numeric" min="1" max="5" step="1" placeholder="1-5" />
+                </label>
+                <label class="screener-field" for="screener-min-reliability">
+                  <span>Min reliability</span>
+                  <input id="screener-min-reliability" type="number" inputmode="numeric" min="1" max="5" step="1" placeholder="1-5" />
+                </label>
+                <label class="screener-field" for="screener-max-height">
+                  <span>Max height ft</span>
+                  <input id="screener-max-height" type="number" inputmode="decimal" min="0" step="1" placeholder="Any" />
+                </label>
+                <label class="screener-field" for="screener-min-density">
+                  <span>Min plants / 100 sq ft</span>
+                  <input id="screener-min-density" type="number" inputmode="decimal" min="0" step="1" placeholder="Any" />
+                </label>
+              </div>
+            </details>
+          </section>
+
+          <section id="screener-supply-panel" class="screener-supply-panel" aria-labelledby="screener-supply-title" hidden>
+            <div>
+              <span id="screener-supply-kicker">Matched supplies</span>
+              <h2 id="screener-supply-title">Useful supplies for this screen</h2>
+              <p class="screener-supply-disclosure">Product links are separate from plant rankings and may earn a commission.</p>
+            </div>
+            <div id="screener-supply-list" class="screener-supply-list"></div>
           </section>
 
           <div class="screener-toolbar">
@@ -1101,30 +1166,47 @@ const webAppJsonLd = {
             </div>
           </div>
 
+          <section id="screener-compare-panel" class="screener-compare-panel" aria-labelledby="screener-compare-title" hidden>
+            <div class="screener-compare-head">
+              <div>
+                <span>Compare basket</span>
+                <h2 id="screener-compare-title">Select up to 5 plants</h2>
+              </div>
+              <button id="screener-clear-compare" type="button">Clear compare</button>
+            </div>
+            <p id="screener-compare-status">Choose rows from the table to compare core metrics side by side.</p>
+            <div id="screener-compare-table" class="screener-compare-table"></div>
+          </section>
+
           <div class="screener-table-wrap" role="region" aria-label="Plant screener results" tabindex="0">
             <table class="screener-table">
               <thead>
                 <tr>
-                  <th scope="col" aria-sort="ascending"><button type="button" data-screener-sort="name">Name <span class="sort-indicator">&uarr; A-Z</span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="type">Type/form <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="zone">Zone range <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="firstOutput">First output <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="spacing">Spacing <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="plantingDepth">Planting depth <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="container">Container min <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="output">Yield (lbs) <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="difficulty">Difficulty <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="sun">Sun <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="soil">Soil <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="water">Water <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="goals">Goals <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="harvest">Harvest/season <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="traits">Traits <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="native" title="Derived from current plant notes and goals, not a full native-range database.">Native flag <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="lowMaintenance" title="Plants with low water needs.">Low water <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="pairings" title="Companion or placement pairing rules connected to this plant.">Pairings <span class="sort-indicator"></span></button></th>
-                  <th scope="col"><button type="button" data-screener-sort="partner">Source <span class="sort-indicator"></span></button></th>
-                  <th class="screener-action-head" scope="col">Profile</th>
+                  <th scope="col" aria-sort="ascending" data-screener-col="name"><button type="button" data-screener-sort="name">Name <span class="sort-indicator">&uarr; A-Z</span></button></th>
+                  <th scope="col" data-screener-col="type"><button type="button" data-screener-sort="type">Type/form <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="zone"><button type="button" data-screener-sort="zone">Zone range <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="firstOutput"><button type="button" data-screener-sort="firstOutput">First output <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="spacing"><button type="button" data-screener-sort="spacing">Spacing <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="plantingDepth"><button type="button" data-screener-sort="plantingDepth">Planting depth <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="container"><button type="button" data-screener-sort="container">Container min <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="yield"><button type="button" data-screener-sort="output">Yield (lbs) <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="yieldPerSpace"><button type="button" data-screener-sort="yieldPerSpace" title="Estimated annual pound return multiplied by plants per 100 square feet.">Yield / 100 sq ft <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="score"><button type="button" data-screener-sort="score" title="Difficulty- and reliability-adjusted yield score.">Scores <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="difficulty"><button type="button" data-screener-sort="difficulty">Difficulty <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="reliability"><button type="button" data-screener-sort="reliability">Reliability <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="data"><button type="button" data-screener-sort="dataQuality" title="Metric confidence, source count, method, and review date.">Data <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="sun"><button type="button" data-screener-sort="sun">Sun <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="soil"><button type="button" data-screener-sort="soil">Soil <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="water"><button type="button" data-screener-sort="water">Water <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="goals"><button type="button" data-screener-sort="goals">Goals <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="harvest"><button type="button" data-screener-sort="harvest">Harvest/season <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="traits"><button type="button" data-screener-sort="traits">Traits <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="native"><button type="button" data-screener-sort="native" title="Derived from current plant notes and goals, not a full native-range database.">Native flag <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="lowWater"><button type="button" data-screener-sort="lowMaintenance" title="Plants with low water needs.">Low water <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="pairings"><button type="button" data-screener-sort="pairings" title="Companion or placement pairing rules connected to this plant.">Pairings <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="screening"><button type="button" data-screener-sort="screening" title="Planning cues for pH, pollination, support, pests, chill, heat, storage, and regional warnings.">Screening cues <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="source"><button type="button" data-screener-sort="partner">Source <span class="sort-indicator"></span></button></th>
+                  <th class="screener-action-head" scope="col" data-screener-col="profile">Profile</th>
                 </tr>
               </thead>
               <tbody id="screener-body"></tbody>

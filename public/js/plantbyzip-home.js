@@ -206,6 +206,8 @@ const zoneMapPlantListEl = document.getElementById("zone-map-plant-list");
 const zoneMapUseMatcherEl = document.getElementById("zone-map-use-matcher");
 const zoneMapUseCalendarEl = document.getElementById("zone-map-use-calendar");
 const screenerSearchEl = document.getElementById("screener-search");
+const screenerColumnPresetEl = document.getElementById("screener-column-preset");
+const screenerSavedScreenEl = document.getElementById("screener-saved-screen");
 const screenerTypeEl = document.getElementById("screener-type");
 const screenerZoneEl = document.getElementById("screener-zone");
 const screenerHorizonEl = document.getElementById("screener-horizon");
@@ -217,12 +219,29 @@ const screenerGoalEl = document.getElementById("screener-goal");
 const screenerFlagEl = document.getElementById("screener-flag");
 const screenerPartnerEl = document.getElementById("screener-partner");
 const screenerConfidenceEl = document.getElementById("screener-confidence");
+const screenerMinYieldEl = document.getElementById("screener-min-yield");
+const screenerMinYieldSpaceEl = document.getElementById("screener-min-yield-space");
+const screenerMaxFirstOutputEl = document.getElementById("screener-max-first-output");
+const screenerMaxContainerEl = document.getElementById("screener-max-container");
+const screenerMaxDifficultyEl = document.getElementById("screener-max-difficulty");
+const screenerMinReliabilityEl = document.getElementById("screener-min-reliability");
+const screenerMaxHeightEl = document.getElementById("screener-max-height");
+const screenerMinDensityEl = document.getElementById("screener-min-density");
 const screenerGroupTypeEl = document.getElementById("screener-group-type");
 const screenerShowSourceLinksEl = document.getElementById("screener-show-source-links");
 const screenerResetEl = document.getElementById("screener-reset");
 const screenerMoreEl = document.getElementById("screener-more");
 const screenerBodyEl = document.getElementById("screener-body");
 const screenerTableWrapEl = document.querySelector(".screener-table-wrap");
+const screenerSupplyPanelEl = document.getElementById("screener-supply-panel");
+const screenerSupplyTitleEl = document.getElementById("screener-supply-title");
+const screenerSupplyKickerEl = document.getElementById("screener-supply-kicker");
+const screenerSupplyListEl = document.getElementById("screener-supply-list");
+const screenerComparePanelEl = document.getElementById("screener-compare-panel");
+const screenerCompareTitleEl = document.getElementById("screener-compare-title");
+const screenerCompareStatusEl = document.getElementById("screener-compare-status");
+const screenerCompareTableEl = document.getElementById("screener-compare-table");
+const screenerClearCompareEl = document.getElementById("screener-clear-compare");
 const screenerSummaryEl = document.getElementById("screener-summary");
 const screenerEmptyEl = document.getElementById("screener-empty");
 const screenerVisibleCountEl = document.getElementById("screener-visible-count");
@@ -231,6 +250,7 @@ const screenerRelationCountEl = document.getElementById("screener-relation-count
 const screenerSortButtons = Array.from(document.querySelectorAll("[data-screener-sort]"));
 const screenerFilterEls = [
   screenerSearchEl,
+  screenerColumnPresetEl,
   screenerTypeEl,
   screenerZoneEl,
   screenerHorizonEl,
@@ -241,8 +261,26 @@ const screenerFilterEls = [
   screenerGoalEl,
   screenerFlagEl,
   screenerPartnerEl,
-  screenerConfidenceEl
-];
+  screenerConfidenceEl,
+  screenerMinYieldEl,
+  screenerMinYieldSpaceEl,
+  screenerMaxFirstOutputEl,
+  screenerMaxContainerEl,
+  screenerMaxDifficultyEl,
+  screenerMinReliabilityEl,
+  screenerMaxHeightEl,
+  screenerMinDensityEl
+].filter(Boolean);
+const screenerRangeEls = [
+  screenerMinYieldEl,
+  screenerMinYieldSpaceEl,
+  screenerMaxFirstOutputEl,
+  screenerMaxContainerEl,
+  screenerMaxDifficultyEl,
+  screenerMinReliabilityEl,
+  screenerMaxHeightEl,
+  screenerMinDensityEl
+].filter(Boolean);
 let currentRanked = [];
 let currentInputs = null;
 let currentPlanParams = null;
@@ -251,6 +289,9 @@ let visibleCount = 12;
 let screenerSort = { key: "name", direction: "asc" };
 let screenerGroupedByType = false;
 let screenerVisibleLimit = 120;
+let screenerCompareIds = new Set();
+let screenerWatchlistIds = new Set();
+let screenerLastFiltered = [];
 let calendarZoneData = null;
 let calendarFrost = null;
 let calendarEvents = [];
@@ -274,13 +315,68 @@ let zoneMapZipGraphicsLayer = null;
 let zoneMapHoverTooltip = null;
 let zoneMapSelectedPlantOverlay = null;
 const screenerPageSize = 120;
-const screenerColumnCount = 20;
+const screenerCompareLimit = 5;
+const screenerWatchlistStorageKey = "plantbyzip.screenerWatchlist.v1";
+const screenerColumnPresets = {
+  core: ["name", "type", "zone", "firstOutput", "yield", "difficulty", "data", "source", "profile"],
+  yield: ["name", "type", "zone", "firstOutput", "yield", "yieldPerSpace", "score", "difficulty", "reliability", "data", "source", "profile"],
+  space: ["name", "type", "zone", "spacing", "container", "yield", "yieldPerSpace", "score", "sun", "water", "profile"],
+  container: ["name", "type", "zone", "container", "yield", "score", "sun", "soil", "water", "screening", "source", "profile"],
+  risk: ["name", "type", "zone", "difficulty", "reliability", "data", "screening", "water", "pairings", "source", "profile"],
+  ecology: ["name", "type", "zone", "sun", "soil", "water", "goals", "traits", "native", "lowWater", "pairings", "screening", "profile"],
+  all: ["name", "type", "zone", "firstOutput", "spacing", "plantingDepth", "container", "yield", "yieldPerSpace", "score", "difficulty", "reliability", "data", "sun", "soil", "water", "goals", "harvest", "traits", "native", "lowWater", "pairings", "screening", "source", "profile"]
+};
+const screenerSavedScreens = {
+  "high-yield-small-space": {
+    label: "High-yield small-space edibles",
+    columnPreset: "space",
+    values: { sgoal: "vegetables-herbs", scontainer: "10", sdata: "medium" },
+    ranges: { sminspace: "20", smaxfirst: "1", smaxdifficulty: "4" },
+    sort: { key: "yieldPerSpace", direction: "desc" }
+  },
+  "fast-annual-crops": {
+    label: "Fast annual crops",
+    columnPreset: "yield",
+    values: { stype: "annual vegetable", sdata: "medium" },
+    ranges: { smaxfirst: "0.35", smaxdifficulty: "4" },
+    sort: { key: "firstOutput", direction: "asc" }
+  },
+  "beginner-fruit": {
+    label: "Beginner fruit plants",
+    columnPreset: "risk",
+    values: { sgoal: "fruit", sdata: "medium" },
+    ranges: { smaxdifficulty: "3", sminreliability: "3" },
+    sort: { key: "reliability", direction: "desc" }
+  },
+  "low-water-perennials": {
+    label: "Low-water perennials",
+    columnPreset: "risk",
+    values: { swater: "low", sattr: "low-water", sdata: "medium" },
+    ranges: { smaxdifficulty: "4" },
+    sort: { key: "difficulty", direction: "asc" }
+  },
+  "native-pollinator-anchors": {
+    label: "Native pollinator anchors",
+    columnPreset: "ecology",
+    values: { sgoal: "native-plants", sattr: "native" },
+    ranges: { sminreliability: "3" },
+    sort: { key: "pairings", direction: "desc" }
+  },
+  "container-winners": {
+    label: "Container winners",
+    columnPreset: "container",
+    values: { scontainer: "10", sdata: "medium" },
+    ranges: { smaxcontainer: "10", sminreliability: "3" },
+    sort: { key: "containerEfficiency", direction: "desc" }
+  }
+};
 const zoneCache = new Map();
 const zoneStorageKey = "plantbyzip.zoneCache.v1";
 const zoneLookupTimeoutMs = 8000;
 let zoneLookupTimer = null;
 const screenerParamMap = {
   sq: screenerSearchEl,
+  sview: screenerColumnPresetEl,
   stype: screenerTypeEl,
   szone: screenerZoneEl,
   shorizon: screenerHorizonEl,
@@ -291,9 +387,17 @@ const screenerParamMap = {
   sgoal: screenerGoalEl,
   sattr: screenerFlagEl,
   ssource: screenerPartnerEl,
-  sdata: screenerConfidenceEl
+  sdata: screenerConfidenceEl,
+  sminyield: screenerMinYieldEl,
+  sminspace: screenerMinYieldSpaceEl,
+  smaxfirst: screenerMaxFirstOutputEl,
+  smaxcontainer: screenerMaxContainerEl,
+  smaxdifficulty: screenerMaxDifficultyEl,
+  sminreliability: screenerMinReliabilityEl,
+  smaxheight: screenerMaxHeightEl,
+  smindensity: screenerMinDensityEl
 };
-const screenerParamKeys = [...Object.keys(screenerParamMap), "ssort", "sdir", "sgroup"];
+const screenerParamKeys = [...Object.keys(screenerParamMap), "ssort", "sdir", "sgroup", "sscreen"];
 const matcherParamKeys = ["zip", "sun", "soil", "water", "goal"];
 const savedPlanStorageKey = "plantbyzip.savedPlan.v1";
 const leafletCssUrl = "/vendor/leaflet/leaflet.css";
@@ -1613,6 +1717,204 @@ async function submitEmailPlan(event) {
 
 function metricFor(plant) {
   return plantMetrics[plant.id] ?? {};
+}
+
+function numberFromControl(control) {
+  const value = Number(control?.value);
+  return Number.isFinite(value) && control?.value !== "" ? value : null;
+}
+
+function rangeAverage(min, max) {
+  const values = [min, max].filter((value) => Number.isFinite(value));
+  if (!values.length) return null;
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function metricMidpoint(metrics, minKey, maxKey) {
+  return rangeAverage(metrics[minKey], metrics[maxKey]);
+}
+
+function yieldMidpoint(metrics) {
+  return metricMidpoint(metrics, "yieldLbsMin", "yieldLbsMax")
+    ?? metricMidpoint(metrics, "outputMin", "outputMax");
+}
+
+function densityMidpoint(metrics) {
+  return metricMidpoint(metrics, "plantsPer100SqFtMin", "plantsPer100SqFtMax");
+}
+
+function matureHeightMidpoint(metrics) {
+  return metricMidpoint(metrics, "matureHeightFtMin", "matureHeightFtMax");
+}
+
+function yieldPer100SqFt(metrics) {
+  const yieldValue = yieldMidpoint(metrics);
+  const densityValue = densityMidpoint(metrics);
+  if (!Number.isFinite(yieldValue) || !Number.isFinite(densityValue)) return null;
+  return yieldValue * densityValue;
+}
+
+function firstOutputYears(metrics) {
+  return firstOutputSortValue(metrics);
+}
+
+function reliabilityAdjustedYield(metrics) {
+  const yieldValue = yieldMidpoint(metrics);
+  if (!Number.isFinite(yieldValue) || !Number.isFinite(metrics.reliabilityScore)) return null;
+  return yieldValue * (metrics.reliabilityScore / 5);
+}
+
+function difficultyAdjustedYield(metrics) {
+  const yieldValue = yieldMidpoint(metrics);
+  if (!Number.isFinite(yieldValue) || !Number.isFinite(metrics.difficultyScore)) return null;
+  return yieldValue * ((6 - metrics.difficultyScore) / 5);
+}
+
+function containerEfficiency(metrics) {
+  const yieldValue = yieldMidpoint(metrics);
+  if (!Number.isFinite(yieldValue) || !Number.isFinite(metrics.containerMinGallons) || metrics.containerMinGallons <= 0) return null;
+  return yieldValue / metrics.containerMinGallons;
+}
+
+function timeToPayoffScore(metrics) {
+  const yieldValue = yieldMidpoint(metrics);
+  const years = Math.max(firstOutputYears(metrics), 0.25);
+  if (!Number.isFinite(yieldValue) || !Number.isFinite(years)) return null;
+  return yieldValue / years;
+}
+
+function formatCompactNumber(value, digits = 0, fallback = "-") {
+  if (!Number.isFinite(value)) return fallback;
+  return value.toLocaleString(undefined, {
+    maximumFractionDigits: digits,
+    minimumFractionDigits: 0
+  });
+}
+
+function textForPlant(plant) {
+  return [
+    plant.id,
+    plant.name,
+    plant.type,
+    plant.query,
+    plant.notes,
+    plant.harvest,
+    ...(plant.traits ?? []),
+    ...(plant.goals ?? [])
+  ].join(" ").toLowerCase();
+}
+
+function textHasAny(text, terms) {
+  return terms.some((term) => text.includes(term));
+}
+
+function screeningProfile(plant, metrics = metricFor(plant)) {
+  const text = textForPlant(plant);
+  const isFruitTree = plant.type.includes("fruit tree");
+  const isTree = plant.type.includes("tree");
+  const isShrub = plant.type.includes("shrub");
+  const isVine = plant.type.includes("vine") || textHasAny(text, ["grape", "kiwi", "passionfruit", "cucumber", "melon", "watermelon"]);
+  const isAnnualVeg = plant.type.includes("annual vegetable");
+  const acidLovers = ["blueberry", "cranberry", "lingonberry", "huckleberry", "azalea", "rhododendron"];
+  const alkalineTolerant = ["lavender", "rosemary", "thyme", "sage", "salvia", "yarrow"];
+  const storageCrops = ["garlic", "onion", "shallot", "potato", "sweet potato", "winter squash", "pumpkin", "rutabaga", "parsnip"];
+  const coolSeason = ["lettuce", "spinach", "kale", "collard", "broccoli", "cabbage", "cauliflower", "pea", "radish", "turnip", "arugula", "bok choy", "mustard"];
+  const heatLovers = ["okra", "pepper", "eggplant", "tomato", "sweet potato", "melon", "watermelon", "cucumber", "pomegranate", "fig", "citrus"];
+  const diseaseWatch = ["peach", "nectarine", "apple", "pear", "tomato", "cucumber", "squash", "melon", "watermelon", "grape", "rose", "phlox", "bee balm"];
+  const pestWatch = ["brassica", "broccoli", "cabbage", "cauliflower", "kale", "collard", "eggplant", "potato", "cucumber", "squash", "melon", "tomato"];
+  const deerWeak = ["hosta", "daylily", "tulip", "rose", "strawberry", "apple", "pear", "cherry", "plum"];
+  const deerBetter = ["lavender", "rosemary", "thyme", "sage", "salvia", "yarrow", "allium", "catmint", "ornamental grass", "mint"];
+  const spreadWatch = ["mint", "bamboo", "comfrey", "horseradish", "maypop", "passionfruit", "blackberry", "raspberry"];
+
+  const ph = textHasAny(text, acidLovers)
+    ? "Acidic 4.5-5.5"
+    : textHasAny(text, alkalineTolerant)
+      ? "Neutral-alkaline 6.5-8.0"
+      : text.includes("potato")
+        ? "Slightly acidic 5.0-6.5"
+        : "Near-neutral 6.0-7.0";
+
+  const pollination = textHasAny(text, ["apple", "pear", "plum", "sweet cherry", "blueberry", "elderberry", "hazelnut", "pecan", "chestnut"])
+    ? "Partner often needed"
+    : textHasAny(text, ["fig", "pomegranate", "peach", "nectarine", "sour cherry", "apricot", "tomato", "pepper", "eggplant", "bean", "pea"])
+      ? "Usually self-fruitful"
+      : isFruitTree || plant.type.includes("nut")
+        ? "Verify cultivar"
+        : isAnnualVeg
+          ? "Mostly self/insect set"
+          : "Not a primary filter";
+
+  const support = textHasAny(text, ["tomato", "pepper", "eggplant"])
+    ? "Stake/cage useful"
+    : textHasAny(text, ["blackberry", "raspberry", "grape", "kiwi", "cucumber", "pea", "bean"])
+      ? "Trellis useful"
+      : isVine
+        ? "Support likely"
+        : isTree
+          ? "Stake while young"
+          : "Usually none";
+
+  const deer = textHasAny(text, deerWeak)
+    ? "Browse risk"
+    : textHasAny(text, deerBetter) || plant.type.includes("ornamental grass")
+      ? "Often avoided"
+      : "Variable";
+
+  const pestPressure = textHasAny(text, pestWatch)
+    ? "Elevated"
+    : textHasAny(text, ["lavender", "rosemary", "thyme", "sage", "yarrow", "ornamental grass"])
+      ? "Lower"
+      : "Moderate";
+
+  const diseasePressure = textHasAny(text, diseaseWatch)
+    ? "Elevated"
+    : metrics.riskLevel === "lower"
+      ? "Lower"
+      : "Moderate";
+
+  const chill = textHasAny(text, ["apple", "pear", "cherry"])
+    ? "500-900 chill hrs"
+    : textHasAny(text, ["peach", "nectarine", "apricot", "plum"])
+      ? "400-900 chill hrs"
+      : textHasAny(text, ["blueberry", "blackberry", "raspberry"])
+        ? "200-700 chill hrs"
+        : textHasAny(text, ["fig", "pomegranate", "citrus", "olive", "loquat"])
+          ? "Low chill"
+          : "Not central";
+
+  const heat = textHasAny(text, heatLovers)
+    ? "High heat OK"
+    : textHasAny(text, coolSeason)
+      ? "Heat sensitive"
+      : "Moderate";
+
+  const storage = textHasAny(text, storageCrops)
+    ? "Stores well"
+    : textHasAny(text, ["berry", "strawberry", "raspberry", "blackberry", "tomato", "fig", "peach", "nectarine", "apricot"])
+      ? "Short shelf life"
+      : metrics.outputKind === "ornamental"
+        ? "Not a harvest crop"
+        : "Use fresh";
+
+  const warning = textHasAny(text, spreadWatch)
+    ? "Can spread"
+    : textHasAny(text, ["privet", "burning bush", "barberry", "nandina"])
+      ? "Check local invasive status"
+      : "No broad warning";
+
+  return {
+    ph,
+    pollination,
+    support,
+    deer,
+    pestPressure,
+    diseasePressure,
+    chill,
+    heat,
+    storage,
+    warning,
+    confidence: "Screening cue"
+  };
 }
 
 function metricDisplayValue(value, fallback = "Not available yet") {
@@ -4760,6 +5062,7 @@ function renderScreenerPills(values, formatter = (value) => value, limit = 3) {
 
 function screenerSearchText(plant) {
   const metrics = metricFor(plant);
+  const screening = screeningProfile(plant, metrics);
   return [
     plant.name,
     plant.type,
@@ -4791,6 +5094,16 @@ function screenerSearchText(plant) {
     metrics.display?.difficulty,
     metrics.display?.reliability,
     metrics.display?.confidence,
+    screening.ph,
+    screening.pollination,
+    screening.support,
+    screening.deer,
+    screening.pestPressure,
+    screening.diseasePressure,
+    screening.chill,
+    screening.heat,
+    screening.storage,
+    screening.warning,
     ...plant.goals.map(formatGoal),
     ...plant.traits
   ].join(" ").toLowerCase();
@@ -4801,6 +5114,14 @@ function plantMatchesScreener(plant) {
   const query = screenerSearchEl.value.trim().toLowerCase();
   const zone = screenerZoneEl.value;
   const flag = screenerFlagEl.value;
+  const minYield = numberFromControl(screenerMinYieldEl);
+  const minYieldSpace = numberFromControl(screenerMinYieldSpaceEl);
+  const maxFirstOutput = numberFromControl(screenerMaxFirstOutputEl);
+  const maxContainer = numberFromControl(screenerMaxContainerEl);
+  const maxDifficulty = numberFromControl(screenerMaxDifficultyEl);
+  const minReliability = numberFromControl(screenerMinReliabilityEl);
+  const maxHeight = numberFromControl(screenerMaxHeightEl);
+  const minDensity = numberFromControl(screenerMinDensityEl);
 
   if (query && !screenerSearchText(plant).includes(query)) return false;
   if (screenerTypeEl.value && plant.type !== screenerTypeEl.value) return false;
@@ -4814,15 +5135,24 @@ function plantMatchesScreener(plant) {
   if (screenerGoalEl.value && !goalMatchesPlant(plant, screenerGoalEl.value)) return false;
   if (screenerHorizonEl.value && metrics.horizonKey !== screenerHorizonEl.value) return false;
   if (screenerContainerEl.value) {
-    const maxContainer = Number(screenerContainerEl.value);
-    if (!Number.isFinite(metrics.containerMinGallons) || metrics.containerMinGallons > maxContainer) return false;
+    const selectMaxContainer = Number(screenerContainerEl.value);
+    if (!Number.isFinite(metrics.containerMinGallons) || metrics.containerMinGallons > selectMaxContainer) return false;
   }
+  if (minYield !== null && (!Number.isFinite(yieldMidpoint(metrics)) || yieldMidpoint(metrics) < minYield)) return false;
+  if (minYieldSpace !== null && (!Number.isFinite(yieldPer100SqFt(metrics)) || yieldPer100SqFt(metrics) < minYieldSpace)) return false;
+  if (maxFirstOutput !== null && (!Number.isFinite(firstOutputYears(metrics)) || firstOutputYears(metrics) > maxFirstOutput)) return false;
+  if (maxContainer !== null && (!Number.isFinite(metrics.containerMinGallons) || metrics.containerMinGallons > maxContainer)) return false;
+  if (maxDifficulty !== null && (!Number.isFinite(metrics.difficultyScore) || metrics.difficultyScore > maxDifficulty)) return false;
+  if (minReliability !== null && (!Number.isFinite(metrics.reliabilityScore) || metrics.reliabilityScore < minReliability)) return false;
+  if (maxHeight !== null && (!Number.isFinite(matureHeightMidpoint(metrics)) || matureHeightMidpoint(metrics) > maxHeight)) return false;
+  if (minDensity !== null && (!Number.isFinite(densityMidpoint(metrics)) || densityMidpoint(metrics) < minDensity)) return false;
   if (screenerConfidenceEl.value === "medium" && (confidenceRank[metrics.dataConfidence] ?? 0) < 2) return false;
   if (screenerConfidenceEl.value === "low" && metrics.dataConfidence !== "low") return false;
   if (screenerPartnerEl.value && plant.partner !== screenerPartnerEl.value) return false;
   if (flag === "native" && !hasNativeCue(plant)) return false;
   if ((flag === "low-water" || flag === "low-maintenance") && !hasLowWaterCue(plant)) return false;
   if (flag === "pairings" && relationshipCount(plant) === 0) return false;
+  if (flag === "watchlist" && !screenerWatchlistIds.has(plant.id)) return false;
   return true;
 }
 
@@ -4836,7 +5166,12 @@ function screenerSortValue(plant, key) {
   if (key === "plantingDepth") return metrics.plantingDepthInMax ?? metrics.plantingDepthInMin ?? 999;
   if (key === "container") return metrics.containerMinGallons ?? 999;
   if (key === "output") return outputSortValue(metrics);
+  if (key === "yieldPerSpace") return yieldPer100SqFt(metrics) ?? -1;
+  if (key === "score") return reliabilityAdjustedYield(metrics) ?? difficultyAdjustedYield(metrics) ?? -1;
+  if (key === "containerEfficiency") return containerEfficiency(metrics) ?? -1;
   if (key === "difficulty") return metrics.difficultyScore ?? 0;
+  if (key === "reliability") return metrics.reliabilityScore ?? 0;
+  if (key === "dataQuality") return (confidenceRank[metrics.dataConfidence] ?? 0) * 100 + (metrics.sourceKeys?.length ?? 0);
   if (key === "sun") return plant.sun.join(", ");
   if (key === "soil") return plant.soils.join(", ");
   if (key === "water") return waterRank[plant.water] ?? 0;
@@ -4846,12 +5181,13 @@ function screenerSortValue(plant, key) {
   if (key === "native") return hasNativeCue(plant) ? 1 : 0;
   if (key === "lowMaintenance") return hasLowWaterCue(plant) ? 1 : 0;
   if (key === "pairings") return relationshipCount(plant);
+  if (key === "screening") return screeningProfile(plant, metrics).warning;
   if (key === "partner") return partnerName(plant.partner).toLowerCase();
   return plant.name.toLowerCase();
 }
 
 function defaultScreenerDirection(key) {
-  return ["goals", "native", "lowMaintenance", "pairings", "output"].includes(key) ? "desc" : "asc";
+  return ["goals", "native", "lowMaintenance", "pairings", "output", "yieldPerSpace", "score", "containerEfficiency", "reliability", "dataQuality"].includes(key) ? "desc" : "asc";
 }
 
 function screenerSortIndicator(key, direction) {
@@ -4885,6 +5221,22 @@ function groupCounts(entries) {
   }, new Map());
 }
 
+function activeScreenerColumns() {
+  const preset = screenerColumnPresetEl?.value || "core";
+  return new Set(screenerColumnPresets[preset] ?? screenerColumnPresets.core);
+}
+
+function visibleScreenerColumnCount() {
+  return activeScreenerColumns().size;
+}
+
+function updateScreenerColumnVisibility() {
+  const active = activeScreenerColumns();
+  document.querySelectorAll("[data-screener-col]").forEach((element) => {
+    element.hidden = !active.has(element.dataset.screenerCol);
+  });
+}
+
 function sortGroupedScreenerPlants(entries) {
   return [...entries].sort((a, b) => {
     const aGroup = plantGroupLabel(a);
@@ -4901,7 +5253,7 @@ function renderScreenerGroupedRows(entries, counts) {
     const group = plantGroupLabel(plant);
     const heading = group === currentGroup
       ? ""
-      : `<tr class="screener-group-row"><td colspan="${screenerColumnCount}"><strong>${escapeHtml(group)}</strong><span>${counts.get(group) ?? 0} ${(counts.get(group) ?? 0) === 1 ? "variety" : "varieties"}</span></td></tr>`;
+      : `<tr class="screener-group-row"><td colspan="${visibleScreenerColumnCount()}"><strong>${escapeHtml(group)}</strong><span>${counts.get(group) ?? 0} ${(counts.get(group) ?? 0) === 1 ? "variety" : "varieties"}</span></td></tr>`;
     currentGroup = group;
     return `${heading}${renderScreenerRow(plant)}`;
   }).join("");
@@ -4928,11 +5280,58 @@ function renderScreenerSourceCell(plant) {
   `;
 }
 
+function renderScreenerScoreCell(metrics) {
+  const yieldSpace = yieldPer100SqFt(metrics);
+  const reliabilityYield = reliabilityAdjustedYield(metrics);
+  const easyYield = difficultyAdjustedYield(metrics);
+  const containerYield = containerEfficiency(metrics);
+  return `
+    <span class="screener-score-list">
+      <span><strong>${escapeHtml(formatCompactNumber(yieldSpace))}</strong> lb/100 sq ft</span>
+      <span>${escapeHtml(formatCompactNumber(reliabilityYield, 1))} reliability-adj.</span>
+      <span>${escapeHtml(formatCompactNumber(easyYield, 1))} difficulty-adj.</span>
+      <span>${escapeHtml(formatCompactNumber(containerYield, 2))} lb/gal</span>
+    </span>
+  `;
+}
+
+function renderScreenerDataCell(metrics) {
+  const sourceCount = metrics.sourceKeys?.length ?? 0;
+  const confidence = metrics.display?.confidence ?? sentenceCase(metrics.dataConfidence ?? "unknown");
+  const method = metrics.dataMethod ? sentenceCase(String(metrics.dataMethod).replaceAll("-", " ")) : "Method not listed";
+  const reviewed = metrics.lastReviewed ? `Reviewed ${metrics.lastReviewed}` : "Review date not listed";
+  const tone = metrics.dataConfidence === "low" ? "is-warning" : "is-positive";
+  return `
+    <span class="screener-data-cell" title="${escapeHtml(`${method}. ${reviewed}. ${sourceCount} source${sourceCount === 1 ? "" : "s"}.`)}">
+      <span class="screener-pill ${tone}">${escapeHtml(confidence)}</span>
+      <span class="screener-metric-note">${sourceCount} source${sourceCount === 1 ? "" : "s"}</span>
+      <span class="screener-metric-note">${escapeHtml(reviewed)}</span>
+    </span>
+  `;
+}
+
+function renderScreeningCueCell(plant, metrics) {
+  const screening = screeningProfile(plant, metrics);
+  return `
+    <span class="screener-cue-list" title="Screening cues are compact planning flags. Verify cultivar-specific needs before buying or planting.">
+      <span><strong>pH</strong> ${escapeHtml(screening.ph)}</span>
+      <span><strong>Pollination</strong> ${escapeHtml(screening.pollination)}</span>
+      <span><strong>Support</strong> ${escapeHtml(screening.support)}</span>
+      <span><strong>Risk</strong> pests ${escapeHtml(screening.pestPressure)}, disease ${escapeHtml(screening.diseasePressure)}</span>
+      <span><strong>Climate</strong> ${escapeHtml(screening.heat)}; ${escapeHtml(screening.chill)}</span>
+      <span><strong>Use</strong> ${escapeHtml(screening.storage)}; ${escapeHtml(screening.warning)}</span>
+    </span>
+  `;
+}
+
 function renderScreenerRow(plant) {
   const metrics = metricFor(plant);
   const pairings = relationshipCount(plant);
   const native = hasNativeCue(plant);
   const lowWater = hasLowWaterCue(plant);
+  const yieldSpace = yieldPer100SqFt(metrics);
+  const isCompared = screenerCompareIds.has(plant.id);
+  const isWatched = screenerWatchlistIds.has(plant.id);
   const difficultyTone = metrics.riskLevel === "lower"
     ? "is-positive"
     : metrics.riskLevel === "elevated"
@@ -4940,49 +5339,235 @@ function renderScreenerRow(plant) {
       : "";
   return `
     <tr>
-      <td class="screener-name-cell" data-label="Name">
+      <td class="screener-name-cell" data-label="Name" data-screener-col="name">
+        <span class="screener-row-actions">
+          <label>
+            <input class="screener-compare-input" type="checkbox" value="${escapeHtml(plant.id)}" ${isCompared ? "checked" : ""} />
+            Compare
+          </label>
+          <button class="screener-watch-button ${isWatched ? "is-active" : ""}" type="button" data-watch-plant="${escapeHtml(plant.id)}" aria-pressed="${isWatched ? "true" : "false"}">${isWatched ? "Watching" : "Watch"}</button>
+        </span>
         <a class="screener-plant-link" href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a>
         <span>${escapeHtml(plant.query ?? plant.id)}</span>
       </td>
-      <td data-label="Type/form">${escapeHtml(plant.type)}</td>
-      <td data-label="Zone range"><strong>${escapeHtml(plant.zones[0])}-${escapeHtml(plant.zones[1])}</strong></td>
-      <td data-label="First output">
+      <td data-label="Type/form" data-screener-col="type">${escapeHtml(plant.type)}</td>
+      <td data-label="Zone range" data-screener-col="zone"><strong>${escapeHtml(plant.zones[0])}-${escapeHtml(plant.zones[1])}</strong></td>
+      <td data-label="First output" data-screener-col="firstOutput">
         <span class="screener-pill">${escapeHtml(metricDisplayValue(metrics.display?.firstOutput))}</span>
         <span class="screener-metric-note">${escapeHtml(metrics.horizonLabel ?? "")}</span>
       </td>
-      <td data-label="Spacing">
+      <td data-label="Spacing" data-screener-col="spacing">
         ${escapeHtml(metricDisplayValue(metrics.display?.spacing))}
         <span class="screener-metric-note">${escapeHtml(metrics.display?.matureSize ?? "")}</span>
       </td>
-      <td data-label="Planting depth">
+      <td data-label="Planting depth" data-screener-col="plantingDepth">
         ${escapeHtml(metricDisplayValue(metrics.display?.plantingDepth))}
         <span class="screener-metric-note">${escapeHtml(metrics.display?.plantingDepthNote ?? "")}</span>
       </td>
-      <td data-label="Container min">
+      <td data-label="Container min" data-screener-col="container">
         <span class="screener-pill">${escapeHtml(metricDisplayValue(metrics.display?.containerMin))}</span>
         <span class="screener-metric-note">${escapeHtml(metrics.display?.containerNote ?? "")}</span>
       </td>
-      <td data-label="Yield (lbs)">
+      <td data-label="Yield (lbs)" data-screener-col="yield">
         <strong>${escapeHtml(metricDisplayValue(metrics.display?.yieldLbs))}</strong>
         <span class="screener-metric-note">${escapeHtml(metrics.display?.harvestWindow ?? "")}</span>
       </td>
-      <td data-label="Difficulty">
-        <span class="screener-pill ${difficultyTone}">${escapeHtml(metrics.display?.difficulty ?? "-")}</span>
-        <span class="screener-metric-note">${escapeHtml(metrics.display?.confidence ?? "")} data</span>
+      <td data-label="Yield / 100 sq ft" data-screener-col="yieldPerSpace">
+        <strong>${escapeHtml(formatCompactNumber(yieldSpace))}</strong>
+        <span class="screener-metric-note">${escapeHtml(formatCompactNumber(densityMidpoint(metrics), 1))} plants / 100 sq ft</span>
       </td>
-      <td data-label="Sun">${renderScreenerPills(plant.sun, sentenceCase)}</td>
-      <td data-label="Soil">${renderScreenerPills(plant.soils, sentenceCase)}</td>
-      <td data-label="Water"><span class="screener-pill water-${escapeHtml(plant.water)}">${escapeHtml(sentenceCase(plant.water))}</span></td>
-      <td data-label="Goals">${renderScreenerPills(plant.goals, formatGoal, 2)}</td>
-      <td data-label="Harvest">${escapeHtml(plant.harvest)}</td>
-      <td data-label="Traits">${renderScreenerPills(plant.traits, (value) => value, 2)}</td>
-      <td data-label="Native flag"><span class="screener-pill ${native ? "is-positive" : "is-muted"}">${native ? "Yes" : "-"}</span></td>
-      <td data-label="Low water"><span class="screener-pill ${lowWater ? "is-positive" : "is-muted"}">${lowWater ? "Yes" : "-"}</span></td>
-      <td data-label="Pairings"><span class="screener-count" title="${pairings} plant ${pairings === 1 ? "pairing" : "pairings"}">${pairings}</span></td>
-      <td data-label="Source">${renderScreenerSourceCell(plant)}</td>
-      <td class="screener-profile-cell" data-label="Profile"><a class="screener-profile-link" href="${plantPagePath(plant)}">View profile</a></td>
+      <td data-label="Scores" data-screener-col="score">${renderScreenerScoreCell(metrics)}</td>
+      <td data-label="Difficulty" data-screener-col="difficulty">
+        <span class="screener-pill ${difficultyTone}">${escapeHtml(metrics.display?.difficulty ?? "-")}</span>
+        <span class="screener-metric-note">Risk ${escapeHtml(metrics.riskLevel ?? "-")}</span>
+      </td>
+      <td data-label="Reliability" data-screener-col="reliability">
+        <span class="screener-pill">${escapeHtml(metrics.display?.reliability ?? "-")}</span>
+        <span class="screener-metric-note">${escapeHtml(metrics.display?.maintenance ?? "")} maintenance</span>
+      </td>
+      <td data-label="Data" data-screener-col="data">${renderScreenerDataCell(metrics)}</td>
+      <td data-label="Sun" data-screener-col="sun">${renderScreenerPills(plant.sun, sentenceCase)}</td>
+      <td data-label="Soil" data-screener-col="soil">${renderScreenerPills(plant.soils, sentenceCase)}</td>
+      <td data-label="Water" data-screener-col="water"><span class="screener-pill water-${escapeHtml(plant.water)}">${escapeHtml(sentenceCase(plant.water))}</span></td>
+      <td data-label="Goals" data-screener-col="goals">${renderScreenerPills(plant.goals, formatGoal, 2)}</td>
+      <td data-label="Harvest" data-screener-col="harvest">${escapeHtml(plant.harvest)}</td>
+      <td data-label="Traits" data-screener-col="traits">${renderScreenerPills(plant.traits, (value) => value, 2)}</td>
+      <td data-label="Native flag" data-screener-col="native"><span class="screener-pill ${native ? "is-positive" : "is-muted"}">${native ? "Yes" : "-"}</span></td>
+      <td data-label="Low water" data-screener-col="lowWater"><span class="screener-pill ${lowWater ? "is-positive" : "is-muted"}">${lowWater ? "Yes" : "-"}</span></td>
+      <td data-label="Pairings" data-screener-col="pairings"><span class="screener-count" title="${pairings} plant ${pairings === 1 ? "pairing" : "pairings"}">${pairings}</span></td>
+      <td data-label="Screening cues" data-screener-col="screening">${renderScreeningCueCell(plant, metrics)}</td>
+      <td data-label="Source" data-screener-col="source">${renderScreenerSourceCell(plant)}</td>
+      <td class="screener-profile-cell" data-label="Profile" data-screener-col="profile"><a class="screener-profile-link" href="${plantPagePath(plant)}">View profile</a></td>
     </tr>
   `;
+}
+
+function screenerSupplyIntent() {
+  const columnPreset = screenerColumnPresetEl?.value ?? "core";
+  if (columnPreset === "container" || screenerContainerEl.value || screenerMaxContainerEl?.value) {
+    return {
+      kicker: "Container screen",
+      title: "Container setup products",
+      categories: ["Containers", "Soil", "Watering"],
+      productIds: ["drainage-container", "container-potting-mix", "watering-wand", "hose-timer"]
+    };
+  }
+  if (screenerWaterEl.value === "high" || screenerSoilEl.value === "sandy") {
+    return {
+      kicker: "Water screen",
+      title: "Watering supplies for thirsty plantings",
+      categories: ["Watering", "Soil"],
+      productIds: ["drip-irrigation-kit", "hose-timer", "organic-mulch", "watering-wand"]
+    };
+  }
+  if (screenerGoalEl.value === "fruit" || columnPreset === "yield") {
+    return {
+      kicker: "Yield screen",
+      title: "Harvest and fruiting support",
+      categories: ["Nutrition", "Maintenance", "Support", "Protection"],
+      productIds: ["fruit-tree-fertilizer", "bypass-pruners", "bird-netting", "trellis-netting"]
+    };
+  }
+  if (screenerGoalEl.value === "vegetables-herbs" || screenerTypeEl.value.includes("annual")) {
+    return {
+      kicker: "Annual crop screen",
+      title: "Seed-starting and crop protection",
+      categories: ["Propagation", "Protection", "Timing"],
+      productIds: ["seed-starting-trays", "grow-light", "seedling-heat-mat", "soil-thermometer", "insect-netting"]
+    };
+  }
+  if (screenerFlagEl.value === "native" || columnPreset === "ecology") {
+    return {
+      kicker: "Ecology screen",
+      title: "Site-prep supplies for habitat beds",
+      categories: ["Site prep", "Soil", "Tools"],
+      productIds: ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "hand-trowel"]
+    };
+  }
+  return {
+    kicker: "Matched supplies",
+    title: "Useful supplies for this screen",
+    categories: ["Site prep", "Tools", "Watering"],
+    productIds: ["soil-test-lab-mailer", "garden-gloves", "hand-trowel", "watering-wand"]
+  };
+}
+
+function screenerProductsForPlants(entries, limit = 4) {
+  if (!affiliateProducts.length || !entries.length) return [];
+  const intent = screenerSupplyIntent();
+  const summaries = new Map();
+  affiliateProducts.forEach((product, index) => {
+    let score = intent.productIds.includes(product.id) ? 36 : 0;
+    if (intent.categories.includes(product.category)) score += 18;
+    entries.slice(0, 36).forEach((plant) => {
+      score += productScoreForPlant(product, plant);
+    });
+    if (score <= 0) return;
+    summaries.set(product.id, { ...product, score, index });
+  });
+  return Array.from(summaries.values())
+    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .slice(0, limit);
+}
+
+function renderScreenerSupplyPanel(filtered) {
+  if (!screenerSupplyPanelEl || !screenerSupplyListEl) return;
+  const products = screenerProductsForPlants(filtered, 4);
+  if (!products.length) {
+    screenerSupplyPanelEl.hidden = true;
+    return;
+  }
+  const intent = screenerSupplyIntent();
+  screenerSupplyPanelEl.hidden = false;
+  if (screenerSupplyKickerEl) screenerSupplyKickerEl.textContent = intent.kicker;
+  if (screenerSupplyTitleEl) screenerSupplyTitleEl.textContent = intent.title;
+  screenerSupplyListEl.innerHTML = products.map((product) => `
+    <article class="screener-supply-card">
+      <span>${escapeHtml(product.category)} &middot; ${escapeHtml(product.timing ?? "Planning")}</span>
+      <strong>${escapeHtml(product.name)}</strong>
+      <p>${escapeHtml(product.use ?? "")}</p>
+      ${productLink(product, "screener_supply", "View")}
+    </article>
+  `).join("");
+}
+
+function plantById(id) {
+  return plants.find((plant) => plant.id === id) ?? null;
+}
+
+function compareMetricRows(selectedPlants) {
+  const rows = [
+    ["Type", (plant) => plant.type],
+    ["Zone range", (plant) => `${plant.zones[0]}-${plant.zones[1]}`],
+    ["First output", (plant) => metricDisplayValue(metricFor(plant).display?.firstOutput)],
+    ["Yield", (plant) => metricDisplayValue(metricFor(plant).display?.yieldLbs)],
+    ["Yield / 100 sq ft", (plant) => formatCompactNumber(yieldPer100SqFt(metricFor(plant)))],
+    ["Container min", (plant) => metricDisplayValue(metricFor(plant).display?.containerMin)],
+    ["Difficulty", (plant) => metricFor(plant).display?.difficulty ?? "-"],
+    ["Reliability", (plant) => metricFor(plant).display?.reliability ?? "-"],
+    ["Data", (plant) => `${metricFor(plant).display?.confidence ?? "-"} - ${metricFor(plant).sourceKeys?.length ?? 0} sources`],
+    ["pH cue", (plant) => screeningProfile(plant).ph],
+    ["Pollination", (plant) => screeningProfile(plant).pollination],
+    ["Support", (plant) => screeningProfile(plant).support],
+    ["Pest/disease", (plant) => {
+      const screening = screeningProfile(plant);
+      return `${screening.pestPressure} / ${screening.diseasePressure}`;
+    }]
+  ];
+  return rows.map(([label, reader]) => `
+    <tr>
+      <th scope="row">${escapeHtml(label)}</th>
+      ${selectedPlants.map((plant) => `<td>${escapeHtml(reader(plant))}</td>`).join("")}
+    </tr>
+  `).join("");
+}
+
+function renderScreenerComparePanel() {
+  if (!screenerComparePanelEl || !screenerCompareTableEl) return;
+  const selectedPlants = Array.from(screenerCompareIds).map(plantById).filter(Boolean);
+  screenerComparePanelEl.hidden = selectedPlants.length === 0;
+  if (!selectedPlants.length) {
+    screenerCompareTableEl.innerHTML = "";
+    if (screenerCompareStatusEl) screenerCompareStatusEl.textContent = "Choose rows from the table to compare core metrics side by side.";
+    return;
+  }
+  if (screenerCompareTitleEl) {
+    screenerCompareTitleEl.textContent = `${selectedPlants.length} selected for comparison`;
+  }
+  if (screenerCompareStatusEl) {
+    screenerCompareStatusEl.textContent = selectedPlants.length >= screenerCompareLimit
+      ? `Compare basket is full at ${screenerCompareLimit} plants.`
+      : `Select up to ${screenerCompareLimit} plants.`;
+  }
+  screenerCompareTableEl.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Metric</th>
+          ${selectedPlants.map((plant) => `<th scope="col"><a href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a></th>`).join("")}
+        </tr>
+      </thead>
+      <tbody>${compareMetricRows(selectedPlants)}</tbody>
+    </table>
+  `;
+}
+
+function loadScreenerWatchlist() {
+  try {
+    const raw = localStorage.getItem(screenerWatchlistStorageKey);
+    const ids = raw ? JSON.parse(raw) : [];
+    screenerWatchlistIds = new Set(Array.isArray(ids) ? ids : []);
+  } catch {
+    screenerWatchlistIds = new Set();
+  }
+}
+
+function saveScreenerWatchlist() {
+  try {
+    localStorage.setItem(screenerWatchlistStorageKey, JSON.stringify(Array.from(screenerWatchlistIds)));
+  } catch {
+    // Keep the in-memory watchlist usable even if storage is unavailable.
+  }
 }
 
 function renderScreener() {
@@ -4990,11 +5575,15 @@ function renderScreener() {
   const filtered = screenerGroupedByType
     ? sortGroupedScreenerPlants(matchingPlants)
     : sortScreenerPlants(matchingPlants);
+  screenerLastFiltered = filtered;
   const visible = filtered.slice(0, screenerVisibleLimit);
   const counts = groupCounts(filtered);
   screenerBodyEl.innerHTML = screenerGroupedByType
     ? renderScreenerGroupedRows(visible, counts)
     : visible.map(renderScreenerRow).join("");
+  updateScreenerColumnVisibility();
+  renderScreenerSupplyPanel(filtered);
+  renderScreenerComparePanel();
   screenerVisibleCountEl.textContent = String(filtered.length);
   screenerGroupTypeEl.classList.toggle("is-active", screenerGroupedByType);
   screenerGroupTypeEl.setAttribute("aria-pressed", String(screenerGroupedByType));
@@ -5030,8 +5619,12 @@ function addSelectOption(select, value, label) {
 function applyInitialScreenerState() {
   Object.entries(screenerParamMap).forEach(([key, control]) => {
     const value = initialParams.get(key);
-    if (value !== null) control.value = value;
+    if (value !== null && control) control.value = value;
   });
+  const requestedScreen = initialParams.get("sscreen");
+  if (requestedScreen && screenerSavedScreenEl && screenerSavedScreens[requestedScreen]) {
+    screenerSavedScreenEl.value = requestedScreen;
+  }
   const requestedSort = initialParams.get("ssort");
   const requestedDirection = initialParams.get("sdir");
   const sortKeys = new Set(screenerSortButtons.map((button) => button.dataset.screenerSort));
@@ -5049,8 +5642,11 @@ function writeScreenerUrl() {
   screenerParamKeys.forEach((key) => params.delete(key));
   params.delete("q");
   Object.entries(screenerParamMap).forEach(([key, control]) => {
-    if (control.value) params.set(key, control.value);
+    if (!control?.value) return;
+    if (key === "sview" && control.value === "core") return;
+    params.set(key, control.value);
   });
+  if (screenerSavedScreenEl?.value) params.set("sscreen", screenerSavedScreenEl.value);
   if (screenerSort.key !== "name" || screenerSort.direction !== "asc") {
     params.set("ssort", screenerSort.key);
     params.set("sdir", screenerSort.direction);
@@ -5063,10 +5659,15 @@ function writeScreenerUrl() {
 }
 
 function activeScreenerFilterCount() {
-  return screenerFilterEls.filter((control) => control.value).length;
+  return screenerFilterEls.filter((control) => {
+    if (!control?.value) return false;
+    if (control === screenerColumnPresetEl && control.value === "core") return false;
+    return true;
+  }).length;
 }
 
 function handleScreenerFilterChange() {
+  if (screenerSavedScreenEl) screenerSavedScreenEl.value = "";
   screenerVisibleLimit = screenerPageSize;
   writeScreenerUrl();
   renderScreener();
@@ -5077,11 +5678,66 @@ function handleScreenerFilterChange() {
   });
 }
 
+function clearScreenerRangeFilters() {
+  screenerRangeEls.forEach((control) => {
+    control.value = "";
+  });
+}
+
+function clearScreenerBaseFilters() {
+  [
+    screenerSearchEl,
+    screenerTypeEl,
+    screenerZoneEl,
+    screenerHorizonEl,
+    screenerContainerEl,
+    screenerSunEl,
+    screenerSoilEl,
+    screenerWaterEl,
+    screenerGoalEl,
+    screenerFlagEl,
+    screenerPartnerEl,
+    screenerConfidenceEl
+  ].filter(Boolean).forEach((control) => {
+    control.value = "";
+  });
+  clearScreenerRangeFilters();
+}
+
+function setScreenerControlByParam(key, value) {
+  const control = screenerParamMap[key];
+  if (control) control.value = value;
+}
+
+function applyScreenerSavedScreen(screenId) {
+  const screen = screenerSavedScreens[screenId];
+  if (!screen) return;
+  clearScreenerBaseFilters();
+  screenerColumnPresetEl.value = screen.columnPreset ?? "core";
+  Object.entries(screen.values ?? {}).forEach(([key, value]) => setScreenerControlByParam(key, value));
+  Object.entries(screen.ranges ?? {}).forEach(([key, value]) => setScreenerControlByParam(key, value));
+  screenerSort = screen.sort ?? { key: "name", direction: "asc" };
+  screenerGroupedByType = false;
+  screenerVisibleLimit = screenerPageSize;
+  writeScreenerUrl();
+  renderScreener();
+  trackEvent("filter_apply", {
+    tool: "screener",
+    action: "saved_screen",
+    screen: screenId,
+    filter_count: activeScreenerFilterCount()
+  });
+}
+
 function initializeScreener() {
+  loadScreenerWatchlist();
   const typeCounts = plants.reduce((counts, plant) => {
     counts.set(plant.type, (counts.get(plant.type) ?? 0) + 1);
     return counts;
   }, new Map());
+  Object.entries(screenerSavedScreens).forEach(([value, screen]) => {
+    addSelectOption(screenerSavedScreenEl, value, screen.label);
+  });
   [...typeCounts.keys()]
     .sort((a, b) => a.localeCompare(b))
     .forEach((type) => addSelectOption(screenerTypeEl, type, `${sentenceCase(type)} (${typeCounts.get(type)})`));
@@ -5097,6 +5753,11 @@ function initializeScreener() {
   screenerTypeCountEl.textContent = String(new Set(plants.map((plant) => plant.type)).size);
   screenerRelationCountEl.textContent = String(plants.filter((plant) => relationshipCount(plant) > 0).length);
   screenerFilterEls.forEach((control) => control.addEventListener("input", handleScreenerFilterChange));
+  screenerSavedScreenEl?.addEventListener("input", () => {
+    if (screenerSavedScreenEl.value) {
+      applyScreenerSavedScreen(screenerSavedScreenEl.value);
+    }
+  });
   screenerShowSourceLinksEl?.addEventListener("input", () => {
     renderScreener();
     trackEvent("filter_apply", {
@@ -5126,9 +5787,9 @@ function initializeScreener() {
     });
   });
   screenerResetEl.addEventListener("click", () => {
-    screenerFilterEls.forEach((control) => {
-      control.value = "";
-    });
+    clearScreenerBaseFilters();
+    if (screenerColumnPresetEl) screenerColumnPresetEl.value = "core";
+    if (screenerSavedScreenEl) screenerSavedScreenEl.value = "";
     screenerSort = { key: "name", direction: "asc" };
     screenerGroupedByType = false;
     if (screenerShowSourceLinksEl) screenerShowSourceLinksEl.checked = false;
@@ -5159,6 +5820,51 @@ function initializeScreener() {
         sort_key: screenerSort.key,
         sort_direction: screenerSort.direction
       });
+    });
+  });
+  screenerBodyEl.addEventListener("change", (event) => {
+    if (!event.target.classList.contains("screener-compare-input")) return;
+    const plantId = event.target.value;
+    if (event.target.checked) {
+      if (screenerCompareIds.size >= screenerCompareLimit && !screenerCompareIds.has(plantId)) {
+        event.target.checked = false;
+        renderScreenerComparePanel();
+        return;
+      }
+      screenerCompareIds.add(plantId);
+    } else {
+      screenerCompareIds.delete(plantId);
+    }
+    renderScreenerComparePanel();
+    trackEvent("filter_apply", {
+      tool: "screener",
+      action: event.target.checked ? "compare_add" : "compare_remove",
+      compare_count: screenerCompareIds.size
+    });
+  });
+  screenerBodyEl.addEventListener("click", (event) => {
+    const watchButton = event.target.closest("[data-watch-plant]");
+    if (!watchButton) return;
+    const plantId = watchButton.dataset.watchPlant;
+    if (screenerWatchlistIds.has(plantId)) {
+      screenerWatchlistIds.delete(plantId);
+    } else {
+      screenerWatchlistIds.add(plantId);
+    }
+    saveScreenerWatchlist();
+    renderScreener();
+    trackEvent("filter_apply", {
+      tool: "screener",
+      action: screenerWatchlistIds.has(plantId) ? "watch_add" : "watch_remove",
+      watchlist_count: screenerWatchlistIds.size
+    });
+  });
+  screenerClearCompareEl?.addEventListener("click", () => {
+    screenerCompareIds = new Set();
+    renderScreener();
+    trackEvent("filter_apply", {
+      tool: "screener",
+      action: "compare_clear"
     });
   });
   renderScreener();

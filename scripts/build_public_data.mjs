@@ -8,14 +8,25 @@ const publicDataDir = path.join(root, "public", "data");
 
 const metricTopLevelKeys = [
   "daysToMaturityMax",
+  "daysToMaturityMin",
   "firstYieldYearsMax",
+  "firstYieldYearsMin",
   "spacingPlantFtMin",
   "spacingPlantFtMax",
   "spacingRowFtMin",
   "spacingRowFtMax",
+  "plantsPer100SqFtMin",
+  "plantsPer100SqFtMax",
+  "matureHeightFtMin",
+  "matureHeightFtMax",
+  "matureSpreadFtMin",
+  "matureSpreadFtMax",
   "outputMax",
+  "outputMin",
   "difficultyScore",
   "reliabilityScore",
+  "maintenanceScore",
+  "multiUseScore",
   "dataConfidence",
   "dataMethod",
   "horizonKey",
@@ -27,7 +38,9 @@ const metricTopLevelKeys = [
   "containerSuitability",
   "yieldLbsMin",
   "yieldLbsMax",
-  "yieldLbsMethod"
+  "yieldLbsMethod",
+  "sourceKeys",
+  "lastReviewed"
 ];
 
 const metricDisplayKeys = [
@@ -46,6 +59,7 @@ const metricDisplayKeys = [
   "harvestWindow",
   "difficulty",
   "reliability",
+  "maintenance",
   "confidence"
 ];
 
