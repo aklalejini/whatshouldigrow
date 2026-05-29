@@ -344,13 +344,9 @@ const webAppJsonLd = {
           <form id="email-plan-form" class="email-plan-form" data-email-endpoint="">
             <div>
               <label for="email-plan-input">Email this plan</label>
-              <p>Opens your mail app now; a provider endpoint can be connected later for automatic delivery.</p>
+              <p>Opens your mail app with the plan filled in. Plant by ZIP does not store this address.</p>
             </div>
             <input id="email-plan-input" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
-            <label class="email-consent">
-              <input id="email-plan-consent" type="checkbox" />
-              <span>Use this address only for this saved plan request.</span>
-            </label>
             <button class="plant-page-action is-primary" type="submit">Email plan</button>
             <p id="email-plan-status" class="email-plan-status" role="status" aria-live="polite"></p>
           </form>

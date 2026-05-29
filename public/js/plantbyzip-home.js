@@ -84,7 +84,6 @@ const savedPlanPrintEl = document.getElementById("saved-plan-print");
 const savedPlanClearEl = document.getElementById("saved-plan-clear");
 const emailPlanFormEl = document.getElementById("email-plan-form");
 const emailPlanInputEl = document.getElementById("email-plan-input");
-const emailPlanConsentEl = document.getElementById("email-plan-consent");
 const emailPlanStatusEl = document.getElementById("email-plan-status");
 const zipEl = document.getElementById("zip");
 const zonePreviewEl = document.getElementById("zone-preview");
@@ -1575,11 +1574,6 @@ async function submitEmailPlan(event) {
     emailPlanInputEl.focus();
     return;
   }
-  if (!emailPlanConsentEl.checked) {
-    emailPlanStatusEl.textContent = "Confirm this address is only for this plan request.";
-    emailPlanConsentEl.focus();
-    return;
-  }
 
   const endpoint = emailPlanFormEl.dataset.emailEndpoint?.trim();
   const payload = {
@@ -1604,7 +1598,6 @@ async function submitEmailPlan(event) {
       if (!response.ok) throw new Error("Email endpoint failed");
       emailPlanStatusEl.textContent = "Plan sent.";
       emailPlanInputEl.value = "";
-      emailPlanConsentEl.checked = false;
     } catch (error) {
       emailPlanStatusEl.textContent = "Email service did not respond. Download or print this plan instead.";
     }
@@ -1615,7 +1608,7 @@ async function submitEmailPlan(event) {
   mailto.searchParams.set("subject", `Plant by ZIP plan for zone ${plan.zone}`);
   mailto.searchParams.set("body", savedPlanText(plan));
   window.location.href = mailto.toString();
-  emailPlanStatusEl.textContent = "Opened your mail app. Automatic delivery can be connected once an email provider is chosen.";
+  emailPlanStatusEl.textContent = "Opened your mail app with the saved plan.";
 }
 
 function metricFor(plant) {
