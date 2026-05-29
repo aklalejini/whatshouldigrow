@@ -43,7 +43,8 @@ plantPhotos.forEach((entry) => {
   "/blog/garden-pest-aphids.jpg",
   "/blog/garden-beds-hero.jpg",
   "/blog/fruit-tree-apple-hero.jpg",
-  "/blog/drip-irrigation-hero.jpg"
+  "/blog/drip-irrigation-hero.jpg",
+  "/blog/zone-7-starter-kit-hero.jpg"
 ].forEach((src) => addJob(src, [640, 1200, 1600]));
 
 addJob("/maps/usda-plant-hardiness-all-states-hillshade.png", [1200, 2000, 3000]);
