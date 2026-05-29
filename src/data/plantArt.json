@@ -104,6 +104,22 @@
     "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
   },
   {
+    "id": "cucumber",
+    "image": "cucumber.webp",
+    "source": "Cucumber.png",
+    "match": ["cucumber"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
+  },
+  {
+    "id": "watermelon",
+    "image": "watermelon.webp",
+    "source": "Watermelon.png",
+    "match": ["watermelon"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #dbe1c6, #f7efe0)"
+  },
+  {
     "id": "onion",
     "image": "onion.webp",
     "source": "Onion.png",
@@ -136,6 +152,14 @@
     "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
   },
   {
+    "id": "brassica-greens",
+    "image": "brassica-greens.webp",
+    "source": "Brassica greens.png",
+    "match": ["kale", "collard", "broccoli", "cauliflower", "bok choy", "bok-choy", "tatsoi", "komatsuna", "mustard greens", "mustard spinach", "red giant mustard"],
+    "position": "50% 52%",
+    "plateBg": "linear-gradient(145deg, #d7e2c7, #f7efe0)"
+  },
+  {
     "id": "carrot",
     "image": "carrot.webp",
     "source": "Carrot.png",
@@ -158,6 +182,14 @@
     "source": "Mint.png",
     "match": ["mint", "spearmint"],
     "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
+  },
+  {
+    "id": "basil",
+    "image": "basil.webp",
+    "source": "Basil.png",
+    "match": ["basil"],
+    "position": "52% 54%",
     "plateBg": "linear-gradient(145deg, #d9e3c8, #f7efe0)"
   },
   {
@@ -357,6 +389,14 @@
     "plateBg": "linear-gradient(145deg, #e9c88f, #f7efe0)"
   },
   {
+    "id": "pomegranate",
+    "image": "pomegranate.webp",
+    "source": "Pomegranate.png",
+    "match": ["pomegranate"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #e7c2a8, #f7efe0)"
+  },
+  {
     "id": "hazelnut",
     "image": "hazelnut.webp",
     "source": "Hazelnut.png",
@@ -460,6 +500,47 @@
     "match": ["oak-"],
     "position": "52% 52%",
     "plateBg": "linear-gradient(145deg, #d7dfcb, #f7efe0)"
+  },
+  {
+    "id": "maple",
+    "image": "maple.webp",
+    "source": "Maple.png",
+    "match": ["maple"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d7dfcb, #f7efe0)"
+  },
+  {
+    "id": "goldenrod",
+    "image": "goldenrod.webp",
+    "source": "Goldenrod.png",
+    "match": ["goldenrod"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #ead99a, #f7efe0)"
+  },
+  {
+    "id": "aster",
+    "image": "aster.webp",
+    "source": "Astor.png",
+    "match": ["-aster", "aster "],
+    "exclude": ["rattlesnake master"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #ded7e3, #f7efe0)"
+  },
+  {
+    "id": "hydrangea",
+    "image": "hydrangea.webp",
+    "source": "Hydrangea.png",
+    "match": ["hydrangea"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d8d8e7, #f7efe0)"
+  },
+  {
+    "id": "hosta",
+    "image": "hosta.webp",
+    "source": "Hosta.png",
+    "match": ["hosta"],
+    "position": "52% 52%",
+    "plateBg": "linear-gradient(145deg, #d8dfcb, #f7efe0)"
   },
   {
     "id": "bamboo",
