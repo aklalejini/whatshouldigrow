@@ -340,6 +340,7 @@ const webAppJsonLd = {
             <span id="saved-plan-count">0 plants</span>
           </div>
           <ol id="saved-plan-list" class="saved-plan-list"></ol>
+          <section id="saved-plan-shopping" class="saved-plan-shopping" aria-labelledby="saved-plan-shopping-title" hidden></section>
           <form id="email-plan-form" class="email-plan-form" data-email-endpoint="">
             <div>
               <label for="email-plan-input">Email this plan</label>
@@ -1094,6 +1095,10 @@ const webAppJsonLd = {
             <p id="screener-summary">Showing all plants.</p>
             <div>
               <button id="screener-group-type" type="button" aria-pressed="false">Group by type</button>
+              <label class="screener-source-toggle" for="screener-show-source-links">
+                <input id="screener-show-source-links" type="checkbox" />
+                <span>Show source links</span>
+              </label>
               <a href="/exports/plants.csv">CSV export</a>
               <button id="screener-more" type="button" hidden>Show more</button>
               <button id="screener-reset" type="button">Reset filters</button>

@@ -4,7 +4,7 @@ import plants from "../../data/plants.json";
 import partners from "../../data/affiliatePartners.json";
 import plantArtEntries from "../../data/plantArt.json";
 import plantPhotoEntries from "../../data/plantPhotos.json";
-import plantingChecklistItems from "../../data/plantingChecklist.json";
+import affiliateProducts from "../../data/affiliateProducts.json";
 import plantMetricSources from "../../data/plantMetricSources.json";
 import plantMetrics from "../../data/plantMetrics.json";
 import plantRelationships from "../../data/plantRelationships.json";
@@ -262,7 +262,7 @@ const partnerLinkRel = hasDirectAffiliateListing ? "sponsored noopener noreferre
 const partnerSourceLabel = hasDirectAffiliateListing ? "Affiliate listing" : "Supplier search";
 const partnerActionLabel = hasDirectAffiliateListing ? "View affiliate listing" : `Search ${partnerName}`;
 const planningNotes = planningNotesForPlant(plant);
-const plantingChecklist = plantingChecklistForPlant(plant, metrics, plantingChecklistItems);
+const plantingChecklist = plantingChecklistForPlant(plant, metrics, affiliateProducts);
 const yieldCurve = metrics.yieldCurve ?? [];
 const hasYieldChart = yieldCurve.length > 0 && metrics.yieldLbsMin !== null && metrics.yieldLbsMax !== null;
 const yieldChart = hasYieldChart ? buildYieldChart(yieldCurve) : null;

@@ -71,6 +71,10 @@ These are real problems and they're underdiagnosed. If your tree has weird oozin
 
 You don't need a foliar bloom-booster spray. You don't need a root stimulator drench. You don't need mycorrhizal inoculant for an in-ground tree in decent soil. You don't need a "fruit tree fertilizer spike" jammed in the ground next to the trunk. These are products that move because they sound like they should work. The tree doesn't need them. What it needs is the things in the sections above.
 
+## Compare the next tree before you buy it
+
+If the diagnosis points to variety mismatch, use the [fruit tree guide](/fruit-trees/) before buying a replacement. Compare bloom timing, hardiness, first output, and pairings on profiles like [Liberty apple](/plants/liberty-apple/), [Stella cherry](/plants/stella-cherry/), [Reliance peach](/plants/reliance-peach/), and [Celeste fig](/plants/celeste-fig/). The [planting calendar](/planting-calendar/) is also useful for checking whether your spring frost window makes early-blooming fruit a gamble where you live.
+
 ## Bottom line
 
 A non-producing fruit tree is almost always a pollination problem, an age problem, a pruning problem, a frost problem, or a fertility problem. Usually two of those at once. Walk through the list, fix what you can this season, and accept that with fruit trees the honest answer to most questions is "wait one more year and see." That's not a dodge. It's often how fruit trees work, and the sooner you make peace with it, the better your orchard gets.

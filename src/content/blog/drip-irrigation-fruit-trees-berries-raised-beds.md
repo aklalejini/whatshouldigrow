@@ -83,6 +83,10 @@ The most common mistake is underestimating how much tubing you need. Buy more 3/
 
 Things to skip: cheap multi-packs of non-pressure-compensating emitters, "drip in a bag" kits, foam-tipped soaker hoses that disintegrate after one summer, and the gimmicky watering globes marketed to balcony gardeners. One thing worth buying in volume up front: barbed connectors. You'll use more <a href="https://amzn.to/4fF9qOL" rel="sponsored">1/4-inch barbed connectors</a>, <a href="https://amzn.to/4nL3shk" rel="sponsored">1/4-inch tee fittings</a>, and <a href="https://amzn.to/4uqDAde" rel="sponsored">1/2- or 5/8-inch elbows</a> than you expect, and running to the hardware store mid-install is the fastest way to lose a Saturday.
 
+## Match the system to the plants
+
+Watering design gets easier when plants are grouped by need. The [fruit tree guide](/fruit-trees/) is a good place to compare apples, figs, peaches, grapes, and berries before you lay tubing. For a few concrete examples, [Celeste fig](/plants/celeste-fig/) wants a different establishment rhythm than [Legacy blueberry](/plants/legacy-blueberry/) or [Carlos muscadine grape](/plants/carlos-muscadine/). If you are building raised beds instead of an orchard row, the [vegetables and herbs guide](/vegetables-herbs/) and [planting calendar](/planting-calendar/) help decide where drip line matters most.
+
 ## Realistic budget
 
 For 30 to 40 plants across three zones, with a proper filter stack, a battery timer, and real components from a professional vendor, the all-in cost lands around $250 to $400 depending on tubing run. That's real money for a weekend project. It's also a system that runs for ten or fifteen years with nothing more than annual filter cleaning, and pays back the cost in saved time within a single season. The cheap kit costs less, lasts six weeks, and discourages you from ever trying again.

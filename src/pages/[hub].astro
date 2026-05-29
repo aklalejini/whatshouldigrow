@@ -1,5 +1,6 @@
 ---
 import AnalyticsEvents from "../components/AnalyticsEvents.astro";
+import affiliateProducts from "../data/affiliateProducts.json";
 import plantArtEntries from "../data/plantArt.json";
 import plantMetrics from "../data/plantMetrics.json";
 import plants from "../data/plants.json";
@@ -14,6 +15,7 @@ import {
   hubInternalLinks,
   hubPlantSummary,
   hubPlantTags,
+  hubProductIds,
   itemListForPlants,
   plantsForHub
 } from "../lib/hubData";
@@ -44,6 +46,9 @@ const sourcedYieldCount = hubEntries.filter(({ metrics }) => isSourcedValue(metr
 const sourceReadyCount = hubEntries.filter(({ metrics }) => isSourcedValue(metrics.display?.firstOutput)).length;
 const hubLinks = hubInternalLinks().filter((link) => link.href !== hub.path);
 const zoneGuideLinks = featuredZoneInternalLinks();
+const hubResourceProducts = hubProductIds(hub)
+  .map((id) => affiliateProducts.find((product) => product.id === id))
+  .filter(Boolean);
 const isCalendarHub = hub.slug === "planting-calendar";
 const matcherTabClass = isCalendarHub ? "site-tab" : "site-tab is-active";
 const calendarTabClass = isCalendarHub ? "site-tab is-active" : "site-tab";
@@ -156,6 +161,34 @@ const collectionJsonLd = {
             </div>
           </dl>
         </header>
+
+        {hubResourceProducts.length > 0 && (
+          <section class="hub-section hub-resource-box" aria-labelledby="hub-resource-title">
+            <div class="hub-section-head">
+              <div>
+                <p class="eyebrow">Useful setup tools</p>
+                <h2 id="hub-resource-title">Supplies that fit this planning path</h2>
+              </div>
+              <p>
+                Product links are separate from plant rankings and may earn a commission. Use them as a practical checklist, not a requirement.
+              </p>
+            </div>
+            <div class="hub-resource-grid">
+              {hubResourceProducts.map((product) => (
+                <article class="hub-resource-card">
+                  <div>
+                    <span>{product.category} / {product.timing}</span>
+                    <h3>{product.name}</h3>
+                    <p>{product.use}</p>
+                  </div>
+                  <a href={product.affiliateUrl} target="_blank" rel="sponsored noopener noreferrer" data-partner-placement="hub_resource_box">
+                    View
+                  </a>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section class="hub-section" aria-labelledby="hub-featured-title">
           <div class="hub-section-head">

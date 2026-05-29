@@ -1,5 +1,6 @@
 let plants = [];
 let partners = {};
+let affiliateProducts = [];
 let plantArtEntries = [];
 let plantMetrics = {};
 let plantRelationships = [];
@@ -13,6 +14,7 @@ let screenerInitialized = false;
 const dataUrls = {
   plants: "/data/plants.json",
   partners: "/data/affiliate-partners.json",
+  affiliateProducts: "/data/affiliate-products.json",
   plantArt: "/data/plant-art.json",
   plantMetrics: "/data/plant-metrics-home.json",
   plantRelationships: "/data/plant-relationships.json",
@@ -35,12 +37,14 @@ async function ensureCoreData() {
     coreDataPromise = Promise.all([
       loadJson(dataUrls.plants),
       loadJson(dataUrls.partners),
+      loadJson(dataUrls.affiliateProducts),
       loadJson(dataUrls.plantArt),
       loadJson(dataUrls.plantMetrics),
       loadJson(dataUrls.plantRelationships)
-    ]).then(([plantRows, partnerRows, artRows, metricRows, relationshipRows]) => {
+    ]).then(([plantRows, partnerRows, productRows, artRows, metricRows, relationshipRows]) => {
       plants = plantRows;
       partners = partnerRows;
+      affiliateProducts = productRows;
       plantArtEntries = artRows;
       plantMetrics = metricRows;
       plantRelationships = relationshipRows;
@@ -74,6 +78,7 @@ const savedPlanTitleEl = document.getElementById("saved-plan-title");
 const savedPlanMetaEl = document.getElementById("saved-plan-meta");
 const savedPlanCountEl = document.getElementById("saved-plan-count");
 const savedPlanListEl = document.getElementById("saved-plan-list");
+const savedPlanShoppingEl = document.getElementById("saved-plan-shopping");
 const savedPlanDownloadEl = document.getElementById("saved-plan-download");
 const savedPlanPrintEl = document.getElementById("saved-plan-print");
 const savedPlanClearEl = document.getElementById("saved-plan-clear");
@@ -214,6 +219,7 @@ const screenerFlagEl = document.getElementById("screener-flag");
 const screenerPartnerEl = document.getElementById("screener-partner");
 const screenerConfidenceEl = document.getElementById("screener-confidence");
 const screenerGroupTypeEl = document.getElementById("screener-group-type");
+const screenerShowSourceLinksEl = document.getElementById("screener-show-source-links");
 const screenerResetEl = document.getElementById("screener-reset");
 const screenerMoreEl = document.getElementById("screener-more");
 const screenerBodyEl = document.getElementById("screener-body");
@@ -1110,6 +1116,168 @@ function sourceActionForPlant(plant) {
     : null;
 }
 
+function productNormalizeText(value) {
+  return String(value ?? "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function productPaddedText(value) {
+  const normalized = productNormalizeText(value);
+  return normalized ? ` ${normalized} ` : " ";
+}
+
+function productTextHasTerm(text, term) {
+  const normalizedTerm = productNormalizeText(term);
+  if (!normalizedTerm) return false;
+  if (text.includes(` ${normalizedTerm} `)) return true;
+  if (normalizedTerm.includes(" ")) return false;
+  return text.includes(` ${normalizedTerm}s `)
+    || text.includes(` ${normalizedTerm}es `);
+}
+
+function productTextHasAnyTerm(text, terms = []) {
+  return terms.some((term) => productTextHasTerm(text, term));
+}
+
+function productListHasAny(list = [], values = []) {
+  return values.some((value) => list.includes(value));
+}
+
+function productRuleMatchesPlant(rule, plant, metrics, context) {
+  if (rule.allPlants !== undefined && rule.allPlants !== true) return false;
+  if (rule.goalsAny && !productListHasAny(plant.goals ?? [], rule.goalsAny)) return false;
+  if (rule.soilsAny && !productListHasAny(plant.soils ?? [], rule.soilsAny)) return false;
+  if (rule.sunAny && !productListHasAny(plant.sun ?? [], rule.sunAny)) return false;
+  if (rule.waterAny && !rule.waterAny.includes(plant.water)) return false;
+  if (rule.containerSuitabilityAny && !rule.containerSuitabilityAny.includes(metrics.containerSuitability)) return false;
+  if (rule.lifeCycleAny && !rule.lifeCycleAny.includes(metrics.lifeCycle)) return false;
+  if (rule.outputKindAny && !rule.outputKindAny.includes(metrics.outputKind)) return false;
+  if (rule.typeIncludes && !rule.typeIncludes.some((term) => context.type.includes(productNormalizeText(term)))) return false;
+  if (rule.identityIncludes && !productTextHasAnyTerm(context.identity, rule.identityIncludes)) return false;
+  if (rule.identityExcludes && productTextHasAnyTerm(context.identity, rule.identityExcludes)) return false;
+  return true;
+}
+
+function productContextForPlant(plant) {
+  return {
+    identity: productPaddedText([
+      plant.id,
+      plant.name,
+      plant.query,
+      plant.type,
+      plant.notes,
+      ...(plant.traits ?? []),
+      ...(plant.goals ?? [])
+    ].join(" ")),
+    type: productNormalizeText(plant.type)
+  };
+}
+
+function productScoreForPlant(product, plant) {
+  const metrics = metricFor(plant);
+  const context = productContextForPlant(plant);
+  return Math.max(
+    0,
+    ...(product.rules ?? [])
+      .filter((rule) => productRuleMatchesPlant(rule, plant, metrics, context))
+      .map((rule) => rule.score ?? 1)
+  );
+}
+
+function productById(id) {
+  return affiliateProducts.find((product) => product.id === id);
+}
+
+function productLink(product, placement, label = "View") {
+  if (!product?.affiliateUrl) return "";
+  return `
+    <a
+      href="${escapeHtml(product.affiliateUrl)}"
+      target="_blank"
+      rel="sponsored noopener noreferrer"
+      data-partner-placement="${escapeHtml(placement)}"
+      data-product-id="${escapeHtml(product.id)}"
+    >${escapeHtml(label)}</a>
+  `;
+}
+
+function planPlants(plan) {
+  const ids = new Set((plan?.plants ?? []).map((plant) => plant.id));
+  return plants.filter((plant) => ids.has(plant.id));
+}
+
+function productsForPlants(plantsForPlan, limit = 10) {
+  if (!affiliateProducts.length || !plantsForPlan.length) return [];
+  const summaries = new Map();
+  affiliateProducts.forEach((product, index) => {
+    plantsForPlan.forEach((plant) => {
+      const score = productScoreForPlant(product, plant);
+      if (score <= 0) return;
+      const existing = summaries.get(product.id) ?? {
+        ...product,
+        score: 0,
+        maxScore: 0,
+        index,
+        plantNames: []
+      };
+      existing.score += score;
+      existing.maxScore = Math.max(existing.maxScore, score);
+      if (existing.plantNames.length < 3 && !existing.plantNames.includes(plant.name)) {
+        existing.plantNames.push(plant.name);
+      }
+      summaries.set(product.id, existing);
+    });
+  });
+  return Array.from(summaries.values())
+    .sort((a, b) => b.maxScore - a.maxScore || b.score - a.score || a.index - b.index)
+    .slice(0, limit);
+}
+
+const calendarSupplyProductIds = {
+  indoors: ["seed-starting-trays", "seedling-heat-mat", "grow-light"],
+  direct: ["soil-thermometer", "floating-row-cover", "low-tunnel-hoops"],
+  transplant: ["hand-trowel", "finished-compost", "floating-row-cover"],
+  nursery: ["digging-spade", "organic-mulch", "drip-irrigation-kit"]
+};
+
+function calendarSupplyProductsForGroup(group, limit = 3) {
+  const ids = [...(calendarSupplyProductIds[group.method] ?? [])];
+  const identity = productPaddedText((group.plants ?? [])
+    .map((plant) => `${plant.id} ${plant.name} ${plant.type} ${plant.query ?? ""}`)
+    .join(" "));
+  if (group.season === "fall" || /frost|cold|cool|spring/.test(`${group.action} ${group.notes?.join(" ") ?? ""}`.toLowerCase())) {
+    ids.push("frost-blanket", "garden-clips");
+  }
+  if (productTextHasAnyTerm(identity, ["tomato", "pepper", "eggplant", "cucumber", "melon", "bean"])) {
+    ids.push("tomato-cage-stakes", "trellis-netting");
+  }
+  if (productTextHasAnyTerm(identity, ["tree", "shrub", "berry", "citrus", "fig", "pomegranate"])) {
+    ids.push("organic-mulch", "hose-timer");
+  }
+  return Array.from(new Set(ids))
+    .map(productById)
+    .filter(Boolean)
+    .slice(0, limit);
+}
+
+function renderCalendarSupplyLinks(group, limit = 3) {
+  const products = calendarSupplyProductsForGroup(group, limit);
+  if (!products.length) return "";
+  return `
+    <div class="calendar-supplies">
+      <div>
+        <span>Useful supplies</span>
+        <small>Sponsored links may earn a commission.</small>
+      </div>
+      <div class="calendar-supply-links">
+        ${products.map((product) => productLink(product, "calendar_action", product.name)).join("")}
+      </div>
+    </div>
+  `;
+}
+
 function selectedRadioValue(name) {
   return form.querySelector(`input[name="${name}"]:checked`)?.value ?? matcherDefaults[name] ?? "";
 }
@@ -1275,6 +1443,9 @@ function currentPlanSnapshot() {
 
 function savedPlanText(plan) {
   if (!plan) return "";
+  const supplyLines = productsForPlants(planPlants(plan), 8).map((product, index) => (
+    `${index + 1}. ${product.name} (${product.category}) - ${product.use}`
+  ));
   const header = [
     "Plant by ZIP saved garden plan",
     `Zone ${plan.zone} | ${formatGoal(plan.goal)} | ${sentenceCase(plan.sun)} sun | ${sentenceCase(plan.soil)} soil | ${sentenceCase(plan.water)} water`,
@@ -1285,13 +1456,66 @@ function savedPlanText(plan) {
   const plantLines = (plan.plants ?? []).map((plant, index) => (
     `${index + 1}. ${plant.name} (${plant.fitPercent}% ${plant.fitLabel}) - ${plant.note}`
   ));
-  return [...header, ...plantLines, "", "Use Plant by ZIP to refresh this plan with your latest ZIP and filters."].join("\n");
+  const supplySection = supplyLines.length
+    ? ["", "Useful supplies generated from this plan", ...supplyLines]
+    : [];
+  return [...header, ...plantLines, ...supplySection, "", "Use Plant by ZIP to refresh this plan with your latest ZIP and filters."].join("\n");
+}
+
+function renderSavedPlanShopping(plan) {
+  if (!savedPlanShoppingEl) return;
+  const products = productsForPlants(planPlants(plan), 10);
+  if (!products.length) {
+    savedPlanShoppingEl.hidden = true;
+    savedPlanShoppingEl.innerHTML = "";
+    return;
+  }
+  const grouped = products.reduce((groups, product) => {
+    const category = product.category || "Supplies";
+    if (!groups.has(category)) groups.set(category, []);
+    groups.get(category).push(product);
+    return groups;
+  }, new Map());
+  savedPlanShoppingEl.hidden = false;
+  savedPlanShoppingEl.innerHTML = `
+    <div class="saved-plan-shopping-head">
+      <div>
+        <p class="eyebrow">Supplies for this plan</p>
+        <h4 id="saved-plan-shopping-title">A practical shopping list</h4>
+      </div>
+      <p>Generated from the plants in this saved list. Product links are separate from plant rankings and may earn a commission.</p>
+    </div>
+    <div class="saved-plan-shopping-groups">
+      ${Array.from(grouped.entries()).map(([category, items]) => `
+        <section class="saved-plan-shopping-group" aria-label="${escapeHtml(category)} supplies">
+          <h5>${escapeHtml(category)}</h5>
+          <ul>
+            ${items.map((product) => `
+              <li>
+                <div>
+                  <strong>${escapeHtml(product.name)}</strong>
+                  <span>${escapeHtml(product.timing ?? "As needed")}</span>
+                  <p>${escapeHtml(product.use)}</p>
+                  ${product.plantNames?.length ? `<small>Useful for ${escapeHtml(product.plantNames.join(", "))}</small>` : ""}
+                </div>
+                ${productLink(product, "saved_plan_shopping", "View")}
+              </li>
+            `).join("")}
+          </ul>
+        </section>
+      `).join("")}
+    </div>
+  `;
 }
 
 function renderSavedPlanPanel(plan) {
   savedPlan = plan;
   if (!plan) {
     savedPlanPanelEl.hidden = true;
+    if (savedPlanShoppingEl) {
+      savedPlanShoppingEl.hidden = true;
+      savedPlanShoppingEl.innerHTML = "";
+    }
     return;
   }
   const plantsForDisplay = plan.plants ?? [];
@@ -1308,6 +1532,7 @@ function renderSavedPlanPanel(plan) {
       </div>
     </li>
   `).join("");
+  renderSavedPlanShopping(plan);
   emailPlanStatusEl.textContent = "";
 }
 
@@ -4185,6 +4410,7 @@ function renderCalendarMobilePlan(events) {
               <p>${escapeHtml(calendarActionPlantSummary(group))}</p>
               <small>${escapeHtml(calendarActionGuidance(group))}</small>
               ${renderCalendarPlantLinks(group.plants, 4)}
+              ${renderCalendarSupplyLinks(group, 2)}
             </article>
           `;
         }).join("")}
@@ -4231,6 +4457,7 @@ function renderCalendarGroup(group) {
         <p>${escapeHtml(calendarActionPlantSummary(group))}</p>
         ${renderCalendarPlantLinks(group.plants, 8)}
         <small>${escapeHtml(calendarActionGuidance(group))}</small>
+        ${renderCalendarSupplyLinks(group, 3)}
       </div>
     </article>
   `;
@@ -4697,6 +4924,17 @@ function updateScreenerSortUI() {
   });
 }
 
+function renderScreenerSourceCell(plant) {
+  const sourceAction = sourceActionForPlant(plant);
+  const showSourceLinks = Boolean(screenerShowSourceLinksEl?.checked);
+  return `
+    <span>${escapeHtml(partnerName(plant.partner))}</span>
+    ${showSourceLinks && sourceAction
+      ? `<a class="screener-source-link" href="${escapeHtml(sourceAction.href)}" target="_blank" rel="${sourceAction.rel}" data-partner-placement="screener_source">${escapeHtml(sourceAction.label)}</a>`
+      : ""}
+  `;
+}
+
 function renderScreenerRow(plant) {
   const metrics = metricFor(plant);
   const pairings = relationshipCount(plant);
@@ -4748,7 +4986,7 @@ function renderScreenerRow(plant) {
       <td data-label="Native flag"><span class="screener-pill ${native ? "is-positive" : "is-muted"}">${native ? "Yes" : "-"}</span></td>
       <td data-label="Low water"><span class="screener-pill ${lowWater ? "is-positive" : "is-muted"}">${lowWater ? "Yes" : "-"}</span></td>
       <td data-label="Pairings"><span class="screener-count" title="${pairings} plant ${pairings === 1 ? "pairing" : "pairings"}">${pairings}</span></td>
-      <td data-label="Source">${escapeHtml(partnerName(plant.partner))}</td>
+      <td data-label="Source">${renderScreenerSourceCell(plant)}</td>
       <td class="screener-profile-cell" data-label="Profile"><a class="screener-profile-link" href="${plantPagePath(plant)}">View profile</a></td>
     </tr>
   `;
@@ -4866,6 +5104,14 @@ function initializeScreener() {
   screenerTypeCountEl.textContent = String(new Set(plants.map((plant) => plant.type)).size);
   screenerRelationCountEl.textContent = String(plants.filter((plant) => relationshipCount(plant) > 0).length);
   screenerFilterEls.forEach((control) => control.addEventListener("input", handleScreenerFilterChange));
+  screenerShowSourceLinksEl?.addEventListener("input", () => {
+    renderScreener();
+    trackEvent("filter_apply", {
+      tool: "screener",
+      action: screenerShowSourceLinksEl.checked ? "show_source_links" : "hide_source_links",
+      filter_count: activeScreenerFilterCount()
+    });
+  });
   screenerGroupTypeEl.addEventListener("click", () => {
     screenerGroupedByType = !screenerGroupedByType;
     screenerVisibleLimit = screenerPageSize;
@@ -4892,6 +5138,7 @@ function initializeScreener() {
     });
     screenerSort = { key: "name", direction: "asc" };
     screenerGroupedByType = false;
+    if (screenerShowSourceLinksEl) screenerShowSourceLinksEl.checked = false;
     screenerVisibleLimit = screenerPageSize;
     if (screenerTableWrapEl) screenerTableWrapEl.scrollLeft = 0;
     writeScreenerUrl();
@@ -5243,7 +5490,7 @@ function createResultItem(entry, index, inputs) {
     <div class="card-actions">
       <a class="plant-page-action" href="${plantPagePath(plant)}">View plant page</a>
       ${sourceAction
-        ? `<a class="plant-page-action" href="${escapeHtml(sourceAction.href)}" target="_blank" rel="${sourceAction.rel}">${escapeHtml(sourceAction.label)}</a>`
+        ? `<a class="plant-page-action" href="${escapeHtml(sourceAction.href)}" target="_blank" rel="${sourceAction.rel}" data-partner-placement="matcher_result_source">${escapeHtml(sourceAction.label)}</a>`
         : `<span class="nursery-placeholder">Source link coming soon</span>`}
     </div>
   `;
@@ -5465,7 +5712,18 @@ form.addEventListener("submit", (event) => {
   runMatcher({ writeUrl: true, scrollToResults: true });
 });
 
-renderSavedPlanPanel(loadSavedPlan());
+const initialSavedPlan = loadSavedPlan();
+renderSavedPlanPanel(initialSavedPlan);
+if (initialSavedPlan) {
+  ensureCoreData()
+    .then(() => renderSavedPlanPanel(initialSavedPlan))
+    .catch(() => {
+      if (savedPlanShoppingEl) {
+        savedPlanShoppingEl.hidden = true;
+        savedPlanShoppingEl.innerHTML = "";
+      }
+    });
+}
 
 if (initialWantsMatcher) {
   applyMatcherPlanParams({

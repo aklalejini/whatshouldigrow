@@ -133,6 +133,10 @@ A 20 gallon container filled with two parts pine bark fines, one part peat moss,
 
 Sometimes the right answer isn't fighting your soil. It's working around it.
 
+## Plan acid-loving plants in Plant by ZIP
+
+If blueberries are the reason you are testing pH, compare a few profiles before you buy plants. [Legacy blueberry](/plants/legacy-blueberry/), [Duke blueberry](/plants/duke-blueberry/), and [Brightwell rabbiteye blueberry](/plants/brightwell-blueberry/) have different regional strengths, and the best choice depends on hardiness, heat, soil, and available space. The broader [fruit tree and berry guide](/fruit-trees/) is useful for comparing blueberries with figs, blackberries, currants, and other edible shrubs. If your native soil is too alkaline to fight, the [container garden plant guide](/container-garden-plants/) is the better starting point.
+
 ## Bottom line
 
 Soil pH is real chemistry, not a gardening superstition, and the plants that need acidic soil really do need it. But the work of acidifying soil isn't complicated. It's just patient. Test before you treat. Use elemental sulfur for serious work. Use acidic organic matter to maintain. Don't waste time on vinegar or coffee grounds. Plan in years, not weeks. And when your soil is genuinely fighting you, build a container or a bed where you can control the chemistry from scratch.

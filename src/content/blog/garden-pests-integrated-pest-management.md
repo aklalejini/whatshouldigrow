@@ -193,6 +193,10 @@ If you're in the Mid-South and squash vine borers murder every zucchini you plan
 
 Sometimes the right answer isn't fighting the pest. It's growing what wants to grow in your conditions.
 
+## Use plant choice as pest control
+
+Plant selection will not solve every pest problem, but it can lower the fight. If vine borers are awful where you live, compare [Waltham Butternut squash](/plants/waltham-butternut/) and [Tromboncino squash](/plants/tromboncino-squash/) before planting another zucchini. For caterpillar-heavy beds, compare brassicas like [Lacinato kale](/plants/lacinato-kale/) against quicker greens in the [vegetables and herbs guide](/vegetables-herbs/). For habitat support, the [pollinator plant guide](/pollinator-plants/) and [native plant guide](/native-plants/) can help you add flowers that feed beneficial insects without turning the garden into a product problem.
+
 ## Bottom line
 
 Garden pests are real and some of them will destroy crops if you ignore them. But the work of managing them isn't complicated. It's patient and observational. Identify before you treat. Use exclusion as your first line. Hand-pick what you can. Lean on biologicals like Bt and beneficial nematodes for the rest. Save targeted sprays for the situations that need them, and skip broad-spectrum insecticides almost entirely. Plan in years, not weeks. And when a particular pest-crop combination keeps beating you, consider growing something else.

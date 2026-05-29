@@ -263,6 +263,25 @@ export function hubInternalLinks() {
   }));
 }
 
+const hubProductMap = {
+  "planting-calendar": ["soil-thermometer", "seed-starting-trays", "frost-blanket", "garden-clips"],
+  "native-plants": ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "animal-protection"],
+  "fruit-trees": ["soil-test-lab-mailer", "drip-irrigation-kit", "bypass-pruners", "organic-mulch"],
+  "privacy-shrubs": ["digging-spade", "organic-mulch", "drip-irrigation-kit", "animal-protection"],
+  "low-water-plants": ["soil-test-lab-mailer", "organic-mulch", "drip-irrigation-kit", "shade-cloth"],
+  "vegetables-herbs": ["seed-starting-trays", "seedling-heat-mat", "grow-light", "insect-netting"],
+  "pollinator-plants": ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "watering-wand"],
+  "container-garden-plants": ["drainage-container", "container-potting-mix", "watering-wand", "plant-labels"],
+  "shade-plants": ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "hand-trowel"],
+  "clay-soil-plants": ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "digging-spade"],
+  "sandy-soil-plants": ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "drip-irrigation-kit"],
+  "edible-hedges": ["drip-irrigation-kit", "organic-mulch", "bypass-pruners", "trellis-netting"]
+};
+
+export function hubProductIds(hub) {
+  return hubProductMap[hub.slug] ?? [];
+}
+
 export function itemListForPlants(plants, baseUrl) {
   return plants.map(({ plant }, index) => ({
     "@type": "ListItem",

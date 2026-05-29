@@ -376,5 +376,54 @@
       { "containerSuitabilityAny": ["good", "workable"], "waterAny": ["high"], "score": 22 },
       { "typeIncludes": ["annual herb", "annual vegetable"], "waterAny": ["high"], "score": 22 }
     ]
+  },
+  {
+    "id": "soil-thermometer",
+    "name": "Soil thermometer",
+    "category": "Timing",
+    "use": "Check whether spring soil is actually warm enough for direct sowing, transplanting, and tender warm-season crops.",
+    "timing": "Before planting",
+    "affiliateUrl": "https://amzn.to/4wVm2HZ",
+    "rules": [
+      { "typeIncludes": ["annual vegetable", "annual herb", "annual flower"], "score": 24 },
+      { "identityIncludes": ["tomato", "pepper", "eggplant", "cucumber", "squash", "melon", "bean", "basil", "okra"], "score": 28 },
+      { "goalsAny": ["vegetables-herbs"], "score": 21 }
+    ]
+  },
+  {
+    "id": "seedling-heat-mat",
+    "name": "Seedling heat mat",
+    "category": "Propagation",
+    "use": "Warm seed trays for peppers, eggplants, tomatoes, basil, and other crops that germinate slowly in cool rooms.",
+    "timing": "Pre-season",
+    "affiliateUrl": "https://amzn.to/43A6n3b",
+    "rules": [
+      { "identityIncludes": ["pepper", "eggplant", "tomato", "basil", "okra"], "score": 29 },
+      { "typeIncludes": ["annual vegetable", "annual herb"], "score": 21 }
+    ]
+  },
+  {
+    "id": "low-tunnel-hoops",
+    "name": "Low tunnel hoops",
+    "category": "Protection",
+    "use": "Hold frost cloth or insect netting above seedlings so covers protect plants without rubbing leaves.",
+    "timing": "At planting",
+    "affiliateUrl": "https://amzn.to/4xbLZmO",
+    "rules": [
+      { "typeIncludes": ["annual vegetable", "annual herb", "annual flower"], "score": 22 },
+      { "identityIncludes": ["lettuce", "spinach", "kale", "collards", "broccoli", "cabbage", "cauliflower", "cucumber", "squash"], "score": 26 }
+    ]
+  },
+  {
+    "id": "garden-clips",
+    "name": "Garden clips or cover fasteners",
+    "category": "Protection",
+    "use": "Secure row cover, frost cloth, shade cloth, and young plant supports without tying permanent knots.",
+    "timing": "At planting",
+    "affiliateUrl": "https://amzn.to/49uz1pY",
+    "rules": [
+      { "typeIncludes": ["annual vegetable", "annual herb", "annual flower", "vine"], "score": 20 },
+      { "identityIncludes": ["tomato", "pepper", "eggplant", "cucumber", "melon", "bean", "grape", "kiwi"], "score": 23 }
+    ]
   }
 ]

@@ -90,6 +90,10 @@ How many hours of direct sun does the spot get, honestly. What is the mature siz
 
 If you can answer all six confidently, buy the plant. If you can't, take a photo, go home, and do the homework.
 
+## Use the database as a second read
+
+Once you have an honest read on the site, use Plant by ZIP to compare plants by the same constraints. The [shade plant guide](/shade-plants/) is useful for lower-light beds, while [clay soil plants](/clay-soil-plants/) and [sandy soil plants](/sandy-soil-plants/) help narrow the soil question. For front-yard structure, compare [privacy shrubs and screens](/privacy-shrubs/) with [pollinator plants](/pollinator-plants/) instead of starting from a nursery bench. Individual profiles like [Oakleaf hydrangea](/plants/oakleaf-hydrangea/), [White oak](/plants/oak-white/), and [Patriot hosta](/plants/patriot-hosta/) make the mature-size problem much harder to ignore.
+
 ## The long view
 
 The best gardens I've ever seen weren't designed by people with the most money or the rarest plants. They were designed by people who watched their land carefully for a year before they planted anything serious, who learned what their place actually was, and who chose plants that wanted to be there.
