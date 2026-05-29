@@ -37,13 +37,13 @@ const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
     <meta name="robots" content="index, follow" />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={`Blog | ${SITE_NAME}`} />
-    <meta property="og:description" content={`Garden planning articles from ${SITE_NAME}.`} />
+    <meta property="og:title" content={`Guides | ${SITE_NAME}`} />
+    <meta property="og:description" content={`Garden planning guides from ${SITE_NAME}.`} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={socialImageUrl} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={`Blog | ${SITE_NAME}`} />
-    <meta name="twitter:description" content={`Garden planning articles from ${SITE_NAME}.`} />
+    <meta name="twitter:title" content={`Guides | ${SITE_NAME}`} />
+    <meta name="twitter:description" content={`Garden planning guides from ${SITE_NAME}.`} />
     <meta name="twitter:image" content={socialImageUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -53,17 +53,17 @@ const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
     />
     <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
     <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
-    <title>Blog | {SITE_NAME}</title>
+    <title>Guides | {SITE_NAME}</title>
   </head>
   <body>
     <AnalyticsEvents pageType="blog_index" topic="blog" />
     <main class="app-shell">
       <nav class="site-tabs" aria-label="Primary sections">
         <a class="site-tab" href="/">Plant matcher</a>
+        <a class="site-tab" href="/#screener">Screener</a>
         <a class="site-tab" href="/planting-calendar/">Calendar</a>
         <a class="site-tab" href="/#zone-map">Zone map</a>
-        <a class="site-tab" href="/#screener">Screener</a>
-        <a class="site-tab is-active" href="/blog/">Blog</a>
+        <a class="site-tab is-active" href="/blog/">Guides</a>
       </nav>
 
       <section class="view-panel blog-view is-active" aria-labelledby="blog-title">
@@ -71,7 +71,7 @@ const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
           <header class="blog-hero">
             <div>
               <p class="eyebrow">Field notes</p>
-              <h1 id="blog-title">Blog</h1>
+              <h1 id="blog-title">Guides</h1>
               <p>
                 Practical growing notes for matching plants to real yards, real weather,
                 and the space you actually have.
