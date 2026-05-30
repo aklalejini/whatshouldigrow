@@ -255,6 +255,20 @@ const screenerPortfolioExportEl = document.getElementById("screener-portfolio-ex
 const screenerPortfolioClearEl = document.getElementById("screener-portfolio-clear");
 const gardenPlannerStatsEl = document.getElementById("garden-planner-stats");
 const gardenPlannerWarningsEl = document.getElementById("garden-planner-warnings");
+const gardenPlannerSettingsFormEl = document.getElementById("garden-planner-settings-form");
+const gardenPlannerZipEl = document.getElementById("garden-planner-zip");
+const gardenPlannerZoneEl = document.getElementById("garden-planner-zone");
+const gardenPlannerBedLengthEl = document.getElementById("garden-planner-bed-length");
+const gardenPlannerBedWidthEl = document.getElementById("garden-planner-bed-width");
+const gardenPlannerBedCountEl = document.getElementById("garden-planner-bed-count");
+const gardenPlannerSunEl = document.getElementById("garden-planner-sun");
+const gardenPlannerSoilEl = document.getElementById("garden-planner-soil");
+const gardenPlannerWaterEl = document.getElementById("garden-planner-water");
+const gardenPlannerModeEl = document.getElementById("garden-planner-mode");
+const gardenPlannerSettingsStatusEl = document.getElementById("garden-planner-settings-status");
+const gardenPlannerSpaceEl = document.getElementById("garden-planner-space");
+const gardenPlannerTimelineEl = document.getElementById("garden-planner-timeline");
+const gardenPlannerComparePanelEl = document.getElementById("garden-planner-compare-panel");
 const gardenPlannerTableEl = document.getElementById("garden-planner-table");
 const gardenPlannerSuppliesEl = document.getElementById("garden-planner-supplies");
 const gardenPlannerOpenScreenerEl = document.getElementById("garden-planner-open-screener");
@@ -312,6 +326,18 @@ let screenerVisibleLimit = 120;
 let screenerCompareIds = new Set();
 let screenerWatchlistIds = new Set();
 let gardenPlannerQuantities = {};
+let gardenPlannerSettings = {
+  zip: "",
+  zone: "7b",
+  bedLength: 8,
+  bedWidth: 4,
+  bedCount: 1,
+  sun: "full",
+  soil: "loam",
+  water: "medium",
+  mode: "in-ground"
+};
+let gardenPlannerCompareOpen = false;
 let screenerLastFiltered = [];
 let calendarZoneData = null;
 let calendarFrost = null;
@@ -339,6 +365,7 @@ const screenerPageSize = 120;
 const screenerCompareLimit = 5;
 const screenerWatchlistStorageKey = "plantbyzip.screenerWatchlist.v1";
 const gardenPlannerQuantityStorageKey = "plantbyzip.gardenPlannerQuantities.v1";
+const gardenPlannerSettingsStorageKey = "plantbyzip.gardenPlannerSettings.v1";
 const screenerColumnPresets = {
   core: ["name", "type", "zone", "firstOutput", "yield", "difficulty", "data", "source", "profile"],
   yield: ["name", "type", "zone", "firstOutput", "yield", "yieldPerSpace", "score", "difficulty", "reliability", "data", "source", "profile"],
@@ -5689,6 +5716,140 @@ function saveGardenPlannerQuantities() {
   }
 }
 
+function cleanGardenPlannerNumber(value, fallback, min, max) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return clamp(number, min, max);
+}
+
+function cleanGardenPlannerZone(value) {
+  const normalized = String(value ?? "").trim().toLowerCase();
+  return /^[2-9][ab]$|^1[01][ab]$/.test(normalized) ? normalized : "7b";
+}
+
+function populateGardenPlannerZoneOptions() {
+  if (!gardenPlannerZoneEl || gardenPlannerZoneEl.options.length) return;
+  const options = [];
+  for (let zone = 2; zone <= 11; zone += 1) {
+    ["a", "b"].forEach((half) => {
+      const value = `${zone}${half}`;
+      options.push(`<option value="${value}">Zone ${zone}${half}</option>`);
+    });
+  }
+  gardenPlannerZoneEl.innerHTML = options.join("");
+}
+
+function loadGardenPlannerSettings() {
+  try {
+    const raw = localStorage.getItem(gardenPlannerSettingsStorageKey);
+    const parsed = raw ? JSON.parse(raw) : {};
+    gardenPlannerSettings = {
+      zip: String(parsed.zip ?? "").replace(/\D+/g, "").slice(0, 5),
+      zone: cleanGardenPlannerZone(parsed.zone),
+      bedLength: cleanGardenPlannerNumber(parsed.bedLength, 8, 1, 200),
+      bedWidth: cleanGardenPlannerNumber(parsed.bedWidth, 4, 1, 200),
+      bedCount: Math.round(cleanGardenPlannerNumber(parsed.bedCount, 1, 1, 50)),
+      sun: ["full", "partial", "shade"].includes(parsed.sun) ? parsed.sun : "full",
+      soil: ["loam", "sandy", "clay"].includes(parsed.soil) ? parsed.soil : "loam",
+      water: ["low", "medium", "high"].includes(parsed.water) ? parsed.water : "medium",
+      mode: ["in-ground", "containers", "mixed"].includes(parsed.mode) ? parsed.mode : "in-ground"
+    };
+  } catch {
+    gardenPlannerSettings = {
+      zip: "",
+      zone: "7b",
+      bedLength: 8,
+      bedWidth: 4,
+      bedCount: 1,
+      sun: "full",
+      soil: "loam",
+      water: "medium",
+      mode: "in-ground"
+    };
+  }
+}
+
+function saveGardenPlannerSettings() {
+  try {
+    localStorage.setItem(gardenPlannerSettingsStorageKey, JSON.stringify(gardenPlannerSettings));
+  } catch {
+    // Planner settings are nice to have; the UI still works without storage.
+  }
+}
+
+function applyGardenPlannerSettingsToControls() {
+  populateGardenPlannerZoneOptions();
+  if (gardenPlannerZipEl) gardenPlannerZipEl.value = gardenPlannerSettings.zip;
+  if (gardenPlannerZoneEl) gardenPlannerZoneEl.value = gardenPlannerSettings.zone;
+  if (gardenPlannerBedLengthEl) gardenPlannerBedLengthEl.value = gardenPlannerSettings.bedLength;
+  if (gardenPlannerBedWidthEl) gardenPlannerBedWidthEl.value = gardenPlannerSettings.bedWidth;
+  if (gardenPlannerBedCountEl) gardenPlannerBedCountEl.value = gardenPlannerSettings.bedCount;
+  if (gardenPlannerSunEl) gardenPlannerSunEl.value = gardenPlannerSettings.sun;
+  if (gardenPlannerSoilEl) gardenPlannerSoilEl.value = gardenPlannerSettings.soil;
+  if (gardenPlannerWaterEl) gardenPlannerWaterEl.value = gardenPlannerSettings.water;
+  if (gardenPlannerModeEl) gardenPlannerModeEl.value = gardenPlannerSettings.mode;
+}
+
+function gardenPlannerSettingsFromControls() {
+  return {
+    zip: String(gardenPlannerZipEl?.value ?? "").replace(/\D+/g, "").slice(0, 5),
+    zone: cleanGardenPlannerZone(gardenPlannerZoneEl?.value ?? gardenPlannerSettings.zone),
+    bedLength: cleanGardenPlannerNumber(gardenPlannerBedLengthEl?.value, gardenPlannerSettings.bedLength, 1, 200),
+    bedWidth: cleanGardenPlannerNumber(gardenPlannerBedWidthEl?.value, gardenPlannerSettings.bedWidth, 1, 200),
+    bedCount: Math.round(cleanGardenPlannerNumber(gardenPlannerBedCountEl?.value, gardenPlannerSettings.bedCount, 1, 50)),
+    sun: ["full", "partial", "shade"].includes(gardenPlannerSunEl?.value) ? gardenPlannerSunEl.value : gardenPlannerSettings.sun,
+    soil: ["loam", "sandy", "clay"].includes(gardenPlannerSoilEl?.value) ? gardenPlannerSoilEl.value : gardenPlannerSettings.soil,
+    water: ["low", "medium", "high"].includes(gardenPlannerWaterEl?.value) ? gardenPlannerWaterEl.value : gardenPlannerSettings.water,
+    mode: ["in-ground", "containers", "mixed"].includes(gardenPlannerModeEl?.value) ? gardenPlannerModeEl.value : gardenPlannerSettings.mode
+  };
+}
+
+function syncGardenPlannerSettingsFromControls() {
+  gardenPlannerSettings = gardenPlannerSettingsFromControls();
+  saveGardenPlannerSettings();
+  renderGardenPlannerSummarySections();
+}
+
+async function lookupGardenPlannerZip() {
+  if (!gardenPlannerZipEl || !gardenPlannerSettingsStatusEl) return;
+  syncGardenPlannerSettingsFromControls();
+  const zip = gardenPlannerSettings.zip;
+  if (!/^\d{5}$/.test(zip)) {
+    gardenPlannerSettingsStatusEl.textContent = "Enter a five-digit ZIP or choose a zone directly.";
+    return;
+  }
+  gardenPlannerSettingsStatusEl.textContent = "Looking up USDA zone...";
+  try {
+    const zoneData = await lookupZone(zip);
+    gardenPlannerSettings = {
+      ...gardenPlannerSettings,
+      zip,
+      zone: cleanGardenPlannerZone(zoneData.zone)
+    };
+    saveGardenPlannerSettings();
+    applyGardenPlannerSettingsToControls();
+    gardenPlannerSettingsStatusEl.textContent = `Using USDA zone ${gardenPlannerSettings.zone.toUpperCase()} for this garden plan.`;
+    renderGardenPlannerSummarySections();
+  } catch (error) {
+    gardenPlannerSettingsStatusEl.textContent = "ZIP lookup did not complete. Choose a USDA zone directly for now.";
+  }
+}
+
+function gardenPlannerTotalSqFt(settings = gardenPlannerSettings) {
+  const length = cleanGardenPlannerNumber(settings.bedLength, 8, 1, 200);
+  const width = cleanGardenPlannerNumber(settings.bedWidth, 4, 1, 200);
+  const count = Math.round(cleanGardenPlannerNumber(settings.bedCount, 1, 1, 50));
+  return length * width * count;
+}
+
+function gardenPlannerZoneNumber() {
+  return zoneToNumber(gardenPlannerSettings.zone);
+}
+
+function gardenPlannerZoneData() {
+  return { zone: gardenPlannerSettings.zone || "7b" };
+}
+
 function setGardenPlannerQuantity(plantId, quantity) {
   if (!screenerWatchlistIds.has(plantId)) return false;
   const nextQuantity = Math.round(clamp(Number(quantity), 1, 999));
@@ -5718,6 +5879,55 @@ function gardenEntrySpace(entry) {
   return Number.isFinite(density) && density > 0 ? (entry.quantity / density) * 100 : null;
 }
 
+function gardenPlannerSpaceStats(entries) {
+  const available = gardenPlannerTotalSqFt();
+  const used = sumNumber(entries.map(gardenEntrySpace));
+  const knownEntries = entries.filter((entry) => Number.isFinite(gardenEntrySpace(entry)));
+  const unknownCount = entries.length - knownEntries.length;
+  const percent = available > 0 && Number.isFinite(used) ? (used / available) * 100 : null;
+  return { available, used, percent, unknownCount };
+}
+
+function gardenPlannerPlantZoneFits(plant) {
+  const zoneNumber = gardenPlannerZoneNumber();
+  return Number.isFinite(zoneNumber) ? calendarPlantFitsZone(plant, zoneNumber) : true;
+}
+
+function gardenPlannerPlantSunFits(plant) {
+  if (!gardenPlannerSettings.sun) return true;
+  const sunValues = Array.isArray(plant.sun) ? plant.sun : [plant.sun].filter(Boolean);
+  return sunValues.includes(gardenPlannerSettings.sun);
+}
+
+function gardenPlannerPlantSoilFits(plant) {
+  if (!gardenPlannerSettings.soil) return true;
+  const soilValues = Array.isArray(plant.soils) ? plant.soils : [plant.soil, plant.soils].filter(Boolean);
+  return soilValues.includes(gardenPlannerSettings.soil);
+}
+
+function gardenPlannerPlantWaterFits(plant) {
+  const siteWater = waterRank[gardenPlannerSettings.water] ?? waterRank.medium;
+  const plantWater = waterRank[plant.water] ?? waterRank.medium;
+  return plantWater <= siteWater;
+}
+
+function gardenPlannerContainerIssue(entry) {
+  if (gardenPlannerSettings.mode !== "containers") return false;
+  const suitability = entry.metrics.containerSuitability;
+  const minGallons = Number(entry.metrics.containerMinGallons);
+  return suitability === "poor" || (Number.isFinite(minGallons) && minGallons > 25);
+}
+
+function gardenPlannerFitChecks(entry) {
+  const issues = [];
+  if (!gardenPlannerPlantZoneFits(entry.plant)) issues.push("zone");
+  if (!gardenPlannerPlantSunFits(entry.plant)) issues.push("sun");
+  if (!gardenPlannerPlantSoilFits(entry.plant)) issues.push("soil");
+  if (!gardenPlannerPlantWaterFits(entry.plant)) issues.push("water");
+  if (gardenPlannerContainerIssue(entry)) issues.push("container");
+  return issues;
+}
+
 function weightedGardenAverage(entries, reader) {
   let totalWeight = 0;
   let total = 0;
@@ -5743,15 +5953,18 @@ function gardenPlannerRiskEntries(entries) {
 function gardenPlannerStats(entries) {
   const totalPlants = sumNumber(entries.map((entry) => entry.quantity));
   const totalYield = sumNumber(entries.map(gardenEntryYield));
-  const totalSpace = sumNumber(entries.map(gardenEntrySpace));
+  const spaceStats = gardenPlannerSpaceStats(entries);
   const averageFirst = weightedGardenAverage(entries, ({ metrics }) => firstOutputYears(metrics));
   const riskCount = gardenPlannerRiskEntries(entries).length;
+  const fitIssueCount = entries.filter((entry) => gardenPlannerFitChecks(entry).length).length;
   return {
     totalPlants,
     totalYield,
-    totalSpace,
+    totalSpace: spaceStats.used,
+    spaceBudgetPercent: spaceStats.percent,
     averageFirst,
-    riskCount
+    riskCount,
+    fitIssueCount
   };
 }
 
@@ -5772,7 +5985,7 @@ function renderGardenPlannerStats(entries) {
       </div>
       <div>
         <strong>-</strong>
-        <span>est. sq ft</span>
+        <span>space budget</span>
       </div>
       <div>
         <strong>-</strong>
@@ -5803,12 +6016,16 @@ function renderGardenPlannerStats(entries) {
       <span>estimated sq ft</span>
     </div>
     <div>
-      <strong>${escapeHtml(formatCompactNumber(stats.averageFirst, 1))}</strong>
-      <span>avg years to first output</span>
+      <strong>${Number.isFinite(stats.spaceBudgetPercent) ? `${escapeHtml(formatCompactNumber(stats.spaceBudgetPercent, 0))}%` : "-"}</strong>
+      <span>space budget used</span>
     </div>
     <div>
-      <strong>${stats.riskCount}</strong>
-      <span>plants needing closer review</span>
+      <strong>${stats.fitIssueCount + stats.riskCount}</strong>
+      <span>fit and risk checks</span>
+    </div>
+    <div>
+      <strong>${escapeHtml(formatCompactNumber(stats.averageFirst, 1))}</strong>
+      <span>avg years to first output</span>
     </div>
   `;
 }
@@ -5821,6 +6038,12 @@ function gardenPlannerSignalCards(entries) {
       tone: "neutral"
     }];
   }
+  const spaceStats = gardenPlannerSpaceStats(entries);
+  const zoneMismatchEntries = entries.filter((entry) => !gardenPlannerPlantZoneFits(entry.plant));
+  const sunMismatchEntries = entries.filter((entry) => !gardenPlannerPlantSunFits(entry.plant));
+  const soilMismatchEntries = entries.filter((entry) => !gardenPlannerPlantSoilFits(entry.plant));
+  const waterMismatchEntries = entries.filter((entry) => !gardenPlannerPlantWaterFits(entry.plant));
+  const containerIssueEntries = entries.filter(gardenPlannerContainerIssue);
   const supportEntries = entries.filter(({ plant, metrics }) => {
     const support = screeningProfile(plant, metrics).support;
     return support && support !== "Usually none";
@@ -5834,24 +6057,57 @@ function gardenPlannerSignalCards(entries) {
   const perennialEntries = entries.filter(({ plant }) => !plant.type.includes("annual"));
   const riskEntries = gardenPlannerRiskEntries(entries);
   const cards = [];
+  if (Number.isFinite(spaceStats.percent) && spaceStats.percent > 100) {
+    cards.push({
+      title: "Space over budget",
+      text: `The saved quantities use about ${formatCompactNumber(spaceStats.used, 1)} sq ft against ${formatCompactNumber(spaceStats.available, 1)} sq ft. Trim quantities or plan another bed.`,
+      tone: "watch"
+    });
+  }
+  if (zoneMismatchEntries.length) {
+    cards.push({
+      title: "Zone fit",
+      text: `${zoneMismatchEntries.length} saved plant${zoneMismatchEntries.length === 1 ? "" : "s"} sit outside zone ${gardenPlannerSettings.zone.toUpperCase()} and need closer local verification.`,
+      tone: "watch"
+    });
+  }
+  if (sunMismatchEntries.length || soilMismatchEntries.length || waterMismatchEntries.length) {
+    const parts = [
+      sunMismatchEntries.length ? `${sunMismatchEntries.length} sun` : "",
+      soilMismatchEntries.length ? `${soilMismatchEntries.length} soil` : "",
+      waterMismatchEntries.length ? `${waterMismatchEntries.length} water` : ""
+    ].filter(Boolean);
+    cards.push({
+      title: "Site fit",
+      text: `Check ${parts.join(", ")} mismatch${parts.length === 1 ? "" : "es"} against the garden settings before planting.`,
+      tone: "watch"
+    });
+  }
+  if (containerIssueEntries.length) {
+    cards.push({
+      title: "Container fit",
+      text: `${containerIssueEntries.length} saved plant${containerIssueEntries.length === 1 ? "" : "s"} look large for a container-only plan.`,
+      tone: "watch"
+    });
+  }
   if (riskEntries.length) {
     cards.push({
       title: "Risk watch",
-      text: `${riskEntries.length} saved plant${riskEntries.length === 1 ? "" : "s"} deserve closer pest, disease, or maintenance review.`,
+      text: `${riskEntries.length} saved plant${riskEntries.length === 1 ? "" : "s"} ${riskEntries.length === 1 ? "deserves" : "deserve"} closer pest, disease, or maintenance review.`,
       tone: "watch"
     });
   }
   if (supportEntries.length) {
     cards.push({
       title: "Support needs",
-      text: `${supportEntries.length} plant${supportEntries.length === 1 ? "" : "s"} likely need staking, cages, or trellis space.`,
+      text: `${supportEntries.length} plant${supportEntries.length === 1 ? " likely needs" : "s likely need"} staking, cages, or trellis space.`,
       tone: "neutral"
     });
   }
   if (pollinationEntries.length) {
     cards.push({
       title: "Pollination check",
-      text: `${pollinationEntries.length} fruiting plant${pollinationEntries.length === 1 ? "" : "s"} may need a partner cultivar or cultivar-specific verification.`,
+      text: `${pollinationEntries.length} fruiting plant${pollinationEntries.length === 1 ? " may need" : "s may need"} a partner cultivar or cultivar-specific verification.`,
       tone: "neutral"
     });
   }
@@ -5882,7 +6138,7 @@ function gardenPlannerSignalCards(entries) {
       tone: "positive"
     });
   }
-  return cards.slice(0, 4);
+  return cards.slice(0, 6);
 }
 
 function renderGardenPlannerSignals(entries) {
@@ -5901,6 +6157,173 @@ function renderGardenPlannerSignals(entries) {
           <p>${escapeHtml(card.text)}</p>
         </article>
       `).join("")}
+    </div>
+  `;
+}
+
+function renderGardenPlannerSpace(entries) {
+  const spaceStats = gardenPlannerSpaceStats(entries);
+  const percent = Number.isFinite(spaceStats.percent) ? clamp(spaceStats.percent, 0, 100) : 0;
+  const remaining = Number.isFinite(spaceStats.used) ? spaceStats.available - spaceStats.used : null;
+  const leaders = entries
+    .map((entry) => ({ entry, value: gardenEntrySpace(entry) }))
+    .filter(({ value }) => Number.isFinite(value))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 4);
+  return `
+    <div class="garden-planner-section-head">
+      <div>
+        <span>Space budget</span>
+        <h2 id="garden-planner-space-title">Bed capacity check</h2>
+      </div>
+      <p>${escapeHtml(formatCompactNumber(spaceStats.available, 1))} sq ft available from current settings.</p>
+    </div>
+    ${entries.length ? `
+      <div class="garden-planner-space-grid">
+        <article class="garden-planner-space-card">
+          <div class="garden-planner-space-card-head">
+            <span>Estimated use</span>
+            <strong>${escapeHtml(formatCompactNumber(spaceStats.used, 1))} sq ft</strong>
+          </div>
+          <div class="garden-planner-space-meter" aria-label="Estimated garden space used">
+            <span style="--space-used: ${percent}%"></span>
+          </div>
+          <p>
+            ${Number.isFinite(spaceStats.used)
+              ? (remaining >= 0
+                ? `${formatCompactNumber(remaining, 1)} sq ft still open.`
+                : `${formatCompactNumber(Math.abs(remaining), 1)} sq ft over the current bed budget.`)
+              : "No density-backed space total yet."}
+            ${spaceStats.unknownCount ? `${spaceStats.unknownCount} saved plant${spaceStats.unknownCount === 1 ? "" : "s"} lack density data.` : ""}
+          </p>
+        </article>
+        <article class="garden-planner-space-card">
+          <div class="garden-planner-space-card-head">
+            <span>Largest space uses</span>
+            <strong>${leaders.length ? `${leaders.length} plant${leaders.length === 1 ? "" : "s"}` : "-"}</strong>
+          </div>
+          <div class="garden-planner-space-list">
+            ${leaders.length ? leaders.map(({ entry, value }) => `
+              <span>
+                <strong>${escapeHtml(entry.plant.name)}</strong>
+                ${escapeHtml(formatCompactNumber(value, 1))} sq ft
+              </span>
+            `).join("") : "<span>No density-backed space estimates yet.</span>"}
+          </div>
+        </article>
+      </div>
+    ` : `
+      <div class="garden-planner-empty">
+        <strong>No space budget yet.</strong>
+        <span>Save plants from the Screener to see how much bed space they are likely to use.</span>
+      </div>
+    `}
+  `;
+}
+
+function gardenPlannerTimelineData(entries) {
+  const zoneData = gardenPlannerZoneData();
+  const year = calendarPlanningYear(zoneData);
+  const frost = estimateCalendarFrost(zoneData, year);
+  const savedIds = new Set(entries.map((entry) => entry.plant.id));
+  const events = buildCalendarEvents(frost).filter((event) => savedIds.has(event.plant.id));
+  return {
+    frost,
+    groups: groupCalendarEvents(events).slice(0, 10),
+    outOfZoneCount: entries.filter((entry) => !calendarPlantFitsZone(entry.plant, frost.zoneNumber)).length
+  };
+}
+
+function renderGardenPlannerTimeline(entries) {
+  let timeline;
+  try {
+    timeline = gardenPlannerTimelineData(entries);
+  } catch {
+    timeline = null;
+  }
+  return `
+    <div class="garden-planner-section-head">
+      <div>
+        <span>Planting timeline</span>
+        <h2 id="garden-planner-timeline-title">Calendar from saved plants</h2>
+      </div>
+      <p>${escapeHtml(gardenPlannerSettings.zone.toUpperCase())} timing estimate for the current planning year.</p>
+    </div>
+    ${entries.length && timeline?.groups.length ? `
+      <div class="garden-planner-timeline-list">
+        ${timeline.groups.map((group) => `
+          <article class="garden-planner-timeline-item">
+            <div>
+              <span class="garden-planner-timeline-date">${escapeHtml(formatCalendarWindow(group.start, group.end))}</span>
+              <span class="garden-planner-timeline-method">${escapeHtml(calendarMethodLabels[group.method] ?? sentenceCase(group.method))}</span>
+            </div>
+            <h3>${escapeHtml(group.action)}</h3>
+            <p>${escapeHtml(calendarActionGuidance(group))}</p>
+            <div class="garden-planner-timeline-plants">
+              ${group.plants.slice(0, 5).map((plant) => `<a href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a>`).join("")}
+              ${group.plants.length > 5 ? `<span>+${group.plants.length - 5} more</span>` : ""}
+            </div>
+          </article>
+        `).join("")}
+      </div>
+      ${timeline.outOfZoneCount ? `<p class="garden-planner-section-note">${timeline.outOfZoneCount} saved plant${timeline.outOfZoneCount === 1 ? "" : "s"} are outside this zone and are omitted from the timeline.</p>` : ""}
+    ` : `
+      <div class="garden-planner-empty">
+        <strong>${entries.length ? "No zone-fit timing rows." : "No saved plants yet."}</strong>
+        <span>${entries.length ? "Adjust the USDA zone or review saved plants that are outside the selected zone." : "Save plants from the Screener to build a planting timeline."}</span>
+      </div>
+    `}
+  `;
+}
+
+function renderGardenPlannerCompare(entries) {
+  if (!entries.length) return "";
+  return `
+    <div class="garden-planner-section-head">
+      <div>
+        <span>Compare mode</span>
+        <h2 id="garden-planner-compare-title">Saved plant comparison</h2>
+      </div>
+      <p>Planner quantities are included so totals match the saved garden list.</p>
+    </div>
+    <div class="garden-planner-compare-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Plant</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Zone fit</th>
+            <th scope="col">First output</th>
+            <th scope="col">Yield total</th>
+            <th scope="col">Space</th>
+            <th scope="col">Yield / 100 sq ft</th>
+            <th scope="col">Container</th>
+            <th scope="col">Data</th>
+            <th scope="col">Risk cue</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${entries.map((entry) => {
+            const { plant, metrics, quantity } = entry;
+            const screening = screeningProfile(plant, metrics);
+            const issues = gardenPlannerFitChecks(entry);
+            return `
+              <tr>
+                <td data-label="Plant"><a href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a></td>
+                <td data-label="Qty">${escapeHtml(quantity)}</td>
+                <td data-label="Zone fit">${gardenPlannerPlantZoneFits(plant) ? "Fits" : "Check"} (${escapeHtml(plant.zones[0])}-${escapeHtml(plant.zones[1])})</td>
+                <td data-label="First output">${escapeHtml(metricDisplayValue(metrics.display?.firstOutput))}</td>
+                <td data-label="Yield total">${escapeHtml(formatCompactNumber(gardenEntryYield(entry), 1))} lb</td>
+                <td data-label="Space">${escapeHtml(formatCompactNumber(gardenEntrySpace(entry), 1))} sq ft</td>
+                <td data-label="Yield / 100 sq ft">${escapeHtml(formatCompactNumber(yieldPer100SqFt(metrics), 1))}</td>
+                <td data-label="Container">${escapeHtml(metricDisplayValue(metrics.display?.containerMin))}</td>
+                <td data-label="Data">${escapeHtml(metrics.display?.confidence ?? metrics.dataConfidence ?? "-")}</td>
+                <td data-label="Risk cue">${escapeHtml(issues.length ? `${issues.join(", ")} fit` : screening.warning)}</td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
     </div>
   `;
 }
@@ -6001,23 +6424,57 @@ function renderGardenPlannerTable(entries) {
 
 function renderGardenPlannerSupplies(entries) {
   if (!entries.length) return "";
-  const products = productsForPlants(entries.map(({ plant }) => plant), 8);
+  const products = productsForPlants(entries.map(({ plant }) => plant), 14);
   if (!products.length) return "";
+  const categoryOrder = [
+    "Site prep",
+    "Soil",
+    "Containers",
+    "Propagation",
+    "Timing",
+    "Watering",
+    "Support",
+    "Protection",
+    "Nutrition",
+    "Tools",
+    "Maintenance",
+    "Planning"
+  ];
+  const grouped = new Map();
+  products.forEach((product) => {
+    const category = product.category || "Planning";
+    if (!grouped.has(category)) grouped.set(category, []);
+    grouped.get(category).push(product);
+  });
+  const categoryEntries = Array.from(grouped.entries())
+    .sort(([categoryA], [categoryB]) => {
+      const indexA = categoryOrder.indexOf(categoryA);
+      const indexB = categoryOrder.indexOf(categoryB);
+      return (indexA === -1 ? 99 : indexA) - (indexB === -1 ? 99 : indexB) || categoryA.localeCompare(categoryB);
+    });
   return `
     <div class="garden-planner-section-head">
       <div>
-        <span>Supply matches</span>
-        <h2 id="garden-planner-supplies-title">Useful gear for this saved list</h2>
+        <span>Shopping list</span>
+        <h2 id="garden-planner-supplies-title">Supplies by need</h2>
         <p>Product links may earn a commission and do not affect plant rankings.</p>
       </div>
     </div>
-    <div class="garden-planner-supply-list">
-      ${products.map((product) => `
-        <article class="garden-planner-supply-card">
-          <span>${escapeHtml(product.category)} - ${escapeHtml(product.timing ?? "Planning")}</span>
-          <strong>${escapeHtml(product.name)}</strong>
-          <p>${escapeHtml(product.use ?? "")}</p>
-          ${productLink(product, "garden_planner_supply", "View")}
+    <div class="garden-planner-supply-groups">
+      ${categoryEntries.map(([category, categoryProducts]) => `
+        <article class="garden-planner-supply-group">
+          <h3>${escapeHtml(category)}</h3>
+          <div class="garden-planner-supply-items">
+            ${categoryProducts.map((product) => `
+              <div class="garden-planner-supply-item">
+                <div>
+                  <strong>${escapeHtml(product.name)}</strong>
+                  <span>${escapeHtml(product.timing ?? "Planning")} - ${escapeHtml(product.use ?? "")}</span>
+                </div>
+                ${productLink(product, "garden_planner_supply", "View")}
+              </div>
+            `).join("")}
+          </div>
         </article>
       `).join("")}
     </div>
@@ -6033,12 +6490,23 @@ function renderGardenPlanner() {
 
 function renderGardenPlannerSummarySections(entries = gardenPlannerEntries()) {
   if (!gardenPlannerStatsEl || !gardenPlannerWarningsEl || !gardenPlannerSuppliesEl) return;
+  if (!entries.length) gardenPlannerCompareOpen = false;
   gardenPlannerStatsEl.innerHTML = renderGardenPlannerStats(entries);
   gardenPlannerWarningsEl.innerHTML = renderGardenPlannerSignals(entries);
+  if (gardenPlannerSpaceEl) gardenPlannerSpaceEl.innerHTML = renderGardenPlannerSpace(entries);
+  if (gardenPlannerTimelineEl) gardenPlannerTimelineEl.innerHTML = renderGardenPlannerTimeline(entries);
+  if (gardenPlannerComparePanelEl) {
+    const compareMarkup = gardenPlannerCompareOpen ? renderGardenPlannerCompare(entries) : "";
+    gardenPlannerComparePanelEl.innerHTML = compareMarkup;
+    gardenPlannerComparePanelEl.hidden = !compareMarkup;
+  }
   const supplyMarkup = renderGardenPlannerSupplies(entries);
   gardenPlannerSuppliesEl.innerHTML = supplyMarkup;
   gardenPlannerSuppliesEl.hidden = !supplyMarkup;
-  if (gardenPlannerCompareEl) gardenPlannerCompareEl.disabled = entries.length === 0;
+  if (gardenPlannerCompareEl) {
+    gardenPlannerCompareEl.disabled = entries.length === 0;
+    gardenPlannerCompareEl.textContent = gardenPlannerCompareOpen ? "Hide comparison" : "Compare saved plants";
+  }
   if (gardenPlannerExportEl) gardenPlannerExportEl.disabled = entries.length === 0;
   if (gardenPlannerClearEl) gardenPlannerClearEl.disabled = entries.length === 0;
 }
@@ -6108,13 +6576,13 @@ function showGardenPlannerTab() {
 }
 
 function compareGardenPlannerPlants() {
-  const portfolioIds = screenerPortfolioPlants().slice(0, screenerCompareLimit).map((plant) => plant.id);
-  if (!portfolioIds.length) return;
-  screenerCompareIds = new Set(portfolioIds);
-  showScreenerTab();
-  renderScreener();
+  if (!gardenPlannerEntries().length) return;
+  gardenPlannerCompareOpen = !gardenPlannerCompareOpen;
+  renderGardenPlannerSummarySections();
   requestAnimationFrame(() => {
-    screenerComparePanelEl?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (gardenPlannerCompareOpen) {
+      gardenPlannerComparePanelEl?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   });
 }
 
@@ -6123,6 +6591,7 @@ function clearGardenPlanner() {
   if (!window.confirm("Clear all plants from this local garden plan?")) return;
   screenerWatchlistIds = new Set();
   gardenPlannerQuantities = {};
+  gardenPlannerCompareOpen = false;
   saveScreenerWatchlist();
   saveGardenPlannerQuantities();
   if (screenerFlagEl?.value === "watchlist") screenerFlagEl.value = "";
@@ -6141,6 +6610,7 @@ function setScreenerPortfolioMembership(plantId, shouldSave) {
     screenerWatchlistIds.delete(plantId);
     delete gardenPlannerQuantities[plantId];
   }
+  if (!screenerWatchlistIds.size) gardenPlannerCompareOpen = false;
   if (wasSaved === screenerWatchlistIds.has(plantId)) return false;
   saveScreenerWatchlist();
   saveGardenPlannerQuantities();
@@ -6561,6 +7031,35 @@ function applyScreenerSavedScreen(screenId) {
 
 function initializeGardenPlanner() {
   loadGardenPlannerQuantities();
+  loadGardenPlannerSettings();
+  applyGardenPlannerSettingsToControls();
+  if (gardenPlannerSettingsStatusEl) {
+    gardenPlannerSettingsStatusEl.textContent = `Using USDA zone ${gardenPlannerSettings.zone.toUpperCase()} with ${formatCompactNumber(gardenPlannerTotalSqFt(), 1)} sq ft of planned bed space.`;
+  }
+  gardenPlannerSettingsFormEl?.addEventListener("input", (event) => {
+    if (event.target === gardenPlannerZipEl) {
+      gardenPlannerZipEl.value = gardenPlannerZipEl.value.replace(/\D+/g, "").slice(0, 5);
+    }
+    syncGardenPlannerSettingsFromControls();
+    if (gardenPlannerSettingsStatusEl) {
+      gardenPlannerSettingsStatusEl.textContent = `Using USDA zone ${gardenPlannerSettings.zone.toUpperCase()} with ${formatCompactNumber(gardenPlannerTotalSqFt(), 1)} sq ft of planned bed space.`;
+    }
+  });
+  gardenPlannerSettingsFormEl?.addEventListener("change", () => {
+    syncGardenPlannerSettingsFromControls();
+    applyGardenPlannerSettingsToControls();
+    if (gardenPlannerSettingsStatusEl) {
+      gardenPlannerSettingsStatusEl.textContent = `Using USDA zone ${gardenPlannerSettings.zone.toUpperCase()} with ${formatCompactNumber(gardenPlannerTotalSqFt(), 1)} sq ft of planned bed space.`;
+    }
+  });
+  gardenPlannerSettingsFormEl?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    lookupGardenPlannerZip();
+    trackEvent("filter_apply", {
+      tool: "garden-planner",
+      action: "settings_lookup"
+    });
+  });
   gardenPlannerOpenScreenerEl?.addEventListener("click", () => {
     showScreenerTab();
     trackEvent("tool_tab_view", { tool: "screener", source: "garden_planner_add" });
@@ -6570,7 +7069,8 @@ function initializeGardenPlanner() {
     trackEvent("filter_apply", {
       tool: "garden-planner",
       action: "compare_saved",
-      compare_count: screenerCompareIds.size
+      compare_open: gardenPlannerCompareOpen,
+      watchlist_count: screenerWatchlistIds.size
     });
   });
   gardenPlannerExportEl?.addEventListener("click", () => {

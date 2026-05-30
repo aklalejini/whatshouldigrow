@@ -1278,9 +1278,127 @@ const webAppJsonLd = {
           </div>
 
           <section
+            id="garden-planner-settings"
+            class="garden-planner-settings"
+            aria-labelledby="garden-planner-settings-title"
+          >
+            <div class="garden-planner-section-head">
+              <div>
+                <p class="eyebrow">Garden settings</p>
+                <h2 id="garden-planner-settings-title">Site and bed budget</h2>
+              </div>
+              <p>Saved on this device and used to flag fit, timing, and space pressure.</p>
+            </div>
+            <form id="garden-planner-settings-form" class="garden-planner-settings-grid">
+              <label>
+                <span>ZIP</span>
+                <input
+                  id="garden-planner-zip"
+                  name="zip"
+                  type="text"
+                  inputmode="numeric"
+                  pattern="[0-9]{5}"
+                  maxlength="5"
+                  placeholder="30301"
+                />
+              </label>
+              <label>
+                <span>USDA zone</span>
+                <select id="garden-planner-zone" name="zone"></select>
+              </label>
+              <label>
+                <span>Bed length</span>
+                <input
+                  id="garden-planner-bed-length"
+                  name="bedLength"
+                  type="number"
+                  min="1"
+                  max="200"
+                  step="0.5"
+                />
+              </label>
+              <label>
+                <span>Bed width</span>
+                <input
+                  id="garden-planner-bed-width"
+                  name="bedWidth"
+                  type="number"
+                  min="1"
+                  max="200"
+                  step="0.5"
+                />
+              </label>
+              <label>
+                <span>Bed count</span>
+                <input
+                  id="garden-planner-bed-count"
+                  name="bedCount"
+                  type="number"
+                  min="1"
+                  max="50"
+                  step="1"
+                />
+              </label>
+              <label>
+                <span>Sun</span>
+                <select id="garden-planner-sun" name="sun">
+                  <option value="full">Full sun</option>
+                  <option value="partial">Part sun</option>
+                  <option value="shade">Shade</option>
+                </select>
+              </label>
+              <label>
+                <span>Soil</span>
+                <select id="garden-planner-soil" name="soil">
+                  <option value="loam">Loam</option>
+                  <option value="sandy">Sandy</option>
+                  <option value="clay">Clay</option>
+                </select>
+              </label>
+              <label>
+                <span>Water</span>
+                <select id="garden-planner-water" name="water">
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </label>
+              <label>
+                <span>Format</span>
+                <select id="garden-planner-mode" name="mode">
+                  <option value="in-ground">In-ground beds</option>
+                  <option value="containers">Containers</option>
+                  <option value="mixed">Mixed garden</option>
+                </select>
+              </label>
+              <button type="submit">Lookup ZIP</button>
+            </form>
+            <p id="garden-planner-settings-status" class="garden-planner-settings-status"></p>
+          </section>
+
+          <section
             id="garden-planner-warnings"
             class="garden-planner-warnings"
             aria-labelledby="garden-planner-warnings-title"
+          ></section>
+
+          <section
+            id="garden-planner-space"
+            class="garden-planner-space"
+            aria-labelledby="garden-planner-space-title"
+          ></section>
+
+          <section
+            id="garden-planner-timeline"
+            class="garden-planner-timeline"
+            aria-labelledby="garden-planner-timeline-title"
+          ></section>
+
+          <section
+            id="garden-planner-compare-panel"
+            class="garden-planner-compare-panel"
+            aria-labelledby="garden-planner-compare-title"
+            hidden
           ></section>
 
           <section
