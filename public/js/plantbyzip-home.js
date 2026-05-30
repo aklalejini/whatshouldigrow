@@ -6158,7 +6158,7 @@ function gardenPlannerBedGrid() {
   }) ?? gardenPlannerGridUnitCandidatesFt[gardenPlannerGridUnitCandidatesFt.length - 1];
   const columns = Math.max(1, Math.ceil(displayLength / unitFt));
   const rows = Math.max(1, Math.ceil(displayWidth / unitFt));
-  const cellPx = clamp(Math.min(24, 760 / columns, 440 / rows), 8, 24);
+  const cellPx = clamp(Math.min(56, 1160 / columns, 620 / rows), 8, 56);
   const unitLabel = gardenPlannerGridUnitLabel(unitFt);
   const scaleText = count === 1
     ? `Scaled to a ${formatCompactNumber(length, 1)} x ${formatCompactNumber(width, 1)} ft bed.`
@@ -6656,33 +6656,35 @@ function renderGardenPlannerSpace(entries) {
     ${entries.length ? `
       <div class="garden-planner-space-grid">
         ${renderGardenPlannerBedVisual(entries, spaceStats)}
-        <article class="garden-planner-space-card">
-          <div class="garden-planner-space-card-head">
-            <span>Estimated use</span>
-            <strong>${escapeHtml(spaceRangeLabel)}</strong>
-          </div>
-          <div class="garden-planner-space-meter" aria-label="Estimated garden space used">
-            <span style="--space-used: ${percent}%"></span>
-          </div>
-          <p>
-            ${escapeHtml(remainingLabel)}
-            ${spaceStats.unknownCount ? `${spaceStats.unknownCount} saved plant${spaceStats.unknownCount === 1 ? "" : "s"} lack density data.` : ""}
-          </p>
-        </article>
-        <article class="garden-planner-space-card">
-          <div class="garden-planner-space-card-head">
-            <span>Largest space uses</span>
-            <strong>${leaders.length ? `${leaders.length} plant${leaders.length === 1 ? "" : "s"}` : "-"}</strong>
-          </div>
-          <div class="garden-planner-space-list">
-            ${leaders.length ? leaders.map(({ entry }) => `
-              <span>
-                <strong>${escapeHtml(entry.plant.name)}</strong>
-                ${escapeHtml(gardenEntrySpaceLabel(entry))}
-              </span>
-            `).join("") : "<span>No density-backed space estimates yet.</span>"}
-          </div>
-        </article>
+        <div class="garden-planner-space-summary-grid">
+          <article class="garden-planner-space-card">
+            <div class="garden-planner-space-card-head">
+              <span>Estimated use</span>
+              <strong>${escapeHtml(spaceRangeLabel)}</strong>
+            </div>
+            <div class="garden-planner-space-meter" aria-label="Estimated garden space used">
+              <span style="--space-used: ${percent}%"></span>
+            </div>
+            <p>
+              ${escapeHtml(remainingLabel)}
+              ${spaceStats.unknownCount ? `${spaceStats.unknownCount} saved plant${spaceStats.unknownCount === 1 ? "" : "s"} lack density data.` : ""}
+            </p>
+          </article>
+          <article class="garden-planner-space-card">
+            <div class="garden-planner-space-card-head">
+              <span>Largest space uses</span>
+              <strong>${leaders.length ? `${leaders.length} plant${leaders.length === 1 ? "" : "s"}` : "-"}</strong>
+            </div>
+            <div class="garden-planner-space-list">
+              ${leaders.length ? leaders.map(({ entry }) => `
+                <span>
+                  <strong>${escapeHtml(entry.plant.name)}</strong>
+                  ${escapeHtml(gardenEntrySpaceLabel(entry))}
+                </span>
+              `).join("") : "<span>No density-backed space estimates yet.</span>"}
+            </div>
+          </article>
+        </div>
       </div>
     ` : `
       <div class="garden-planner-empty">
