@@ -78,6 +78,7 @@ button {
 .climate-panel[hidden],
 .saved-plan-shopping[hidden],
 .share-plan-button[hidden],
+.garden-planner-supplies[hidden],
 .zone-preview[hidden] {
   display: none;
 }
@@ -2510,18 +2511,21 @@ fieldset:nth-of-type(2) .segmented {
   margin-bottom: 0;
 }
 
-.screener-view {
+.screener-view,
+.garden-planner-view {
   width: min(1240px, calc(100% - 40px));
   margin: 0 auto;
   padding: 32px 0 54px;
 }
 
-.screener-shell {
+.screener-shell,
+.garden-planner-shell {
   display: grid;
   gap: 14px;
 }
 
-.screener-header {
+.screener-header,
+.garden-planner-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(360px, auto);
   gap: 22px;
@@ -2535,7 +2539,8 @@ fieldset:nth-of-type(2) .segmented {
   box-shadow: var(--shadow);
 }
 
-.screener-header h1 {
+.screener-header h1,
+.garden-planner-header h1 {
   margin: 0 0 10px;
   font-family: var(--font-display);
   font-size: 2.85rem;
@@ -2543,7 +2548,8 @@ fieldset:nth-of-type(2) .segmented {
   letter-spacing: 0;
 }
 
-.screener-header p:not(.eyebrow) {
+.screener-header p:not(.eyebrow),
+.garden-planner-header p:not(.eyebrow) {
   max-width: 760px;
   margin: 0;
   color: #405246;
@@ -2581,6 +2587,306 @@ fieldset:nth-of-type(2) .segmented {
   font-weight: 850;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.garden-planner-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(92px, 1fr));
+  gap: 8px;
+  min-width: 360px;
+}
+
+.garden-planner-stats div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  min-height: 76px;
+  padding: 12px;
+  border: 1px solid #dfe6d8;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.garden-planner-stats strong {
+  overflow: hidden;
+  color: var(--leaf-dark);
+  font-family: var(--font-display);
+  font-size: 1.38rem;
+  line-height: 1;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.garden-planner-stats span {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 850;
+  line-height: 1.22;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.garden-planner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid #dfe6d8;
+  border-radius: 16px;
+  background: rgba(255, 253, 248, 0.94);
+  box-shadow: 0 12px 28px rgba(31, 45, 35, 0.08);
+}
+
+.garden-planner-actions button,
+.garden-planner-action-cell a,
+.garden-planner-action-cell button,
+.garden-planner-supply-card a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid #cfdac8;
+  border-radius: 999px;
+  color: var(--leaf-dark);
+  background: #fff;
+  font-size: 0.76rem;
+  font-weight: 850;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.garden-planner-actions button:hover,
+.garden-planner-action-cell a:hover,
+.garden-planner-action-cell button:hover,
+.garden-planner-supply-card a:hover {
+  border-color: rgba(39, 88, 58, 0.4);
+  background: #f3f8ee;
+}
+
+.garden-planner-actions button:disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+}
+
+.garden-planner-action-cell button {
+  color: #70411f;
+  border-color: #e4c9a9;
+  background: #fff9ef;
+}
+
+.garden-planner-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.garden-planner-section-head span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.garden-planner-section-head h2 {
+  margin: 2px 0 0;
+  color: var(--leaf-dark);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.garden-planner-section-head p {
+  margin: 6px 0 0;
+  max-width: 44rem;
+  color: #405246;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.garden-planner-warnings,
+.garden-planner-table,
+.garden-planner-supplies {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #dfe6d8;
+  border-radius: 18px;
+  background: rgba(255, 253, 248, 0.95);
+  box-shadow: 0 12px 28px rgba(31, 45, 35, 0.08);
+}
+
+.garden-planner-warning-list,
+.garden-planner-supply-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.garden-planner-warning,
+.garden-planner-supply-card {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #dfe6d8;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.garden-planner-warning.is-watch {
+  border-color: #ead2a8;
+  background: #fffaf0;
+}
+
+.garden-planner-warning.is-positive {
+  border-color: #cddfc3;
+  background: #f6fbf1;
+}
+
+.garden-planner-warning strong,
+.garden-planner-supply-card strong {
+  color: var(--leaf-dark);
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.garden-planner-warning p,
+.garden-planner-supply-card p {
+  margin: 0;
+  color: #405246;
+  font-size: 0.78rem;
+  line-height: 1.42;
+}
+
+.garden-planner-supply-card span {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.garden-planner-supply-card a {
+  justify-self: start;
+  color: #fff;
+  border-color: transparent;
+  background: var(--leaf);
+}
+
+.garden-planner-empty {
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  border: 1px dashed #cfdac8;
+  border-radius: 12px;
+  color: #405246;
+  background: #fbfcf8;
+}
+
+.garden-planner-empty strong {
+  color: var(--leaf-dark);
+}
+
+.garden-planner-empty span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.garden-planner-table-wrap {
+  overflow: auto;
+  border: 1px solid #dfe6d8;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.garden-planner-table table {
+  width: 100%;
+  min-width: 1080px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.76rem;
+}
+
+.garden-planner-table th,
+.garden-planner-table td {
+  padding: 9px;
+  border-top: 1px solid #edf1e8;
+  color: #314438;
+  text-align: left;
+  vertical-align: top;
+}
+
+.garden-planner-table th {
+  border-top: 0;
+  color: var(--leaf-dark);
+  background: #f3f8ee;
+  font-size: 0.68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.garden-planner-table td + td,
+.garden-planner-table th + th {
+  border-left: 1px solid #edf1e8;
+}
+
+.garden-planner-table td strong {
+  display: block;
+  color: var(--leaf-dark);
+  font-weight: 850;
+}
+
+.garden-planner-table td span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.garden-planner-name a {
+  color: var(--leaf-dark);
+  font-weight: 850;
+  text-decoration-color: rgba(39, 88, 58, 0.3);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.garden-planner-quantity {
+  width: 70px;
+  min-height: 32px;
+  padding: 0 8px;
+  border: 1px solid #ccd8c6;
+  border-radius: 9px;
+  color: var(--ink);
+  background: #fff;
+  font-weight: 850;
+}
+
+.garden-planner-quantity:focus {
+  outline: 3px solid rgba(223, 123, 79, 0.22);
+  border-color: rgba(39, 88, 58, 0.45);
+}
+
+.garden-planner-action-cell {
+  min-width: 136px;
+}
+
+.garden-planner-action-cell a,
+.garden-planner-action-cell button {
+  margin: 0 4px 5px 0;
 }
 
 .screener-controls {
@@ -7098,11 +7404,14 @@ input.calendar-filter-search[type="search"]:focus {
 
 @media (max-width: 1040px) {
   .screener-range-grid,
-  .screener-supply-list {
+  .screener-supply-list,
+  .garden-planner-warning-list,
+  .garden-planner-supply-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .screener-portfolio-stats {
+  .screener-portfolio-stats,
+  .garden-planner-stats {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
@@ -7148,11 +7457,14 @@ input.calendar-filter-search[type="search"]:focus {
 
 @media (max-width: 760px) {
   .screener-range-grid,
-  .screener-supply-list {
+  .screener-supply-list,
+  .garden-planner-warning-list,
+  .garden-planner-supply-list {
     grid-template-columns: 1fr;
   }
 
-  .screener-compare-head {
+  .screener-compare-head,
+  .garden-planner-section-head {
     align-items: flex-start;
     flex-direction: column;
   }
@@ -7162,16 +7474,21 @@ input.calendar-filter-search[type="search"]:focus {
     flex-direction: column;
   }
 
-  .screener-portfolio-actions {
+  .screener-portfolio-actions,
+  .garden-planner-actions {
     justify-content: flex-start;
     width: 100%;
   }
 
-  .screener-portfolio-actions button {
+  .screener-portfolio-actions button,
+  .garden-planner-actions button {
     flex: 1 1 132px;
   }
 
-  .screener-portfolio-stats {
+  .screener-portfolio-stats,
+  .garden-planner-stats {
+    min-width: 0;
+    width: 100%;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -7181,6 +7498,7 @@ input.calendar-filter-search[type="search"]:focus {
   .calendar-view,
   .zone-map-view,
   .screener-view,
+  .garden-planner-view,
   .blog-view,
   .public-notes,
   .home-hubs,
@@ -7202,6 +7520,7 @@ input.calendar-filter-search[type="search"]:focus {
   .zone-map-tools,
   .zone-map-zone-detail,
   .screener-header,
+  .garden-planner-header,
   .blog-hero,
   .article-list,
   .public-notes,
@@ -7689,11 +8008,13 @@ input.calendar-filter-search[type="search"]:focus {
     text-align: left;
   }
 
-  .screener-view {
+  .screener-view,
+  .garden-planner-view {
     padding-top: 14px;
   }
 
-  .screener-header h1 {
+  .screener-header h1,
+  .garden-planner-header h1 {
     font-size: 2.3rem;
   }
 
@@ -7955,6 +8276,74 @@ input.calendar-filter-search[type="search"]:focus {
     margin: 0 0 6px;
   }
 
+  .garden-planner-table-wrap {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .garden-planner-table table,
+  .garden-planner-table tbody,
+  .garden-planner-table tr,
+  .garden-planner-table td {
+    display: block;
+  }
+
+  .garden-planner-table table {
+    min-width: 0;
+  }
+
+  .garden-planner-table thead {
+    display: none;
+  }
+
+  .garden-planner-table tbody {
+    display: grid;
+    gap: 10px;
+  }
+
+  .garden-planner-table tr {
+    padding: 14px;
+    border: 1px solid #dfe6d8;
+    border-radius: 16px;
+    background: rgba(255, 253, 248, 0.96);
+    box-shadow: 0 10px 24px rgba(31, 45, 35, 0.08);
+  }
+
+  .garden-planner-table td {
+    display: grid;
+    grid-template-columns: minmax(92px, 0.34fr) minmax(0, 1fr);
+    gap: 10px;
+    padding: 8px 0;
+    border: 0;
+    border-top: 1px solid #edf1e8;
+  }
+
+  .garden-planner-table td:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .garden-planner-table td + td {
+    border-left: 0;
+  }
+
+  .garden-planner-table td::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font-size: 0.68rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .garden-planner-action-cell a,
+  .garden-planner-action-cell button {
+    width: 100%;
+    margin: 0 0 6px;
+  }
+
   .blog-hero {
     align-items: start;
   }
@@ -8078,6 +8467,10 @@ input.calendar-filter-search[type="search"]:focus {
   .zone-map-zone-detail,
   .screener-metrics,
   .screener-portfolio-stats,
+  .garden-planner-stats,
+  .garden-planner-actions,
+  .garden-planner-warning-list,
+  .garden-planner-supply-list,
   .screener-controls {
     grid-template-columns: 1fr;
   }

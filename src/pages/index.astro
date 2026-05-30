@@ -127,6 +127,16 @@ const webAppJsonLd = {
           type="button"
           role="tab"
           aria-selected="false"
+          aria-controls="garden-planner-view"
+          data-view="garden-planner"
+        >
+          Garden planner
+        </button>
+        <button
+          class="site-tab"
+          type="button"
+          role="tab"
+          aria-selected="false"
           aria-controls="calendar-view"
           data-view="calendar"
         >
@@ -1179,6 +1189,7 @@ const webAppJsonLd = {
               </div>
               <div class="screener-portfolio-actions">
                 <button id="screener-portfolio-filter" type="button">Show portfolio</button>
+                <button id="screener-portfolio-open-planner" type="button">Open planner</button>
                 <button id="screener-portfolio-compare" type="button">Compare top 5</button>
                 <button id="screener-portfolio-export" type="button">Export CSV</button>
                 <button id="screener-portfolio-clear" type="button">Clear</button>
@@ -1235,6 +1246,54 @@ const webAppJsonLd = {
             </table>
           </div>
           <p id="screener-empty" class="screener-empty" hidden>No plants match those filters.</p>
+        </div>
+      </section>
+
+      <section
+        id="garden-planner-view"
+        class="view-panel garden-planner-view"
+        role="tabpanel"
+        data-view-panel="garden-planner"
+        aria-labelledby="garden-planner-title"
+        hidden
+      >
+        <div class="garden-planner-shell">
+          <header class="garden-planner-header">
+            <div>
+              <p class="eyebrow">Saved garden workspace</p>
+              <h1 id="garden-planner-title">Garden planner</h1>
+              <p>
+                A working shortlist from plants saved in the Screener, with quantities,
+                yield estimates, space, risks, and supply matches in one place.
+              </p>
+            </div>
+            <div id="garden-planner-stats" class="garden-planner-stats" aria-label="Garden planner summary"></div>
+          </header>
+
+          <div class="garden-planner-actions" aria-label="Garden planner actions">
+            <button id="garden-planner-open-screener" type="button">Add plants</button>
+            <button id="garden-planner-compare" type="button">Compare saved plants</button>
+            <button id="garden-planner-export" type="button">Export CSV</button>
+            <button id="garden-planner-clear" type="button">Clear garden</button>
+          </div>
+
+          <section
+            id="garden-planner-warnings"
+            class="garden-planner-warnings"
+            aria-labelledby="garden-planner-warnings-title"
+          ></section>
+
+          <section
+            id="garden-planner-table"
+            class="garden-planner-table"
+            aria-labelledby="garden-planner-table-title"
+          ></section>
+
+          <section
+            id="garden-planner-supplies"
+            class="garden-planner-supplies"
+            aria-labelledby="garden-planner-supplies-title"
+          ></section>
         </div>
       </section>
 

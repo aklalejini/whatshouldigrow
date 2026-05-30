@@ -11,6 +11,7 @@ let blogDataPromise = null;
 let zoneMapInitialized = false;
 let calendarInitialized = false;
 let screenerInitialized = false;
+let gardenPlannerInitialized = false;
 const dataUrls = {
   plants: "/data/plants.json",
   partners: "/data/affiliate-partners.json",
@@ -248,9 +249,18 @@ const screenerPortfolioNoteEl = document.getElementById("screener-portfolio-note
 const screenerPortfolioStatsEl = document.getElementById("screener-portfolio-stats");
 const screenerPortfolioTableEl = document.getElementById("screener-portfolio-table");
 const screenerPortfolioFilterEl = document.getElementById("screener-portfolio-filter");
+const screenerPortfolioOpenPlannerEl = document.getElementById("screener-portfolio-open-planner");
 const screenerPortfolioCompareEl = document.getElementById("screener-portfolio-compare");
 const screenerPortfolioExportEl = document.getElementById("screener-portfolio-export");
 const screenerPortfolioClearEl = document.getElementById("screener-portfolio-clear");
+const gardenPlannerStatsEl = document.getElementById("garden-planner-stats");
+const gardenPlannerWarningsEl = document.getElementById("garden-planner-warnings");
+const gardenPlannerTableEl = document.getElementById("garden-planner-table");
+const gardenPlannerSuppliesEl = document.getElementById("garden-planner-supplies");
+const gardenPlannerOpenScreenerEl = document.getElementById("garden-planner-open-screener");
+const gardenPlannerCompareEl = document.getElementById("garden-planner-compare");
+const gardenPlannerExportEl = document.getElementById("garden-planner-export");
+const gardenPlannerClearEl = document.getElementById("garden-planner-clear");
 const screenerSummaryEl = document.getElementById("screener-summary");
 const screenerEmptyEl = document.getElementById("screener-empty");
 const screenerVisibleCountEl = document.getElementById("screener-visible-count");
@@ -301,6 +311,7 @@ let screenerGroupedByType = false;
 let screenerVisibleLimit = 120;
 let screenerCompareIds = new Set();
 let screenerWatchlistIds = new Set();
+let gardenPlannerQuantities = {};
 let screenerLastFiltered = [];
 let calendarZoneData = null;
 let calendarFrost = null;
@@ -327,6 +338,7 @@ let zoneMapSelectedPlantOverlay = null;
 const screenerPageSize = 120;
 const screenerCompareLimit = 5;
 const screenerWatchlistStorageKey = "plantbyzip.screenerWatchlist.v1";
+const gardenPlannerQuantityStorageKey = "plantbyzip.gardenPlannerQuantities.v1";
 const screenerColumnPresets = {
   core: ["name", "type", "zone", "firstOutput", "yield", "difficulty", "data", "source", "profile"],
   yield: ["name", "type", "zone", "firstOutput", "yield", "yieldPerSpace", "score", "difficulty", "reliability", "data", "source", "profile"],
@@ -763,16 +775,33 @@ async function ensureScreenerReady() {
   }
 }
 
+async function ensureGardenPlannerReady() {
+  await ensureCoreData();
+  if (!screenerInitialized) {
+    initializeScreener();
+    screenerInitialized = true;
+  }
+  if (!gardenPlannerInitialized) {
+    initializeGardenPlanner();
+    gardenPlannerInitialized = true;
+  }
+  renderGardenPlanner();
+}
+
 async function ensureViewReady(view) {
   try {
     if (view === "zone-map") await ensureZoneMapReady();
     if (view === "calendar") await ensureCalendarReady();
     if (view === "screener") await ensureScreenerReady();
+    if (view === "garden-planner") await ensureGardenPlannerReady();
     if (view === "blog" && articleSearchEl.value.trim()) await filterArticles();
   } catch (error) {
     console.warn("Plant by ZIP data could not load", error);
     if (view === "calendar") calendarStatusEl.textContent = "Plant data could not load. Refresh and try again.";
     if (view === "screener") screenerSummaryEl.textContent = "Plant data could not load. Refresh and try again.";
+    if (view === "garden-planner" && gardenPlannerTableEl) {
+      gardenPlannerTableEl.innerHTML = `<div class="garden-planner-empty"><strong>Plant data could not load.</strong><span>Refresh and try again.</span></div>`;
+    }
     if (view === "zone-map") zoneMapStatusEl.textContent = "Plant data could not load. Refresh and try again.";
   }
 }
@@ -783,7 +812,7 @@ tabButtons.forEach((button) => {
     if (view === "calendar") syncCalendarZipFromMatcher();
     if (view === "zone-map") syncZoneMapZipFromMatcher();
     setActiveView(view);
-    const viewHash = { blog: "#blog", calendar: "#calendar", screener: "#screener", "zone-map": "#zone-map" };
+    const viewHash = { blog: "#blog", calendar: "#calendar", screener: "#screener", "garden-planner": "#garden-planner", "zone-map": "#zone-map" };
     const hash = viewHash[view] ?? window.location.pathname;
     history.replaceState(null, "", hash);
     trackEvent(view === "calendar" ? "calendar_view" : "tool_tab_view", { tool: view, source: "tab" });
@@ -798,16 +827,19 @@ const initialBlogQuery = initialParams.get("q");
 const hasInitialScreenerQuery = screenerParamKeys.some((key) => initialParams.has(key));
 const hasInitialMatcherQuery = matcherParamKeys.some((key) => initialParams.has(key));
 const initialWantsScreener = hasInitialScreenerQuery || window.location.hash === "#screener" || window.location.hash === "#screener-view";
+const initialWantsGardenPlanner = window.location.hash === "#garden-planner" || window.location.hash === "#garden-planner-view";
 const initialWantsCalendar = window.location.hash === "#calendar" || window.location.hash === "#calendar-view";
 const initialWantsZoneMap = window.location.hash === "#zone-map" || window.location.hash === "#zone-map-view";
 const initialWantsBlog = Boolean(initialBlogQuery) || window.location.hash === "#blog" || window.location.hash === "#blog-view";
-const initialWantsMatcher = hasInitialMatcherQuery && !initialWantsScreener && !initialWantsCalendar && !initialWantsZoneMap && !initialWantsBlog;
+const initialWantsMatcher = hasInitialMatcherQuery && !initialWantsScreener && !initialWantsGardenPlanner && !initialWantsCalendar && !initialWantsZoneMap && !initialWantsBlog;
 if (initialBlogQuery) {
   articleSearchEl.value = initialBlogQuery;
   filterArticles();
 }
 if (initialWantsScreener) {
   setActiveView("screener");
+} else if (initialWantsGardenPlanner) {
+  setActiveView("garden-planner");
 } else if (initialWantsCalendar) {
   setActiveView("calendar");
 } else if (initialWantsZoneMap) {
@@ -5619,17 +5651,500 @@ function renderScreenerPortfolioPanel() {
   syncScreenerCompareInputs();
 }
 
+function gardenPlannerQuantityForPlant(plantId) {
+  const value = Number(gardenPlannerQuantities[plantId]);
+  if (!Number.isFinite(value) || value < 1) return 1;
+  return Math.round(clamp(value, 1, 999));
+}
+
+function normalizeGardenPlannerQuantities() {
+  const normalized = {};
+  screenerWatchlistIds.forEach((plantId) => {
+    normalized[plantId] = gardenPlannerQuantityForPlant(plantId);
+  });
+  gardenPlannerQuantities = normalized;
+}
+
+function loadGardenPlannerQuantities() {
+  try {
+    const raw = localStorage.getItem(gardenPlannerQuantityStorageKey);
+    const parsed = raw ? JSON.parse(raw) : {};
+    gardenPlannerQuantities = Object.fromEntries(
+      Object.entries(parsed)
+        .filter(([plantId]) => plantById(plantId))
+        .map(([plantId, value]) => [plantId, Math.round(clamp(Number(value), 1, 999))])
+        .filter(([, value]) => Number.isFinite(value))
+    );
+  } catch {
+    gardenPlannerQuantities = {};
+  }
+  normalizeGardenPlannerQuantities();
+}
+
+function saveGardenPlannerQuantities() {
+  try {
+    localStorage.setItem(gardenPlannerQuantityStorageKey, JSON.stringify(gardenPlannerQuantities));
+  } catch {
+    // Keep the in-memory planner usable even if storage is unavailable.
+  }
+}
+
+function setGardenPlannerQuantity(plantId, quantity) {
+  if (!screenerWatchlistIds.has(plantId)) return false;
+  const nextQuantity = Math.round(clamp(Number(quantity), 1, 999));
+  if (!Number.isFinite(nextQuantity)) return false;
+  if (gardenPlannerQuantityForPlant(plantId) === nextQuantity) return false;
+  gardenPlannerQuantities[plantId] = nextQuantity;
+  saveGardenPlannerQuantities();
+  return true;
+}
+
+function gardenPlannerEntries() {
+  normalizeGardenPlannerQuantities();
+  return screenerPortfolioEntries().map(({ plant, metrics }) => ({
+    plant,
+    metrics,
+    quantity: gardenPlannerQuantityForPlant(plant.id)
+  }));
+}
+
+function gardenEntryYield(entry) {
+  const yieldValue = yieldMidpoint(entry.metrics);
+  return Number.isFinite(yieldValue) ? yieldValue * entry.quantity : null;
+}
+
+function gardenEntrySpace(entry) {
+  const density = densityMidpoint(entry.metrics);
+  return Number.isFinite(density) && density > 0 ? (entry.quantity / density) * 100 : null;
+}
+
+function weightedGardenAverage(entries, reader) {
+  let totalWeight = 0;
+  let total = 0;
+  entries.forEach((entry) => {
+    const value = reader(entry);
+    if (!Number.isFinite(value)) return;
+    total += value * entry.quantity;
+    totalWeight += entry.quantity;
+  });
+  return totalWeight > 0 ? total / totalWeight : null;
+}
+
+function gardenPlannerRiskEntries(entries) {
+  return entries.filter(({ plant, metrics }) => {
+    const screening = screeningProfile(plant, metrics);
+    return metrics.riskLevel === "elevated"
+      || metrics.difficultyScore >= 4
+      || screening.pestPressure === "Elevated"
+      || screening.diseasePressure === "Elevated";
+  });
+}
+
+function gardenPlannerStats(entries) {
+  const totalPlants = sumNumber(entries.map((entry) => entry.quantity));
+  const totalYield = sumNumber(entries.map(gardenEntryYield));
+  const totalSpace = sumNumber(entries.map(gardenEntrySpace));
+  const averageFirst = weightedGardenAverage(entries, ({ metrics }) => firstOutputYears(metrics));
+  const riskCount = gardenPlannerRiskEntries(entries).length;
+  return {
+    totalPlants,
+    totalYield,
+    totalSpace,
+    averageFirst,
+    riskCount
+  };
+}
+
+function renderGardenPlannerStats(entries) {
+  if (!entries.length) {
+    return `
+      <div>
+        <strong>0</strong>
+        <span>saved plants</span>
+      </div>
+      <div>
+        <strong>-</strong>
+        <span>plant count</span>
+      </div>
+      <div>
+        <strong>-</strong>
+        <span>est. lb/year</span>
+      </div>
+      <div>
+        <strong>-</strong>
+        <span>est. sq ft</span>
+      </div>
+      <div>
+        <strong>-</strong>
+        <span>avg first output</span>
+      </div>
+      <div>
+        <strong>-</strong>
+        <span>risk watch</span>
+      </div>
+    `;
+  }
+  const stats = gardenPlannerStats(entries);
+  return `
+    <div>
+      <strong>${entries.length}</strong>
+      <span>saved variet${entries.length === 1 ? "y" : "ies"}</span>
+    </div>
+    <div>
+      <strong>${escapeHtml(formatCompactNumber(stats.totalPlants, 0))}</strong>
+      <span>plant count</span>
+    </div>
+    <div>
+      <strong>${escapeHtml(formatCompactNumber(stats.totalYield, 1))}</strong>
+      <span>est. lb/year or season</span>
+    </div>
+    <div>
+      <strong>${escapeHtml(formatCompactNumber(stats.totalSpace, 1))}</strong>
+      <span>estimated sq ft</span>
+    </div>
+    <div>
+      <strong>${escapeHtml(formatCompactNumber(stats.averageFirst, 1))}</strong>
+      <span>avg years to first output</span>
+    </div>
+    <div>
+      <strong>${stats.riskCount}</strong>
+      <span>plants needing closer review</span>
+    </div>
+  `;
+}
+
+function gardenPlannerSignalCards(entries) {
+  if (!entries.length) {
+    return [{
+      title: "No saved plants yet",
+      text: "Save plants from the Screener to start a garden plan.",
+      tone: "neutral"
+    }];
+  }
+  const supportEntries = entries.filter(({ plant, metrics }) => {
+    const support = screeningProfile(plant, metrics).support;
+    return support && support !== "Usually none";
+  });
+  const pollinationEntries = entries.filter(({ plant, metrics }) => {
+    const pollination = screeningProfile(plant, metrics).pollination;
+    return ["Partner often needed", "Verify cultivar"].includes(pollination);
+  });
+  const highWaterEntries = entries.filter(({ plant }) => plant.water === "high");
+  const annualEntries = entries.filter(({ plant }) => plant.type.includes("annual"));
+  const perennialEntries = entries.filter(({ plant }) => !plant.type.includes("annual"));
+  const riskEntries = gardenPlannerRiskEntries(entries);
+  const cards = [];
+  if (riskEntries.length) {
+    cards.push({
+      title: "Risk watch",
+      text: `${riskEntries.length} saved plant${riskEntries.length === 1 ? "" : "s"} deserve closer pest, disease, or maintenance review.`,
+      tone: "watch"
+    });
+  }
+  if (supportEntries.length) {
+    cards.push({
+      title: "Support needs",
+      text: `${supportEntries.length} plant${supportEntries.length === 1 ? "" : "s"} likely need staking, cages, or trellis space.`,
+      tone: "neutral"
+    });
+  }
+  if (pollinationEntries.length) {
+    cards.push({
+      title: "Pollination check",
+      text: `${pollinationEntries.length} fruiting plant${pollinationEntries.length === 1 ? "" : "s"} may need a partner cultivar or cultivar-specific verification.`,
+      tone: "neutral"
+    });
+  }
+  if (highWaterEntries.length >= 2) {
+    cards.push({
+      title: "Water planning",
+      text: `${highWaterEntries.length} high-water plant${highWaterEntries.length === 1 ? "" : "s"} are saved. Drip irrigation or mulch may matter more here.`,
+      tone: "neutral"
+    });
+  }
+  if (annualEntries.length && perennialEntries.length) {
+    cards.push({
+      title: "Good time mix",
+      text: "The list includes quick annual crops and longer-term perennial structure.",
+      tone: "positive"
+    });
+  } else if (!annualEntries.length && perennialEntries.length) {
+    cards.push({
+      title: "Slow-build list",
+      text: "Most saved plants are longer-term. Add a quick crop if first-season harvest matters.",
+      tone: "neutral"
+    });
+  }
+  if (!cards.length) {
+    cards.push({
+      title: "Plan looks balanced",
+      text: "No obvious support, water, pollination, or elevated risk signals stand out from the saved list.",
+      tone: "positive"
+    });
+  }
+  return cards.slice(0, 4);
+}
+
+function renderGardenPlannerSignals(entries) {
+  const cards = gardenPlannerSignalCards(entries);
+  return `
+    <div class="garden-planner-section-head">
+      <div>
+        <span>Planning signals</span>
+        <h2 id="garden-planner-warnings-title">What to check next</h2>
+      </div>
+    </div>
+    <div class="garden-planner-warning-list">
+      ${cards.map((card) => `
+        <article class="garden-planner-warning is-${escapeHtml(card.tone)}">
+          <strong>${escapeHtml(card.title)}</strong>
+          <p>${escapeHtml(card.text)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderGardenPlannerTableRow(entry) {
+  const { plant, metrics, quantity } = entry;
+  const screening = screeningProfile(plant, metrics);
+  const yieldValue = gardenEntryYield(entry);
+  const spaceValue = gardenEntrySpace(entry);
+  return `
+    <tr>
+      <td class="garden-planner-name" data-label="Plant">
+        <a href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a>
+        <span>${escapeHtml(plant.type)} - zone ${escapeHtml(plant.zones[0])}-${escapeHtml(plant.zones[1])}</span>
+      </td>
+      <td data-label="Qty">
+        <input
+          class="garden-planner-quantity"
+          type="number"
+          min="1"
+          max="999"
+          step="1"
+          value="${escapeHtml(quantity)}"
+          aria-label="Quantity for ${escapeHtml(plant.name)}"
+          data-garden-quantity="${escapeHtml(plant.id)}"
+        />
+      </td>
+      <td data-label="First output">
+        <strong>${escapeHtml(metricDisplayValue(metrics.display?.firstOutput))}</strong>
+        <span>${escapeHtml(metrics.horizonLabel ?? "")}</span>
+      </td>
+      <td data-label="Est. yield">
+        <strong>${escapeHtml(formatCompactNumber(yieldValue, 1))}</strong>
+        <span>${escapeHtml(metricDisplayValue(metrics.display?.yieldLbs, "lb estimate unavailable"))}</span>
+      </td>
+      <td data-label="Est. space">
+        <strong>${escapeHtml(formatCompactNumber(spaceValue, 1))}</strong>
+        <span>sq ft estimate</span>
+      </td>
+      <td data-label="Sun / water">
+        <strong>${escapeHtml(plant.sun.map(sentenceCase).join(", "))}</strong>
+        <span>${escapeHtml(sentenceCase(plant.water))} water</span>
+      </td>
+      <td data-label="Risk">
+        <strong>${escapeHtml(metrics.display?.difficulty ?? "-")}</strong>
+        <span>Reliability ${escapeHtml(metrics.display?.reliability ?? "-")}</span>
+      </td>
+      <td data-label="Planning cue">
+        <strong>${escapeHtml(screening.warning)}</strong>
+        <span>${escapeHtml(screening.support)}; ${escapeHtml(screening.pollination)}</span>
+      </td>
+      <td data-label="Actions" class="garden-planner-action-cell">
+        <a href="${plantPagePath(plant)}">Profile</a>
+        <button type="button" data-garden-remove="${escapeHtml(plant.id)}">Remove</button>
+      </td>
+    </tr>
+  `;
+}
+
+function renderGardenPlannerTable(entries) {
+  if (!entries.length) {
+    return `
+      <div class="garden-planner-empty">
+        <strong>No saved plants yet.</strong>
+        <span>Start in the Screener and use Save to garden on the plants you want to compare.</span>
+      </div>
+    `;
+  }
+  return `
+    <div class="garden-planner-section-head">
+      <div>
+        <span>Saved list</span>
+        <h2 id="garden-planner-table-title">Plant quantities and numbers</h2>
+      </div>
+    </div>
+    <div class="garden-planner-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Plant</th>
+            <th scope="col">Qty</th>
+            <th scope="col">First output</th>
+            <th scope="col">Est. yield</th>
+            <th scope="col">Est. space</th>
+            <th scope="col">Sun / water</th>
+            <th scope="col">Risk</th>
+            <th scope="col">Planning cue</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${entries.map(renderGardenPlannerTableRow).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderGardenPlannerSupplies(entries) {
+  if (!entries.length) return "";
+  const products = productsForPlants(entries.map(({ plant }) => plant), 8);
+  if (!products.length) return "";
+  return `
+    <div class="garden-planner-section-head">
+      <div>
+        <span>Supply matches</span>
+        <h2 id="garden-planner-supplies-title">Useful gear for this saved list</h2>
+        <p>Product links may earn a commission and do not affect plant rankings.</p>
+      </div>
+    </div>
+    <div class="garden-planner-supply-list">
+      ${products.map((product) => `
+        <article class="garden-planner-supply-card">
+          <span>${escapeHtml(product.category)} - ${escapeHtml(product.timing ?? "Planning")}</span>
+          <strong>${escapeHtml(product.name)}</strong>
+          <p>${escapeHtml(product.use ?? "")}</p>
+          ${productLink(product, "garden_planner_supply", "View")}
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderGardenPlanner() {
+  if (!gardenPlannerStatsEl || !gardenPlannerWarningsEl || !gardenPlannerTableEl || !gardenPlannerSuppliesEl) return;
+  const entries = gardenPlannerEntries();
+  renderGardenPlannerSummarySections(entries);
+  gardenPlannerTableEl.innerHTML = renderGardenPlannerTable(entries);
+}
+
+function renderGardenPlannerSummarySections(entries = gardenPlannerEntries()) {
+  if (!gardenPlannerStatsEl || !gardenPlannerWarningsEl || !gardenPlannerSuppliesEl) return;
+  gardenPlannerStatsEl.innerHTML = renderGardenPlannerStats(entries);
+  gardenPlannerWarningsEl.innerHTML = renderGardenPlannerSignals(entries);
+  const supplyMarkup = renderGardenPlannerSupplies(entries);
+  gardenPlannerSuppliesEl.innerHTML = supplyMarkup;
+  gardenPlannerSuppliesEl.hidden = !supplyMarkup;
+  if (gardenPlannerCompareEl) gardenPlannerCompareEl.disabled = entries.length === 0;
+  if (gardenPlannerExportEl) gardenPlannerExportEl.disabled = entries.length === 0;
+  if (gardenPlannerClearEl) gardenPlannerClearEl.disabled = entries.length === 0;
+}
+
+function gardenPlannerCsv(entries) {
+  const headers = [
+    "Plant",
+    "Type",
+    "Quantity",
+    "Zone range",
+    "First output",
+    "Yield estimate",
+    "Estimated yield total",
+    "Estimated square feet",
+    "Sun",
+    "Water",
+    "Difficulty",
+    "Reliability",
+    "Planning cue",
+    "Profile URL"
+  ];
+  const rows = entries.map((entry) => {
+    const { plant, metrics, quantity } = entry;
+    const screening = screeningProfile(plant, metrics);
+    return [
+      plant.name,
+      plant.type,
+      quantity,
+      `${plant.zones[0]}-${plant.zones[1]}`,
+      metricDisplayValue(metrics.display?.firstOutput, ""),
+      metricDisplayValue(metrics.display?.yieldLbs, ""),
+      formatCompactNumber(gardenEntryYield(entry), 1, ""),
+      formatCompactNumber(gardenEntrySpace(entry), 1, ""),
+      plant.sun.map(sentenceCase).join("; "),
+      sentenceCase(plant.water),
+      metrics.display?.difficulty ?? "",
+      metrics.display?.reliability ?? "",
+      `${screening.warning}; ${screening.support}; ${screening.pollination}`,
+      `${window.location.origin}${plantPagePath(plant)}`
+    ];
+  });
+  return [headers, ...rows].map((row) => row.map(quoteCsvValue).join(",")).join("\n");
+}
+
+function exportGardenPlanner() {
+  const entries = gardenPlannerEntries();
+  if (!entries.length) return;
+  const blob = new Blob([gardenPlannerCsv(entries)], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `plantbyzip-garden-planner-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function showScreenerTab() {
+  setActiveView("screener");
+  history.replaceState(null, "", "#screener");
+}
+
+function showGardenPlannerTab() {
+  setActiveView("garden-planner");
+  history.replaceState(null, "", "#garden-planner");
+}
+
+function compareGardenPlannerPlants() {
+  const portfolioIds = screenerPortfolioPlants().slice(0, screenerCompareLimit).map((plant) => plant.id);
+  if (!portfolioIds.length) return;
+  screenerCompareIds = new Set(portfolioIds);
+  showScreenerTab();
+  renderScreener();
+  requestAnimationFrame(() => {
+    screenerComparePanelEl?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
+
+function clearGardenPlanner() {
+  if (!screenerWatchlistIds.size) return;
+  if (!window.confirm("Clear all plants from this local garden plan?")) return;
+  screenerWatchlistIds = new Set();
+  gardenPlannerQuantities = {};
+  saveScreenerWatchlist();
+  saveGardenPlannerQuantities();
+  if (screenerFlagEl?.value === "watchlist") screenerFlagEl.value = "";
+  renderScreener();
+  renderGardenPlanner();
+}
+
 function setScreenerPortfolioMembership(plantId, shouldSave) {
   const plant = plantById(plantId);
   if (!plant) return false;
   const wasSaved = screenerWatchlistIds.has(plantId);
   if (shouldSave) {
     screenerWatchlistIds.add(plantId);
+    if (!gardenPlannerQuantities[plantId]) gardenPlannerQuantities[plantId] = 1;
   } else {
     screenerWatchlistIds.delete(plantId);
+    delete gardenPlannerQuantities[plantId];
   }
   if (wasSaved === screenerWatchlistIds.has(plantId)) return false;
   saveScreenerWatchlist();
+  saveGardenPlannerQuantities();
+  if (gardenPlannerInitialized) renderGardenPlanner();
   return true;
 }
 
@@ -6044,8 +6559,73 @@ function applyScreenerSavedScreen(screenId) {
   });
 }
 
+function initializeGardenPlanner() {
+  loadGardenPlannerQuantities();
+  gardenPlannerOpenScreenerEl?.addEventListener("click", () => {
+    showScreenerTab();
+    trackEvent("tool_tab_view", { tool: "screener", source: "garden_planner_add" });
+  });
+  gardenPlannerCompareEl?.addEventListener("click", () => {
+    compareGardenPlannerPlants();
+    trackEvent("filter_apply", {
+      tool: "garden-planner",
+      action: "compare_saved",
+      compare_count: screenerCompareIds.size
+    });
+  });
+  gardenPlannerExportEl?.addEventListener("click", () => {
+    exportGardenPlanner();
+    trackEvent("filter_apply", {
+      tool: "garden-planner",
+      action: "export",
+      watchlist_count: screenerWatchlistIds.size
+    });
+  });
+  gardenPlannerClearEl?.addEventListener("click", () => {
+    clearGardenPlanner();
+    trackEvent("filter_apply", {
+      tool: "garden-planner",
+      action: "clear"
+    });
+  });
+  gardenPlannerTableEl?.addEventListener("input", (event) => {
+    if (!event.target.classList.contains("garden-planner-quantity")) return;
+    if (setGardenPlannerQuantity(event.target.dataset.gardenQuantity, event.target.value)) {
+      renderGardenPlannerSummarySections();
+    }
+  });
+  gardenPlannerTableEl?.addEventListener("change", (event) => {
+    if (!event.target.classList.contains("garden-planner-quantity")) return;
+    const plantId = event.target.dataset.gardenQuantity;
+    setGardenPlannerQuantity(plantId, event.target.value);
+    event.target.value = gardenPlannerQuantityForPlant(plantId);
+    renderGardenPlannerSummarySections();
+    trackEvent("filter_apply", {
+      tool: "garden-planner",
+      action: "quantity_change",
+      watchlist_count: screenerWatchlistIds.size
+    });
+  });
+  gardenPlannerTableEl?.addEventListener("click", (event) => {
+    const removeButton = event.target.closest("[data-garden-remove]");
+    if (!removeButton) return;
+    const plantId = removeButton.dataset.gardenRemove;
+    setScreenerPortfolioMembership(plantId, false);
+    if (screenerFlagEl?.value === "watchlist" && screenerWatchlistIds.size === 0) screenerFlagEl.value = "";
+    renderScreener();
+    renderGardenPlanner();
+    trackEvent("filter_apply", {
+      tool: "garden-planner",
+      action: "remove",
+      watchlist_count: screenerWatchlistIds.size
+    });
+  });
+  renderGardenPlanner();
+}
+
 function initializeScreener() {
   loadScreenerWatchlist();
+  loadGardenPlannerQuantities();
   const typeCounts = plants.reduce((counts, plant) => {
     counts.set(plant.type, (counts.get(plant.type) ?? 0) + 1);
     return counts;
@@ -6181,6 +6761,10 @@ function initializeScreener() {
       compare_count: screenerCompareIds.size
     });
   });
+  screenerPortfolioOpenPlannerEl?.addEventListener("click", () => {
+    showGardenPlannerTab();
+    trackEvent("tool_tab_view", { tool: "garden-planner", source: "screener_portfolio" });
+  });
   screenerPortfolioFilterEl?.addEventListener("click", () => {
     if (!screenerWatchlistIds.size) return;
     screenerFlagEl.value = "watchlist";
@@ -6205,10 +6789,13 @@ function initializeScreener() {
     if (!screenerWatchlistIds.size) return;
     if (!window.confirm("Clear all plants from this local portfolio?")) return;
     screenerWatchlistIds = new Set();
+    gardenPlannerQuantities = {};
     saveScreenerWatchlist();
+    saveGardenPlannerQuantities();
     if (screenerFlagEl.value === "watchlist") screenerFlagEl.value = "";
     writeScreenerUrl();
     renderScreener();
+    if (gardenPlannerInitialized) renderGardenPlanner();
     trackEvent("filter_apply", {
       tool: "screener",
       action: "portfolio_clear"
