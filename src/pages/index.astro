@@ -1271,11 +1271,41 @@ const webAppJsonLd = {
           </header>
 
           <div class="garden-planner-actions" aria-label="Garden planner actions">
-            <button id="garden-planner-open-screener" type="button">Add plants</button>
             <button id="garden-planner-compare" type="button">Compare saved plants</button>
             <button id="garden-planner-export" type="button">Export CSV</button>
             <button id="garden-planner-clear" type="button">Clear garden</button>
           </div>
+
+          <section
+            id="garden-planner-add"
+            class="garden-planner-add"
+            aria-labelledby="garden-planner-add-title"
+          >
+            <div class="garden-planner-section-head">
+              <div>
+                <p class="eyebrow">Add plants</p>
+                <h2 id="garden-planner-add-title">Quick add plants</h2>
+              </div>
+              <p>Search by plant name, type, trait, or crop note.</p>
+            </div>
+            <div class="garden-planner-add-tools">
+              <label>
+                <span>Quick search</span>
+                <input
+                  id="garden-planner-search"
+                  type="search"
+                  placeholder="Search tomato, blueberry, basil..."
+                  autocomplete="off"
+                />
+              </label>
+              <button id="garden-planner-open-screener" type="button">Full plant listing</button>
+            </div>
+            <div
+              id="garden-planner-search-results"
+              class="garden-planner-search-results"
+              aria-live="polite"
+            ></div>
+          </section>
 
           <section
             id="garden-planner-settings"

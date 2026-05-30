@@ -269,6 +269,8 @@ const gardenPlannerSettingsStatusEl = document.getElementById("garden-planner-se
 const gardenPlannerSpaceEl = document.getElementById("garden-planner-space");
 const gardenPlannerTimelineEl = document.getElementById("garden-planner-timeline");
 const gardenPlannerComparePanelEl = document.getElementById("garden-planner-compare-panel");
+const gardenPlannerSearchEl = document.getElementById("garden-planner-search");
+const gardenPlannerSearchResultsEl = document.getElementById("garden-planner-search-results");
 const gardenPlannerTableEl = document.getElementById("garden-planner-table");
 const gardenPlannerSuppliesEl = document.getElementById("garden-planner-supplies");
 const gardenPlannerOpenScreenerEl = document.getElementById("garden-planner-open-screener");
@@ -5850,6 +5852,97 @@ function gardenPlannerZoneData() {
   return { zone: gardenPlannerSettings.zone || "7b" };
 }
 
+function gardenPlannerSearchNormalize(value) {
+  return String(value ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function gardenPlannerPlantSearchText(plant) {
+  return gardenPlannerSearchNormalize([
+    plant.name,
+    plant.id,
+    plant.type,
+    plant.query,
+    plant.harvest,
+    plant.notes,
+    ...(plant.traits ?? []),
+    ...(plant.goals ?? [])
+  ].join(" "));
+}
+
+function gardenPlannerSearchScore(plant, terms, query) {
+  const name = gardenPlannerSearchNormalize(plant.name);
+  const type = gardenPlannerSearchNormalize(plant.type);
+  const haystack = gardenPlannerPlantSearchText(plant);
+  if (!terms.every((term) => haystack.includes(term))) return 0;
+  let score = 1;
+  if (name === query) score += 80;
+  if (name.startsWith(query)) score += 44;
+  if (name.includes(query)) score += 28;
+  if (type.includes(query)) score += 12;
+  terms.forEach((term) => {
+    if (name.split(" ").some((part) => part.startsWith(term))) score += 10;
+    if (type.split(" ").some((part) => part.startsWith(term))) score += 4;
+  });
+  return score;
+}
+
+function gardenPlannerSearchPlants(query) {
+  const normalized = gardenPlannerSearchNormalize(query);
+  if (!normalized) return [];
+  const terms = normalized.split(" ").filter(Boolean);
+  return plants
+    .map((plant) => ({ plant, score: gardenPlannerSearchScore(plant, terms, normalized) }))
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score || a.plant.name.localeCompare(b.plant.name))
+    .slice(0, 8)
+    .map((entry) => entry.plant);
+}
+
+function renderGardenPlannerSearchResult(plant) {
+  const saved = screenerWatchlistIds.has(plant.id);
+  const metrics = metricFor(plant);
+  const traits = (plant.traits ?? []).slice(0, 2);
+  return `
+    <article class="garden-planner-search-card">
+      <div>
+        <a href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a>
+        <span>${escapeHtml(plant.type)} - zone ${escapeHtml(plant.zones[0])}-${escapeHtml(plant.zones[1])} - ${escapeHtml(metricDisplayValue(metrics.display?.firstOutput))}</span>
+        ${traits.length ? `<p>${traits.map(escapeHtml).join("; ")}</p>` : ""}
+      </div>
+      <button
+        type="button"
+        data-garden-quick-add="${escapeHtml(plant.id)}"
+        ${saved ? "disabled" : ""}
+      >${saved ? "In garden" : "Save to garden"}</button>
+    </article>
+  `;
+}
+
+function renderGardenPlannerSearchResults() {
+  if (!gardenPlannerSearchEl || !gardenPlannerSearchResultsEl) return;
+  const query = gardenPlannerSearchEl.value.trim();
+  if (!query) {
+    gardenPlannerSearchResultsEl.innerHTML = `
+      <div class="garden-planner-search-empty">
+        <strong>Search plants to add them here.</strong>
+        <span>Use the full listing when you want filters, sorting, and the complete database.</span>
+      </div>
+    `;
+    return;
+  }
+  const results = gardenPlannerSearchPlants(query);
+  if (!results.length) {
+    gardenPlannerSearchResultsEl.innerHTML = `
+      <div class="garden-planner-search-empty">
+        <strong>No plants matched "${escapeHtml(query)}".</strong>
+        <span>Try a simpler crop name, plant type, or use the full listing.</span>
+      </div>
+    `;
+    return;
+  }
+  gardenPlannerSearchResultsEl.innerHTML = results.map(renderGardenPlannerSearchResult).join("");
+}
+
 function setGardenPlannerQuantity(plantId, quantity) {
   if (!screenerWatchlistIds.has(plantId)) return false;
   const nextQuantity = Math.round(clamp(Number(quantity), 1, 999));
@@ -6486,6 +6579,7 @@ function renderGardenPlanner() {
   const entries = gardenPlannerEntries();
   renderGardenPlannerSummarySections(entries);
   gardenPlannerTableEl.innerHTML = renderGardenPlannerTable(entries);
+  renderGardenPlannerSearchResults();
 }
 
 function renderGardenPlannerSummarySections(entries = gardenPlannerEntries()) {
@@ -6509,6 +6603,7 @@ function renderGardenPlannerSummarySections(entries = gardenPlannerEntries()) {
   }
   if (gardenPlannerExportEl) gardenPlannerExportEl.disabled = entries.length === 0;
   if (gardenPlannerClearEl) gardenPlannerClearEl.disabled = entries.length === 0;
+  renderGardenPlannerSearchResults();
 }
 
 function gardenPlannerCsv(entries) {
@@ -7062,7 +7157,26 @@ function initializeGardenPlanner() {
   });
   gardenPlannerOpenScreenerEl?.addEventListener("click", () => {
     showScreenerTab();
-    trackEvent("tool_tab_view", { tool: "screener", source: "garden_planner_add" });
+    trackEvent("tool_tab_view", { tool: "screener", source: "garden_planner_full_listing" });
+  });
+  gardenPlannerSearchEl?.addEventListener("input", () => {
+    renderGardenPlannerSearchResults();
+  });
+  gardenPlannerSearchResultsEl?.addEventListener("click", (event) => {
+    const addButton = event.target.closest("[data-garden-quick-add]");
+    if (!addButton) return;
+    const plantId = addButton.dataset.gardenQuickAdd;
+    if (!plantId) return;
+    const changed = setScreenerPortfolioMembership(plantId, true);
+    if (changed) {
+      renderScreener();
+      renderGardenPlanner();
+      trackEvent("filter_apply", {
+        tool: "garden-planner",
+        action: "quick_add",
+        watchlist_count: screenerWatchlistIds.size
+      });
+    }
   });
   gardenPlannerCompareEl?.addEventListener("click", () => {
     compareGardenPlannerPlants();
