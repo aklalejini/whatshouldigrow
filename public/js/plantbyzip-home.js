@@ -6120,11 +6120,66 @@ function gardenPlannerBedFootprintLabel() {
   return `${count} bed${count === 1 ? "" : "s"} at ${formatCompactNumber(length, 1)} x ${formatCompactNumber(width, 1)} ft each`;
 }
 
+const gardenPlannerGridUnitCandidatesFt = [1 / 3, 0.5, 1, 2, 3, 4, 5, 10, 20, 50, 100, 250];
+
+function gardenPlannerGridUnitLabel(unitFt) {
+  if (unitFt < 1) {
+    const inches = unitFt * 12;
+    return `${formatCompactNumber(inches, inches % 1 ? 1 : 0)} x ${formatCompactNumber(inches, inches % 1 ? 1 : 0)} in`;
+  }
+  return `${formatCompactNumber(unitFt, unitFt % 1 ? 1 : 0)} x ${formatCompactNumber(unitFt, unitFt % 1 ? 1 : 0)} ft`;
+}
+
+function gardenPlannerBedBlockArrangement(length, width, count) {
+  if (count <= 1) return { columns: 1, rows: 1 };
+  let best = { columns: count, rows: 1, score: Number.POSITIVE_INFINITY };
+  for (let columns = 1; columns <= count; columns += 1) {
+    const rows = Math.ceil(count / columns);
+    const aspect = (columns * length) / Math.max(rows * width, 1);
+    const emptySlots = columns * rows - count;
+    const score = Math.abs(Math.log(Math.max(aspect, 0.1) / 1.8)) + (emptySlots / count) * 0.35;
+    if (score < best.score) best = { columns, rows, score };
+  }
+  return { columns: best.columns, rows: best.rows };
+}
+
+function gardenPlannerBedGrid() {
+  const length = cleanGardenPlannerNumber(gardenPlannerSettings.bedLength, 8, 1, 200);
+  const width = cleanGardenPlannerNumber(gardenPlannerSettings.bedWidth, 4, 1, 200);
+  const count = Math.round(cleanGardenPlannerNumber(gardenPlannerSettings.bedCount, 1, 1, 50));
+  const arrangement = gardenPlannerBedBlockArrangement(length, width, count);
+  const totalArea = length * width * count;
+  const displayLength = count === 1 ? length : arrangement.columns * length;
+  const displayWidth = count === 1 ? width : totalArea / Math.max(displayLength, 1);
+  const unitFt = gardenPlannerGridUnitCandidatesFt.find((candidate) => {
+    const columns = Math.ceil(displayLength / candidate);
+    const rows = Math.ceil(displayWidth / candidate);
+    return columns <= 64 && rows <= 44 && columns * rows <= 768;
+  }) ?? gardenPlannerGridUnitCandidatesFt[gardenPlannerGridUnitCandidatesFt.length - 1];
+  const columns = Math.max(1, Math.ceil(displayLength / unitFt));
+  const rows = Math.max(1, Math.ceil(displayWidth / unitFt));
+  const cellPx = clamp(Math.min(24, 760 / columns, 440 / rows), 8, 24);
+  const unitLabel = gardenPlannerGridUnitLabel(unitFt);
+  const scaleText = count === 1
+    ? `Scaled to a ${formatCompactNumber(length, 1)} x ${formatCompactNumber(width, 1)} ft bed.`
+    : `Scaled to ${formatCompactNumber(totalArea, 1)} sq ft total across ${count} beds; paths and gaps are not included.`;
+  return {
+    columns,
+    rows,
+    cellCount: columns * rows,
+    cellPx,
+    minHeightPx: rows <= 1 ? 72 : rows <= 3 ? 112 : 150,
+    aspect: columns / rows,
+    unitLabel,
+    scaleText,
+    blockColumns: arrangement.columns,
+    blockRows: arrangement.rows,
+    cellTitle: `Each grid square represents about ${unitLabel}.`
+  };
+}
+
 function gardenPlannerBedVisualData(entries, spaceStats) {
   const available = Number.isFinite(spaceStats.available) && spaceStats.available > 0 ? spaceStats.available : 0;
-  const used = Number.isFinite(spaceStats.used) && spaceStats.used > 0 ? spaceStats.used : 0;
-  const isOver = Number.isFinite(spaceStats.percentMax) && spaceStats.percentMax > 100;
-  const cellDenominator = isOver && used > 0 ? used : available;
   const items = entries
     .map((entry, index) => ({
       entry,
@@ -6139,26 +6194,7 @@ function gardenPlannerBedVisualData(entries, spaceStats) {
       color: gardenPlannerBedColor(visualIndex),
       percent: available > 0 ? (item.value / available) * 100 : null
     }));
-  const cells = [];
-  if (cellDenominator > 0) {
-    items.forEach((item) => {
-      const openCells = 100 - cells.length;
-      if (openCells <= 0) return;
-      let cellCount = Math.round((item.value / cellDenominator) * 100);
-      if (item.value > 0 && cellCount < 1) cellCount = 1;
-      cellCount = clamp(cellCount, 0, openCells);
-      for (let index = 0; index < cellCount; index += 1) cells.push(item);
-    });
-  }
-  while (isOver && items.length && cells.length < 100) cells.push(items[0]);
-  while (cells.length < 100) cells.push(null);
-  return { items, cells };
-}
-
-function gardenPlannerBedAspectRatio() {
-  const length = cleanGardenPlannerNumber(gardenPlannerSettings.bedLength, 8, 1, 200);
-  const width = cleanGardenPlannerNumber(gardenPlannerSettings.bedWidth, 4, 1, 200);
-  return clamp(length / width, 0.75, 2.5);
+  return { items };
 }
 
 function gardenPlannerPlantInitials(name) {
@@ -6195,9 +6231,10 @@ function gardenPlannerLayoutRadii(item, spaceStats) {
 
 function renderGardenPlannerBedVisual(entries, spaceStats) {
   const visual = gardenPlannerBedVisualData(entries, spaceStats);
+  const grid = gardenPlannerBedGrid();
   const percentLabel = formatCompactRange(spaceStats.percentMin, spaceStats.percentMax, 0, "%");
   const isOver = Number.isFinite(spaceStats.percentMax) && spaceStats.percentMax > 100;
-  const bedLabel = `${percentLabel} of planned bed space used. ${gardenPlannerBedFootprintLabel()}.`;
+  const bedLabel = `${percentLabel} of planned bed space used. ${gardenPlannerBedFootprintLabel()}. ${grid.cellTitle}`;
   const positionedItems = visual.items
     .map((item) => ({
       ...item,
@@ -6222,15 +6259,15 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
       </div>
       <div
         class="garden-planner-bed-canvas garden-planner-layout-board"
-        style="--bed-aspect: ${escapeHtml(formatCompactNumber(gardenPlannerBedAspectRatio(), 2, ""))}"
+        style="--bed-columns: ${escapeHtml(grid.columns)}; --bed-rows: ${escapeHtml(grid.rows)}; --bed-cell-size: ${escapeHtml(formatCompactNumber(grid.cellPx, 1, ""))}px; --bed-min-height: ${escapeHtml(formatCompactNumber(grid.minHeightPx, 0, ""))}px; --bed-aspect: ${escapeHtml(formatCompactNumber(grid.aspect, 2, ""))}; --bed-block-columns: ${escapeHtml(grid.blockColumns)}; --bed-block-rows: ${escapeHtml(grid.blockRows)}"
         role="group"
         aria-label="${escapeHtml(bedLabel)}"
         data-garden-layout-board
       >
-        ${Array.from({ length: 100 }).map(() => `
+        ${Array.from({ length: grid.cellCount }).map(() => `
           <span
             class="garden-planner-bed-cell"
-            title="Open bed space"
+            title="${escapeHtml(grid.cellTitle)}"
             aria-hidden="true"
           ></span>
         `).join("")}
@@ -6263,6 +6300,10 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
           </button>
         `).join("")}
         ${!placedCount ? `<div class="garden-planner-bed-hint">Open bed layout</div>` : ""}
+      </div>
+      <div class="garden-planner-bed-scale">
+        <span>Each square represents about ${escapeHtml(grid.unitLabel)}.</span>
+        <span>${escapeHtml(grid.scaleText)}</span>
       </div>
       <div class="garden-planner-bed-meta">
         <span>${escapeHtml(gardenPlannerBedFootprintLabel())}</span>

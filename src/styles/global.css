@@ -3064,21 +3064,24 @@ fieldset:nth-of-type(2) .segmented {
 .garden-planner-bed-canvas {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
-  gap: 4px;
+  grid-template-columns: repeat(var(--bed-columns, 12), minmax(0, 1fr));
+  gap: 2px;
   box-sizing: border-box;
-  width: 100%;
+  width: min(100%, calc(var(--bed-columns, 12) * var(--bed-cell-size, 20px)));
+  max-width: 100%;
   aspect-ratio: var(--bed-aspect, 2);
-  min-height: 220px;
-  padding: 10px;
+  min-height: var(--bed-min-height, 150px);
+  max-height: 540px;
+  margin-inline: auto;
+  padding: 8px;
   overflow: hidden;
   border: 1px solid #cfdcc6;
   border-radius: 16px;
   background:
-    linear-gradient(90deg, rgba(93, 126, 83, 0.08) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(93, 126, 83, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63, 86, 57, 0.16) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(63, 86, 57, 0.16) 1px, transparent 1px),
     #f7f3e8;
-  background-size: 24px 24px;
+  background-size: calc(100% / var(--bed-block-columns, 1)) calc(100% / var(--bed-block-rows, 1));
   isolation: isolate;
 }
 
@@ -3090,18 +3093,11 @@ fieldset:nth-of-type(2) .segmented {
 .garden-planner-bed-cell {
   position: relative;
   z-index: 1;
-  min-height: 16px;
+  min-width: 0;
+  min-height: 0;
   border: 1px solid rgba(190, 207, 180, 0.72);
-  border-radius: 5px;
+  border-radius: 3px;
   background: rgba(238, 246, 232, 0.88);
-}
-
-.garden-planner-bed-cell.is-filled {
-  border-color: rgba(28, 54, 36, 0.16);
-  background: var(--bed-fill);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.26),
-    0 2px 5px rgba(31, 45, 35, 0.08);
 }
 
 .garden-planner-bed-radius {
@@ -3214,6 +3210,21 @@ fieldset:nth-of-type(2) .segmented {
   color: #405246;
   font-size: 0.78rem;
   font-weight: 780;
+  line-height: 1.35;
+}
+
+.garden-planner-bed-scale {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border: 1px solid #dce7d5;
+  border-radius: 12px;
+  color: #405246;
+  background: #f6fbf1;
+  font-size: 0.76rem;
+  font-weight: 820;
   line-height: 1.35;
 }
 
@@ -9294,7 +9305,7 @@ input.calendar-filter-search[type="search"]:focus {
   }
 
   .garden-planner-bed-canvas {
-    min-height: 170px;
+    max-height: 430px;
   }
 
   .garden-planner-bed-legend {
