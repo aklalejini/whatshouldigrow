@@ -986,6 +986,10 @@ const webAppJsonLd = {
                 <strong id="screener-relation-count">0</strong>
                 <span>with pairings</span>
               </div>
+              <div>
+                <strong id="screener-portfolio-count">0</strong>
+                <span>portfolio</span>
+              </div>
             </div>
           </header>
 
@@ -1087,7 +1091,7 @@ const webAppJsonLd = {
                 <option value="native">Native flag</option>
                 <option value="low-water">Low water need</option>
                 <option value="pairings">Has pairings</option>
-                <option value="watchlist">Watchlist</option>
+                <option value="watchlist">Portfolio</option>
               </select>
             </label>
             <label class="screener-field" for="screener-partner">
@@ -1165,6 +1169,24 @@ const webAppJsonLd = {
               <button id="screener-reset" type="button">Reset filters</button>
             </div>
           </div>
+
+          <section id="screener-portfolio-panel" class="screener-portfolio-panel" aria-labelledby="screener-portfolio-title">
+            <div class="screener-portfolio-head">
+              <div>
+                <span>Plant portfolio</span>
+                <h2 id="screener-portfolio-title">Saved plant portfolio</h2>
+                <p id="screener-portfolio-note">Save plants from the table to compare the numbers that matter.</p>
+              </div>
+              <div class="screener-portfolio-actions">
+                <button id="screener-portfolio-filter" type="button">Show portfolio</button>
+                <button id="screener-portfolio-compare" type="button">Compare top 5</button>
+                <button id="screener-portfolio-export" type="button">Export CSV</button>
+                <button id="screener-portfolio-clear" type="button">Clear</button>
+              </div>
+            </div>
+            <div id="screener-portfolio-stats" class="screener-portfolio-stats" aria-label="Portfolio summary"></div>
+            <div id="screener-portfolio-table" class="screener-portfolio-table"></div>
+          </section>
 
           <section id="screener-compare-panel" class="screener-compare-panel" aria-labelledby="screener-compare-title" hidden>
             <div class="screener-compare-head">

@@ -242,11 +242,21 @@ const screenerCompareTitleEl = document.getElementById("screener-compare-title")
 const screenerCompareStatusEl = document.getElementById("screener-compare-status");
 const screenerCompareTableEl = document.getElementById("screener-compare-table");
 const screenerClearCompareEl = document.getElementById("screener-clear-compare");
+const screenerPortfolioPanelEl = document.getElementById("screener-portfolio-panel");
+const screenerPortfolioTitleEl = document.getElementById("screener-portfolio-title");
+const screenerPortfolioNoteEl = document.getElementById("screener-portfolio-note");
+const screenerPortfolioStatsEl = document.getElementById("screener-portfolio-stats");
+const screenerPortfolioTableEl = document.getElementById("screener-portfolio-table");
+const screenerPortfolioFilterEl = document.getElementById("screener-portfolio-filter");
+const screenerPortfolioCompareEl = document.getElementById("screener-portfolio-compare");
+const screenerPortfolioExportEl = document.getElementById("screener-portfolio-export");
+const screenerPortfolioClearEl = document.getElementById("screener-portfolio-clear");
 const screenerSummaryEl = document.getElementById("screener-summary");
 const screenerEmptyEl = document.getElementById("screener-empty");
 const screenerVisibleCountEl = document.getElementById("screener-visible-count");
 const screenerTypeCountEl = document.getElementById("screener-type-count");
 const screenerRelationCountEl = document.getElementById("screener-relation-count");
+const screenerPortfolioCountEl = document.getElementById("screener-portfolio-count");
 const screenerSortButtons = Array.from(document.querySelectorAll("[data-screener-sort]"));
 const screenerFilterEls = [
   screenerSearchEl,
@@ -1789,6 +1799,26 @@ function formatCompactNumber(value, digits = 0, fallback = "-") {
     maximumFractionDigits: digits,
     minimumFractionDigits: 0
   });
+}
+
+function averageNumber(values) {
+  const numeric = values.filter((value) => Number.isFinite(value));
+  if (!numeric.length) return null;
+  return numeric.reduce((sum, value) => sum + value, 0) / numeric.length;
+}
+
+function sumNumber(values) {
+  const numeric = values.filter((value) => Number.isFinite(value));
+  if (!numeric.length) return null;
+  return numeric.reduce((sum, value) => sum + value, 0);
+}
+
+function bestByNumber(entries, reader) {
+  return entries.reduce((best, entry) => {
+    const value = reader(entry);
+    if (!Number.isFinite(value)) return best;
+    return !best || value > best.value ? { entry, value } : best;
+  }, null);
 }
 
 function textForPlant(plant) {
@@ -5192,13 +5222,13 @@ function defaultScreenerDirection(key) {
 
 function screenerSortIndicator(key, direction) {
   if (["name", "type", "harvest", "traits", "partner", "sun", "soil"].includes(key)) {
-    return direction === "asc" ? "↑ A-Z" : "↓ Z-A";
+    return direction === "asc" ? "Asc A-Z" : "Desc Z-A";
   }
-  if (key === "firstOutput") return direction === "asc" ? "↑ Fast" : "↓ Slow";
-  if (key === "difficulty") return direction === "asc" ? "↑ Easy" : "↓ Hard";
-  if (key === "container") return direction === "asc" ? "↑ Small" : "↓ Large";
-  if (key === "plantingDepth") return direction === "asc" ? "↑ Shallow" : "↓ Deep";
-  return direction === "asc" ? "↑ Low" : "↓ High";
+  if (key === "firstOutput") return direction === "asc" ? "Fast first" : "Slow first";
+  if (key === "difficulty") return direction === "asc" ? "Easy first" : "Hard first";
+  if (key === "container") return direction === "asc" ? "Small first" : "Large first";
+  if (key === "plantingDepth") return direction === "asc" ? "Shallow first" : "Deep first";
+  return direction === "asc" ? "Low first" : "High first";
 }
 
 function sortScreenerPlants(entries) {
@@ -5345,7 +5375,7 @@ function renderScreenerRow(plant) {
             <input class="screener-compare-input" type="checkbox" value="${escapeHtml(plant.id)}" ${isCompared ? "checked" : ""} />
             Compare
           </label>
-          <button class="screener-watch-button ${isWatched ? "is-active" : ""}" type="button" data-watch-plant="${escapeHtml(plant.id)}" aria-pressed="${isWatched ? "true" : "false"}">${isWatched ? "Watching" : "Watch"}</button>
+          <button class="screener-watch-button ${isWatched ? "is-active" : ""}" type="button" data-watch-plant="${escapeHtml(plant.id)}" aria-pressed="${isWatched ? "true" : "false"}" title="${isWatched ? "Remove from portfolio" : "Add to portfolio"}">${isWatched ? "Saved" : "Save"}</button>
         </span>
         <a class="screener-plant-link" href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a>
         <span>${escapeHtml(plant.query ?? plant.id)}</span>
@@ -5400,6 +5430,284 @@ function renderScreenerRow(plant) {
       <td class="screener-profile-cell" data-label="Profile" data-screener-col="profile"><a class="screener-profile-link" href="${plantPagePath(plant)}">View profile</a></td>
     </tr>
   `;
+}
+
+function screenerPortfolioPlants() {
+  return Array.from(screenerWatchlistIds)
+    .map(plantById)
+    .filter(Boolean);
+}
+
+function screenerPortfolioEntries() {
+  return screenerPortfolioPlants().map((plant) => ({
+    plant,
+    metrics: metricFor(plant)
+  }));
+}
+
+function renderScreenerPortfolioStats(entries) {
+  if (!entries.length) {
+    return `
+      <div>
+        <strong>0</strong>
+        <span>saved plants</span>
+      </div>
+      <div>
+        <strong>-</strong>
+        <span>est. lb/year</span>
+      </div>
+      <div>
+        <strong>-</strong>
+        <span>avg first output</span>
+      </div>
+      <div>
+        <strong>-</strong>
+        <span>avg reliability</span>
+      </div>
+      <div>
+        <strong>-</strong>
+        <span>density leader</span>
+      </div>
+    `;
+  }
+  const totalYield = sumNumber(entries.map(({ metrics }) => yieldMidpoint(metrics)));
+  const averageFirst = averageNumber(entries.map(({ metrics }) => firstOutputYears(metrics)));
+  const averageReliability = averageNumber(entries.map(({ metrics }) => metrics.reliabilityScore));
+  const averageDifficulty = averageNumber(entries.map(({ metrics }) => metrics.difficultyScore));
+  const densityLeader = bestByNumber(entries, ({ metrics }) => yieldPer100SqFt(metrics));
+  return `
+    <div>
+      <strong>${entries.length}</strong>
+      <span>saved plant${entries.length === 1 ? "" : "s"}</span>
+    </div>
+    <div>
+      <strong>${escapeHtml(formatCompactNumber(totalYield, 1))}</strong>
+      <span>est. lb/year, 1 each</span>
+    </div>
+    <div>
+      <strong>${escapeHtml(formatCompactNumber(averageFirst, 1))}</strong>
+      <span>avg years to first output</span>
+    </div>
+    <div>
+      <strong>${escapeHtml(formatCompactNumber(averageReliability, 1))}/5</strong>
+      <span>avg reliability; risk ${escapeHtml(formatCompactNumber(averageDifficulty, 1))}/5</span>
+    </div>
+    <div>
+      <strong title="${escapeHtml(densityLeader?.entry.plant.name ?? "")}">${escapeHtml(densityLeader?.entry.plant.name ?? "-")}</strong>
+      <span>${escapeHtml(formatCompactNumber(densityLeader?.value, 0))} lb / 100 sq ft leader</span>
+    </div>
+  `;
+}
+
+function renderScreenerPortfolioRow({ plant, metrics }) {
+  const screening = screeningProfile(plant, metrics);
+  const isCompared = screenerCompareIds.has(plant.id);
+  const score = reliabilityAdjustedYield(metrics) ?? difficultyAdjustedYield(metrics);
+  return `
+    <tr>
+      <td data-label="Compare">
+        <label class="screener-portfolio-check">
+          <input class="screener-portfolio-compare-input" type="checkbox" value="${escapeHtml(plant.id)}" ${isCompared ? "checked" : ""} />
+          Compare
+        </label>
+      </td>
+      <td class="screener-portfolio-name" data-label="Plant">
+        <a href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a>
+        <span>${escapeHtml(plant.type)}</span>
+      </td>
+      <td data-label="First output">
+        <strong>${escapeHtml(metricDisplayValue(metrics.display?.firstOutput))}</strong>
+        <span>${escapeHtml(metrics.horizonLabel ?? "")}</span>
+      </td>
+      <td data-label="Yield">
+        <strong>${escapeHtml(metricDisplayValue(metrics.display?.yieldLbs))}</strong>
+        <span>${escapeHtml(metrics.display?.harvestWindow ?? "")}</span>
+      </td>
+      <td data-label="Density">
+        <strong>${escapeHtml(formatCompactNumber(yieldPer100SqFt(metrics)))}</strong>
+        <span>lb / 100 sq ft</span>
+      </td>
+      <td data-label="Score">
+        <strong>${escapeHtml(formatCompactNumber(score, 1))}</strong>
+        <span>adjusted yield</span>
+      </td>
+      <td data-label="Container">
+        <strong>${escapeHtml(metricDisplayValue(metrics.display?.containerMin))}</strong>
+        <span>${escapeHtml(metrics.display?.containerNote ?? "")}</span>
+      </td>
+      <td data-label="Risk">
+        <strong>${escapeHtml(metrics.display?.difficulty ?? "-")}</strong>
+        <span>Reliability ${escapeHtml(metrics.display?.reliability ?? "-")}</span>
+      </td>
+      <td data-label="Data">${renderScreenerDataCell(metrics)}</td>
+      <td data-label="Cue">
+        <strong>${escapeHtml(screening.warning)}</strong>
+        <span>${escapeHtml(screening.support)}; ${escapeHtml(screening.pollination)}</span>
+      </td>
+      <td data-label="Actions" class="screener-portfolio-action-cell">
+        <a href="${plantPagePath(plant)}">Profile</a>
+        <button type="button" data-portfolio-remove="${escapeHtml(plant.id)}">Remove</button>
+      </td>
+    </tr>
+  `;
+}
+
+function renderScreenerPortfolioTable(entries) {
+  if (!entries.length) {
+    return `
+      <div class="screener-portfolio-empty">
+        <strong>No saved plants yet.</strong>
+        <span>Use Save on any Screener row to build a local portfolio for comparison.</span>
+      </div>
+    `;
+  }
+  return `
+    <div class="screener-portfolio-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Compare</th>
+            <th scope="col">Plant</th>
+            <th scope="col">First output</th>
+            <th scope="col">Yield</th>
+            <th scope="col">Density</th>
+            <th scope="col">Score</th>
+            <th scope="col">Container</th>
+            <th scope="col">Risk</th>
+            <th scope="col">Data</th>
+            <th scope="col">Cue</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${entries.map(renderScreenerPortfolioRow).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderScreenerPortfolioPanel() {
+  if (!screenerPortfolioPanelEl || !screenerPortfolioStatsEl || !screenerPortfolioTableEl) return;
+  const entries = screenerPortfolioEntries();
+  const count = entries.length;
+  if (screenerPortfolioCountEl) screenerPortfolioCountEl.textContent = String(count);
+  if (screenerPortfolioTitleEl) {
+    screenerPortfolioTitleEl.textContent = count
+      ? `${count} saved plant${count === 1 ? "" : "s"}`
+      : "Saved plant portfolio";
+  }
+  if (screenerPortfolioNoteEl) {
+    screenerPortfolioNoteEl.textContent = count
+      ? "Saved locally on this device. Portfolio numbers are estimates for quick comparison, not purchase or planting guarantees."
+      : "Save plants from the table to compare the numbers that matter.";
+  }
+  screenerPortfolioStatsEl.innerHTML = renderScreenerPortfolioStats(entries);
+  screenerPortfolioTableEl.innerHTML = renderScreenerPortfolioTable(entries);
+  if (screenerPortfolioCompareEl) {
+    screenerPortfolioCompareEl.disabled = count === 0;
+    screenerPortfolioCompareEl.textContent = count > screenerCompareLimit
+      ? `Compare first ${screenerCompareLimit}`
+      : "Compare portfolio";
+  }
+  if (screenerPortfolioFilterEl) {
+    screenerPortfolioFilterEl.disabled = count === 0;
+    screenerPortfolioFilterEl.textContent = screenerFlagEl?.value === "watchlist" ? "Showing portfolio" : "Show portfolio";
+  }
+  if (screenerPortfolioExportEl) screenerPortfolioExportEl.disabled = count === 0;
+  if (screenerPortfolioClearEl) screenerPortfolioClearEl.disabled = count === 0;
+  syncScreenerCompareInputs();
+}
+
+function setScreenerPortfolioMembership(plantId, shouldSave) {
+  const plant = plantById(plantId);
+  if (!plant) return false;
+  const wasSaved = screenerWatchlistIds.has(plantId);
+  if (shouldSave) {
+    screenerWatchlistIds.add(plantId);
+  } else {
+    screenerWatchlistIds.delete(plantId);
+  }
+  if (wasSaved === screenerWatchlistIds.has(plantId)) return false;
+  saveScreenerWatchlist();
+  return true;
+}
+
+function syncScreenerCompareInputs() {
+  document.querySelectorAll(".screener-compare-input, .screener-portfolio-compare-input").forEach((input) => {
+    input.checked = screenerCompareIds.has(input.value);
+    input.disabled = !input.checked && screenerCompareIds.size >= screenerCompareLimit;
+  });
+}
+
+function setScreenerCompareMembership(plantId, shouldCompare) {
+  if (!plantById(plantId)) return false;
+  if (shouldCompare) {
+    if (screenerCompareIds.size >= screenerCompareLimit && !screenerCompareIds.has(plantId)) return false;
+    screenerCompareIds.add(plantId);
+  } else {
+    screenerCompareIds.delete(plantId);
+  }
+  return true;
+}
+
+function quoteCsvValue(value) {
+  const text = String(value ?? "");
+  return `"${text.replaceAll("\"", "\"\"")}"`;
+}
+
+function screenerPortfolioCsv(entries) {
+  const headers = [
+    "Plant",
+    "Type",
+    "Zone range",
+    "First output",
+    "Yield lbs",
+    "Yield per 100 sq ft",
+    "Adjusted yield score",
+    "Container min",
+    "Difficulty",
+    "Reliability",
+    "Data confidence",
+    "Source count",
+    "Planning cue",
+    "Profile URL"
+  ];
+  const rows = entries.map(({ plant, metrics }) => {
+    const screening = screeningProfile(plant, metrics);
+    const score = reliabilityAdjustedYield(metrics) ?? difficultyAdjustedYield(metrics);
+    return [
+      plant.name,
+      plant.type,
+      `${plant.zones[0]}-${plant.zones[1]}`,
+      metricDisplayValue(metrics.display?.firstOutput, ""),
+      metricDisplayValue(metrics.display?.yieldLbs, ""),
+      formatCompactNumber(yieldPer100SqFt(metrics), 1, ""),
+      formatCompactNumber(score, 1, ""),
+      metricDisplayValue(metrics.display?.containerMin, ""),
+      metrics.display?.difficulty ?? "",
+      metrics.display?.reliability ?? "",
+      metrics.display?.confidence ?? metrics.dataConfidence ?? "",
+      metrics.sourceKeys?.length ?? 0,
+      `${screening.warning}; ${screening.support}; ${screening.pollination}`,
+      `${window.location.origin}${plantPagePath(plant)}`
+    ];
+  });
+  return [headers, ...rows].map((row) => row.map(quoteCsvValue).join(",")).join("\n");
+}
+
+function exportScreenerPortfolio() {
+  const entries = screenerPortfolioEntries();
+  if (!entries.length) return;
+  const blob = new Blob([screenerPortfolioCsv(entries)], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `plantbyzip-portfolio-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function screenerSupplyIntent() {
@@ -5502,13 +5810,17 @@ function compareMetricRows(selectedPlants) {
     ["First output", (plant) => metricDisplayValue(metricFor(plant).display?.firstOutput)],
     ["Yield", (plant) => metricDisplayValue(metricFor(plant).display?.yieldLbs)],
     ["Yield / 100 sq ft", (plant) => formatCompactNumber(yieldPer100SqFt(metricFor(plant)))],
+    ["Adjusted score", (plant) => formatCompactNumber(reliabilityAdjustedYield(metricFor(plant)) ?? difficultyAdjustedYield(metricFor(plant)), 1)],
+    ["Payoff score", (plant) => formatCompactNumber(timeToPayoffScore(metricFor(plant)), 1)],
     ["Container min", (plant) => metricDisplayValue(metricFor(plant).display?.containerMin)],
     ["Difficulty", (plant) => metricFor(plant).display?.difficulty ?? "-"],
     ["Reliability", (plant) => metricFor(plant).display?.reliability ?? "-"],
     ["Data", (plant) => `${metricFor(plant).display?.confidence ?? "-"} - ${metricFor(plant).sourceKeys?.length ?? 0} sources`],
+    ["Sun / water", (plant) => `${plant.sun.map(sentenceCase).join(", ")} / ${sentenceCase(plant.water)}`],
     ["pH cue", (plant) => screeningProfile(plant).ph],
     ["Pollination", (plant) => screeningProfile(plant).pollination],
     ["Support", (plant) => screeningProfile(plant).support],
+    ["Planning cue", (plant) => screeningProfile(plant).warning],
     ["Pest/disease", (plant) => {
       const screening = screeningProfile(plant);
       return `${screening.pestPressure} / ${screening.diseasePressure}`;
@@ -5529,6 +5841,7 @@ function renderScreenerComparePanel() {
   if (!selectedPlants.length) {
     screenerCompareTableEl.innerHTML = "";
     if (screenerCompareStatusEl) screenerCompareStatusEl.textContent = "Choose rows from the table to compare core metrics side by side.";
+    syncScreenerCompareInputs();
     return;
   }
   if (screenerCompareTitleEl) {
@@ -5550,13 +5863,14 @@ function renderScreenerComparePanel() {
       <tbody>${compareMetricRows(selectedPlants)}</tbody>
     </table>
   `;
+  syncScreenerCompareInputs();
 }
 
 function loadScreenerWatchlist() {
   try {
     const raw = localStorage.getItem(screenerWatchlistStorageKey);
     const ids = raw ? JSON.parse(raw) : [];
-    screenerWatchlistIds = new Set(Array.isArray(ids) ? ids : []);
+    screenerWatchlistIds = new Set(Array.isArray(ids) ? ids.filter(plantById) : []);
   } catch {
     screenerWatchlistIds = new Set();
   }
@@ -5584,6 +5898,7 @@ function renderScreener() {
   updateScreenerColumnVisibility();
   renderScreenerSupplyPanel(filtered);
   renderScreenerComparePanel();
+  renderScreenerPortfolioPanel();
   screenerVisibleCountEl.textContent = String(filtered.length);
   screenerGroupTypeEl.classList.toggle("is-active", screenerGroupedByType);
   screenerGroupTypeEl.setAttribute("aria-pressed", String(screenerGroupedByType));
@@ -5825,17 +6140,10 @@ function initializeScreener() {
   screenerBodyEl.addEventListener("change", (event) => {
     if (!event.target.classList.contains("screener-compare-input")) return;
     const plantId = event.target.value;
-    if (event.target.checked) {
-      if (screenerCompareIds.size >= screenerCompareLimit && !screenerCompareIds.has(plantId)) {
-        event.target.checked = false;
-        renderScreenerComparePanel();
-        return;
-      }
-      screenerCompareIds.add(plantId);
-    } else {
-      screenerCompareIds.delete(plantId);
-    }
+    const changed = setScreenerCompareMembership(plantId, event.target.checked);
+    if (!changed) event.target.checked = false;
     renderScreenerComparePanel();
+    renderScreenerPortfolioPanel();
     trackEvent("filter_apply", {
       tool: "screener",
       action: event.target.checked ? "compare_add" : "compare_remove",
@@ -5846,16 +6154,12 @@ function initializeScreener() {
     const watchButton = event.target.closest("[data-watch-plant]");
     if (!watchButton) return;
     const plantId = watchButton.dataset.watchPlant;
-    if (screenerWatchlistIds.has(plantId)) {
-      screenerWatchlistIds.delete(plantId);
-    } else {
-      screenerWatchlistIds.add(plantId);
-    }
-    saveScreenerWatchlist();
+    const shouldSave = !screenerWatchlistIds.has(plantId);
+    setScreenerPortfolioMembership(plantId, shouldSave);
     renderScreener();
     trackEvent("filter_apply", {
       tool: "screener",
-      action: screenerWatchlistIds.has(plantId) ? "watch_add" : "watch_remove",
+      action: screenerWatchlistIds.has(plantId) ? "portfolio_add" : "portfolio_remove",
       watchlist_count: screenerWatchlistIds.size
     });
   });
@@ -5865,6 +6169,75 @@ function initializeScreener() {
     trackEvent("filter_apply", {
       tool: "screener",
       action: "compare_clear"
+    });
+  });
+  screenerPortfolioCompareEl?.addEventListener("click", () => {
+    const portfolioIds = screenerPortfolioPlants().slice(0, screenerCompareLimit).map((plant) => plant.id);
+    screenerCompareIds = new Set(portfolioIds);
+    renderScreener();
+    trackEvent("filter_apply", {
+      tool: "screener",
+      action: "portfolio_compare",
+      compare_count: screenerCompareIds.size
+    });
+  });
+  screenerPortfolioFilterEl?.addEventListener("click", () => {
+    if (!screenerWatchlistIds.size) return;
+    screenerFlagEl.value = "watchlist";
+    screenerVisibleLimit = screenerPageSize;
+    writeScreenerUrl();
+    renderScreener();
+    trackEvent("filter_apply", {
+      tool: "screener",
+      action: "portfolio_filter",
+      filter_count: activeScreenerFilterCount()
+    });
+  });
+  screenerPortfolioExportEl?.addEventListener("click", () => {
+    exportScreenerPortfolio();
+    trackEvent("filter_apply", {
+      tool: "screener",
+      action: "portfolio_export",
+      watchlist_count: screenerWatchlistIds.size
+    });
+  });
+  screenerPortfolioClearEl?.addEventListener("click", () => {
+    if (!screenerWatchlistIds.size) return;
+    if (!window.confirm("Clear all plants from this local portfolio?")) return;
+    screenerWatchlistIds = new Set();
+    saveScreenerWatchlist();
+    if (screenerFlagEl.value === "watchlist") screenerFlagEl.value = "";
+    writeScreenerUrl();
+    renderScreener();
+    trackEvent("filter_apply", {
+      tool: "screener",
+      action: "portfolio_clear"
+    });
+  });
+  screenerPortfolioTableEl?.addEventListener("change", (event) => {
+    if (!event.target.classList.contains("screener-portfolio-compare-input")) return;
+    const changed = setScreenerCompareMembership(event.target.value, event.target.checked);
+    if (!changed) event.target.checked = false;
+    renderScreenerComparePanel();
+    renderScreenerPortfolioPanel();
+    trackEvent("filter_apply", {
+      tool: "screener",
+      action: event.target.checked ? "compare_add" : "compare_remove",
+      compare_count: screenerCompareIds.size
+    });
+  });
+  screenerPortfolioTableEl?.addEventListener("click", (event) => {
+    const removeButton = event.target.closest("[data-portfolio-remove]");
+    if (!removeButton) return;
+    const plantId = removeButton.dataset.portfolioRemove;
+    setScreenerPortfolioMembership(plantId, false);
+    if (screenerFlagEl.value === "watchlist" && screenerWatchlistIds.size === 0) screenerFlagEl.value = "";
+    writeScreenerUrl();
+    renderScreener();
+    trackEvent("filter_apply", {
+      tool: "screener",
+      action: "portfolio_remove",
+      watchlist_count: screenerWatchlistIds.size
     });
   });
   renderScreener();
