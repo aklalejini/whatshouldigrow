@@ -1277,37 +1277,6 @@ const webAppJsonLd = {
           </div>
 
           <section
-            id="garden-planner-add"
-            class="garden-planner-add"
-            aria-labelledby="garden-planner-add-title"
-          >
-            <div class="garden-planner-section-head">
-              <div>
-                <p class="eyebrow">Add plants</p>
-                <h2 id="garden-planner-add-title">Quick add plants</h2>
-              </div>
-              <p>Search by plant name, type, trait, or crop note.</p>
-            </div>
-            <div class="garden-planner-add-tools">
-              <label>
-                <span>Quick search</span>
-                <input
-                  id="garden-planner-search"
-                  type="search"
-                  placeholder="Search tomato, blueberry, basil..."
-                  autocomplete="off"
-                />
-              </label>
-              <button id="garden-planner-open-screener" type="button">Full plant listing</button>
-            </div>
-            <div
-              id="garden-planner-search-results"
-              class="garden-planner-search-results"
-              aria-live="polite"
-            ></div>
-          </section>
-
-          <section
             id="garden-planner-settings"
             class="garden-planner-settings"
             aria-labelledby="garden-planner-settings-title"
@@ -1407,21 +1376,46 @@ const webAppJsonLd = {
           </section>
 
           <section
-            id="garden-planner-warnings"
-            class="garden-planner-warnings"
-            aria-labelledby="garden-planner-warnings-title"
-          ></section>
-
-          <section
             id="garden-planner-space"
             class="garden-planner-space"
             aria-labelledby="garden-planner-space-title"
           ></section>
 
           <section
-            id="garden-planner-timeline"
-            class="garden-planner-timeline"
-            aria-labelledby="garden-planner-timeline-title"
+            id="garden-planner-add"
+            class="garden-planner-add"
+            aria-labelledby="garden-planner-add-title"
+          >
+            <div class="garden-planner-section-head">
+              <div>
+                <p class="eyebrow">Add plants</p>
+                <h2 id="garden-planner-add-title">Quick add plants</h2>
+              </div>
+              <p>Search by plant name, type, trait, or crop note.</p>
+            </div>
+            <div class="garden-planner-add-tools">
+              <label>
+                <span>Quick search</span>
+                <input
+                  id="garden-planner-search"
+                  type="search"
+                  placeholder="Search tomato, blueberry, basil..."
+                  autocomplete="off"
+                />
+              </label>
+              <button id="garden-planner-open-screener" type="button">Full plant listing</button>
+            </div>
+            <div
+              id="garden-planner-search-results"
+              class="garden-planner-search-results"
+              aria-live="polite"
+            ></div>
+          </section>
+
+          <section
+            id="garden-planner-table"
+            class="garden-planner-table"
+            aria-labelledby="garden-planner-table-title"
           ></section>
 
           <section
@@ -1432,15 +1426,21 @@ const webAppJsonLd = {
           ></section>
 
           <section
-            id="garden-planner-table"
-            class="garden-planner-table"
-            aria-labelledby="garden-planner-table-title"
+            id="garden-planner-timeline"
+            class="garden-planner-timeline"
+            aria-labelledby="garden-planner-timeline-title"
           ></section>
 
           <section
             id="garden-planner-supplies"
             class="garden-planner-supplies"
             aria-labelledby="garden-planner-supplies-title"
+          ></section>
+
+          <section
+            id="garden-planner-warnings"
+            class="garden-planner-warnings"
+            aria-labelledby="garden-planner-warnings-title"
           ></section>
         </div>
       </section>
@@ -1495,6 +1495,6 @@ const webAppJsonLd = {
     </main>
 
     <AnalyticsEvents pageType="home" />
-    <script type="module" src="/js/plantbyzip-home.js?v=20260530-garden-search"></script>
+    <script type="module" src="/js/plantbyzip-home.js?v=20260530-garden-visual"></script>
   </body>
 </html>

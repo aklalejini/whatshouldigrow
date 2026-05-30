@@ -2993,6 +2993,13 @@ fieldset:nth-of-type(2) .segmented {
   background: #fff;
 }
 
+.garden-planner-bed-card {
+  grid-row: span 2;
+  align-content: start;
+  background:
+    linear-gradient(145deg, rgba(255, 253, 248, 0.98), rgba(244, 250, 239, 0.92));
+}
+
 .garden-planner-space-card-head {
   display: flex;
   align-items: baseline;
@@ -3030,6 +3037,96 @@ fieldset:nth-of-type(2) .segmented {
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, #2e704b, #df7b4f);
+}
+
+.garden-planner-bed-canvas {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 4px;
+  min-height: 220px;
+  padding: 10px;
+  border: 1px solid #cfdcc6;
+  border-radius: 16px;
+  background:
+    linear-gradient(90deg, rgba(93, 126, 83, 0.08) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(93, 126, 83, 0.08) 1px, transparent 1px),
+    #f7f3e8;
+  background-size: 24px 24px;
+}
+
+.garden-planner-bed-card.is-over .garden-planner-bed-canvas {
+  border-color: rgba(223, 123, 79, 0.9);
+  box-shadow: 0 0 0 3px rgba(223, 123, 79, 0.14);
+}
+
+.garden-planner-bed-cell {
+  min-height: 16px;
+  border: 1px solid rgba(190, 207, 180, 0.72);
+  border-radius: 5px;
+  background: rgba(238, 246, 232, 0.88);
+}
+
+.garden-planner-bed-cell.is-filled {
+  border-color: rgba(28, 54, 36, 0.16);
+  background: var(--bed-fill);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.26),
+    0 2px 5px rgba(31, 45, 35, 0.08);
+}
+
+.garden-planner-bed-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  justify-content: space-between;
+  color: #405246;
+  font-size: 0.78rem;
+  font-weight: 780;
+  line-height: 1.35;
+}
+
+.garden-planner-bed-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.garden-planner-bed-legend span {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 7px;
+  padding: 7px 8px;
+  border: 1px solid #edf1e8;
+  border-radius: 10px;
+  color: #405246;
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 0.73rem;
+  font-weight: 760;
+  line-height: 1.25;
+}
+
+.garden-planner-bed-legend i {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: var(--bed-fill);
+  box-shadow: 0 0 0 1px rgba(28, 54, 36, 0.14);
+}
+
+.garden-planner-bed-legend strong {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--leaf-dark);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.garden-planner-bed-legend .garden-planner-bed-more {
+  justify-content: center;
+  color: var(--leaf-dark);
+  background: #f6fbf1;
 }
 
 .garden-planner-space-card p {
@@ -7894,6 +7991,10 @@ input.calendar-filter-search[type="search"]:focus {
     grid-template-columns: 1fr;
   }
 
+  .garden-planner-bed-card {
+    grid-row: auto;
+  }
+
   .screener-portfolio-stats,
   .garden-planner-stats {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -8998,6 +9099,14 @@ input.calendar-filter-search[type="search"]:focus {
 
   .garden-planner-supply-item a {
     width: 100%;
+  }
+
+  .garden-planner-bed-canvas {
+    min-height: 170px;
+  }
+
+  .garden-planner-bed-legend {
+    grid-template-columns: 1fr;
   }
 
   .calendar-event,
