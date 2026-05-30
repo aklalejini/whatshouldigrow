@@ -3120,6 +3120,15 @@ fieldset:nth-of-type(2) .segmented {
   transform: translate(-50%, -50%);
 }
 
+.garden-planner-bed-radius.is-max {
+  border-style: dashed;
+  opacity: 0.1;
+}
+
+.garden-planner-bed-radius.is-min {
+  opacity: 0.2;
+}
+
 .garden-planner-bed-marker {
   position: absolute;
   z-index: 4;

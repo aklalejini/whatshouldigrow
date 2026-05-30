@@ -1815,7 +1815,26 @@ function yieldMidpoint(metrics) {
     ?? metricMidpoint(metrics, "outputMin", "outputMax");
 }
 
+function spacingAreaRange(metrics) {
+  const storedMin = Number(metrics.spacingAreaSqFtMin);
+  const storedMax = Number(metrics.spacingAreaSqFtMax);
+  if (Number.isFinite(storedMin) && Number.isFinite(storedMax) && storedMin > 0 && storedMax > 0) {
+    return [Math.min(storedMin, storedMax), Math.max(storedMin, storedMax)];
+  }
+  const minArea = Number(metrics.spacingPlantFtMin) * Number(metrics.spacingRowFtMin);
+  const maxArea = Number(metrics.spacingPlantFtMax) * Number(metrics.spacingRowFtMax);
+  if (!Number.isFinite(minArea) || !Number.isFinite(maxArea) || minArea <= 0 || maxArea <= 0) return [null, null];
+  return [Math.min(minArea, maxArea), Math.max(minArea, maxArea)];
+}
+
+function spacingAreaMidpoint(metrics) {
+  const [minArea, maxArea] = spacingAreaRange(metrics);
+  return rangeAverage(minArea, maxArea);
+}
+
 function densityMidpoint(metrics) {
+  const area = spacingAreaMidpoint(metrics);
+  if (Number.isFinite(area) && area > 0) return 100 / area;
   return metricMidpoint(metrics, "plantsPer100SqFtMin", "plantsPer100SqFtMax");
 }
 
@@ -1865,6 +1884,19 @@ function formatCompactNumber(value, digits = 0, fallback = "-") {
     maximumFractionDigits: digits,
     minimumFractionDigits: 0
   });
+}
+
+function formatCompactRange(min, max, digits = 1, unit = "", fallback = "-") {
+  const hasMin = Number.isFinite(min);
+  const hasMax = Number.isFinite(max);
+  if (!hasMin && !hasMax) return fallback;
+  if (hasMin && hasMax && Math.abs(min - max) < 0.05) {
+    return `${formatCompactNumber(min, digits)}${unit}`;
+  }
+  if (hasMin && hasMax) {
+    return `${formatCompactNumber(min, digits)}-${formatCompactNumber(max, digits)}${unit}`;
+  }
+  return `${formatCompactNumber(hasMin ? min : max, digits)}${unit}`;
 }
 
 function averageNumber(values) {
@@ -6034,18 +6066,33 @@ function gardenEntryYield(entry) {
   return Number.isFinite(yieldValue) ? yieldValue * entry.quantity : null;
 }
 
+function gardenEntrySpaceRange(entry) {
+  const [minArea, maxArea] = spacingAreaRange(entry.metrics);
+  if (!Number.isFinite(minArea) || !Number.isFinite(maxArea)) return [null, null];
+  return [minArea * entry.quantity, maxArea * entry.quantity];
+}
+
 function gardenEntrySpace(entry) {
-  const density = densityMidpoint(entry.metrics);
-  return Number.isFinite(density) && density > 0 ? (entry.quantity / density) * 100 : null;
+  const [minArea, maxArea] = gardenEntrySpaceRange(entry);
+  return rangeAverage(minArea, maxArea);
+}
+
+function gardenEntrySpaceLabel(entry, digits = 1) {
+  const [minArea, maxArea] = gardenEntrySpaceRange(entry);
+  return formatCompactRange(minArea, maxArea, digits, " sq ft");
 }
 
 function gardenPlannerSpaceStats(entries) {
   const available = gardenPlannerTotalSqFt();
+  const usedMin = sumNumber(entries.map((entry) => gardenEntrySpaceRange(entry)[0]));
+  const usedMax = sumNumber(entries.map((entry) => gardenEntrySpaceRange(entry)[1]));
   const used = sumNumber(entries.map(gardenEntrySpace));
   const knownEntries = entries.filter((entry) => Number.isFinite(gardenEntrySpace(entry)));
   const unknownCount = entries.length - knownEntries.length;
   const percent = available > 0 && Number.isFinite(used) ? (used / available) * 100 : null;
-  return { available, used, percent, unknownCount };
+  const percentMin = available > 0 && Number.isFinite(usedMin) ? (usedMin / available) * 100 : null;
+  const percentMax = available > 0 && Number.isFinite(usedMax) ? (usedMax / available) * 100 : null;
+  return { available, used, usedMin, usedMax, percent, percentMin, percentMax, unknownCount };
 }
 
 function gardenPlannerBedColor(index) {
@@ -6076,13 +6123,14 @@ function gardenPlannerBedFootprintLabel() {
 function gardenPlannerBedVisualData(entries, spaceStats) {
   const available = Number.isFinite(spaceStats.available) && spaceStats.available > 0 ? spaceStats.available : 0;
   const used = Number.isFinite(spaceStats.used) && spaceStats.used > 0 ? spaceStats.used : 0;
-  const isOver = Number.isFinite(spaceStats.percent) && spaceStats.percent > 100;
+  const isOver = Number.isFinite(spaceStats.percentMax) && spaceStats.percentMax > 100;
   const cellDenominator = isOver && used > 0 ? used : available;
   const items = entries
     .map((entry, index) => ({
       entry,
       index,
-      value: gardenEntrySpace(entry)
+      value: gardenEntrySpace(entry),
+      range: gardenEntrySpaceRange(entry)
     }))
     .filter(({ value }) => Number.isFinite(value) && value > 0)
     .sort((a, b) => b.value - a.value)
@@ -6129,24 +6177,32 @@ function gardenPlannerDefaultLayoutPosition(index, total) {
   };
 }
 
-function gardenPlannerLayoutRadius(item, spaceStats) {
+function gardenPlannerLayoutRadiusForValue(value, spaceStats, minRadius = 8, maxRadius = 42) {
   const available = Number.isFinite(spaceStats.available) && spaceStats.available > 0 ? spaceStats.available : 0;
-  const value = Number.isFinite(item.value) && item.value > 0 ? item.value : 0;
-  if (!available || !value) return 9;
-  const radius = Math.sqrt((value / available) / Math.PI) * 100;
-  return clamp(radius, 8, 42);
+  const area = Number.isFinite(value) && value > 0 ? value : 0;
+  if (!available || !area) return minRadius;
+  const radius = Math.sqrt((area / available) / Math.PI) * 100;
+  return clamp(radius, minRadius, maxRadius);
+}
+
+function gardenPlannerLayoutRadii(item, spaceStats) {
+  const [minArea, maxArea] = item.range ?? [item.value, item.value];
+  return {
+    min: gardenPlannerLayoutRadiusForValue(minArea, spaceStats, 5, 38),
+    max: gardenPlannerLayoutRadiusForValue(maxArea, spaceStats, 8, 46)
+  };
 }
 
 function renderGardenPlannerBedVisual(entries, spaceStats) {
   const visual = gardenPlannerBedVisualData(entries, spaceStats);
-  const percentLabel = Number.isFinite(spaceStats.percent) ? `${formatCompactNumber(spaceStats.percent, 0)}%` : "-";
-  const isOver = Number.isFinite(spaceStats.percent) && spaceStats.percent > 100;
+  const percentLabel = formatCompactRange(spaceStats.percentMin, spaceStats.percentMax, 0, "%");
+  const isOver = Number.isFinite(spaceStats.percentMax) && spaceStats.percentMax > 100;
   const bedLabel = `${percentLabel} of planned bed space used. ${gardenPlannerBedFootprintLabel()}.`;
   const positionedItems = visual.items
     .map((item) => ({
       ...item,
       position: cleanGardenPlannerLayoutPosition(gardenPlannerLayout[item.entry.plant.id]),
-      radius: gardenPlannerLayoutRadius(item, spaceStats)
+      radii: gardenPlannerLayoutRadii(item, spaceStats)
     }))
     .filter((item) => item.position);
   const placedCount = positionedItems.length;
@@ -6180,8 +6236,14 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
         `).join("")}
         ${positionedItems.map((item) => `
           <span
-            class="garden-planner-bed-radius"
-            style="--bed-fill: ${escapeHtml(item.color)}; --marker-x: ${escapeHtml(formatCompactNumber(item.position.x, 2, ""))}%; --marker-y: ${escapeHtml(formatCompactNumber(item.position.y, 2, ""))}%; --marker-radius: ${escapeHtml(formatCompactNumber(item.radius, 2, ""))}%"
+            class="garden-planner-bed-radius is-max"
+            style="--bed-fill: ${escapeHtml(item.color)}; --marker-x: ${escapeHtml(formatCompactNumber(item.position.x, 2, ""))}%; --marker-y: ${escapeHtml(formatCompactNumber(item.position.y, 2, ""))}%; --marker-radius: ${escapeHtml(formatCompactNumber(item.radii.max, 2, ""))}%"
+            aria-hidden="true"
+            data-garden-layout-radius="${escapeHtml(item.entry.plant.id)}"
+          ></span>
+          <span
+            class="garden-planner-bed-radius is-min"
+            style="--bed-fill: ${escapeHtml(item.color)}; --marker-x: ${escapeHtml(formatCompactNumber(item.position.x, 2, ""))}%; --marker-y: ${escapeHtml(formatCompactNumber(item.position.y, 2, ""))}%; --marker-radius: ${escapeHtml(formatCompactNumber(item.radii.min, 2, ""))}%"
             aria-hidden="true"
             data-garden-layout-radius="${escapeHtml(item.entry.plant.id)}"
           ></span>
@@ -6194,7 +6256,7 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
             style="--bed-fill: ${escapeHtml(item.color)}; --marker-x: ${escapeHtml(formatCompactNumber(item.position.x, 2, ""))}%; --marker-y: ${escapeHtml(formatCompactNumber(item.position.y, 2, ""))}%"
             data-garden-layout-plant="${escapeHtml(item.entry.plant.id)}"
             data-garden-layout-marker="${escapeHtml(item.entry.plant.id)}"
-            title="${escapeHtml(`${item.entry.plant.name}: ${formatCompactNumber(item.value, 1)} sq ft spacing area`)}"
+            title="${escapeHtml(`${item.entry.plant.name}: ${gardenEntrySpaceLabel(item.entry)} spacing range`)}"
             aria-label="${escapeHtml(`Move ${item.entry.plant.name} in the bed layout`)}"
           >
             <span>${escapeHtml(gardenPlannerPlantInitials(item.entry.plant.name))}</span>
@@ -6204,7 +6266,7 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
       </div>
       <div class="garden-planner-bed-meta">
         <span>${escapeHtml(gardenPlannerBedFootprintLabel())}</span>
-        <span>${escapeHtml(formatCompactNumber(spaceStats.used, 1))} of ${escapeHtml(formatCompactNumber(spaceStats.available, 1))} sq ft planned</span>
+        <span>${escapeHtml(formatCompactRange(spaceStats.usedMin, spaceStats.usedMax, 1, " sq ft"))} of ${escapeHtml(formatCompactNumber(spaceStats.available, 1))} sq ft planned</span>
         <span>${escapeHtml(placedCount)} of ${escapeHtml(layoutCount)} plant${layoutCount === 1 ? "" : "s"} placed</span>
       </div>
       ${visual.items.length ? `
@@ -6227,7 +6289,7 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
                 <i></i>
                 <span>
                   <strong>${escapeHtml(item.entry.plant.name)}</strong>
-                  <small>${placed ? "Placed" : "Needs spot"} · ${escapeHtml(formatCompactNumber(item.value, 1))} sq ft</small>
+                  <small>${placed ? "Placed" : "Needs spot"} - ${escapeHtml(gardenEntrySpaceLabel(item.entry))}</small>
                 </span>
               </button>
             `;
@@ -6313,8 +6375,10 @@ function gardenPlannerStats(entries) {
   return {
     totalPlants,
     totalYield,
-    totalSpace: spaceStats.used,
-    spaceBudgetPercent: spaceStats.percent,
+    totalSpaceMin: spaceStats.usedMin,
+    totalSpaceMax: spaceStats.usedMax,
+    spaceBudgetPercentMin: spaceStats.percentMin,
+    spaceBudgetPercentMax: spaceStats.percentMax,
     averageFirst,
     riskCount,
     fitIssueCount
@@ -6365,11 +6429,11 @@ function renderGardenPlannerStats(entries) {
       <span>est. lb/year or season</span>
     </div>
     <div>
-      <strong>${escapeHtml(formatCompactNumber(stats.totalSpace, 1))}</strong>
-      <span>estimated sq ft</span>
+      <strong>${escapeHtml(formatCompactRange(stats.totalSpaceMin, stats.totalSpaceMax, 1))}</strong>
+      <span>sq ft range</span>
     </div>
     <div>
-      <strong>${Number.isFinite(stats.spaceBudgetPercent) ? `${escapeHtml(formatCompactNumber(stats.spaceBudgetPercent, 0))}%` : "-"}</strong>
+      <strong>${escapeHtml(formatCompactRange(stats.spaceBudgetPercentMin, stats.spaceBudgetPercentMax, 0, "%"))}</strong>
       <span>space budget used</span>
     </div>
     <div>
@@ -6410,10 +6474,10 @@ function gardenPlannerSignalCards(entries) {
   const perennialEntries = entries.filter(({ plant }) => !plant.type.includes("annual"));
   const riskEntries = gardenPlannerRiskEntries(entries);
   const cards = [];
-  if (Number.isFinite(spaceStats.percent) && spaceStats.percent > 100) {
+  if (Number.isFinite(spaceStats.percentMax) && spaceStats.percentMax > 100) {
     cards.push({
       title: "Space over budget",
-      text: `The saved quantities use about ${formatCompactNumber(spaceStats.used, 1)} sq ft against ${formatCompactNumber(spaceStats.available, 1)} sq ft. Trim quantities or plan another bed.`,
+      text: `The saved quantities use about ${formatCompactRange(spaceStats.usedMin, spaceStats.usedMax, 1, " sq ft")} against ${formatCompactNumber(spaceStats.available, 1)} sq ft. Trim quantities or plan another bed.`,
       tone: "watch"
     });
   }
@@ -6516,8 +6580,25 @@ function renderGardenPlannerSignals(entries) {
 
 function renderGardenPlannerSpace(entries) {
   const spaceStats = gardenPlannerSpaceStats(entries);
-  const percent = Number.isFinite(spaceStats.percent) ? clamp(spaceStats.percent, 0, 100) : 0;
+  const percent = Number.isFinite(spaceStats.percentMax) ? clamp(spaceStats.percentMax, 0, 100) : 0;
   const remaining = Number.isFinite(spaceStats.used) ? spaceStats.available - spaceStats.used : null;
+  const remainingMin = Number.isFinite(spaceStats.usedMin) ? spaceStats.available - spaceStats.usedMin : null;
+  const remainingMax = Number.isFinite(spaceStats.usedMax) ? spaceStats.available - spaceStats.usedMax : null;
+  const spaceRangeLabel = formatCompactRange(spaceStats.usedMin, spaceStats.usedMax, 1, " sq ft");
+  let remainingLabel = "No density-backed space total yet.";
+  if (Number.isFinite(remainingMin) && Number.isFinite(remainingMax)) {
+    if (remainingMax >= 0) {
+      remainingLabel = `${formatCompactRange(remainingMax, remainingMin, 1, " sq ft")} still open by spacing range.`;
+    } else if (remainingMin < 0) {
+      remainingLabel = `${formatCompactRange(Math.abs(remainingMin), Math.abs(remainingMax), 1, " sq ft")} over the current bed budget.`;
+    } else {
+      remainingLabel = `Tight spacing fits, but the wide spacing estimate is ${formatCompactNumber(Math.abs(remainingMax), 1)} sq ft over budget.`;
+    }
+  } else if (Number.isFinite(remaining)) {
+    remainingLabel = remaining >= 0
+      ? `${formatCompactNumber(remaining, 1)} sq ft still open.`
+      : `${formatCompactNumber(Math.abs(remaining), 1)} sq ft over the current bed budget.`;
+  }
   const leaders = entries
     .map((entry) => ({ entry, value: gardenEntrySpace(entry) }))
     .filter(({ value }) => Number.isFinite(value))
@@ -6537,17 +6618,13 @@ function renderGardenPlannerSpace(entries) {
         <article class="garden-planner-space-card">
           <div class="garden-planner-space-card-head">
             <span>Estimated use</span>
-            <strong>${escapeHtml(formatCompactNumber(spaceStats.used, 1))} sq ft</strong>
+            <strong>${escapeHtml(spaceRangeLabel)}</strong>
           </div>
           <div class="garden-planner-space-meter" aria-label="Estimated garden space used">
             <span style="--space-used: ${percent}%"></span>
           </div>
           <p>
-            ${Number.isFinite(spaceStats.used)
-              ? (remaining >= 0
-                ? `${formatCompactNumber(remaining, 1)} sq ft still open.`
-                : `${formatCompactNumber(Math.abs(remaining), 1)} sq ft over the current bed budget.`)
-              : "No density-backed space total yet."}
+            ${escapeHtml(remainingLabel)}
             ${spaceStats.unknownCount ? `${spaceStats.unknownCount} saved plant${spaceStats.unknownCount === 1 ? "" : "s"} lack density data.` : ""}
           </p>
         </article>
@@ -6557,10 +6634,10 @@ function renderGardenPlannerSpace(entries) {
             <strong>${leaders.length ? `${leaders.length} plant${leaders.length === 1 ? "" : "s"}` : "-"}</strong>
           </div>
           <div class="garden-planner-space-list">
-            ${leaders.length ? leaders.map(({ entry, value }) => `
+            ${leaders.length ? leaders.map(({ entry }) => `
               <span>
                 <strong>${escapeHtml(entry.plant.name)}</strong>
-                ${escapeHtml(formatCompactNumber(value, 1))} sq ft
+                ${escapeHtml(gardenEntrySpaceLabel(entry))}
               </span>
             `).join("") : "<span>No density-backed space estimates yet.</span>"}
           </div>
@@ -6668,7 +6745,7 @@ function renderGardenPlannerCompare(entries) {
                 <td data-label="Zone fit">${gardenPlannerPlantZoneFits(plant) ? "Fits" : "Check"} (${escapeHtml(plant.zones[0])}-${escapeHtml(plant.zones[1])})</td>
                 <td data-label="First output">${escapeHtml(metricDisplayValue(metrics.display?.firstOutput))}</td>
                 <td data-label="Yield total">${escapeHtml(formatCompactNumber(gardenEntryYield(entry), 1))} lb</td>
-                <td data-label="Space">${escapeHtml(formatCompactNumber(gardenEntrySpace(entry), 1))} sq ft</td>
+                <td data-label="Space">${escapeHtml(gardenEntrySpaceLabel(entry))}</td>
                 <td data-label="Yield / 100 sq ft">${escapeHtml(formatCompactNumber(yieldPer100SqFt(metrics), 1))}</td>
                 <td data-label="Container">${escapeHtml(metricDisplayValue(metrics.display?.containerMin))}</td>
                 <td data-label="Data">${escapeHtml(metrics.display?.confidence ?? metrics.dataConfidence ?? "-")}</td>
@@ -6686,7 +6763,6 @@ function renderGardenPlannerTableRow(entry) {
   const { plant, metrics, quantity } = entry;
   const screening = screeningProfile(plant, metrics);
   const yieldValue = gardenEntryYield(entry);
-  const spaceValue = gardenEntrySpace(entry);
   return `
     <tr>
       <td class="garden-planner-name" data-label="Plant">
@@ -6714,8 +6790,8 @@ function renderGardenPlannerTableRow(entry) {
         <span>${escapeHtml(metricDisplayValue(metrics.display?.yieldLbs, "lb estimate unavailable"))}</span>
       </td>
       <td data-label="Est. space">
-        <strong>${escapeHtml(formatCompactNumber(spaceValue, 1))}</strong>
-        <span>sq ft estimate</span>
+        <strong>${escapeHtml(gardenEntrySpaceLabel(entry))}</strong>
+        <span>spacing range</span>
       </td>
       <td data-label="Sun / water">
         <strong>${escapeHtml(plant.sun.map(sentenceCase).join(", "))}</strong>
@@ -6876,7 +6952,9 @@ function gardenPlannerCsv(entries) {
     "First output",
     "Yield estimate",
     "Estimated yield total",
-    "Estimated square feet",
+    "Estimated square feet min",
+    "Estimated square feet max",
+    "Estimated square feet midpoint",
     "Sun",
     "Water",
     "Difficulty",
@@ -6887,6 +6965,7 @@ function gardenPlannerCsv(entries) {
   const rows = entries.map((entry) => {
     const { plant, metrics, quantity } = entry;
     const screening = screeningProfile(plant, metrics);
+    const [spaceMin, spaceMax] = gardenEntrySpaceRange(entry);
     return [
       plant.name,
       plant.type,
@@ -6895,6 +6974,8 @@ function gardenPlannerCsv(entries) {
       metricDisplayValue(metrics.display?.firstOutput, ""),
       metricDisplayValue(metrics.display?.yieldLbs, ""),
       formatCompactNumber(gardenEntryYield(entry), 1, ""),
+      formatCompactNumber(spaceMin, 1, ""),
+      formatCompactNumber(spaceMax, 1, ""),
       formatCompactNumber(gardenEntrySpace(entry), 1, ""),
       plant.sun.map(sentenceCase).join("; "),
       sentenceCase(plant.water),

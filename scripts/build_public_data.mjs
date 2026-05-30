@@ -15,6 +15,8 @@ const metricTopLevelKeys = [
   "spacingPlantFtMax",
   "spacingRowFtMin",
   "spacingRowFtMax",
+  "spacingAreaSqFtMin",
+  "spacingAreaSqFtMax",
   "plantsPer100SqFtMin",
   "plantsPer100SqFtMax",
   "matureHeightFtMin",

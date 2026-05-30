@@ -38,6 +38,11 @@ const metricSources = {
     url: "https://www.lsuagcenter.com/topics/lawn_garden/home_gardening/vegetables/expected-vegetable-garden-yields",
     note: "Home garden vegetable yields by 100-foot row; used as a regional cross-check for pound-return ranges."
   },
+  "usu-tomato": {
+    title: "Utah State Extension - How to Grow Tomatoes in Your Garden",
+    url: "https://extension.usu.edu/yardandgarden/research/tomatoes-in-the-garden",
+    note: "Home-garden tomato spacing, planting, irrigation, and harvest guidance."
+  },
   "lsu-citrus-yield": {
     title: "LSU AgCenter - Sustainable Gardening for School and Home Gardens: Citrus",
     url: "https://www.lsuagcenter.com/~/media/system/b/7/2/4/b7241310f6e89ae9b1097d8e54a3028d/p3761l_sustgardcitrus_rh0721pdf.pdf",
@@ -868,9 +873,9 @@ const cropRules = [
     matureHeightFtMax: 8,
     matureSpreadFtMin: 2,
     matureSpreadFtMax: 3,
-    spacingPlantFtMin: 1.5,
-    spacingPlantFtMax: 2,
-    spacingRowFtMin: 4,
+    spacingPlantFtMin: 2,
+    spacingPlantFtMax: 3,
+    spacingRowFtMin: 2,
     spacingRowFtMax: 4,
     outputMin: 8,
     outputMax: 15,
@@ -878,7 +883,8 @@ const cropRules = [
     harvestWindowWeeksMin: 8,
     harvestWindowWeeksMax: 16,
     difficultyScore: 2,
-    reliabilityScore: 4
+    reliabilityScore: 4,
+    sourceKeys: ["uga-vegetable-days-spacing", "usu-tomato", "cornell-vegetable-yield", "umaine-vegetable-yield"]
   }),
   rule(["tomato"], {
     daysToMaturityMin: 70,
@@ -887,9 +893,9 @@ const cropRules = [
     matureHeightFtMax: 8,
     matureSpreadFtMin: 2,
     matureSpreadFtMax: 3,
-    spacingPlantFtMin: 1.5,
-    spacingPlantFtMax: 2,
-    spacingRowFtMin: 4,
+    spacingPlantFtMin: 2,
+    spacingPlantFtMax: 3,
+    spacingRowFtMin: 2,
     spacingRowFtMax: 4,
     outputMin: 8,
     outputMax: 20,
@@ -897,7 +903,19 @@ const cropRules = [
     harvestWindowWeeksMin: 6,
     harvestWindowWeeksMax: 14,
     difficultyScore: 2,
-    reliabilityScore: 3
+    reliabilityScore: 3,
+    sourceKeys: ["uga-vegetable-days-spacing", "usu-tomato", "cornell-vegetable-yield", "umaine-vegetable-yield"]
+  }),
+  rule(["brandywine tomato"], {
+    matureHeightFtMin: 5,
+    matureHeightFtMax: 8,
+    matureSpreadFtMin: 2,
+    matureSpreadFtMax: 3,
+    spacingPlantFtMin: 2,
+    spacingPlantFtMax: 3,
+    spacingRowFtMin: 2,
+    spacingRowFtMax: 4,
+    sourceKeys: ["uga-vegetable-days-spacing", "usu-tomato", "cornell-vegetable-yield", "umaine-vegetable-yield"]
   }),
   rule(["habanero", "serrano", "jalapeno", "poblano", "pepper", "aji amarillo", "shishito"], {
     daysToMaturityMin: 65,
@@ -2998,6 +3016,13 @@ function plantsPer100SqFt(metrics) {
   return [round(100 / maxArea, 1), round(100 / minArea, 1)];
 }
 
+function spacingAreaSqFt(metrics) {
+  const minArea = metrics.spacingPlantFtMin * metrics.spacingRowFtMin;
+  const maxArea = metrics.spacingPlantFtMax * metrics.spacingRowFtMax;
+  if (!minArea || !maxArea) return [null, null];
+  return [round(minArea, 2), round(maxArea, 2)];
+}
+
 function matchingYieldConversion(plant) {
   const text = plantText(plant);
   return yieldConversionRules.find(({ terms }) => terms.some((term) => termMatches(text, term)))?.values ?? null;
@@ -3253,8 +3278,11 @@ function buildMetrics(plant) {
   metrics.horizonLabel = horizonLabel(metrics.horizonKey);
   metrics.riskLevel = riskLevel(metrics);
   const [densityMin, densityMax] = plantsPer100SqFt(metrics);
+  const [spacingAreaMin, spacingAreaMax] = spacingAreaSqFt(metrics);
   metrics.plantsPer100SqFtMin = densityMin;
   metrics.plantsPer100SqFtMax = densityMax;
+  metrics.spacingAreaSqFtMin = spacingAreaMin;
+  metrics.spacingAreaSqFtMax = spacingAreaMax;
   metrics.multiUseScore = Math.min(5, Math.max(1, Math.round((plant.goals.length / 6) * 5)));
   metrics.lastReviewed = lastReviewed;
   applyDepthAndContainerGuidance(plant, metrics);
@@ -3328,6 +3356,8 @@ const csvColumns = [
   "spacing_plant_ft_max",
   "spacing_row_ft_min",
   "spacing_row_ft_max",
+  "spacing_area_sqft_min",
+  "spacing_area_sqft_max",
   "plants_per_100_sqft_min",
   "plants_per_100_sqft_max",
   "planting_depth_in_min",
@@ -3399,6 +3429,8 @@ const csvRows = plants.map((plant) => {
     spacing_plant_ft_max: metrics.spacingPlantFtMax,
     spacing_row_ft_min: metrics.spacingRowFtMin,
     spacing_row_ft_max: metrics.spacingRowFtMax,
+    spacing_area_sqft_min: metrics.spacingAreaSqFtMin,
+    spacing_area_sqft_max: metrics.spacingAreaSqFtMax,
     plants_per_100_sqft_min: metrics.plantsPer100SqFtMin,
     plants_per_100_sqft_max: metrics.plantsPer100SqFtMax,
     planting_depth_in_min: metrics.plantingDepthInMin,
