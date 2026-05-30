@@ -3238,6 +3238,7 @@ fieldset:nth-of-type(2) .segmented {
   font-size: 0.66rem;
   font-weight: 850;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .screener-row-actions input {

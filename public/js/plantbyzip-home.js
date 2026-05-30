@@ -5375,7 +5375,7 @@ function renderScreenerRow(plant) {
             <input class="screener-compare-input" type="checkbox" value="${escapeHtml(plant.id)}" ${isCompared ? "checked" : ""} />
             Compare
           </label>
-          <button class="screener-watch-button ${isWatched ? "is-active" : ""}" type="button" data-watch-plant="${escapeHtml(plant.id)}" aria-pressed="${isWatched ? "true" : "false"}" title="${isWatched ? "Remove from portfolio" : "Add to portfolio"}">${isWatched ? "Saved" : "Save"}</button>
+          <button class="screener-watch-button ${isWatched ? "is-active" : ""}" type="button" data-watch-plant="${escapeHtml(plant.id)}" aria-pressed="${isWatched ? "true" : "false"}" title="${isWatched ? "Remove from garden" : "Save to garden"}">${isWatched ? "In garden" : "Save to garden"}</button>
         </span>
         <a class="screener-plant-link" href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a>
         <span>${escapeHtml(plant.query ?? plant.id)}</span>
@@ -5557,7 +5557,7 @@ function renderScreenerPortfolioTable(entries) {
     return `
       <div class="screener-portfolio-empty">
         <strong>No saved plants yet.</strong>
-        <span>Use Save on any Screener row to build a local portfolio for comparison.</span>
+        <span>Use Save to garden on any Screener row to build a local portfolio for comparison.</span>
       </div>
     `;
   }
