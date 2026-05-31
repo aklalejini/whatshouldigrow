@@ -3056,6 +3056,73 @@ fieldset:nth-of-type(2) .segmented {
   background: var(--leaf);
 }
 
+.garden-planner-bed-kit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
+  border: 1px solid #dfe6d8;
+  border-radius: 14px;
+  background:
+    linear-gradient(145deg, rgba(255, 253, 248, 0.98), rgba(246, 251, 241, 0.9));
+}
+
+.garden-planner-bed-kit div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.garden-planner-bed-kit span {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.garden-planner-bed-kit strong {
+  color: var(--leaf-dark);
+  font-size: 0.92rem;
+  line-height: 1.25;
+}
+
+.garden-planner-bed-kit p,
+.garden-planner-bed-kit small {
+  margin: 0;
+  color: #405246;
+  font-size: 0.78rem;
+  font-weight: 720;
+  line-height: 1.4;
+}
+
+.garden-planner-bed-kit small {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.garden-planner-bed-kit a {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--leaf);
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.garden-planner-bed-kit a:hover {
+  color: #fff;
+  background: var(--leaf-dark);
+}
+
 .garden-planner-space-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -9657,6 +9724,15 @@ input.calendar-filter-search[type="search"]:focus {
     width: 100%;
   }
 
+  .garden-planner-bed-kit {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .garden-planner-bed-kit a {
+    width: 100%;
+  }
+
   .garden-planner-bed-canvas {
     min-height: 180px;
     max-height: 430px;
@@ -10005,6 +10081,7 @@ input.calendar-filter-search[type="search"]:focus {
   body.garden-planner-print-mode #garden-planner-timeline,
   body.garden-planner-print-mode #garden-planner-supplies,
   body.garden-planner-print-mode #garden-planner-warnings,
+  body.garden-planner-print-mode .garden-planner-bed-kit,
   body.garden-planner-print-mode .garden-planner-bed-actions,
   body.garden-planner-print-mode .garden-planner-layout-palette,
   body.garden-planner-print-mode .garden-planner-bed-selection {

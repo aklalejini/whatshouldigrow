@@ -384,6 +384,48 @@ const screenerWatchlistStorageKey = "plantbyzip.screenerWatchlist.v1";
 const gardenPlannerQuantityStorageKey = "plantbyzip.gardenPlannerQuantities.v1";
 const gardenPlannerSettingsStorageKey = "plantbyzip.gardenPlannerSettings.v1";
 const gardenPlannerLayoutStorageKey = "plantbyzip.gardenPlannerLayout.v1";
+const gardenPlannerBedKitProducts = [
+  {
+    id: "raised-bed-4-in-1",
+    name: "4-in-1 galvanized raised bed kit",
+    configuration: "4-in-1",
+    affiliateUrl: "https://amzn.to/3RFf8GH",
+    priority: 1,
+    sizes: [[3.5, 3.5], [2, 2], [2, 5], [2, 3.5]]
+  },
+  {
+    id: "raised-bed-9-in-1",
+    name: "9-in-1 galvanized raised bed kit",
+    configuration: "9-in-1",
+    affiliateUrl: "https://amzn.to/3RFf8GH",
+    priority: 2,
+    sizes: [[8, 2], [3.5, 6.5], [2, 6.5], [5, 5], [3.5, 5], [3.5, 3.5], [2, 5], [2, 3.5], [2, 2]]
+  },
+  {
+    id: "raised-bed-4x10",
+    name: "4 x 10 ft galvanized raised bed kit",
+    configuration: "4 x 10",
+    affiliateUrl: "https://amzn.to/4u2HQih",
+    priority: 1,
+    sizes: [[4, 10]]
+  },
+  {
+    id: "raised-bed-2x12",
+    name: "2 x 12 ft galvanized raised bed kit",
+    configuration: "2 x 12",
+    affiliateUrl: "https://amzn.to/3QcLTdN",
+    priority: 1,
+    sizes: [[2, 12]]
+  },
+  {
+    id: "raised-bed-10-in-1",
+    name: "10-in-1 galvanized raised bed kit",
+    configuration: "10-in-1",
+    affiliateUrl: "https://amzn.to/3QcLTdN",
+    priority: 2,
+    sizes: [[2.5, 9.5], [4, 8], [2.5, 8], [2.5, 7.5], [5.5, 6.5], [4, 6.5], [2.5, 6.5], [6, 6], [4, 6], [2.5, 6]]
+  }
+];
 const screenerColumnPresets = {
   core: ["name", "type", "zone", "firstOutput", "yield", "difficulty", "data", "source", "profile"],
   yield: ["name", "type", "zone", "firstOutput", "yield", "yieldPerSpace", "score", "difficulty", "reliability", "data", "source", "profile"],
@@ -6288,6 +6330,81 @@ function gardenPlannerBedFootprintLabel() {
   return `${count} bed${count === 1 ? "" : "s"} at ${formatCompactNumber(length, 1)} x ${formatCompactNumber(width, 1)} ft each`;
 }
 
+function gardenPlannerBedDimensionPair(settings = gardenPlannerSettings) {
+  const length = cleanGardenPlannerNumber(settings.bedLength, 8, 1, 200);
+  const width = cleanGardenPlannerNumber(settings.bedWidth, 4, 1, 200);
+  return [length, width].sort((a, b) => a - b);
+}
+
+function gardenPlannerBedSizeLabel(size) {
+  return `${formatCompactNumber(size[0], 1)} x ${formatCompactNumber(size[1], 1)} ft`;
+}
+
+function gardenPlannerBedKitDistance(inputSize, kitSize) {
+  const normalizedKitSize = [...kitSize].sort((a, b) => a - b);
+  const edgeDistance = Math.hypot(inputSize[0] - normalizedKitSize[0], inputSize[1] - normalizedKitSize[1]);
+  const inputArea = inputSize[0] * inputSize[1];
+  const kitArea = normalizedKitSize[0] * normalizedKitSize[1];
+  const areaDistance = Math.abs(inputArea - kitArea) / Math.max(inputArea, 1);
+  return edgeDistance + (areaDistance * 0.2);
+}
+
+function closestGardenPlannerBedKit(settings = gardenPlannerSettings) {
+  const inputSize = gardenPlannerBedDimensionPair(settings);
+  let best = null;
+  gardenPlannerBedKitProducts.forEach((product) => {
+    product.sizes.forEach((size) => {
+      const normalizedSize = [...size].sort((a, b) => a - b);
+      const distance = gardenPlannerBedKitDistance(inputSize, normalizedSize);
+      const exact = Math.abs(inputSize[0] - normalizedSize[0]) < 0.05 && Math.abs(inputSize[1] - normalizedSize[1]) < 0.05;
+      const candidate = {
+        product,
+        size: normalizedSize,
+        distance,
+        exact
+      };
+      if (!best
+        || candidate.distance < best.distance
+        || (Math.abs(candidate.distance - best.distance) < 0.01 && product.priority < best.product.priority)) {
+        best = candidate;
+      }
+    });
+  });
+  return best;
+}
+
+function renderGardenPlannerBedKitRecommendation() {
+  const match = closestGardenPlannerBedKit();
+  if (!match) return "";
+  const currentSize = gardenPlannerBedDimensionPair();
+  const count = Math.round(cleanGardenPlannerNumber(gardenPlannerSettings.bedCount, 1, 1, 50));
+  const currentLabel = gardenPlannerBedSizeLabel(currentSize);
+  const matchLabel = gardenPlannerBedSizeLabel(match.size);
+  const sizeCopy = match.exact
+    ? `${matchLabel} matches the bed size entered.`
+    : `${matchLabel} is the closest listed kit size to the ${currentLabel} bed entered.`;
+  const countCopy = count > 1
+    ? `Shown per bed; plan on ${count} kit${count === 1 ? "" : "s"} for this layout.`
+    : "Shown for one bed.";
+  return `
+    <aside class="garden-planner-bed-kit" aria-label="Raised bed kit recommendation">
+      <div>
+        <span>Raised bed option</span>
+        <strong>${escapeHtml(match.product.name)}</strong>
+        <p>${escapeHtml(sizeCopy)} ${escapeHtml(countCopy)}</p>
+        <small>Product links may earn a commission; final dimensions and availability can vary.</small>
+      </div>
+      <a
+        href="${escapeHtml(match.product.affiliateUrl)}"
+        target="_blank"
+        rel="sponsored noopener noreferrer"
+        data-partner-placement="garden_planner_bed_size"
+        data-product-id="${escapeHtml(match.product.id)}"
+      >View ${escapeHtml(match.product.configuration)}</a>
+    </aside>
+  `;
+}
+
 const gardenPlannerGridUnitCandidatesFt = [1 / 3, 0.5, 1, 2, 3, 4, 5, 10, 20, 50, 100, 250];
 
 function gardenPlannerGridUnitLabel(unitFt) {
@@ -7383,6 +7500,7 @@ function renderGardenPlannerSpace(entries) {
       </div>
       <p>${escapeHtml(formatCompactNumber(spaceStats.available, 1))} sq ft available from current settings.</p>
     </div>
+    ${renderGardenPlannerBedKitRecommendation()}
     ${entries.length ? `
       <div class="garden-planner-space-grid">
         ${renderGardenPlannerBedVisual(entries, spaceStats)}
