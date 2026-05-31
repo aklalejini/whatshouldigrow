@@ -6398,6 +6398,71 @@ function gardenPlannerLayoutItemSpaceLabel(item, digits = 1) {
   return formatCompactRange(minArea, maxArea, digits, " sq ft");
 }
 
+function gardenPlannerSpaceRemainingLabel(spaceStats) {
+  const remaining = Number.isFinite(spaceStats.used) ? spaceStats.available - spaceStats.used : null;
+  const remainingMin = Number.isFinite(spaceStats.usedMin) ? spaceStats.available - spaceStats.usedMin : null;
+  const remainingMax = Number.isFinite(spaceStats.usedMax) ? spaceStats.available - spaceStats.usedMax : null;
+  if (Number.isFinite(remainingMin) && Number.isFinite(remainingMax)) {
+    if (remainingMax >= 0) {
+      return `${formatCompactRange(remainingMax, remainingMin, 1, " sq ft")} still open by spacing range.`;
+    }
+    if (remainingMin < 0) {
+      return `${formatCompactRange(Math.abs(remainingMin), Math.abs(remainingMax), 1, " sq ft")} over the current bed budget.`;
+    }
+    return `Tight spacing fits, but wide spacing is ${formatCompactNumber(Math.abs(remainingMax), 1)} sq ft over budget.`;
+  }
+  if (Number.isFinite(remaining)) {
+    return remaining >= 0
+      ? `${formatCompactNumber(remaining, 1)} sq ft still open.`
+      : `${formatCompactNumber(Math.abs(remaining), 1)} sq ft over the current bed budget.`;
+  }
+  return "No density-backed space total yet.";
+}
+
+function gardenPlannerLayoutGroups(items) {
+  const groups = [];
+  const groupMap = new Map();
+  items.forEach((item, index) => {
+    const plantId = item.entry.plant.id;
+    if (!groupMap.has(plantId)) {
+      const group = {
+        entry: item.entry,
+        plantId,
+        color: item.color,
+        items: [],
+        firstIndex: index,
+        minTotal: 0,
+        maxTotal: 0,
+        hasRange: false
+      };
+      groupMap.set(plantId, group);
+      groups.push(group);
+    }
+    const group = groupMap.get(plantId);
+    const [minArea, maxArea] = item.range ?? [];
+    group.items.push({ item, index });
+    if (Number.isFinite(minArea)) {
+      group.minTotal += minArea;
+      group.hasRange = true;
+    }
+    if (Number.isFinite(maxArea)) {
+      group.maxTotal += maxArea;
+      group.hasRange = true;
+    }
+  });
+  groups.forEach((group) => {
+    group.placedItems = group.items.filter(({ item }) => cleanGardenPlannerLayoutPosition(gardenPlannerLayout[item.layoutId]));
+    group.unplacedItems = group.items.filter(({ item }) => !cleanGardenPlannerLayoutPosition(gardenPlannerLayout[item.layoutId]));
+    group.firstUnplaced = group.unplacedItems[0] ?? null;
+    group.isSelected = group.items.some(({ item }) => item.layoutId === gardenPlannerSelectedLayoutId);
+    group.perPlantLabel = gardenPlannerLayoutItemSpaceLabel(group.items[0]?.item);
+    group.totalLabel = group.hasRange
+      ? formatCompactRange(group.minTotal, group.maxTotal, 1, " sq ft")
+      : "Density pending";
+  });
+  return groups;
+}
+
 function ensureGardenPlannerLayoutForPlant(plantId) {
   const entries = gardenPlannerEntries();
   const spaceStats = gardenPlannerSpaceStats(entries);
@@ -6607,6 +6672,9 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
   const visual = gardenPlannerBedVisualData(entries, spaceStats);
   const grid = gardenPlannerBedGrid();
   const percentLabel = formatCompactRange(spaceStats.percentMin, spaceStats.percentMax, 0, "%");
+  const percent = Number.isFinite(spaceStats.percentMax) ? clamp(spaceStats.percentMax, 0, 100) : 0;
+  const spaceRangeLabel = formatCompactRange(spaceStats.usedMin, spaceStats.usedMax, 1, " sq ft");
+  const remainingLabel = gardenPlannerSpaceRemainingLabel(spaceStats);
   const isOver = Number.isFinite(spaceStats.percentMax) && spaceStats.percentMax > 100;
   const bedLabel = `${percentLabel} of planned bed space used. ${gardenPlannerBedFootprintLabel()}. ${grid.cellTitle}`;
   const positionedItems = visual.items
@@ -6621,11 +6689,11 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
   const hasLayout = Object.keys(gardenPlannerLayout).length > 0;
   let selectedItem = positionedItems.find((item) => item.layoutId === gardenPlannerSelectedLayoutId);
   if (gardenPlannerSelectedLayoutId && !selectedItem) gardenPlannerSelectedLayoutId = null;
+  const groups = gardenPlannerLayoutGroups(visual.items);
   return `
     <article class="garden-planner-space-card garden-planner-bed-card ${isOver ? "is-over" : ""}">
       <div class="garden-planner-space-card-head garden-planner-bed-card-head">
         <span>Interactive bed layout</span>
-        <strong>${escapeHtml(percentLabel)}</strong>
         <div class="garden-planner-bed-actions">
           <button
             type="button"
@@ -6639,6 +6707,22 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
             data-garden-layout-reset
             ${hasLayout ? "" : "disabled"}
           >Reset layout</button>
+        </div>
+      </div>
+      <div class="garden-planner-bed-summary">
+        <div class="garden-planner-bed-summary-main">
+          <span>Estimated use</span>
+          <strong>${escapeHtml(spaceRangeLabel)}</strong>
+          <small>${escapeHtml(percentLabel)} of ${escapeHtml(formatCompactNumber(spaceStats.available, 1))} sq ft planned</small>
+        </div>
+        <div class="garden-planner-bed-summary-meter">
+          <div class="garden-planner-space-meter" aria-label="Estimated garden space used">
+            <span style="--space-used: ${percent}%"></span>
+          </div>
+          <p>
+            ${escapeHtml(remainingLabel)}
+            ${spaceStats.unknownCount ? `${spaceStats.unknownCount} saved plant${spaceStats.unknownCount === 1 ? "" : "s"} lack density data.` : ""}
+          </p>
         </div>
       </div>
       <div
@@ -6687,12 +6771,9 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
         ${!placedCount ? `<div class="garden-planner-bed-hint">Open bed layout</div>` : ""}
       </div>
       <div class="garden-planner-bed-scale">
-        <span>Each square represents about ${escapeHtml(grid.unitLabel)}.</span>
+        <span>Grid: each square represents about ${escapeHtml(grid.unitLabel)}.</span>
+        <span>Bed: ${escapeHtml(gardenPlannerBedFootprintLabel())}</span>
         <span>${escapeHtml(grid.scaleText)}</span>
-      </div>
-      <div class="garden-planner-bed-meta">
-        <span>${escapeHtml(gardenPlannerBedFootprintLabel())}</span>
-        <span>${escapeHtml(formatCompactRange(spaceStats.usedMin, spaceStats.usedMax, 1, " sq ft"))} of ${escapeHtml(formatCompactNumber(spaceStats.available, 1))} sq ft planned</span>
         <span>${escapeHtml(placedCount)} of ${escapeHtml(layoutCount)} plant${layoutCount === 1 ? "" : "s"} placed</span>
       </div>
       ${selectedItem ? `
@@ -6710,31 +6791,44 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
       ` : ""}
       ${visual.items.length ? `
         <div class="garden-planner-layout-palette" aria-label="Saved plants for the bed layout">
-          ${visual.items.map((item, index) => {
-            const placed = Boolean(cleanGardenPlannerLayoutPosition(gardenPlannerLayout[item.layoutId]));
-            const defaultPosition = gardenPlannerDefaultLayoutPosition(index, visual.items.length);
+          ${groups.map((group) => {
+            const firstUnplaced = group.firstUnplaced;
+            const defaultPosition = firstUnplaced
+              ? gardenPlannerDefaultLayoutPosition(firstUnplaced.index, visual.items.length)
+              : null;
             return `
-              <button
-                type="button"
-                class="garden-planner-layout-chip ${placed ? "is-placed" : ""}"
-                draggable="true"
-                style="--bed-fill: ${escapeHtml(item.color)}"
-                data-garden-layout-plant="${escapeHtml(item.entry.plant.id)}"
-                data-garden-layout-id="${escapeHtml(item.layoutId)}"
-                data-garden-layout-place="${escapeHtml(item.layoutId)}"
-                data-garden-layout-label="${escapeHtml(gardenPlannerPlantInitials(item.entry.plant.name))}"
-                data-default-x="${escapeHtml(formatCompactNumber(defaultPosition.x, 2, ""))}"
-                data-default-y="${escapeHtml(formatCompactNumber(defaultPosition.y, 2, ""))}"
+              <article
+                class="garden-planner-layout-group ${group.isSelected ? "is-selected" : ""}"
+                style="--bed-fill: ${escapeHtml(group.color)}"
               >
-                <i></i>
-                <span>
-                  <strong>${escapeHtml(gardenPlannerLayoutItemLabel(item))}</strong>
-                  <small>${placed ? "Placed" : "Needs spot"} - ${escapeHtml(gardenPlannerLayoutItemSpaceLabel(item))}</small>
-                </span>
-              </button>
+                <div class="garden-planner-layout-group-main">
+                  <i class="garden-planner-layout-swatch" aria-hidden="true"></i>
+                  <span>
+                    <strong>${escapeHtml(group.entry.plant.name)}</strong>
+                    <small>Qty ${escapeHtml(group.items.length)} - ${escapeHtml(group.placedItems.length)} placed - ${escapeHtml(group.perPlantLabel)} each</small>
+                  </span>
+                  <b>${escapeHtml(group.totalLabel)} total</b>
+                </div>
+                ${firstUnplaced ? `
+                  <button
+                    type="button"
+                    class="garden-planner-layout-instance"
+                    draggable="true"
+                    style="--bed-fill: ${escapeHtml(group.color)}"
+                    data-garden-layout-plant="${escapeHtml(firstUnplaced.item.entry.plant.id)}"
+                    data-garden-layout-id="${escapeHtml(firstUnplaced.item.layoutId)}"
+                    data-garden-layout-place="${escapeHtml(firstUnplaced.item.layoutId)}"
+                    data-garden-layout-label="${escapeHtml(gardenPlannerPlantInitials(firstUnplaced.item.entry.plant.name))}"
+                    data-default-x="${escapeHtml(formatCompactNumber(defaultPosition.x, 2, ""))}"
+                    data-default-y="${escapeHtml(formatCompactNumber(defaultPosition.y, 2, ""))}"
+                  >
+                    <i aria-hidden="true"></i>
+                    <span>Place next${group.unplacedItems.length > 1 ? ` (${group.unplacedItems.length} need spots)` : ""}</span>
+                  </button>
+                ` : `<small class="garden-planner-layout-status">All placed</small>`}
+              </article>
             `;
           }).join("")}
-          ${visual.items.length > 8 ? `<span class="garden-planner-bed-more">All ${visual.items.length} saved plants are available here.</span>` : ""}
         </div>
       ` : `
         <p>No density-backed plants are available for the bed visual yet.</p>
@@ -7275,30 +7369,12 @@ function renderGardenPlannerSignals(entries) {
 
 function renderGardenPlannerSpace(entries) {
   const spaceStats = gardenPlannerSpaceStats(entries);
-  const percent = Number.isFinite(spaceStats.percentMax) ? clamp(spaceStats.percentMax, 0, 100) : 0;
-  const remaining = Number.isFinite(spaceStats.used) ? spaceStats.available - spaceStats.used : null;
-  const remainingMin = Number.isFinite(spaceStats.usedMin) ? spaceStats.available - spaceStats.usedMin : null;
-  const remainingMax = Number.isFinite(spaceStats.usedMax) ? spaceStats.available - spaceStats.usedMax : null;
-  const spaceRangeLabel = formatCompactRange(spaceStats.usedMin, spaceStats.usedMax, 1, " sq ft");
-  let remainingLabel = "No density-backed space total yet.";
-  if (Number.isFinite(remainingMin) && Number.isFinite(remainingMax)) {
-    if (remainingMax >= 0) {
-      remainingLabel = `${formatCompactRange(remainingMax, remainingMin, 1, " sq ft")} still open by spacing range.`;
-    } else if (remainingMin < 0) {
-      remainingLabel = `${formatCompactRange(Math.abs(remainingMin), Math.abs(remainingMax), 1, " sq ft")} over the current bed budget.`;
-    } else {
-      remainingLabel = `Tight spacing fits, but the wide spacing estimate is ${formatCompactNumber(Math.abs(remainingMax), 1)} sq ft over budget.`;
-    }
-  } else if (Number.isFinite(remaining)) {
-    remainingLabel = remaining >= 0
-      ? `${formatCompactNumber(remaining, 1)} sq ft still open.`
-      : `${formatCompactNumber(Math.abs(remaining), 1)} sq ft over the current bed budget.`;
-  }
   const leaders = entries
     .map((entry) => ({ entry, value: gardenEntrySpace(entry) }))
     .filter(({ value }) => Number.isFinite(value))
     .sort((a, b) => b.value - a.value)
     .slice(0, 4);
+  const showLeaders = leaders.length >= 3;
   return `
     <div class="garden-planner-section-head">
       <div>
@@ -7310,20 +7386,8 @@ function renderGardenPlannerSpace(entries) {
     ${entries.length ? `
       <div class="garden-planner-space-grid">
         ${renderGardenPlannerBedVisual(entries, spaceStats)}
+        ${showLeaders ? `
         <div class="garden-planner-space-summary-grid">
-          <article class="garden-planner-space-card">
-            <div class="garden-planner-space-card-head">
-              <span>Estimated use</span>
-              <strong>${escapeHtml(spaceRangeLabel)}</strong>
-            </div>
-            <div class="garden-planner-space-meter" aria-label="Estimated garden space used">
-              <span style="--space-used: ${percent}%"></span>
-            </div>
-            <p>
-              ${escapeHtml(remainingLabel)}
-              ${spaceStats.unknownCount ? `${spaceStats.unknownCount} saved plant${spaceStats.unknownCount === 1 ? "" : "s"} lack density data.` : ""}
-            </p>
-          </article>
           <article class="garden-planner-space-card">
             <div class="garden-planner-space-card-head">
               <span>Largest space uses</span>
@@ -7339,6 +7403,7 @@ function renderGardenPlannerSpace(entries) {
             </div>
           </article>
         </div>
+        ` : ""}
       </div>
     ` : `
       <div class="garden-planner-empty">
