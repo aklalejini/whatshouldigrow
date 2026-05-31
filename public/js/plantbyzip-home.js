@@ -267,6 +267,7 @@ const gardenPlannerWaterEl = document.getElementById("garden-planner-water");
 const gardenPlannerModeEl = document.getElementById("garden-planner-mode");
 const gardenPlannerSettingsStatusEl = document.getElementById("garden-planner-settings-status");
 const gardenPlannerSpaceEl = document.getElementById("garden-planner-space");
+const gardenPlannerCompanionsEl = document.getElementById("garden-planner-companions");
 const gardenPlannerTimelineEl = document.getElementById("garden-planner-timeline");
 const gardenPlannerComparePanelEl = document.getElementById("garden-planner-compare-panel");
 const gardenPlannerSearchEl = document.getElementById("garden-planner-search");
@@ -6384,6 +6385,229 @@ function gardenPlannerFitChecks(entry) {
   return issues;
 }
 
+const gardenPlannerCompanionTypeRank = {
+  companion: 60,
+  guild: 34,
+  understory: 30,
+  pollination: 24,
+  succession: 18
+};
+
+const gardenPlannerCompanionStrengthRank = {
+  high: 18,
+  medium: 10,
+  low: 4
+};
+
+const gardenPlannerCompanionFamilyTerms = [
+  "tomato",
+  "pepper",
+  "eggplant",
+  "basil",
+  "marigold",
+  "calendula",
+  "borage",
+  "nasturtium",
+  "dill",
+  "cilantro",
+  "yarrow",
+  "chives",
+  "garlic",
+  "onion",
+  "radish",
+  "pea",
+  "zinnia",
+  "cosmos",
+  "tithonia",
+  "bean",
+  "cucumber",
+  "melon",
+  "watermelon",
+  "cantaloupe",
+  "squash",
+  "zucchini",
+  "pumpkin",
+  "corn",
+  "lettuce",
+  "spinach",
+  "carrot",
+  "milkweed",
+  "coneflower",
+  "rudbeckia",
+  "goldenrod",
+  "aster",
+  "mountain mint"
+];
+
+function gardenPlannerCompanionNamedFamilyKey(plant) {
+  const identity = relationshipIdentity(plant);
+  return gardenPlannerCompanionFamilyTerms.find((term) => termMatchesIdentity(identity, term)) ?? null;
+}
+
+function gardenPlannerCompanionFamilyKey(plant) {
+  return gardenPlannerCompanionNamedFamilyKey(plant) ?? plant.id;
+}
+
+function gardenPlannerCompanionFitDetails(plant) {
+  const issues = [];
+  let score = 0;
+  if (gardenPlannerPlantZoneFits(plant)) score += 8;
+  else issues.push("zone");
+  if (gardenPlannerPlantSunFits(plant)) score += 8;
+  else issues.push("sun");
+  if (gardenPlannerPlantSoilFits(plant)) score += 4;
+  else issues.push("soil");
+  if (gardenPlannerPlantWaterFits(plant)) score += 4;
+  else issues.push("water");
+  return { score, issues };
+}
+
+function gardenPlannerFirstSentence(text) {
+  const normalized = String(text ?? "").replace(/\s+/g, " ").trim();
+  if (!normalized) return "";
+  const match = normalized.match(/^.{1,170}?[.!?](\s|$)/);
+  if (match) return match[0].trim();
+  return normalized.length > 170 ? `${normalized.slice(0, 167).trim()}...` : normalized;
+}
+
+function gardenPlannerShortList(values, limit = 2) {
+  const names = values.filter(Boolean);
+  if (names.length <= limit) return names.join(", ");
+  return `${names.slice(0, limit).join(", ")} +${names.length - limit} more`;
+}
+
+function gardenPlannerCompanionCandidatesForRelationship(sourcePlant, relationship, relatedPlants) {
+  if (relationship.plantMatch?.length) return relatedPlants;
+  const isSource = matchesRelationshipTerms(
+    sourcePlant,
+    relationship.sourceMatch ?? [],
+    relationship.sourceExclude ?? []
+  );
+  if (!isSource) return [];
+  return plants.filter((candidate) => (
+    candidate.id !== sourcePlant.id
+    && matchesRelationshipTerms(candidate, relationship.targetMatch ?? [], relationship.targetExclude ?? [])
+  ));
+}
+
+function gardenPlannerCompanionSuggestions(entries) {
+  if (!entries.length || !plantRelationships.length) return [];
+  const savedIds = new Set(entries.map((entry) => entry.plant.id));
+  const savedFamilies = new Set(entries.map((entry) => gardenPlannerCompanionNamedFamilyKey(entry.plant)).filter(Boolean));
+  const placedIds = new Set(Object.keys(gardenPlannerLayout).filter((plantId) => savedIds.has(plantId)));
+  const suggestionsById = new Map();
+
+  entries.forEach((entry) => {
+    const sourcePlant = entry.plant;
+    relationshipEntriesForPlant(sourcePlant).forEach(({ relationship, relatedPlants }) => {
+      const typeScore = gardenPlannerCompanionTypeRank[relationship.type] ?? 0;
+      if (!typeScore) return;
+      const strengthScore = gardenPlannerCompanionStrengthRank[relationship.strength] ?? 6;
+      const candidates = gardenPlannerCompanionCandidatesForRelationship(sourcePlant, relationship, relatedPlants);
+
+      candidates.forEach((candidate) => {
+        if (savedIds.has(candidate.id)) return;
+        const candidateFamily = gardenPlannerCompanionNamedFamilyKey(candidate);
+        if (candidateFamily && savedFamilies.has(candidateFamily)) return;
+        const fit = gardenPlannerCompanionFitDetails(candidate);
+        if (fit.issues.includes("zone") || fit.issues.includes("sun")) return;
+
+        if (!suggestionsById.has(candidate.id)) {
+          suggestionsById.set(candidate.id, {
+            plant: candidate,
+            score: 0,
+            family: gardenPlannerCompanionFamilyKey(candidate),
+            supports: new Map(),
+            relationships: new Map(),
+            fitIssues: new Set()
+          });
+        }
+
+        const suggestion = suggestionsById.get(candidate.id);
+        suggestion.supports.set(sourcePlant.id, sourcePlant.name);
+        fit.issues.forEach((issue) => suggestion.fitIssues.add(issue));
+        if (!suggestion.relationships.has(relationship.id)) {
+          suggestion.relationships.set(relationship.id, relationship);
+          suggestion.score += typeScore + strengthScore + fit.score;
+        }
+        if (placedIds.has(sourcePlant.id)) suggestion.score += 6;
+      });
+    });
+  });
+
+  const ranked = Array.from(suggestionsById.values())
+    .map((suggestion) => {
+      const type = suggestion.plant.type.toLowerCase();
+      let score = suggestion.score + Math.min(suggestion.supports.size, 3) * 10 + suggestion.relationships.size * 4;
+      if (type.includes("herb") || type.includes("flower")) score += 5;
+      return {
+        ...suggestion,
+        score,
+        supportNames: Array.from(suggestion.supports.values()),
+        relationshipList: Array.from(suggestion.relationships.values()),
+        fitIssueList: Array.from(suggestion.fitIssues)
+      };
+    })
+    .sort((a, b) => b.score - a.score || a.plant.name.localeCompare(b.plant.name));
+
+  const selected = [];
+  const usedFamilies = new Set();
+  ranked.forEach((suggestion) => {
+    if (selected.length >= 5 || usedFamilies.has(suggestion.family)) return;
+    selected.push(suggestion);
+    usedFamilies.add(suggestion.family);
+  });
+  ranked.forEach((suggestion) => {
+    if (selected.length >= 5 || selected.some((item) => item.plant.id === suggestion.plant.id)) return;
+    selected.push(suggestion);
+  });
+  return selected;
+}
+
+function gardenPlannerCompanionLabel(suggestion) {
+  const relationship = suggestion.relationshipList[0];
+  return relationshipTypeLabels[relationship?.type] ?? sentenceCase(relationship?.type ?? "companion");
+}
+
+function renderGardenPlannerCompanions(entries) {
+  const suggestions = gardenPlannerCompanionSuggestions(entries);
+  if (!suggestions.length) return "";
+  return `
+    <div class="garden-planner-section-head">
+      <div>
+        <span>Companion ideas</span>
+        <h2 id="garden-planner-companions-title">Good additions</h2>
+      </div>
+      <p>Based on saved plants and existing relationship notes. Use spacing and airflow as the final check.</p>
+    </div>
+    <div class="garden-planner-companion-list">
+      ${suggestions.map((suggestion) => {
+        const relationship = suggestion.relationshipList[0];
+        const fitNote = suggestion.fitIssueList.length
+          ? `Check ${suggestion.fitIssueList.join(" and ")} against settings.`
+          : "Fits the selected zone and sun.";
+        return `
+          <article class="garden-planner-companion-card">
+            <div class="garden-planner-companion-card-head">
+              <span>${escapeHtml(gardenPlannerCompanionLabel(suggestion))}</span>
+              <strong>${escapeHtml(suggestion.plant.name)}</strong>
+            </div>
+            <p>${escapeHtml(gardenPlannerFirstSentence(relationship?.note ?? relationship?.placement))}</p>
+            <div class="garden-planner-companion-meta">
+              <span>Works with ${escapeHtml(gardenPlannerShortList(suggestion.supportNames))}</span>
+              <span>${escapeHtml(fitNote)}</span>
+            </div>
+            <div class="garden-planner-companion-actions">
+              <button type="button" data-garden-companion-add="${escapeHtml(suggestion.plant.id)}">Save to garden</button>
+              <a href="${plantPagePath(suggestion.plant)}">Profile</a>
+            </div>
+          </article>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
 function weightedGardenAverage(entries, reader) {
   let totalWeight = 0;
   let total = 0;
@@ -6968,6 +7192,11 @@ function renderGardenPlannerSummarySections(entries = gardenPlannerEntries()) {
   gardenPlannerStatsEl.innerHTML = renderGardenPlannerStats(entries);
   gardenPlannerWarningsEl.innerHTML = renderGardenPlannerSignals(entries);
   if (gardenPlannerSpaceEl) gardenPlannerSpaceEl.innerHTML = renderGardenPlannerSpace(entries);
+  if (gardenPlannerCompanionsEl) {
+    const companionMarkup = renderGardenPlannerCompanions(entries);
+    gardenPlannerCompanionsEl.innerHTML = companionMarkup;
+    gardenPlannerCompanionsEl.hidden = !companionMarkup;
+  }
   if (gardenPlannerTimelineEl) gardenPlannerTimelineEl.innerHTML = renderGardenPlannerTimeline(entries);
   if (gardenPlannerComparePanelEl) {
     const compareMarkup = gardenPlannerCompareOpen ? renderGardenPlannerCompare(entries) : "";
@@ -7775,6 +8004,22 @@ function initializeGardenPlanner() {
       trackEvent("filter_apply", {
         tool: "garden-planner",
         action: "quick_add",
+        watchlist_count: screenerWatchlistIds.size
+      });
+    }
+  });
+  gardenPlannerCompanionsEl?.addEventListener("click", (event) => {
+    const addButton = event.target.closest("[data-garden-companion-add]");
+    if (!addButton) return;
+    const plantId = addButton.dataset.gardenCompanionAdd;
+    if (!plantId) return;
+    const changed = setScreenerPortfolioMembership(plantId, true);
+    if (changed) {
+      renderScreener();
+      renderGardenPlanner();
+      trackEvent("filter_apply", {
+        tool: "garden-planner",
+        action: "companion_add",
         watchlist_count: screenerWatchlistIds.size
       });
     }
