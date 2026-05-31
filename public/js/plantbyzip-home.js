@@ -6788,6 +6788,7 @@ function autoArrangeGardenPlannerLayout() {
 function renderGardenPlannerBedVisual(entries, spaceStats) {
   const visual = gardenPlannerBedVisualData(entries, spaceStats);
   const grid = gardenPlannerBedGrid();
+  const bedKitRecommendation = renderGardenPlannerBedKitRecommendation();
   const percentLabel = formatCompactRange(spaceStats.percentMin, spaceStats.percentMax, 0, "%");
   const percent = Number.isFinite(spaceStats.percentMax) ? clamp(spaceStats.percentMax, 0, 100) : 0;
   const spaceRangeLabel = formatCompactRange(spaceStats.usedMin, spaceStats.usedMax, 1, " sq ft");
@@ -6826,6 +6827,7 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
           >Reset layout</button>
         </div>
       </div>
+      ${bedKitRecommendation}
       <div class="garden-planner-bed-summary">
         <div class="garden-planner-bed-summary-main">
           <span>Estimated use</span>
@@ -7500,7 +7502,6 @@ function renderGardenPlannerSpace(entries) {
       </div>
       <p>${escapeHtml(formatCompactNumber(spaceStats.available, 1))} sq ft available from current settings.</p>
     </div>
-    ${renderGardenPlannerBedKitRecommendation()}
     ${entries.length ? `
       <div class="garden-planner-space-grid">
         ${renderGardenPlannerBedVisual(entries, spaceStats)}
