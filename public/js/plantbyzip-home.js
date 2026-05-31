@@ -6230,6 +6230,184 @@ function gardenPlannerLayoutRadii(item, spaceStats) {
   };
 }
 
+function gardenPlannerAutoLayoutDimensions() {
+  const length = cleanGardenPlannerNumber(gardenPlannerSettings.bedLength, 8, 1, 200);
+  const width = cleanGardenPlannerNumber(gardenPlannerSettings.bedWidth, 4, 1, 200);
+  const count = Math.round(cleanGardenPlannerNumber(gardenPlannerSettings.bedCount, 1, 1, 50));
+  const arrangement = gardenPlannerBedBlockArrangement(length, width, count);
+  const totalArea = length * width * count;
+  const displayLength = count === 1 ? length : arrangement.columns * length;
+  const displayWidth = count === 1 ? width : totalArea / Math.max(displayLength, 1);
+  return { displayLength, displayWidth, totalArea };
+}
+
+function gardenPlannerAutoLayoutArea(item, mode = "target") {
+  const [minArea, maxArea] = item.range ?? [item.value, item.value];
+  const fallback = Number.isFinite(item.value) && item.value > 0 ? item.value : null;
+  if (mode === "min") return (Number.isFinite(minArea) && minArea > 0 ? minArea : fallback) ?? 1;
+  if (mode === "max") return (Number.isFinite(maxArea) && maxArea > 0 ? maxArea : fallback) ?? 1;
+  return rangeAverage(minArea, maxArea) ?? fallback ?? 1;
+}
+
+function gardenPlannerAutoLayoutRadiusFt(area, scale = 1) {
+  const safeArea = Number.isFinite(area) && area > 0 ? area : 1;
+  return Math.sqrt(safeArea / Math.PI) * scale;
+}
+
+function gardenPlannerAutoLayoutRelationshipScore(sourcePlant, targetPlant) {
+  if (!sourcePlant || !targetPlant || sourcePlant.id === targetPlant.id) return 0;
+  let score = 0;
+  relationshipEntriesForPlant(sourcePlant).forEach(({ relationship, relatedPlants }) => {
+    if (!relatedPlants.some((plant) => plant.id === targetPlant.id)) return;
+    score += (gardenPlannerCompanionTypeRank[relationship.type] ?? 6)
+      + (gardenPlannerCompanionStrengthRank[relationship.strength] ?? 4);
+  });
+  return score;
+}
+
+function gardenPlannerAutoLayoutPairScore(sourcePlant, targetPlant) {
+  return Math.max(
+    gardenPlannerAutoLayoutRelationshipScore(sourcePlant, targetPlant),
+    gardenPlannerAutoLayoutRelationshipScore(targetPlant, sourcePlant)
+  );
+}
+
+function gardenPlannerAutoLayoutPairKey(sourceId, targetId) {
+  return [sourceId, targetId].sort().join("::");
+}
+
+function gardenPlannerAutoLayoutPairScores(items) {
+  const scores = new Map();
+  items.forEach((sourceItem, sourceIndex) => {
+    items.slice(sourceIndex + 1).forEach((targetItem) => {
+      const score = gardenPlannerAutoLayoutPairScore(sourceItem.entry.plant, targetItem.entry.plant);
+      if (score > 0) {
+        scores.set(gardenPlannerAutoLayoutPairKey(sourceItem.entry.plant.id, targetItem.entry.plant.id), score);
+      }
+    });
+  });
+  return scores;
+}
+
+function gardenPlannerAutoLayoutCandidatePoints(count, dimensions) {
+  const aspect = clamp(dimensions.displayLength / Math.max(dimensions.displayWidth, 1), 0.35, 4);
+  const columns = Math.round(clamp(Math.ceil(Math.sqrt(count * aspect) * 2.35), 4, 22));
+  const rows = Math.round(clamp(Math.ceil(Math.sqrt(count / aspect) * 2.25), 3, 16));
+  const points = [];
+  for (let row = 0; row < rows; row += 1) {
+    for (let column = 0; column < columns; column += 1) {
+      const stagger = row % 2 ? 0.18 : 0;
+      const xPct = clamp(((column + 0.5 + stagger) / columns) * 100, 5, 95);
+      const yPct = clamp(((row + 0.5) / rows) * 100, 6, 94);
+      points.push({
+        xPct,
+        yPct,
+        xFt: (xPct / 100) * dimensions.displayLength,
+        yFt: (yPct / 100) * dimensions.displayWidth
+      });
+    }
+  }
+  return points;
+}
+
+function gardenPlannerAutoLayoutPointScore(item, point, placed, dimensions, pairScores) {
+  const edgeClearanceFt = Math.min(
+    point.xFt,
+    dimensions.displayLength - point.xFt,
+    point.yFt,
+    dimensions.displayWidth - point.yFt
+  );
+  // Score practical garden-bed placement: avoid crowding first, then favor useful companion proximity.
+  let score = Math.max(0, (item.collisionRadiusFt * 0.72) - edgeClearanceFt) * 16;
+
+  placed.forEach((placedItem) => {
+    const distance = Math.hypot(point.xFt - placedItem.xFt, point.yFt - placedItem.yFt);
+    const minimumDistance = item.collisionRadiusFt + placedItem.collisionRadiusFt;
+    if (distance < minimumDistance) {
+      score += 520 + ((minimumDistance - distance) ** 2) * 80;
+    } else {
+      score += 2.4 / Math.max(distance, 0.5);
+    }
+
+    const relationshipScore = pairScores.get(
+      gardenPlannerAutoLayoutPairKey(item.entry.plant.id, placedItem.item.entry.plant.id)
+    ) ?? 0;
+    if (relationshipScore > 0) {
+      const targetDistance = Math.max(item.targetRadiusFt + placedItem.targetRadiusFt, minimumDistance * 1.12, 1.25);
+      const companionBand = Math.max(targetDistance * 2.2, 4);
+      const closeness = Math.max(0, 1 - (Math.abs(distance - targetDistance) / companionBand));
+      score -= relationshipScore * closeness * 0.52;
+    }
+  });
+
+  return score;
+}
+
+function autoArrangeGardenPlannerLayout() {
+  const entries = gardenPlannerEntries();
+  const spaceStats = gardenPlannerSpaceStats(entries);
+  const visual = gardenPlannerBedVisualData(entries, spaceStats);
+  if (!visual.items.length) return 0;
+
+  const dimensions = gardenPlannerAutoLayoutDimensions();
+  const points = gardenPlannerAutoLayoutCandidatePoints(visual.items.length, dimensions);
+  const items = visual.items
+    .map((item) => {
+      const minArea = gardenPlannerAutoLayoutArea(item, "min");
+      const targetArea = gardenPlannerAutoLayoutArea(item);
+      return {
+        ...item,
+        layoutArea: targetArea,
+        collisionRadiusFt: gardenPlannerAutoLayoutRadiusFt(minArea, 0.92),
+        targetRadiusFt: gardenPlannerAutoLayoutRadiusFt(targetArea)
+      };
+    })
+    .sort((a, b) => b.layoutArea - a.layoutArea || a.entry.plant.name.localeCompare(b.entry.plant.name));
+  const pairScores = gardenPlannerAutoLayoutPairScores(items);
+
+  const placed = [];
+  items.forEach((item, itemIndex) => {
+    let best = null;
+    points.forEach((point, pointIndex) => {
+      const score = gardenPlannerAutoLayoutPointScore(item, point, placed, dimensions, pairScores)
+        + (Math.abs(point.xPct - 50) + Math.abs(point.yPct - 50)) * (itemIndex === 0 ? 0.015 : 0.002)
+        + pointIndex * 0.0001;
+      if (!best || score < best.score) best = { ...point, score };
+    });
+    if (!best) {
+      const defaultPosition = gardenPlannerDefaultLayoutPosition(itemIndex, items.length);
+      best = {
+        xPct: defaultPosition.x,
+        yPct: defaultPosition.y,
+        xFt: (defaultPosition.x / 100) * dimensions.displayLength,
+        yFt: (defaultPosition.y / 100) * dimensions.displayWidth,
+        score: 0
+      };
+    }
+    placed.push({
+      item,
+      xPct: best.xPct,
+      yPct: best.yPct,
+      xFt: best.xFt,
+      yFt: best.yFt,
+      collisionRadiusFt: item.collisionRadiusFt,
+      targetRadiusFt: item.targetRadiusFt
+    });
+  });
+
+  const arrangedIds = new Set(items.map((item) => item.entry.plant.id));
+  gardenPlannerLayout = Object.fromEntries(
+    Object.entries(gardenPlannerLayout).filter(([plantId]) => !arrangedIds.has(plantId))
+  );
+  placed.forEach((placement) => {
+    const position = cleanGardenPlannerLayoutPosition({ x: placement.xPct, y: placement.yPct });
+    if (position) gardenPlannerLayout[placement.item.entry.plant.id] = position;
+  });
+  saveGardenPlannerLayout();
+  renderGardenPlannerSummarySections();
+  return placed.length;
+}
+
 function renderGardenPlannerBedVisual(entries, spaceStats) {
   const visual = gardenPlannerBedVisualData(entries, spaceStats);
   const grid = gardenPlannerBedGrid();
@@ -6251,12 +6429,20 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
       <div class="garden-planner-space-card-head garden-planner-bed-card-head">
         <span>Interactive bed layout</span>
         <strong>${escapeHtml(percentLabel)}</strong>
-        <button
-          type="button"
-          class="garden-planner-bed-reset"
-          data-garden-layout-reset
-          ${hasLayout ? "" : "disabled"}
-        >Reset layout</button>
+        <div class="garden-planner-bed-actions">
+          <button
+            type="button"
+            class="garden-planner-bed-auto"
+            data-garden-layout-auto
+            ${layoutCount ? "" : "disabled"}
+          >Auto arrange</button>
+          <button
+            type="button"
+            class="garden-planner-bed-reset"
+            data-garden-layout-reset
+            ${hasLayout ? "" : "disabled"}
+          >Reset layout</button>
+        </div>
       </div>
       <div
         class="garden-planner-bed-canvas garden-planner-layout-board"
@@ -7478,6 +7664,19 @@ function handleGardenPlannerLayoutClick(event) {
       action: "bed_layout_reset",
       watchlist_count: screenerWatchlistIds.size
     });
+    return;
+  }
+  const autoButton = event.target.closest("[data-garden-layout-auto]");
+  if (autoButton) {
+    const arrangedCount = autoArrangeGardenPlannerLayout();
+    if (arrangedCount) {
+      trackEvent("filter_apply", {
+        tool: "garden-planner",
+        action: "bed_layout_auto_arrange",
+        watchlist_count: screenerWatchlistIds.size,
+        arranged_count: arrangedCount
+      });
+    }
     return;
   }
   const placeButton = event.target.closest("[data-garden-layout-place]");

@@ -3097,6 +3097,13 @@ fieldset:nth-of-type(2) .segmented {
   flex-wrap: wrap;
 }
 
+.garden-planner-bed-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
 .garden-planner-space-card-head span {
   color: var(--muted);
   font-size: 0.68rem;
@@ -3112,6 +3119,7 @@ fieldset:nth-of-type(2) .segmented {
   line-height: 1;
 }
 
+.garden-planner-bed-auto,
 .garden-planner-bed-reset {
   justify-self: end;
   padding: 7px 10px;
@@ -3124,6 +3132,13 @@ fieldset:nth-of-type(2) .segmented {
   cursor: pointer;
 }
 
+.garden-planner-bed-auto {
+  border-color: var(--leaf);
+  color: #fff;
+  background: var(--leaf);
+}
+
+.garden-planner-bed-auto:disabled,
 .garden-planner-bed-reset:disabled {
   opacity: 0.5;
   cursor: not-allowed;
