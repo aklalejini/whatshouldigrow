@@ -187,6 +187,12 @@ function planningNotesForPlant(entry) {
   if (hasNativeGoal) {
     notes.push("Native-plant matches are starting points; confirm regional nativity, straight-species versus cultivar status, and local invasive guidance.");
   }
+  if (metrics.deerResistance === "frequently-damaged") {
+    notes.push("Deer pressure can be a real constraint for this plant; plan protection if browsing is common nearby.");
+  }
+  if (metrics.jugloneTolerance === "sensitive") {
+    notes.push("Avoid planting this close to black walnut roots unless local guidance says the cultivar is tolerant.");
+  }
   if (metrics.dataConfidence === "low") {
     notes.push("Quantitative data quality is low for this record; verify before buying or planting at scale.");
   }
@@ -302,6 +308,28 @@ const quantitativeRows = [
   metricFact("Difficulty", metricDisplay.difficulty),
   metricFact("Reliability", metricDisplay.reliability)
 ].filter(Boolean);
+const siteRiskRows = [
+  {
+    label: "Deer pressure",
+    value: metrics.deerResistanceLabel ?? "Not rated",
+    note: metrics.deerResistanceNote ?? "Deer browsing varies by neighborhood and season.",
+    tone: ["rarely-damaged", "seldom-damaged"].includes(metrics.deerResistance)
+      ? "positive"
+      : metrics.deerResistance === "frequently-damaged"
+        ? "watch"
+        : "neutral"
+  },
+  {
+    label: "Black walnut",
+    value: metrics.jugloneToleranceLabel ?? "Not rated",
+    note: metrics.jugloneToleranceNote ?? "Verify locally before planting in a walnut root zone.",
+    tone: metrics.jugloneTolerance === "tolerant"
+      ? "positive"
+      : metrics.jugloneTolerance === "sensitive"
+        ? "watch"
+        : "neutral"
+  }
+];
 const relatedHubs = relatedHubsForPlant(plant);
 const cultivarRelationshipEntries = relationshipEntries.filter(({ relationship }) => (
   /pollinat|cultivar|compatible|fruit set|another/i.test(`${relationship.id} ${relationship.note}`)
@@ -452,6 +480,15 @@ const breadcrumbJsonLd = {
                 <dt>Water</dt>
                 <dd class="plant-page-chip-list"><span>{sentenceCase(plant.water)}</span></dd>
               </div>
+              {siteRiskRows.map((row) => (
+                <div class={`plant-page-site-risk is-${row.tone}`}>
+                  <dt>{row.label}</dt>
+                  <dd>
+                    <span>{row.value}</span>
+                    <small>{row.note}</small>
+                  </dd>
+                </div>
+              ))}
               {cleanMetric(metricDisplay.plantingDepth) && <div><dt>Planting depth</dt><dd>{cleanMetric(metricDisplay.plantingDepth)}</dd></div>}
               {cleanMetric(metricDisplay.containerMin) && <div><dt>Container min</dt><dd>{cleanMetric(metricDisplay.containerMin)}</dd></div>}
               <div>
@@ -782,7 +819,7 @@ const breadcrumbJsonLd = {
             </p>
             {metricSources.length > 0 && (
               <p class="plant-page-source-links">
-                <span>Quantitative sources:</span>
+                <span>Planning sources:</span>
                 {metricSources.slice(0, 5).map((source) => (
                   <a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>
                 ))}

@@ -124,6 +124,16 @@
     "url": "https://plants.ces.ncsu.edu/",
     "note": "Reference basis for ornamental plant size, function, and right-plant-right-place screening."
   },
+  "rutgers-deer-resistance": {
+    "title": "Rutgers NJAES - Landscape Plants Rated by Deer Resistance",
+    "url": "https://njaes.rutgers.edu/deer-resistant-plants/",
+    "note": "Deer browsing categories used as planning cues; no plant is deer proof under heavy pressure."
+  },
+  "psu-juglone-black-walnut": {
+    "title": "Penn State Extension - Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants",
+    "url": "https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants",
+    "note": "Black walnut and juglone sensitivity/tolerance cue for garden placement screening."
+  },
   "mobot-plant-finder": {
     "title": "Missouri Botanical Garden Plant Finder",
     "url": "https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderSearch.aspx",

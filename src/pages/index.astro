@@ -1104,6 +1104,24 @@ const webAppJsonLd = {
                 <option value="watchlist">Portfolio</option>
               </select>
             </label>
+            <label class="screener-field" for="screener-deer">
+              <span title="Planning cue based on extension deer browsing categories. No plant is deer proof.">Deer pressure</span>
+              <select id="screener-deer">
+                <option value="">Any deer cue</option>
+                <option value="better">Better for deer pressure</option>
+                <option value="avoid-frequent">Hide frequent browse risk</option>
+                <option value="rarely">Rarely damaged only</option>
+              </select>
+            </label>
+            <label class="screener-field" for="screener-juglone">
+              <span title="Planning cue for black walnut / juglone-sensitive sites.">Black walnut</span>
+              <select id="screener-juglone">
+                <option value="">Any walnut cue</option>
+                <option value="tolerant">Better near black walnut</option>
+                <option value="avoid-sensitive">Hide juglone-sensitive plants</option>
+                <option value="sensitive">Sensitive plants only</option>
+              </select>
+            </label>
             <label class="screener-field" for="screener-partner">
               <span>Source</span>
               <select id="screener-partner">
@@ -1237,6 +1255,8 @@ const webAppJsonLd = {
                   <th scope="col" data-screener-col="native"><button type="button" data-screener-sort="native" title="Derived from current plant notes and goals, not a full native-range database.">Native flag <span class="sort-indicator"></span></button></th>
                   <th scope="col" data-screener-col="lowWater"><button type="button" data-screener-sort="lowMaintenance" title="Plants with low water needs.">Low water <span class="sort-indicator"></span></button></th>
                   <th scope="col" data-screener-col="pairings"><button type="button" data-screener-sort="pairings" title="Companion or placement pairing rules connected to this plant.">Pairings <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="deer"><button type="button" data-screener-sort="deer" title="Deer browsing cue based on extension categories.">Deer <span class="sort-indicator"></span></button></th>
+                  <th scope="col" data-screener-col="juglone"><button type="button" data-screener-sort="juglone" title="Black walnut / juglone planning cue.">Walnut <span class="sort-indicator"></span></button></th>
                   <th scope="col" data-screener-col="screening"><button type="button" data-screener-sort="screening" title="Planning cues for pH, pollination, support, pests, chill, heat, storage, and regional warnings.">Screening cues <span class="sort-indicator"></span></button></th>
                   <th scope="col" data-screener-col="source"><button type="button" data-screener-sort="partner">Source <span class="sort-indicator"></span></button></th>
                   <th class="screener-action-head" scope="col" data-screener-col="profile">Profile</th>
@@ -1273,6 +1293,7 @@ const webAppJsonLd = {
           <div class="garden-planner-actions" aria-label="Garden planner actions">
             <button id="garden-planner-compare" type="button">Compare saved plants</button>
             <button id="garden-planner-export" type="button">Export CSV</button>
+            <button id="garden-planner-print-bed" type="button">Export bed PDF</button>
             <button id="garden-planner-clear" type="button">Clear garden</button>
           </div>
 
@@ -1370,6 +1391,20 @@ const webAppJsonLd = {
                   <option value="mixed">Mixed garden</option>
                 </select>
               </label>
+              <label>
+                <span>Deer pressure</span>
+                <select id="garden-planner-deer" name="deerPressure">
+                  <option value="ignore">Not a factor</option>
+                  <option value="deer-pressure">Active deer pressure</option>
+                </select>
+              </label>
+              <label>
+                <span>Black walnut</span>
+                <select id="garden-planner-walnut" name="walnut">
+                  <option value="ignore">Not nearby</option>
+                  <option value="near-walnut">Near roots/canopy</option>
+                </select>
+              </label>
               <button type="submit">Lookup ZIP</button>
             </form>
             <p id="garden-planner-settings-status" class="garden-planner-settings-status"></p>
@@ -1407,6 +1442,12 @@ const webAppJsonLd = {
           </section>
 
           <section
+            id="garden-planner-table"
+            class="garden-planner-table"
+            aria-labelledby="garden-planner-table-title"
+          ></section>
+
+          <section
             id="garden-planner-space"
             class="garden-planner-space"
             aria-labelledby="garden-planner-space-title"
@@ -1417,12 +1458,6 @@ const webAppJsonLd = {
             class="garden-planner-companions"
             aria-labelledby="garden-planner-companions-title"
             hidden
-          ></section>
-
-          <section
-            id="garden-planner-table"
-            class="garden-planner-table"
-            aria-labelledby="garden-planner-table-title"
           ></section>
 
           <section

@@ -218,6 +218,8 @@ const screenerSoilEl = document.getElementById("screener-soil");
 const screenerWaterEl = document.getElementById("screener-water");
 const screenerGoalEl = document.getElementById("screener-goal");
 const screenerFlagEl = document.getElementById("screener-flag");
+const screenerDeerEl = document.getElementById("screener-deer");
+const screenerJugloneEl = document.getElementById("screener-juglone");
 const screenerPartnerEl = document.getElementById("screener-partner");
 const screenerConfidenceEl = document.getElementById("screener-confidence");
 const screenerMinYieldEl = document.getElementById("screener-min-yield");
@@ -265,6 +267,8 @@ const gardenPlannerSunEl = document.getElementById("garden-planner-sun");
 const gardenPlannerSoilEl = document.getElementById("garden-planner-soil");
 const gardenPlannerWaterEl = document.getElementById("garden-planner-water");
 const gardenPlannerModeEl = document.getElementById("garden-planner-mode");
+const gardenPlannerDeerEl = document.getElementById("garden-planner-deer");
+const gardenPlannerWalnutEl = document.getElementById("garden-planner-walnut");
 const gardenPlannerSettingsStatusEl = document.getElementById("garden-planner-settings-status");
 const gardenPlannerSpaceEl = document.getElementById("garden-planner-space");
 const gardenPlannerCompanionsEl = document.getElementById("garden-planner-companions");
@@ -277,6 +281,7 @@ const gardenPlannerSuppliesEl = document.getElementById("garden-planner-supplies
 const gardenPlannerOpenScreenerEl = document.getElementById("garden-planner-open-screener");
 const gardenPlannerCompareEl = document.getElementById("garden-planner-compare");
 const gardenPlannerExportEl = document.getElementById("garden-planner-export");
+const gardenPlannerPrintBedEl = document.getElementById("garden-planner-print-bed");
 const gardenPlannerClearEl = document.getElementById("garden-planner-clear");
 const screenerSummaryEl = document.getElementById("screener-summary");
 const screenerEmptyEl = document.getElementById("screener-empty");
@@ -297,6 +302,8 @@ const screenerFilterEls = [
   screenerWaterEl,
   screenerGoalEl,
   screenerFlagEl,
+  screenerDeerEl,
+  screenerJugloneEl,
   screenerPartnerEl,
   screenerConfidenceEl,
   screenerMinYieldEl,
@@ -339,7 +346,9 @@ let gardenPlannerSettings = {
   sun: "full",
   soil: "loam",
   water: "medium",
-  mode: "in-ground"
+  mode: "in-ground",
+  deerPressure: "ignore",
+  walnut: "ignore"
 };
 let gardenPlannerCompareOpen = false;
 let gardenPlannerLayoutDragId = null;
@@ -380,9 +389,9 @@ const screenerColumnPresets = {
   yield: ["name", "type", "zone", "firstOutput", "yield", "yieldPerSpace", "score", "difficulty", "reliability", "data", "source", "profile"],
   space: ["name", "type", "zone", "spacing", "container", "yield", "yieldPerSpace", "score", "sun", "water", "profile"],
   container: ["name", "type", "zone", "container", "yield", "score", "sun", "soil", "water", "screening", "source", "profile"],
-  risk: ["name", "type", "zone", "difficulty", "reliability", "data", "screening", "water", "pairings", "source", "profile"],
-  ecology: ["name", "type", "zone", "sun", "soil", "water", "goals", "traits", "native", "lowWater", "pairings", "screening", "profile"],
-  all: ["name", "type", "zone", "firstOutput", "spacing", "plantingDepth", "container", "yield", "yieldPerSpace", "score", "difficulty", "reliability", "data", "sun", "soil", "water", "goals", "harvest", "traits", "native", "lowWater", "pairings", "screening", "source", "profile"]
+  risk: ["name", "type", "zone", "difficulty", "reliability", "data", "deer", "juglone", "screening", "water", "pairings", "source", "profile"],
+  ecology: ["name", "type", "zone", "sun", "soil", "water", "goals", "traits", "native", "lowWater", "deer", "juglone", "pairings", "screening", "profile"],
+  all: ["name", "type", "zone", "firstOutput", "spacing", "plantingDepth", "container", "yield", "yieldPerSpace", "score", "difficulty", "reliability", "data", "sun", "soil", "water", "goals", "harvest", "traits", "native", "lowWater", "pairings", "deer", "juglone", "screening", "source", "profile"]
 };
 const screenerSavedScreens = {
   "high-yield-small-space": {
@@ -444,6 +453,8 @@ const screenerParamMap = {
   swater: screenerWaterEl,
   sgoal: screenerGoalEl,
   sattr: screenerFlagEl,
+  sdeer: screenerDeerEl,
+  sjuglone: screenerJugloneEl,
   ssource: screenerPartnerEl,
   sdata: screenerConfidenceEl,
   sminyield: screenerMinYieldEl,
@@ -474,6 +485,19 @@ const matcherDefaults = {
 
 const waterRank = { low: 1, medium: 2, high: 3 };
 const confidenceRank = { low: 1, medium: 2, high: 3 };
+const deerResistanceRank = {
+  "rarely-damaged": 4,
+  "seldom-damaged": 3,
+  "occasionally-damaged": 2,
+  "frequently-damaged": 1,
+  unknown: 0
+};
+const jugloneToleranceRank = {
+  tolerant: 3,
+  "mixed-uncertain": 2,
+  sensitive: 1,
+  unknown: 0
+};
 const goalLabels = {
   fruit: "fruit",
   "vegetables-herbs": "vegetables & herbs",
@@ -1938,6 +1962,49 @@ function textHasAny(text, terms) {
   return terms.some((term) => text.includes(term));
 }
 
+function deerResistanceValue(metrics) {
+  return metrics?.deerResistance ?? "unknown";
+}
+
+function deerResistanceLabel(metrics) {
+  return metrics?.deerResistanceLabel ?? metrics?.display?.deerResistance ?? "Not rated";
+}
+
+function jugloneToleranceValue(metrics) {
+  return metrics?.jugloneTolerance ?? "unknown";
+}
+
+function jugloneToleranceLabel(metrics) {
+  return metrics?.jugloneToleranceLabel ?? metrics?.display?.jugloneTolerance ?? "Not rated";
+}
+
+function siteRiskPillTone(kind, value) {
+  if (kind === "deer") {
+    if (["rarely-damaged", "seldom-damaged"].includes(value)) return "is-positive";
+    if (value === "frequently-damaged") return "is-warning";
+    if (value === "unknown") return "is-muted";
+    return "";
+  }
+  if (value === "tolerant") return "is-positive";
+  if (value === "sensitive") return "is-warning";
+  if (value === "unknown") return "is-muted";
+  return "";
+}
+
+function renderSiteRiskCell(kind, metrics) {
+  const value = kind === "deer" ? deerResistanceValue(metrics) : jugloneToleranceValue(metrics);
+  const label = kind === "deer" ? deerResistanceLabel(metrics) : jugloneToleranceLabel(metrics);
+  const confidence = kind === "deer" ? metrics.deerResistanceConfidence : metrics.jugloneToleranceConfidence;
+  const note = kind === "deer" ? metrics.deerResistanceNote : metrics.jugloneToleranceNote;
+  const tone = siteRiskPillTone(kind, value);
+  return `
+    <span class="screener-data-cell" title="${escapeHtml(note ?? "")}">
+      <span class="screener-pill ${tone}">${escapeHtml(label)}</span>
+      <span class="screener-metric-note">${escapeHtml(confidence ? `${sentenceCase(confidence)} confidence` : "Planning cue")}</span>
+    </span>
+  `;
+}
+
 function screeningProfile(plant, metrics = metricFor(plant)) {
   const text = textForPlant(plant);
   const isFruitTree = plant.type.includes("fruit tree");
@@ -1952,8 +2019,6 @@ function screeningProfile(plant, metrics = metricFor(plant)) {
   const heatLovers = ["okra", "pepper", "eggplant", "tomato", "sweet potato", "melon", "watermelon", "cucumber", "pomegranate", "fig", "citrus"];
   const diseaseWatch = ["peach", "nectarine", "apple", "pear", "tomato", "cucumber", "squash", "melon", "watermelon", "grape", "rose", "phlox", "bee balm"];
   const pestWatch = ["brassica", "broccoli", "cabbage", "cauliflower", "kale", "collard", "eggplant", "potato", "cucumber", "squash", "melon", "tomato"];
-  const deerWeak = ["hosta", "daylily", "tulip", "rose", "strawberry", "apple", "pear", "cherry", "plum"];
-  const deerBetter = ["lavender", "rosemary", "thyme", "sage", "salvia", "yarrow", "allium", "catmint", "ornamental grass", "mint"];
   const spreadWatch = ["mint", "bamboo", "comfrey", "horseradish", "maypop", "passionfruit", "blackberry", "raspberry"];
 
   const ph = textHasAny(text, acidLovers)
@@ -1984,11 +2049,8 @@ function screeningProfile(plant, metrics = metricFor(plant)) {
           ? "Stake while young"
           : "Usually none";
 
-  const deer = textHasAny(text, deerWeak)
-    ? "Browse risk"
-    : textHasAny(text, deerBetter) || plant.type.includes("ornamental grass")
-      ? "Often avoided"
-      : "Variable";
+  const deer = deerResistanceLabel(metrics);
+  const juglone = jugloneToleranceLabel(metrics);
 
   const pestPressure = textHasAny(text, pestWatch)
     ? "Elevated"
@@ -2037,6 +2099,7 @@ function screeningProfile(plant, metrics = metricFor(plant)) {
     pollination,
     support,
     deer,
+    juglone,
     pestPressure,
     diseasePressure,
     chill,
@@ -5224,6 +5287,10 @@ function screenerSearchText(plant) {
     metrics.display?.difficulty,
     metrics.display?.reliability,
     metrics.display?.confidence,
+    metrics.deerResistanceLabel,
+    metrics.deerResistanceNote,
+    metrics.jugloneToleranceLabel,
+    metrics.jugloneToleranceNote,
     screening.ph,
     screening.pollination,
     screening.support,
@@ -5244,6 +5311,8 @@ function plantMatchesScreener(plant) {
   const query = screenerSearchEl.value.trim().toLowerCase();
   const zone = screenerZoneEl.value;
   const flag = screenerFlagEl.value;
+  const deerFilter = screenerDeerEl?.value ?? "";
+  const jugloneFilter = screenerJugloneEl?.value ?? "";
   const minYield = numberFromControl(screenerMinYieldEl);
   const minYieldSpace = numberFromControl(screenerMinYieldSpaceEl);
   const maxFirstOutput = numberFromControl(screenerMaxFirstOutputEl);
@@ -5283,6 +5352,18 @@ function plantMatchesScreener(plant) {
   if ((flag === "low-water" || flag === "low-maintenance") && !hasLowWaterCue(plant)) return false;
   if (flag === "pairings" && relationshipCount(plant) === 0) return false;
   if (flag === "watchlist" && !screenerWatchlistIds.has(plant.id)) return false;
+  if (deerFilter) {
+    const deer = deerResistanceValue(metrics);
+    if (deerFilter === "better" && !["rarely-damaged", "seldom-damaged"].includes(deer)) return false;
+    if (deerFilter === "avoid-frequent" && deer === "frequently-damaged") return false;
+    if (deerFilter === "rarely" && deer !== "rarely-damaged") return false;
+  }
+  if (jugloneFilter) {
+    const juglone = jugloneToleranceValue(metrics);
+    if (jugloneFilter === "tolerant" && juglone !== "tolerant") return false;
+    if (jugloneFilter === "avoid-sensitive" && juglone === "sensitive") return false;
+    if (jugloneFilter === "sensitive" && juglone !== "sensitive") return false;
+  }
   return true;
 }
 
@@ -5311,13 +5392,15 @@ function screenerSortValue(plant, key) {
   if (key === "native") return hasNativeCue(plant) ? 1 : 0;
   if (key === "lowMaintenance") return hasLowWaterCue(plant) ? 1 : 0;
   if (key === "pairings") return relationshipCount(plant);
+  if (key === "deer") return deerResistanceRank[deerResistanceValue(metrics)] ?? 0;
+  if (key === "juglone") return jugloneToleranceRank[jugloneToleranceValue(metrics)] ?? 0;
   if (key === "screening") return screeningProfile(plant, metrics).warning;
   if (key === "partner") return partnerName(plant.partner).toLowerCase();
   return plant.name.toLowerCase();
 }
 
 function defaultScreenerDirection(key) {
-  return ["goals", "native", "lowMaintenance", "pairings", "output", "yieldPerSpace", "score", "containerEfficiency", "reliability", "dataQuality"].includes(key) ? "desc" : "asc";
+  return ["goals", "native", "lowMaintenance", "pairings", "deer", "juglone", "output", "yieldPerSpace", "score", "containerEfficiency", "reliability", "dataQuality"].includes(key) ? "desc" : "asc";
 }
 
 function screenerSortIndicator(key, direction) {
@@ -5328,6 +5411,8 @@ function screenerSortIndicator(key, direction) {
   if (key === "difficulty") return direction === "asc" ? "Easy first" : "Hard first";
   if (key === "container") return direction === "asc" ? "Small first" : "Large first";
   if (key === "plantingDepth") return direction === "asc" ? "Shallow first" : "Deep first";
+  if (key === "deer") return direction === "asc" ? "Browse risk first" : "Deer-resistant first";
+  if (key === "juglone") return direction === "asc" ? "Sensitive first" : "Walnut-fit first";
   return direction === "asc" ? "Low first" : "High first";
 }
 
@@ -5447,6 +5532,7 @@ function renderScreeningCueCell(plant, metrics) {
       <span><strong>pH</strong> ${escapeHtml(screening.ph)}</span>
       <span><strong>Pollination</strong> ${escapeHtml(screening.pollination)}</span>
       <span><strong>Support</strong> ${escapeHtml(screening.support)}</span>
+      <span><strong>Site risk</strong> deer ${escapeHtml(screening.deer)}, walnut ${escapeHtml(screening.juglone)}</span>
       <span><strong>Risk</strong> pests ${escapeHtml(screening.pestPressure)}, disease ${escapeHtml(screening.diseasePressure)}</span>
       <span><strong>Climate</strong> ${escapeHtml(screening.heat)}; ${escapeHtml(screening.chill)}</span>
       <span><strong>Use</strong> ${escapeHtml(screening.storage)}; ${escapeHtml(screening.warning)}</span>
@@ -5525,6 +5611,8 @@ function renderScreenerRow(plant) {
       <td data-label="Native flag" data-screener-col="native"><span class="screener-pill ${native ? "is-positive" : "is-muted"}">${native ? "Yes" : "-"}</span></td>
       <td data-label="Low water" data-screener-col="lowWater"><span class="screener-pill ${lowWater ? "is-positive" : "is-muted"}">${lowWater ? "Yes" : "-"}</span></td>
       <td data-label="Pairings" data-screener-col="pairings"><span class="screener-count" title="${pairings} plant ${pairings === 1 ? "pairing" : "pairings"}">${pairings}</span></td>
+      <td data-label="Deer" data-screener-col="deer">${renderSiteRiskCell("deer", metrics)}</td>
+      <td data-label="Walnut" data-screener-col="juglone">${renderSiteRiskCell("juglone", metrics)}</td>
       <td data-label="Screening cues" data-screener-col="screening">${renderScreeningCueCell(plant, metrics)}</td>
       <td data-label="Source" data-screener-col="source">${renderScreenerSourceCell(plant)}</td>
       <td class="screener-profile-cell" data-label="Profile" data-screener-col="profile"><a class="screener-profile-link" href="${plantPagePath(plant)}">View profile</a></td>
@@ -5639,6 +5727,10 @@ function renderScreenerPortfolioRow({ plant, metrics }) {
         <strong>${escapeHtml(metrics.display?.difficulty ?? "-")}</strong>
         <span>Reliability ${escapeHtml(metrics.display?.reliability ?? "-")}</span>
       </td>
+      <td data-label="Site risk">
+        <strong>${escapeHtml(deerResistanceLabel(metrics))}</strong>
+        <span>Walnut: ${escapeHtml(jugloneToleranceLabel(metrics))}</span>
+      </td>
       <td data-label="Data">${renderScreenerDataCell(metrics)}</td>
       <td data-label="Cue">
         <strong>${escapeHtml(screening.warning)}</strong>
@@ -5674,6 +5766,7 @@ function renderScreenerPortfolioTable(entries) {
             <th scope="col">Score</th>
             <th scope="col">Container</th>
             <th scope="col">Risk</th>
+            <th scope="col">Site risk</th>
             <th scope="col">Data</th>
             <th scope="col">Cue</th>
             <th scope="col">Actions</th>
@@ -5916,7 +6009,9 @@ function loadGardenPlannerSettings() {
       sun: ["full", "partial", "shade"].includes(parsed.sun) ? parsed.sun : "full",
       soil: ["loam", "sandy", "clay"].includes(parsed.soil) ? parsed.soil : "loam",
       water: ["low", "medium", "high"].includes(parsed.water) ? parsed.water : "medium",
-      mode: ["in-ground", "containers", "mixed"].includes(parsed.mode) ? parsed.mode : "in-ground"
+      mode: ["in-ground", "containers", "mixed"].includes(parsed.mode) ? parsed.mode : "in-ground",
+      deerPressure: ["ignore", "deer-pressure"].includes(parsed.deerPressure) ? parsed.deerPressure : "ignore",
+      walnut: ["ignore", "near-walnut"].includes(parsed.walnut) ? parsed.walnut : "ignore"
     };
   } catch {
     gardenPlannerSettings = {
@@ -5928,7 +6023,9 @@ function loadGardenPlannerSettings() {
       sun: "full",
       soil: "loam",
       water: "medium",
-      mode: "in-ground"
+      mode: "in-ground",
+      deerPressure: "ignore",
+      walnut: "ignore"
     };
   }
 }
@@ -5952,6 +6049,8 @@ function applyGardenPlannerSettingsToControls() {
   if (gardenPlannerSoilEl) gardenPlannerSoilEl.value = gardenPlannerSettings.soil;
   if (gardenPlannerWaterEl) gardenPlannerWaterEl.value = gardenPlannerSettings.water;
   if (gardenPlannerModeEl) gardenPlannerModeEl.value = gardenPlannerSettings.mode;
+  if (gardenPlannerDeerEl) gardenPlannerDeerEl.value = gardenPlannerSettings.deerPressure;
+  if (gardenPlannerWalnutEl) gardenPlannerWalnutEl.value = gardenPlannerSettings.walnut;
 }
 
 function gardenPlannerSettingsFromControls() {
@@ -5964,7 +6063,9 @@ function gardenPlannerSettingsFromControls() {
     sun: ["full", "partial", "shade"].includes(gardenPlannerSunEl?.value) ? gardenPlannerSunEl.value : gardenPlannerSettings.sun,
     soil: ["loam", "sandy", "clay"].includes(gardenPlannerSoilEl?.value) ? gardenPlannerSoilEl.value : gardenPlannerSettings.soil,
     water: ["low", "medium", "high"].includes(gardenPlannerWaterEl?.value) ? gardenPlannerWaterEl.value : gardenPlannerSettings.water,
-    mode: ["in-ground", "containers", "mixed"].includes(gardenPlannerModeEl?.value) ? gardenPlannerModeEl.value : gardenPlannerSettings.mode
+    mode: ["in-ground", "containers", "mixed"].includes(gardenPlannerModeEl?.value) ? gardenPlannerModeEl.value : gardenPlannerSettings.mode,
+    deerPressure: ["ignore", "deer-pressure"].includes(gardenPlannerDeerEl?.value) ? gardenPlannerDeerEl.value : gardenPlannerSettings.deerPressure,
+    walnut: ["ignore", "near-walnut"].includes(gardenPlannerWalnutEl?.value) ? gardenPlannerWalnutEl.value : gardenPlannerSettings.walnut
   };
 }
 
@@ -6672,6 +6773,16 @@ function gardenPlannerContainerIssue(entry) {
   return suitability === "poor" || (Number.isFinite(minGallons) && minGallons > 25);
 }
 
+function gardenPlannerDeerIssue(entry) {
+  if (gardenPlannerSettings.deerPressure !== "deer-pressure") return false;
+  return ["frequently-damaged", "occasionally-damaged"].includes(deerResistanceValue(entry.metrics));
+}
+
+function gardenPlannerWalnutIssue(entry) {
+  if (gardenPlannerSettings.walnut !== "near-walnut") return false;
+  return jugloneToleranceValue(entry.metrics) === "sensitive";
+}
+
 function gardenPlannerFitChecks(entry) {
   const issues = [];
   if (!gardenPlannerPlantZoneFits(entry.plant)) issues.push("zone");
@@ -6679,6 +6790,8 @@ function gardenPlannerFitChecks(entry) {
   if (!gardenPlannerPlantSoilFits(entry.plant)) issues.push("soil");
   if (!gardenPlannerPlantWaterFits(entry.plant)) issues.push("water");
   if (gardenPlannerContainerIssue(entry)) issues.push("container");
+  if (gardenPlannerDeerIssue(entry)) issues.push("deer");
+  if (gardenPlannerWalnutIssue(entry)) issues.push("walnut");
   return issues;
 }
 
@@ -7027,6 +7140,8 @@ function gardenPlannerSignalCards(entries) {
   const soilMismatchEntries = entries.filter((entry) => !gardenPlannerPlantSoilFits(entry.plant));
   const waterMismatchEntries = entries.filter((entry) => !gardenPlannerPlantWaterFits(entry.plant));
   const containerIssueEntries = entries.filter(gardenPlannerContainerIssue);
+  const deerIssueEntries = entries.filter(gardenPlannerDeerIssue);
+  const walnutIssueEntries = entries.filter(gardenPlannerWalnutIssue);
   const supportEntries = entries.filter(({ plant, metrics }) => {
     const support = screeningProfile(plant, metrics).support;
     return support && support !== "Usually none";
@@ -7070,6 +7185,20 @@ function gardenPlannerSignalCards(entries) {
     cards.push({
       title: "Container fit",
       text: `${containerIssueEntries.length} saved plant${containerIssueEntries.length === 1 ? "" : "s"} look large for a container-only plan.`,
+      tone: "watch"
+    });
+  }
+  if (deerIssueEntries.length) {
+    cards.push({
+      title: "Deer pressure",
+      text: `${deerIssueEntries.length} saved plant${deerIssueEntries.length === 1 ? " has" : "s have"} a higher deer-browse cue. Put protection or substitutions in the plan if deer are active.`,
+      tone: "watch"
+    });
+  }
+  if (walnutIssueEntries.length) {
+    cards.push({
+      title: "Black walnut",
+      text: `${walnutIssueEntries.length} saved plant${walnutIssueEntries.length === 1 ? " is" : "s are"} flagged as juglone-sensitive. Keep them outside the walnut root zone or verify locally.`,
       tone: "watch"
     });
   }
@@ -7297,6 +7426,7 @@ function renderGardenPlannerCompare(entries) {
             <th scope="col">Space</th>
             <th scope="col">Yield / 100 sq ft</th>
             <th scope="col">Container</th>
+            <th scope="col">Site risk</th>
             <th scope="col">Data</th>
             <th scope="col">Risk cue</th>
           </tr>
@@ -7316,6 +7446,7 @@ function renderGardenPlannerCompare(entries) {
                 <td data-label="Space">${escapeHtml(gardenEntrySpaceLabel(entry))}</td>
                 <td data-label="Yield / 100 sq ft">${escapeHtml(formatCompactNumber(yieldPer100SqFt(metrics), 1))}</td>
                 <td data-label="Container">${escapeHtml(metricDisplayValue(metrics.display?.containerMin))}</td>
+                <td data-label="Site risk">${escapeHtml(deerResistanceLabel(metrics))}; walnut ${escapeHtml(jugloneToleranceLabel(metrics))}</td>
                 <td data-label="Data">${escapeHtml(metrics.display?.confidence ?? metrics.dataConfidence ?? "-")}</td>
                 <td data-label="Risk cue">${escapeHtml(issues.length ? `${issues.join(", ")} fit` : screening.warning)}</td>
               </tr>
@@ -7369,6 +7500,10 @@ function renderGardenPlannerTableRow(entry) {
         <strong>${escapeHtml(metrics.display?.difficulty ?? "-")}</strong>
         <span>Reliability ${escapeHtml(metrics.display?.reliability ?? "-")}</span>
       </td>
+      <td data-label="Site risk">
+        <strong>${escapeHtml(deerResistanceLabel(metrics))}</strong>
+        <span>Walnut: ${escapeHtml(jugloneToleranceLabel(metrics))}</span>
+      </td>
       <td data-label="Planning cue">
         <strong>${escapeHtml(screening.warning)}</strong>
         <span>${escapeHtml(screening.support)}; ${escapeHtml(screening.pollination)}</span>
@@ -7408,6 +7543,7 @@ function renderGardenPlannerTable(entries) {
             <th scope="col">Est. space</th>
             <th scope="col">Sun / water</th>
             <th scope="col">Risk</th>
+            <th scope="col">Site risk</th>
             <th scope="col">Planning cue</th>
             <th scope="col">Actions</th>
           </tr>
@@ -7512,6 +7648,7 @@ function renderGardenPlannerSummarySections(entries = gardenPlannerEntries()) {
     gardenPlannerCompareEl.textContent = gardenPlannerCompareOpen ? "Hide comparison" : "Compare saved plants";
   }
   if (gardenPlannerExportEl) gardenPlannerExportEl.disabled = entries.length === 0;
+  if (gardenPlannerPrintBedEl) gardenPlannerPrintBedEl.disabled = entries.length === 0;
   if (gardenPlannerClearEl) gardenPlannerClearEl.disabled = entries.length === 0;
   renderGardenPlannerSearchResults();
 }
@@ -7532,6 +7669,8 @@ function gardenPlannerCsv(entries) {
     "Water",
     "Difficulty",
     "Reliability",
+    "Deer resistance",
+    "Juglone / black walnut cue",
     "Planning cue",
     "Profile URL"
   ];
@@ -7554,6 +7693,8 @@ function gardenPlannerCsv(entries) {
       sentenceCase(plant.water),
       metrics.display?.difficulty ?? "",
       metrics.display?.reliability ?? "",
+      deerResistanceLabel(metrics),
+      jugloneToleranceLabel(metrics),
       `${screening.warning}; ${screening.support}; ${screening.pollination}`,
       `${window.location.origin}${plantPagePath(plant)}`
     ];
@@ -7573,6 +7714,21 @@ function exportGardenPlanner() {
   link.click();
   link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function cleanupGardenPlannerPrintMode() {
+  document.body.classList.remove("garden-planner-print-mode");
+  window.removeEventListener("afterprint", cleanupGardenPlannerPrintMode);
+}
+
+function exportGardenPlannerBedPdf() {
+  if (!gardenPlannerEntries().length) return;
+  document.body.classList.add("garden-planner-print-mode");
+  window.addEventListener("afterprint", cleanupGardenPlannerPrintMode);
+  requestAnimationFrame(() => {
+    window.print();
+    setTimeout(cleanupGardenPlannerPrintMode, 1200);
+  });
 }
 
 function showScreenerTab() {
@@ -7927,6 +8083,8 @@ function screenerPortfolioCsv(entries) {
     "Container min",
     "Difficulty",
     "Reliability",
+    "Deer resistance",
+    "Juglone / black walnut cue",
     "Data confidence",
     "Source count",
     "Planning cue",
@@ -7946,6 +8104,8 @@ function screenerPortfolioCsv(entries) {
       metricDisplayValue(metrics.display?.containerMin, ""),
       metrics.display?.difficulty ?? "",
       metrics.display?.reliability ?? "",
+      deerResistanceLabel(metrics),
+      jugloneToleranceLabel(metrics),
       metrics.display?.confidence ?? metrics.dataConfidence ?? "",
       metrics.sourceKeys?.length ?? 0,
       `${screening.warning}; ${screening.support}; ${screening.pollination}`,
@@ -8079,6 +8239,8 @@ function compareMetricRows(selectedPlants) {
     ["pH cue", (plant) => screeningProfile(plant).ph],
     ["Pollination", (plant) => screeningProfile(plant).pollination],
     ["Support", (plant) => screeningProfile(plant).support],
+    ["Deer", (plant) => deerResistanceLabel(metricFor(plant))],
+    ["Black walnut", (plant) => jugloneToleranceLabel(metricFor(plant))],
     ["Planning cue", (plant) => screeningProfile(plant).warning],
     ["Pest/disease", (plant) => {
       const screening = screeningProfile(plant);
@@ -8270,6 +8432,8 @@ function clearScreenerBaseFilters() {
     screenerWaterEl,
     screenerGoalEl,
     screenerFlagEl,
+    screenerDeerEl,
+    screenerJugloneEl,
     screenerPartnerEl,
     screenerConfidenceEl
   ].filter(Boolean).forEach((control) => {
@@ -8397,6 +8561,14 @@ function initializeGardenPlanner() {
     trackEvent("filter_apply", {
       tool: "garden-planner",
       action: "export",
+      watchlist_count: screenerWatchlistIds.size
+    });
+  });
+  gardenPlannerPrintBedEl?.addEventListener("click", () => {
+    exportGardenPlannerBedPdf();
+    trackEvent("filter_apply", {
+      tool: "garden-planner",
+      action: "export_bed_pdf",
       watchlist_count: screenerWatchlistIds.size
     });
   });

@@ -10,7 +10,7 @@ const sourcesPath = path.join(rootDir, "src", "data", "plantMetricSources.json")
 const csvPath = path.join(rootDir, "public", "exports", "plants.csv");
 
 const plants = JSON.parse(fs.readFileSync(plantsPath, "utf8"));
-const lastReviewed = "2026-05-24";
+const lastReviewed = "2026-05-31";
 
 const metricSources = {
   "uga-vegetable-days-spacing": {
@@ -137,6 +137,16 @@ const metricSources = {
     title: "NC State Extension Gardener Plant Toolbox",
     url: "https://plants.ces.ncsu.edu/",
     note: "Reference basis for ornamental plant size, function, and right-plant-right-place screening."
+  },
+  "rutgers-deer-resistance": {
+    title: "Rutgers NJAES - Landscape Plants Rated by Deer Resistance",
+    url: "https://njaes.rutgers.edu/deer-resistant-plants/",
+    note: "Deer browsing categories used as planning cues; no plant is deer proof under heavy pressure."
+  },
+  "psu-juglone-black-walnut": {
+    title: "Penn State Extension - Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants",
+    url: "https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants",
+    note: "Black walnut and juglone sensitivity/tolerance cue for garden placement screening."
   },
   "mobot-plant-finder": {
     title: "Missouri Botanical Garden Plant Finder",
@@ -2854,6 +2864,223 @@ function termMatches(text, term) {
   return new RegExp(`(^|\\s)${escapeRegExp(normalizedTerm)}(\\s|$)`).test(text);
 }
 
+function plantHasAnyTerm(text, terms) {
+  return terms.some((term) => termMatches(text, term));
+}
+
+const deerResistanceLabels = {
+  "rarely-damaged": "Rarely damaged",
+  "seldom-damaged": "Seldom damaged",
+  "occasionally-damaged": "Occasionally damaged",
+  "frequently-damaged": "Frequently damaged",
+  unknown: "Not rated"
+};
+
+const jugloneToleranceLabels = {
+  tolerant: "Better near black walnut",
+  sensitive: "Juglone-sensitive",
+  "mixed-uncertain": "Mixed or uncertain",
+  unknown: "Not rated"
+};
+
+const deerRarelyDamagedTerms = [
+  "allium",
+  "bee balm",
+  "black eyed susan",
+  "boxwood",
+  "catmint",
+  "chives",
+  "coneflower",
+  "coreopsis",
+  "daffodil",
+  "garlic",
+  "goldenrod",
+  "holly",
+  "juniper",
+  "lambs ear",
+  "lavender",
+  "mint",
+  "monarda",
+  "mountain mint",
+  "ornamental grass",
+  "oregano",
+  "rosemary",
+  "russian sage",
+  "sage",
+  "salvia",
+  "sedum",
+  "switchgrass",
+  "thyme",
+  "yarrow"
+];
+
+const deerSeldomDamagedTerms = [
+  "basil",
+  "calendula",
+  "cosmos",
+  "dill",
+  "fennel",
+  "marigold",
+  "milkweed",
+  "nasturtium",
+  "parsley",
+  "zinnia"
+];
+
+const deerFrequentlyDamagedTerms = [
+  "apple",
+  "apricot",
+  "cherry",
+  "daylily",
+  "hosta",
+  "lettuce",
+  "pear",
+  "peach",
+  "plum",
+  "rose",
+  "strawberry",
+  "sweet potato",
+  "tulip"
+];
+
+const deerOccasionallyDamagedTerms = [
+  "bean",
+  "blackberry",
+  "blueberry",
+  "broccoli",
+  "cabbage",
+  "collard",
+  "dogwood",
+  "eggplant",
+  "grape",
+  "hydrangea",
+  "kale",
+  "nectarine",
+  "pea",
+  "pepper",
+  "raspberry",
+  "spinach",
+  "tomato"
+];
+
+const jugloneSensitiveTerms = [
+  "apple",
+  "apricot",
+  "azalea",
+  "blackberry",
+  "blueberry",
+  "cherry",
+  "eggplant",
+  "hydrangea",
+  "lilac",
+  "pear",
+  "pepper",
+  "plum",
+  "potato",
+  "rhododendron",
+  "tomato"
+];
+
+const jugloneTolerantTerms = [
+  "allium",
+  "aster",
+  "bean",
+  "bee balm",
+  "beet",
+  "black eyed susan",
+  "carrot",
+  "corn",
+  "coneflower",
+  "cucumber",
+  "daylily",
+  "elderberry",
+  "garlic",
+  "goldenrod",
+  "grape",
+  "hosta",
+  "iris",
+  "melon",
+  "mulberry",
+  "okra",
+  "onion",
+  "pawpaw",
+  "persimmon",
+  "pumpkin",
+  "serviceberry",
+  "squash",
+  "sunflower",
+  "watermelon",
+  "yarrow"
+];
+
+function deerResistanceMetrics(plant) {
+  const text = plantText(plant);
+  let value = "unknown";
+  let confidence = "low";
+
+  if (plantHasAnyTerm(text, deerFrequentlyDamagedTerms)) {
+    value = "frequently-damaged";
+    confidence = "medium";
+  } else if (plantHasAnyTerm(text, deerRarelyDamagedTerms)) {
+    value = "rarely-damaged";
+    confidence = "medium";
+  } else if (plantHasAnyTerm(text, deerSeldomDamagedTerms)) {
+    value = "seldom-damaged";
+    confidence = "medium";
+  } else if (plantHasAnyTerm(text, deerOccasionallyDamagedTerms)) {
+    value = "occasionally-damaged";
+    confidence = "medium";
+  } else if (plant.type.includes("herb") || plant.type.includes("flower") || plant.type.includes("grass")) {
+    value = "mixed-uncertain";
+    confidence = "low";
+  }
+
+  if (value === "mixed-uncertain") value = "unknown";
+  return {
+    deerResistance: value,
+    deerResistanceLabel: deerResistanceLabels[value],
+    deerResistanceConfidence: confidence,
+    deerResistanceNote: value === "unknown"
+      ? "No deer-resistance category is assigned yet; treat browsing risk as local and variable."
+      : "Use as a deer browsing cue, not a guarantee; heavy deer pressure can override resistance ratings.",
+    deerResistanceSourceKeys: value === "unknown" ? [] : ["rutgers-deer-resistance", "ncsu-plant-toolbox"]
+  };
+}
+
+function jugloneToleranceMetrics(plant) {
+  const text = plantText(plant);
+  let value = "unknown";
+  let confidence = "low";
+
+  if (plantHasAnyTerm(text, jugloneSensitiveTerms)) {
+    value = "sensitive";
+    confidence = "medium";
+  } else if (plantHasAnyTerm(text, jugloneTolerantTerms)) {
+    value = "tolerant";
+    confidence = "medium";
+  } else if (isEdiblePlantType(plant) || plant.type.includes("flower") || plant.type.includes("shrub")) {
+    value = "mixed-uncertain";
+    confidence = "low";
+  }
+
+  return {
+    jugloneTolerance: value,
+    jugloneToleranceLabel: jugloneToleranceLabels[value],
+    jugloneToleranceConfidence: confidence,
+    jugloneToleranceNote: value === "unknown"
+      ? "No black-walnut cue is assigned yet; verify placement if planting inside a walnut root zone."
+      : "Use as a black walnut / juglone planning cue; tolerance varies by cultivar, soil, and distance from the tree.",
+    jugloneToleranceSourceKeys: value === "unknown" ? [] : ["psu-juglone-black-walnut", "ncsu-plant-toolbox"]
+  };
+}
+
+function siteRiskMetrics(plant) {
+  return {
+    ...deerResistanceMetrics(plant),
+    ...jugloneToleranceMetrics(plant)
+  };
+}
+
 function matchSpecificity(text, { terms }) {
   return Math.max(...terms
     .filter((term) => termMatches(text, term))
@@ -3279,6 +3506,8 @@ function buildMetrics(plant) {
   metrics.riskLevel = riskLevel(metrics);
   const [densityMin, densityMax] = plantsPer100SqFt(metrics);
   const [spacingAreaMin, spacingAreaMax] = spacingAreaSqFt(metrics);
+  const siteRisks = siteRiskMetrics(plant);
+  Object.assign(metrics, siteRisks);
   metrics.plantsPer100SqFtMin = densityMin;
   metrics.plantsPer100SqFtMax = densityMax;
   metrics.spacingAreaSqFtMin = spacingAreaMin;
@@ -3286,7 +3515,11 @@ function buildMetrics(plant) {
   metrics.multiUseScore = Math.min(5, Math.max(1, Math.round((plant.goals.length / 6) * 5)));
   metrics.lastReviewed = lastReviewed;
   applyDepthAndContainerGuidance(plant, metrics);
-  metrics.sourceKeys = unique(metrics.sourceKeys);
+  metrics.sourceKeys = unique([
+    ...(metrics.sourceKeys ?? []),
+    ...(metrics.deerResistanceSourceKeys ?? []),
+    ...(metrics.jugloneToleranceSourceKeys ?? [])
+  ]);
   applyYieldLbs(plant, metrics);
   metrics.yieldCurve = yieldCurve(metrics);
   metrics.tenYearYieldLbsMin = cumulativeYield(metrics.yieldCurve, "min");
@@ -3309,7 +3542,9 @@ function buildMetrics(plant) {
     difficulty: `${metrics.difficultyScore}/5`,
     reliability: `${metrics.reliabilityScore}/5`,
     maintenance: `${metrics.maintenanceScore}/5`,
-    confidence: metrics.dataConfidence.charAt(0).toUpperCase() + metrics.dataConfidence.slice(1)
+    confidence: metrics.dataConfidence.charAt(0).toUpperCase() + metrics.dataConfidence.slice(1),
+    deerResistance: metrics.deerResistanceLabel,
+    jugloneTolerance: metrics.jugloneToleranceLabel
   };
   return metrics;
 }
@@ -3369,6 +3604,14 @@ const csvColumns = [
   "container_suitability",
   "container_note",
   "container_confidence",
+  "deer_resistance",
+  "deer_resistance_label",
+  "deer_resistance_confidence",
+  "deer_resistance_note",
+  "juglone_tolerance",
+  "juglone_tolerance_label",
+  "juglone_tolerance_confidence",
+  "juglone_tolerance_note",
   "output_kind",
   "output_unit",
   "output_min",
@@ -3442,6 +3685,14 @@ const csvRows = plants.map((plant) => {
     container_suitability: metrics.containerSuitability,
     container_note: metrics.containerNote,
     container_confidence: metrics.containerConfidence,
+    deer_resistance: metrics.deerResistance,
+    deer_resistance_label: metrics.deerResistanceLabel,
+    deer_resistance_confidence: metrics.deerResistanceConfidence,
+    deer_resistance_note: metrics.deerResistanceNote,
+    juglone_tolerance: metrics.jugloneTolerance,
+    juglone_tolerance_label: metrics.jugloneToleranceLabel,
+    juglone_tolerance_confidence: metrics.jugloneToleranceConfidence,
+    juglone_tolerance_note: metrics.jugloneToleranceNote,
     output_kind: metrics.outputKind,
     output_unit: metrics.outputUnit,
     output_min: metrics.outputMin,

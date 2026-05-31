@@ -7542,6 +7542,44 @@ input.calendar-filter-search[type="search"]:focus {
   font-weight: 700;
 }
 
+.plant-page-site-risk dd {
+  display: grid;
+  gap: 4px;
+}
+
+.plant-page-site-risk dd > span {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 26px;
+  padding: 4px 9px;
+  border: 1px solid #dfe7d8;
+  border-radius: 999px;
+  color: #4d5c50;
+  background: #fff;
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.plant-page-site-risk.is-positive dd > span {
+  border-color: #b9d9c4;
+  color: var(--leaf-dark);
+  background: #edf7ef;
+}
+
+.plant-page-site-risk.is-watch dd > span {
+  border-color: #efc3a8;
+  color: #8c3d20;
+  background: #fff3ec;
+}
+
+.plant-page-site-risk small {
+  color: #5d6a60;
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
 .plant-page-chip-list {
   display: flex;
   flex-wrap: wrap;
@@ -9790,6 +9828,86 @@ input.calendar-filter-search[type="search"]:focus {
 
   .calendar-heatmap {
     grid-template-columns: repeat(12, 1fr);
+  }
+
+  body.garden-planner-print-mode .site-tabs,
+  body.garden-planner-print-mode .garden-planner-actions,
+  body.garden-planner-print-mode #garden-planner-settings,
+  body.garden-planner-print-mode #garden-planner-add,
+  body.garden-planner-print-mode #garden-planner-companions,
+  body.garden-planner-print-mode #garden-planner-compare-panel,
+  body.garden-planner-print-mode #garden-planner-timeline,
+  body.garden-planner-print-mode #garden-planner-supplies,
+  body.garden-planner-print-mode #garden-planner-warnings,
+  body.garden-planner-print-mode .garden-planner-bed-actions,
+  body.garden-planner-print-mode .garden-planner-layout-palette,
+  body.garden-planner-print-mode .garden-planner-bed-selection {
+    display: none !important;
+  }
+
+  body.garden-planner-print-mode .view-panel:not(#garden-planner-view) {
+    display: none !important;
+  }
+
+  body.garden-planner-print-mode #garden-planner-view {
+    display: block !important;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body.garden-planner-print-mode .garden-planner-shell {
+    gap: 12px;
+    width: 100%;
+    margin: 0;
+  }
+
+  body.garden-planner-print-mode .garden-planner-header,
+  body.garden-planner-print-mode #garden-planner-table,
+  body.garden-planner-print-mode #garden-planner-space,
+  body.garden-planner-print-mode .garden-planner-space-card {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  body.garden-planner-print-mode .garden-planner-header,
+  body.garden-planner-print-mode #garden-planner-table,
+  body.garden-planner-print-mode #garden-planner-space {
+    padding: 14px;
+    background: #fff;
+  }
+
+  body.garden-planner-print-mode .garden-planner-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  body.garden-planner-print-mode .garden-planner-space-grid,
+  body.garden-planner-print-mode .garden-planner-space-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.garden-planner-print-mode .garden-planner-bed-canvas {
+    width: 100%;
+    max-height: none;
+    min-height: 320px;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  body.garden-planner-print-mode .garden-planner-bed-radius,
+  body.garden-planner-print-mode .garden-planner-bed-marker,
+  body.garden-planner-print-mode .garden-planner-bed-cell,
+  body.garden-planner-print-mode .garden-planner-space-meter span {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  body.garden-planner-print-mode .garden-planner-table-wrap {
+    overflow: visible;
+  }
+
+  body.garden-planner-print-mode .garden-planner-table table {
+    min-width: 0;
   }
 }
 
