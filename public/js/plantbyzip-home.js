@@ -342,9 +342,10 @@ let gardenPlannerSettings = {
   mode: "in-ground"
 };
 let gardenPlannerCompareOpen = false;
-let gardenPlannerLayoutDragPlantId = null;
+let gardenPlannerLayoutDragId = null;
 let gardenPlannerLayoutPointerDrag = null;
 let gardenPlannerSuppressLayoutClick = false;
+let gardenPlannerSelectedLayoutId = null;
 let screenerLastFiltered = [];
 let calendarZoneData = null;
 let calendarFrost = null;
@@ -5767,13 +5768,62 @@ function cleanGardenPlannerLayoutPosition(position) {
   };
 }
 
+function gardenPlannerLayoutInstanceId(plantId, index = 1) {
+  return `${plantId}__${Math.max(1, Math.round(Number(index) || 1))}`;
+}
+
+function gardenPlannerLayoutPlantId(layoutId) {
+  const match = String(layoutId ?? "").match(/^(.+)__(\d+)$/);
+  return match ? match[1] : String(layoutId ?? "");
+}
+
+function gardenPlannerLayoutInstanceIndex(layoutId) {
+  const match = String(layoutId ?? "").match(/^(.+)__(\d+)$/);
+  return match ? Math.max(1, Math.round(Number(match[2]) || 1)) : 1;
+}
+
+function normalizeGardenPlannerLayoutId(layoutId) {
+  const plantId = gardenPlannerLayoutPlantId(layoutId);
+  if (!plantById(plantId)) return null;
+  const index = gardenPlannerLayoutInstanceIndex(layoutId);
+  return gardenPlannerLayoutInstanceId(plantId, index);
+}
+
+function gardenPlannerLayoutIdsForPlant(plantId) {
+  const quantity = gardenPlannerQuantityForPlant(plantId);
+  return Array.from({ length: quantity }, (_, index) => gardenPlannerLayoutInstanceId(plantId, index + 1));
+}
+
+function gardenPlannerLayoutIdIsActive(layoutId) {
+  const normalizedId = normalizeGardenPlannerLayoutId(layoutId);
+  if (!normalizedId) return false;
+  const plantId = gardenPlannerLayoutPlantId(normalizedId);
+  const index = gardenPlannerLayoutInstanceIndex(normalizedId);
+  return screenerWatchlistIds.has(plantId) && index <= gardenPlannerQuantityForPlant(plantId);
+}
+
+function clearGardenPlannerLayoutForPlant(plantId) {
+  Object.keys(gardenPlannerLayout).forEach((layoutId) => {
+    if (gardenPlannerLayoutPlantId(layoutId) === plantId) delete gardenPlannerLayout[layoutId];
+  });
+  if (gardenPlannerSelectedLayoutId && gardenPlannerLayoutPlantId(gardenPlannerSelectedLayoutId) === plantId) {
+    gardenPlannerSelectedLayoutId = null;
+  }
+}
+
 function normalizeGardenPlannerLayout() {
   const normalized = {};
   screenerWatchlistIds.forEach((plantId) => {
-    const position = cleanGardenPlannerLayoutPosition(gardenPlannerLayout[plantId]);
-    if (position) normalized[plantId] = position;
+    gardenPlannerLayoutIdsForPlant(plantId).forEach((layoutId, index) => {
+      const legacyPosition = index === 0 ? cleanGardenPlannerLayoutPosition(gardenPlannerLayout[plantId]) : null;
+      const position = cleanGardenPlannerLayoutPosition(gardenPlannerLayout[layoutId]) ?? legacyPosition;
+      if (position) normalized[layoutId] = position;
+    });
   });
   gardenPlannerLayout = normalized;
+  if (gardenPlannerSelectedLayoutId && !gardenPlannerLayout[gardenPlannerSelectedLayoutId]) {
+    gardenPlannerSelectedLayoutId = null;
+  }
 }
 
 function loadGardenPlannerLayout() {
@@ -5782,8 +5832,8 @@ function loadGardenPlannerLayout() {
     const parsed = raw ? JSON.parse(raw) : {};
     gardenPlannerLayout = Object.fromEntries(
       Object.entries(parsed)
-        .map(([plantId, position]) => [plantId, cleanGardenPlannerLayoutPosition(position)])
-        .filter(([plantId, position]) => plantById(plantId) && position)
+        .map(([layoutId, position]) => [normalizeGardenPlannerLayoutId(layoutId), cleanGardenPlannerLayoutPosition(position)])
+        .filter(([layoutId, position]) => layoutId && position)
     );
   } catch {
     gardenPlannerLayout = {};
@@ -5799,20 +5849,33 @@ function saveGardenPlannerLayout() {
   }
 }
 
-function setGardenPlannerLayoutPosition(plantId, x, y, options = {}) {
-  if (!screenerWatchlistIds.has(plantId)) return false;
+function setGardenPlannerLayoutPosition(layoutId, x, y, options = {}) {
+  const normalizedId = normalizeGardenPlannerLayoutId(layoutId);
+  if (!normalizedId || !gardenPlannerLayoutIdIsActive(normalizedId)) return false;
   const position = cleanGardenPlannerLayoutPosition({ x, y });
   if (!position) return false;
-  const previous = cleanGardenPlannerLayoutPosition(gardenPlannerLayout[plantId]);
+  const previous = cleanGardenPlannerLayoutPosition(gardenPlannerLayout[normalizedId]);
   const changed = !previous || Math.abs(previous.x - position.x) > 0.1 || Math.abs(previous.y - position.y) > 0.1;
-  gardenPlannerLayout[plantId] = position;
+  gardenPlannerLayout[normalizedId] = position;
+  gardenPlannerSelectedLayoutId = normalizedId;
   saveGardenPlannerLayout();
   if (changed && options.render !== false) renderGardenPlannerSummarySections();
   return changed;
 }
 
+function removeGardenPlannerLayoutPosition(layoutId, options = {}) {
+  const normalizedId = normalizeGardenPlannerLayoutId(layoutId);
+  if (!normalizedId || !gardenPlannerLayout[normalizedId]) return false;
+  delete gardenPlannerLayout[normalizedId];
+  if (gardenPlannerSelectedLayoutId === normalizedId) gardenPlannerSelectedLayoutId = null;
+  saveGardenPlannerLayout();
+  if (options.render !== false) renderGardenPlannerSummarySections();
+  return true;
+}
+
 function clearGardenPlannerLayout(options = {}) {
   gardenPlannerLayout = {};
+  gardenPlannerSelectedLayoutId = null;
   saveGardenPlannerLayout();
   if (options.render !== false) renderGardenPlannerSummarySections();
 }
@@ -6048,7 +6111,10 @@ function setGardenPlannerQuantity(plantId, quantity) {
   if (!Number.isFinite(nextQuantity)) return false;
   if (gardenPlannerQuantityForPlant(plantId) === nextQuantity) return false;
   gardenPlannerQuantities[plantId] = nextQuantity;
+  normalizeGardenPlannerLayout();
+  ensureGardenPlannerLayoutForPlant(plantId);
   saveGardenPlannerQuantities();
+  saveGardenPlannerLayout();
   return true;
 }
 
@@ -6181,20 +6247,25 @@ function gardenPlannerBedGrid() {
 
 function gardenPlannerBedVisualData(entries, spaceStats) {
   const available = Number.isFinite(spaceStats.available) && spaceStats.available > 0 ? spaceStats.available : 0;
-  const items = entries
-    .map((entry, index) => ({
+  const items = entries.flatMap((entry, entryIndex) => {
+    const [minArea, maxArea] = spacingAreaRange(entry.metrics);
+    const value = rangeAverage(minArea, maxArea);
+    if (!Number.isFinite(value) || value <= 0) return [];
+    return Array.from({ length: entry.quantity }, (_, instanceOffset) => ({
       entry,
-      index,
-      value: gardenEntrySpace(entry),
-      range: gardenEntrySpaceRange(entry)
-    }))
-    .filter(({ value }) => Number.isFinite(value) && value > 0)
-    .sort((a, b) => b.value - a.value)
-    .map((item, visualIndex) => ({
-      ...item,
-      color: gardenPlannerBedColor(visualIndex),
-      percent: available > 0 ? (item.value / available) * 100 : null
+      entryIndex,
+      instanceIndex: instanceOffset + 1,
+      instanceCount: entry.quantity,
+      layoutId: gardenPlannerLayoutInstanceId(entry.plant.id, instanceOffset + 1),
+      value,
+      range: [minArea, maxArea],
+      color: gardenPlannerBedColor(entryIndex),
+      percent: available > 0 ? (value / available) * 100 : null
     }));
+  })
+    .sort((a, b) => b.value - a.value
+      || a.entry.plant.name.localeCompare(b.entry.plant.name)
+      || a.instanceIndex - b.instanceIndex);
   return { items };
 }
 
@@ -6212,6 +6283,32 @@ function gardenPlannerDefaultLayoutPosition(index, total) {
     x: clamp((((index % columns) + 0.5) / columns) * 100, 10, 90),
     y: clamp(((Math.floor(index / columns) + 0.5) / rows) * 100, 12, 88)
   };
+}
+
+function gardenPlannerLayoutItemLabel(item) {
+  if (!item) return "";
+  return item.instanceCount > 1
+    ? `${item.entry.plant.name} #${item.instanceIndex}`
+    : item.entry.plant.name;
+}
+
+function gardenPlannerLayoutItemSpaceLabel(item, digits = 1) {
+  const [minArea, maxArea] = item?.range ?? [null, null];
+  return formatCompactRange(minArea, maxArea, digits, " sq ft");
+}
+
+function ensureGardenPlannerLayoutForPlant(plantId) {
+  const entries = gardenPlannerEntries();
+  const spaceStats = gardenPlannerSpaceStats(entries);
+  const visual = gardenPlannerBedVisualData(entries, spaceStats);
+  let changed = false;
+  visual.items.forEach((item, index) => {
+    if (item.entry.plant.id !== plantId || gardenPlannerLayout[item.layoutId]) return;
+    gardenPlannerLayout[item.layoutId] = gardenPlannerDefaultLayoutPosition(index, visual.items.length);
+    changed = true;
+  });
+  if (changed) saveGardenPlannerLayout();
+  return changed;
 }
 
 function gardenPlannerLayoutRadiusForValue(value, spaceStats, minRadius = 8, maxRadius = 42) {
@@ -6276,17 +6373,12 @@ function gardenPlannerAutoLayoutPairKey(sourceId, targetId) {
   return [sourceId, targetId].sort().join("::");
 }
 
-function gardenPlannerAutoLayoutPairScores(items) {
-  const scores = new Map();
-  items.forEach((sourceItem, sourceIndex) => {
-    items.slice(sourceIndex + 1).forEach((targetItem) => {
-      const score = gardenPlannerAutoLayoutPairScore(sourceItem.entry.plant, targetItem.entry.plant);
-      if (score > 0) {
-        scores.set(gardenPlannerAutoLayoutPairKey(sourceItem.entry.plant.id, targetItem.entry.plant.id), score);
-      }
-    });
-  });
-  return scores;
+function gardenPlannerAutoLayoutCachedPairScore(sourcePlant, targetPlant, pairScores) {
+  const key = gardenPlannerAutoLayoutPairKey(sourcePlant.id, targetPlant.id);
+  if (!pairScores.has(key)) {
+    pairScores.set(key, gardenPlannerAutoLayoutPairScore(sourcePlant, targetPlant));
+  }
+  return pairScores.get(key);
 }
 
 function gardenPlannerAutoLayoutCandidatePoints(count, dimensions) {
@@ -6329,9 +6421,11 @@ function gardenPlannerAutoLayoutPointScore(item, point, placed, dimensions, pair
       score += 2.4 / Math.max(distance, 0.5);
     }
 
-    const relationshipScore = pairScores.get(
-      gardenPlannerAutoLayoutPairKey(item.entry.plant.id, placedItem.item.entry.plant.id)
-    ) ?? 0;
+    const relationshipScore = gardenPlannerAutoLayoutCachedPairScore(
+      item.entry.plant,
+      placedItem.item.entry.plant,
+      pairScores
+    );
     if (relationshipScore > 0) {
       const targetDistance = Math.max(item.targetRadiusFt + placedItem.targetRadiusFt, minimumDistance * 1.12, 1.25);
       const companionBand = Math.max(targetDistance * 2.2, 4);
@@ -6363,7 +6457,7 @@ function autoArrangeGardenPlannerLayout() {
       };
     })
     .sort((a, b) => b.layoutArea - a.layoutArea || a.entry.plant.name.localeCompare(b.entry.plant.name));
-  const pairScores = gardenPlannerAutoLayoutPairScores(items);
+  const pairScores = new Map();
 
   const placed = [];
   items.forEach((item, itemIndex) => {
@@ -6395,13 +6489,13 @@ function autoArrangeGardenPlannerLayout() {
     });
   });
 
-  const arrangedIds = new Set(items.map((item) => item.entry.plant.id));
+  const arrangedIds = new Set(items.map((item) => item.layoutId));
   gardenPlannerLayout = Object.fromEntries(
-    Object.entries(gardenPlannerLayout).filter(([plantId]) => !arrangedIds.has(plantId))
+    Object.entries(gardenPlannerLayout).filter(([layoutId]) => !arrangedIds.has(layoutId))
   );
   placed.forEach((placement) => {
     const position = cleanGardenPlannerLayoutPosition({ x: placement.xPct, y: placement.yPct });
-    if (position) gardenPlannerLayout[placement.item.entry.plant.id] = position;
+    if (position) gardenPlannerLayout[placement.item.layoutId] = position;
   });
   saveGardenPlannerLayout();
   renderGardenPlannerSummarySections();
@@ -6417,13 +6511,15 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
   const positionedItems = visual.items
     .map((item) => ({
       ...item,
-      position: cleanGardenPlannerLayoutPosition(gardenPlannerLayout[item.entry.plant.id]),
+      position: cleanGardenPlannerLayoutPosition(gardenPlannerLayout[item.layoutId]),
       radii: gardenPlannerLayoutRadii(item, spaceStats)
     }))
     .filter((item) => item.position);
   const placedCount = positionedItems.length;
   const layoutCount = visual.items.length;
   const hasLayout = Object.keys(gardenPlannerLayout).length > 0;
+  let selectedItem = positionedItems.find((item) => item.layoutId === gardenPlannerSelectedLayoutId);
+  if (gardenPlannerSelectedLayoutId && !selectedItem) gardenPlannerSelectedLayoutId = null;
   return `
     <article class="garden-planner-space-card garden-planner-bed-card ${isOver ? "is-over" : ""}">
       <div class="garden-planner-space-card-head garden-planner-bed-card-head">
@@ -6463,25 +6559,26 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
             class="garden-planner-bed-radius is-max"
             style="--bed-fill: ${escapeHtml(item.color)}; --marker-x: ${escapeHtml(formatCompactNumber(item.position.x, 2, ""))}%; --marker-y: ${escapeHtml(formatCompactNumber(item.position.y, 2, ""))}%; --marker-radius: ${escapeHtml(formatCompactNumber(item.radii.max, 2, ""))}%"
             aria-hidden="true"
-            data-garden-layout-radius="${escapeHtml(item.entry.plant.id)}"
+            data-garden-layout-radius="${escapeHtml(item.layoutId)}"
           ></span>
           <span
             class="garden-planner-bed-radius is-min"
             style="--bed-fill: ${escapeHtml(item.color)}; --marker-x: ${escapeHtml(formatCompactNumber(item.position.x, 2, ""))}%; --marker-y: ${escapeHtml(formatCompactNumber(item.position.y, 2, ""))}%; --marker-radius: ${escapeHtml(formatCompactNumber(item.radii.min, 2, ""))}%"
             aria-hidden="true"
-            data-garden-layout-radius="${escapeHtml(item.entry.plant.id)}"
+            data-garden-layout-radius="${escapeHtml(item.layoutId)}"
           ></span>
         `).join("")}
         ${positionedItems.map((item) => `
           <button
             type="button"
-            class="garden-planner-bed-marker"
+            class="garden-planner-bed-marker ${item.layoutId === gardenPlannerSelectedLayoutId ? "is-selected" : ""}"
             draggable="true"
             style="--bed-fill: ${escapeHtml(item.color)}; --marker-x: ${escapeHtml(formatCompactNumber(item.position.x, 2, ""))}%; --marker-y: ${escapeHtml(formatCompactNumber(item.position.y, 2, ""))}%"
             data-garden-layout-plant="${escapeHtml(item.entry.plant.id)}"
-            data-garden-layout-marker="${escapeHtml(item.entry.plant.id)}"
-            title="${escapeHtml(`${item.entry.plant.name}: ${gardenEntrySpaceLabel(item.entry)} spacing range`)}"
-            aria-label="${escapeHtml(`Move ${item.entry.plant.name} in the bed layout`)}"
+            data-garden-layout-id="${escapeHtml(item.layoutId)}"
+            data-garden-layout-marker="${escapeHtml(item.layoutId)}"
+            title="${escapeHtml(`${gardenPlannerLayoutItemLabel(item)}: ${gardenPlannerLayoutItemSpaceLabel(item)} spacing range`)}"
+            aria-label="${escapeHtml(`Move ${gardenPlannerLayoutItemLabel(item)} in the bed layout`)}"
           >
             <span>${escapeHtml(gardenPlannerPlantInitials(item.entry.plant.name))}</span>
           </button>
@@ -6497,10 +6594,23 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
         <span>${escapeHtml(formatCompactRange(spaceStats.usedMin, spaceStats.usedMax, 1, " sq ft"))} of ${escapeHtml(formatCompactNumber(spaceStats.available, 1))} sq ft planned</span>
         <span>${escapeHtml(placedCount)} of ${escapeHtml(layoutCount)} plant${layoutCount === 1 ? "" : "s"} placed</span>
       </div>
+      ${selectedItem ? `
+        <div class="garden-planner-bed-selection">
+          <div>
+            <span>Selected</span>
+            <strong>${escapeHtml(gardenPlannerLayoutItemLabel(selectedItem))}</strong>
+            <small>${escapeHtml(gardenPlannerLayoutItemSpaceLabel(selectedItem))} spacing range</small>
+          </div>
+          <button
+            type="button"
+            data-garden-layout-remove="${escapeHtml(selectedItem.layoutId)}"
+          >Remove from bed</button>
+        </div>
+      ` : ""}
       ${visual.items.length ? `
         <div class="garden-planner-layout-palette" aria-label="Saved plants for the bed layout">
           ${visual.items.map((item, index) => {
-            const placed = Boolean(cleanGardenPlannerLayoutPosition(gardenPlannerLayout[item.entry.plant.id]));
+            const placed = Boolean(cleanGardenPlannerLayoutPosition(gardenPlannerLayout[item.layoutId]));
             const defaultPosition = gardenPlannerDefaultLayoutPosition(index, visual.items.length);
             return `
               <button
@@ -6509,15 +6619,16 @@ function renderGardenPlannerBedVisual(entries, spaceStats) {
                 draggable="true"
                 style="--bed-fill: ${escapeHtml(item.color)}"
                 data-garden-layout-plant="${escapeHtml(item.entry.plant.id)}"
-                data-garden-layout-place="${escapeHtml(item.entry.plant.id)}"
+                data-garden-layout-id="${escapeHtml(item.layoutId)}"
+                data-garden-layout-place="${escapeHtml(item.layoutId)}"
                 data-garden-layout-label="${escapeHtml(gardenPlannerPlantInitials(item.entry.plant.name))}"
                 data-default-x="${escapeHtml(formatCompactNumber(defaultPosition.x, 2, ""))}"
                 data-default-y="${escapeHtml(formatCompactNumber(defaultPosition.y, 2, ""))}"
               >
                 <i></i>
                 <span>
-                  <strong>${escapeHtml(item.entry.plant.name)}</strong>
-                  <small>${placed ? "Placed" : "Needs spot"} - ${escapeHtml(gardenEntrySpaceLabel(item.entry))}</small>
+                  <strong>${escapeHtml(gardenPlannerLayoutItemLabel(item))}</strong>
+                  <small>${placed ? "Placed" : "Needs spot"} - ${escapeHtml(gardenPlannerLayoutItemSpaceLabel(item))}</small>
                 </span>
               </button>
             `;
@@ -6680,7 +6791,11 @@ function gardenPlannerCompanionSuggestions(entries) {
   if (!entries.length || !plantRelationships.length) return [];
   const savedIds = new Set(entries.map((entry) => entry.plant.id));
   const savedFamilies = new Set(entries.map((entry) => gardenPlannerCompanionNamedFamilyKey(entry.plant)).filter(Boolean));
-  const placedIds = new Set(Object.keys(gardenPlannerLayout).filter((plantId) => savedIds.has(plantId)));
+  const placedIds = new Set(
+    Object.keys(gardenPlannerLayout)
+      .map(gardenPlannerLayoutPlantId)
+      .filter((plantId) => savedIds.has(plantId))
+  );
   const suggestionsById = new Map();
 
   entries.forEach((entry) => {
@@ -7480,13 +7595,18 @@ function gardenPlannerLayoutPositionFromPoint(board, clientX, clientY) {
   });
 }
 
-function updateGardenPlannerLayoutDomPosition(plantId, position) {
+function updateGardenPlannerLayoutDomPosition(layoutId, position) {
   if (!gardenPlannerSpaceEl || !position) return;
   gardenPlannerSpaceEl.querySelectorAll("[data-garden-layout-marker], [data-garden-layout-radius]").forEach((element) => {
-    if (element.dataset.gardenLayoutMarker !== plantId && element.dataset.gardenLayoutRadius !== plantId) return;
+    if (element.dataset.gardenLayoutMarker !== layoutId && element.dataset.gardenLayoutRadius !== layoutId) return;
     element.style.setProperty("--marker-x", `${position.x}%`);
     element.style.setProperty("--marker-y", `${position.y}%`);
   });
+}
+
+function blurActiveGardenPlannerQuantityInput() {
+  const activeElement = document.activeElement;
+  if (activeElement?.classList?.contains("garden-planner-quantity")) activeElement.blur();
 }
 
 function gardenPlannerLayoutPointInsideBoard(board, clientX, clientY) {
@@ -7521,20 +7641,20 @@ function suppressGardenPlannerLayoutClickOnce() {
 function handleGardenPlannerLayoutDragStart(event) {
   const source = event.target.closest("[data-garden-layout-plant]");
   if (!source || !gardenPlannerSpaceEl?.contains(source)) return;
-  const plantId = source.dataset.gardenLayoutPlant;
-  if (!plantId || !screenerWatchlistIds.has(plantId)) return;
-  gardenPlannerLayoutDragPlantId = plantId;
+  const layoutId = source.dataset.gardenLayoutId || source.dataset.gardenLayoutMarker || source.dataset.gardenLayoutPlace;
+  if (!layoutId || !gardenPlannerLayoutIdIsActive(layoutId)) return;
+  gardenPlannerLayoutDragId = normalizeGardenPlannerLayoutId(layoutId);
   source.classList.add("is-dragging");
   if (event.dataTransfer) {
     event.dataTransfer.effectAllowed = "move";
-    event.dataTransfer.setData("text/plain", plantId);
+    event.dataTransfer.setData("text/plain", gardenPlannerLayoutDragId);
   }
 }
 
 function handleGardenPlannerLayoutDragEnd(event) {
   const source = event.target.closest("[data-garden-layout-plant]");
   source?.classList.remove("is-dragging");
-  gardenPlannerLayoutDragPlantId = null;
+  gardenPlannerLayoutDragId = null;
 }
 
 function handleGardenPlannerLayoutDragOver(event) {
@@ -7546,31 +7666,31 @@ function handleGardenPlannerLayoutDragOver(event) {
 function handleGardenPlannerLayoutDrop(event) {
   const board = event.target.closest("[data-garden-layout-board]");
   if (!board) return;
-  const plantId = event.dataTransfer?.getData("text/plain") || gardenPlannerLayoutDragPlantId;
-  if (!plantId) return;
+  const layoutId = event.dataTransfer?.getData("text/plain") || gardenPlannerLayoutDragId;
+  if (!layoutId) return;
   const position = gardenPlannerLayoutPositionFromPoint(board, event.clientX, event.clientY);
   if (!position) return;
   event.preventDefault();
-  if (setGardenPlannerLayoutPosition(plantId, position.x, position.y)) {
+  if (setGardenPlannerLayoutPosition(layoutId, position.x, position.y)) {
     trackEvent("filter_apply", {
       tool: "garden-planner",
       action: "bed_layout_drop",
       watchlist_count: screenerWatchlistIds.size
     });
   }
-  gardenPlannerLayoutDragPlantId = null;
+  gardenPlannerLayoutDragId = null;
 }
 
 function handleGardenPlannerLayoutPointerDown(event) {
   const marker = event.target.closest("[data-garden-layout-marker]");
   if (marker && gardenPlannerSpaceEl?.contains(marker)) {
     const board = marker.closest("[data-garden-layout-board]");
-    const plantId = marker.dataset.gardenLayoutMarker;
-    if (!board || !plantId) return;
+    const layoutId = marker.dataset.gardenLayoutMarker;
+    if (!board || !layoutId) return;
     event.preventDefault();
     gardenPlannerLayoutPointerDrag = {
       board,
-      plantId,
+      layoutId,
       pointerId: event.pointerId,
       changed: false,
       source: "marker"
@@ -7582,12 +7702,12 @@ function handleGardenPlannerLayoutPointerDown(event) {
   const chip = event.target.closest("[data-garden-layout-place]");
   if (!chip || !gardenPlannerSpaceEl?.contains(chip)) return;
   const board = gardenPlannerSpaceEl.querySelector("[data-garden-layout-board]");
-  const plantId = chip.dataset.gardenLayoutPlace;
-  if (!board || !plantId) return;
+  const layoutId = chip.dataset.gardenLayoutPlace;
+  if (!board || !layoutId) return;
   gardenPlannerLayoutPointerDrag = {
     board,
     chip,
-    plantId,
+    layoutId,
     pointerId: event.pointerId,
     startX: event.clientX,
     startY: event.clientY,
@@ -7615,13 +7735,13 @@ function handleGardenPlannerLayoutPointerMove(event) {
   if (!position) return;
   drag.changed = true;
   drag.position = position;
-  updateGardenPlannerLayoutDomPosition(drag.plantId, position);
+  updateGardenPlannerLayoutDomPosition(drag.layoutId, position);
 }
 
 function finishGardenPlannerLayoutPointerDrag(event) {
   const drag = gardenPlannerLayoutPointerDrag;
   if (!drag || drag.pointerId !== event.pointerId) return;
-  const marker = gardenPlannerSpaceEl?.querySelector(`[data-garden-layout-marker="${drag.plantId}"]`);
+  const marker = gardenPlannerSpaceEl?.querySelector(`[data-garden-layout-marker="${drag.layoutId}"]`);
   marker?.classList.remove("is-dragging");
   drag.chip?.classList.remove("is-dragging");
   drag.ghost?.remove();
@@ -7638,11 +7758,19 @@ function finishGardenPlannerLayoutPointerDrag(event) {
       position = cleanGardenPlannerLayoutPosition({ x: drag.defaultX, y: drag.defaultY });
     }
   } else if (!drag.changed) {
+    blurActiveGardenPlannerQuantityInput();
+    gardenPlannerSelectedLayoutId = drag.layoutId;
+    renderGardenPlannerSummarySections();
+    trackEvent("filter_apply", {
+      tool: "garden-planner",
+      action: "bed_layout_select",
+      watchlist_count: screenerWatchlistIds.size
+    });
     return;
   }
   if (!position) return;
   if (drag.changed && drag.source !== "chip") suppressGardenPlannerLayoutClickOnce();
-  if (setGardenPlannerLayoutPosition(drag.plantId, position.x, position.y)) {
+  if (setGardenPlannerLayoutPosition(drag.layoutId, position.x, position.y)) {
     trackEvent("filter_apply", {
       tool: "garden-planner",
       action,
@@ -7679,13 +7807,35 @@ function handleGardenPlannerLayoutClick(event) {
     }
     return;
   }
+  const removeLayoutButton = event.target.closest("[data-garden-layout-remove]");
+  if (removeLayoutButton) {
+    const removed = removeGardenPlannerLayoutPosition(removeLayoutButton.dataset.gardenLayoutRemove);
+    if (removed) {
+      trackEvent("filter_apply", {
+        tool: "garden-planner",
+        action: "bed_layout_remove_marker",
+        watchlist_count: screenerWatchlistIds.size
+      });
+    }
+    return;
+  }
+  const markerButton = event.target.closest("[data-garden-layout-marker]");
+  if (markerButton && gardenPlannerSpaceEl?.contains(markerButton)) {
+    const layoutId = normalizeGardenPlannerLayoutId(markerButton.dataset.gardenLayoutMarker);
+    if (layoutId && gardenPlannerLayout[layoutId]) {
+      blurActiveGardenPlannerQuantityInput();
+      gardenPlannerSelectedLayoutId = layoutId;
+      renderGardenPlannerSummarySections();
+    }
+    return;
+  }
   const placeButton = event.target.closest("[data-garden-layout-place]");
   if (!placeButton) return;
-  const plantId = placeButton.dataset.gardenLayoutPlace;
-  if (!plantId || !screenerWatchlistIds.has(plantId)) return;
+  const layoutId = placeButton.dataset.gardenLayoutPlace;
+  if (!layoutId || !gardenPlannerLayoutIdIsActive(layoutId)) return;
   const x = Number(placeButton.dataset.defaultX);
   const y = Number(placeButton.dataset.defaultY);
-  if (setGardenPlannerLayoutPosition(plantId, x, y)) {
+  if (setGardenPlannerLayoutPosition(layoutId, x, y)) {
     trackEvent("filter_apply", {
       tool: "garden-planner",
       action: "bed_layout_place",
@@ -7711,6 +7861,7 @@ function clearGardenPlanner() {
   screenerWatchlistIds = new Set();
   gardenPlannerQuantities = {};
   gardenPlannerLayout = {};
+  gardenPlannerSelectedLayoutId = null;
   gardenPlannerCompareOpen = false;
   saveScreenerWatchlist();
   saveGardenPlannerQuantities();
@@ -7730,7 +7881,7 @@ function setScreenerPortfolioMembership(plantId, shouldSave) {
   } else {
     screenerWatchlistIds.delete(plantId);
     delete gardenPlannerQuantities[plantId];
-    delete gardenPlannerLayout[plantId];
+    clearGardenPlannerLayoutForPlant(plantId);
   }
   if (!screenerWatchlistIds.size) gardenPlannerCompareOpen = false;
   if (wasSaved === screenerWatchlistIds.has(plantId)) return false;
@@ -8460,6 +8611,7 @@ function initializeScreener() {
     screenerWatchlistIds = new Set();
     gardenPlannerQuantities = {};
     gardenPlannerLayout = {};
+    gardenPlannerSelectedLayoutId = null;
     saveScreenerWatchlist();
     saveGardenPlannerQuantities();
     saveGardenPlannerLayout();
