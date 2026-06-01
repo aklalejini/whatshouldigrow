@@ -2,6 +2,7 @@
 import AnalyticsEvents from "../../components/AnalyticsEvents.astro";
 import affiliateProducts from "../../data/affiliateProducts.json";
 import plants from "../../data/plants.json";
+import plantMetricSources from "../../data/plantMetricSources.json";
 import plantMetrics from "../../data/plantMetrics.json";
 import {
   DEFAULT_SOCIAL_IMAGE,
@@ -17,6 +18,7 @@ import {
   gardenPlanSpaceStats,
   GARDEN_PLAN_TEMPLATES
 } from "../../lib/gardenPlanTemplates";
+import { hubSourceKeyCounts } from "../../lib/hubData";
 import { isSourcedValue, plantUrl, sentenceCase } from "../../lib/plantUtils";
 import "../../styles/global.css";
 
@@ -49,6 +51,16 @@ const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
 const entries = gardenPlanPlantEntries(template, plants, plantMetrics);
 const stats = gardenPlanSpaceStats(template, plantMetrics);
 const totalPlants = template.plants.reduce((sum, plant) => sum + plant.quantity, 0);
+const plantsWithSpacing = entries.filter(({ metrics }) => isSourcedValue(metrics.display?.spacing)).length;
+const plantsWithOutput = entries.filter(({ metrics }) => isSourcedValue(metrics.display?.yieldLbs) || isSourcedValue(metrics.display?.output)).length;
+const riskWatchCount = entries.filter(({ metrics }) => (
+  metrics.deerResistance === "frequently-damaged"
+  || metrics.jugloneTolerance === "sensitive"
+  || metrics.riskLevel === "elevated"
+)).length;
+const planSourceRows = hubSourceKeyCounts(entries, 5)
+  .map(({ key, count }) => ({ key, count, ...(plantMetricSources[key] ?? {}) }))
+  .filter((source) => source.title && source.url);
 const products = template.productIds
   .map((id) => affiliateProducts.find((product) => product.id === id))
   .filter(Boolean);
@@ -166,6 +178,11 @@ const collectionJsonLd = {
               <strong>{stats.sourcedYieldRows ? formatRange(stats.minYield, stats.maxYield, "lb", 1) : "Varies"}</strong>
               <p>Based on sourced yield rows where available; herbs and flowers may not have pound output.</p>
             </article>
+            <article>
+              <span>Data coverage</span>
+              <strong>{plantsWithSpacing}/{entries.length} spacing rows</strong>
+              <p>{plantsWithOutput}/{entries.length} plants have output ranges; {riskWatchCount} need extra risk review.</p>
+            </article>
           </div>
         </section>
 
@@ -189,11 +206,35 @@ const collectionJsonLd = {
                   <div><dt>Qty</dt><dd>{quantity}</dd></div>
                   <div><dt>Spacing</dt><dd>{metrics.display?.spacing ?? "-"}</dd></div>
                   <div><dt>Yield</dt><dd>{isSourcedValue(metrics.display?.yieldLbs) ? metrics.display.yieldLbs : "-"}</dd></div>
+                  <div><dt>Risk</dt><dd>{metrics.deerResistanceLabel ?? "Check locally"} / {metrics.jugloneToleranceLabel ?? "Check locally"}</dd></div>
                 </dl>
               </article>
             ))}
           </div>
         </section>
+
+        {planSourceRows.length > 0 && (
+          <section class="hub-section hub-source-section" aria-labelledby="plan-source-title">
+            <div class="hub-section-head">
+              <div>
+                <p class="eyebrow">Source trail</p>
+                <h2 id="plan-source-title">References behind this template</h2>
+              </div>
+              <p>
+                These are the common source families behind the plants in this layout. Individual plant pages keep their own source links and caveats.
+              </p>
+            </div>
+            <div class="hub-source-list">
+              {planSourceRows.map((source) => (
+                <a href={source.url} target="_blank" rel="noopener noreferrer">
+                  <span>{source.count} template records</span>
+                  <strong>{source.title}</strong>
+                  <small>{source.note}</small>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
 
         {products.length > 0 && (
           <section class="hub-section hub-resource-box" aria-labelledby="plan-products-title">

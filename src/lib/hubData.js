@@ -293,6 +293,102 @@ function hubScore(plant, metrics = {}, hub) {
   return score;
 }
 
+const hubMethodCopy = {
+  "planting-calendar": [
+    ["Timing first", "Prioritizes records with first-output windows, harvest-window estimates, and planting-depth guidance."],
+    ["ZIP before purchase", "Use the live calendar for frost context before starting seeds, setting transplants, or buying nursery stock."],
+    ["Range language", "Dates and maturity windows stay broad because soil temperature, cultivar choice, and spring weather shift timing."]
+  ],
+  "native-plants": [
+    ["Native cue", "Starts from native flags and plant-name or trait cues, then keeps site fit visible instead of treating native status as enough."],
+    ["Local check", "County-level nativity is not encoded yet, so each match should be verified against a regional native-plant source."],
+    ["Garden role", "Surfaces light, water, mature size, and wildlife function so native choices can still fit the actual yard."]
+  ],
+  "fruit-trees": [
+    ["Bearing horizon", "Shows first-output and full-output timing so long-horizon crops are not compared like annual vegetables."],
+    ["Space cost", "Uses mature-size and spacing data because tree crops can consume decades of yard space."],
+    ["Yield caution", "Pound-return ranges are useful planning numbers, but rootstock, pruning, chill, and pest pressure can move them a lot."]
+  ],
+  "privacy-shrubs": [
+    ["Screening scale", "Favors records with privacy goals, mature-size context, and spacing cues for hedges or living screens."],
+    ["Maintenance fit", "Water, soil, and growth habit matter as much as height when a screen must survive with routine care."],
+    ["Edible overlap", "Fruit and wildlife value are surfaced when a screen can do more than block a view."]
+  ],
+  "low-water-plants": [
+    ["Water flag", "Filters for low-water records, then keeps establishment watering and site fit in the decision."],
+    ["Dry-site risk", "Low water does not mean no water; mulch, drainage, and first-season irrigation still matter."],
+    ["Useful tradeoffs", "Spacing, mature size, and container notes help separate rugged landscape plants from compact patio choices."]
+  ],
+  "vegetables-herbs": [
+    ["Kitchen output", "Ranks annual crops and herbs with timing, spacing, container, and pound-return data where available."],
+    ["Seasonal reality", "Annual crops are treated as one-season decisions, not long-term landscape investments."],
+    ["Actionable numbers", "Cards emphasize first harvest, spacing, and output so gardeners can plan beds instead of reading filler."]
+  ],
+  "zone-7-vegetables": [
+    ["Zone 7 fit", "Includes vegetables and herbs whose hardiness range covers USDA zone 7 before ZIP-specific frost timing is applied."],
+    ["Warm and cool crops", "Keeps fast greens, herbs, fruiting vegetables, and longer-season crops in one comparable shortlist."],
+    ["Calendar next", "The page is a shortlist; the planting calendar still handles local spring and fall timing."]
+  ],
+  "what-to-grow-in-a-4x8-raised-bed": [
+    ["32 sq ft constraint", "Favors compact crops, workable container habits, or spacing ranges that can make sense in one 4x8 bed."],
+    ["Spacing math", "Highlights plant spacing and square-foot pressure so large vines and sprawling crops are easier to spot."],
+    ["Planner handoff", "Use the Garden Planner for quantities; this page is the candidate list before layout."]
+  ],
+  "deer-resistant-garden-plants": [
+    ["Browse category", "Filters for Rutgers-style rarely damaged or seldom damaged cues when the database has them."],
+    ["Not deer proof", "The page avoids guarantees because local deer pressure can override resistance ratings."],
+    ["Protection context", "Cards keep spacing, water, and deer rating together so fencing or repellents can be planned early."]
+  ],
+  "black-walnut-tolerant-plants": [
+    ["Juglone cue", "Filters for records marked tolerant in the black-walnut planning data."],
+    ["Root-zone caveat", "Tolerance still depends on distance, drainage, soil life, cultivar, and tree age."],
+    ["Placement check", "Use this list before planting under or near a walnut canopy, then verify locally for valuable plants."]
+  ],
+  "full-sun-clay-soil-plants": [
+    ["Tough-site match", "Requires both full-sun and clay-soil cues so the page stays about a real planting problem."],
+    ["Drainage matters", "Clay tolerance does not fix standing water; bed prep and slope still matter."],
+    ["Use by layer", "Vegetables, perennials, shrubs, and trees remain visible so gardeners can plan a whole site."]
+  ],
+  "pollinator-plants": [
+    ["Habitat role", "Starts with pollinator, wildlife, or native cues, then keeps bloom/display output and site fit visible."],
+    ["Season coverage", "Harvest-window and bloom-window style data help identify gaps in spring, summer, and fall support."],
+    ["Practical fit", "Water, spacing, and deer/juglone cues prevent habitat choices from becoming maintenance surprises."]
+  ],
+  "container-garden-plants": [
+    ["Container signal", "Favors compact crops, herbs, berries, patio forms, and records with workable container guidance."],
+    ["Volume check", "Container minimums are surfaced because pot size often matters more than the plant label."],
+    ["Small-space yield", "Output, timing, and spacing help compare patio plants by return and effort."]
+  ],
+  "shade-plants": [
+    ["Light filter", "Includes records that tolerate shade or partial sun, then keeps soil and water visible."],
+    ["Understory fit", "Mature size, spacing, and water cues matter in north-side beds and tree-root competition."],
+    ["Expectation setting", "Edible output and bloom can drop in lower light, so profile pages should still be checked."]
+  ],
+  "clay-soil-plants": [
+    ["Clay cue", "Filters for records marked suitable for clay, then keeps drainage-sensitive metrics visible."],
+    ["Amendment context", "Compost and mulch help structure, but plant choice is still the first filter."],
+    ["Broad use", "Keeps crops, perennials, shrubs, and fruiting plants together for whole-yard planning."]
+  ],
+  "sandy-soil-plants": [
+    ["Drainage cue", "Filters for sandy-soil records and favors plants that can handle faster-draining sites."],
+    ["Water planning", "Sandy soil often needs more consistent irrigation even when the plant tolerates dry spells."],
+    ["Mulch and organic matter", "Cards pair soil fit with water and spacing so amendments can be planned realistically."]
+  ],
+  "edible-hedges": [
+    ["Food plus structure", "Requires edible or fruiting value along with hedge, vine, shrub, cane, or tree form."],
+    ["Space and harvest", "Mature size, spacing, and output ranges show whether the hedge is practical or just romantic."],
+    ["Multi-use value", "Wildlife, screening, and kitchen returns stay visible when a plant can do several jobs."]
+  ]
+};
+
+const hubSourceCopy = {
+  "deer-resistant-garden-plants": "Deer categories come from the plant metric source keys behind the visible records, especially Rutgers-style browsing ratings when available.",
+  "black-walnut-tolerant-plants": "Juglone cues are traced to black-walnut tolerance references where the database has a defensible source key.",
+  "what-to-grow-in-a-4x8-raised-bed": "Spacing, container, and yield references matter most here because a 4x8 bed is a space-budget problem.",
+  "zone-7-vegetables": "Vegetable timing, spacing, container, and yield sources are prioritized so the page can feed the calendar and planner.",
+  "fruit-trees": "Fruit-tree sources emphasize spacing, years to bearing, mature yield, rootstock caveats, and home-orchard planting guidance."
+};
+
 export function plantsForHub(hub, plants, plantMetrics) {
   return plants
     .filter((plant) => hub.match(plant, plantMetrics[plant.id] ?? {}))
@@ -310,15 +406,55 @@ export function relatedHubsForPlant(plant) {
     .slice(0, 4);
 }
 
-export function hubPlantSummary(plant, metrics = {}) {
-  const parts = [
-    `Zones ${plant.zones[0]}-${plant.zones[1]}`,
-    `${sentenceCase(plant.water)} water`,
-    plant.sun.length ? `${plant.sun.map(sentenceCase).join("/")} sun` : "",
-    isSourcedValue(metrics.display?.firstOutput) ? metrics.display.firstOutput : "",
-    isSourcedValue(metrics.display?.yieldLbs) ? metrics.display.yieldLbs : ""
-  ].filter(Boolean);
-  return parts.join(" / ");
+export function hubPlantSummary(plant, metrics = {}, hub = null) {
+  if (plant.harvest) return plant.harvest;
+  if (plant.traits?.length) return plant.traits.slice(0, 2).join("; ");
+  const display = metrics.display ?? {};
+  if (isSourcedValue(display.matureSize)) return `Mature size: ${display.matureSize}.`;
+  if (isSourcedValue(display.output)) return `Output: ${display.output}.`;
+  return `${sentenceCase(plant.water)} water; ${plant.soils.map(sentenceCase).join("/")} soil.`;
+}
+
+export function hubPlantDataPoints(plant, metrics = {}, hub = null) {
+  const display = metrics.display ?? {};
+  const common = {
+    zones: { label: "Zones", value: `${plant.zones[0]}-${plant.zones[1]}` },
+    sun: { label: "Light", value: plant.sun.length ? `${plant.sun.map(sentenceCase).join("/")} sun` : "" },
+    water: { label: "Water", value: `${sentenceCase(plant.water)} water` },
+    soil: { label: "Soil", value: plant.soils.length ? plant.soils.map(sentenceCase).join("/") : "" },
+    firstOutput: { label: "First output", value: isSourcedValue(display.firstOutput) ? display.firstOutput : "" },
+    yield: { label: metrics.outputKind === "ornamental" ? "Display" : "Yield", value: isSourcedValue(display.yieldLbs) ? display.yieldLbs : isSourcedValue(display.output) ? display.output : "" },
+    spacing: { label: "Spacing", value: isSourcedValue(display.spacing) ? display.spacing : "" },
+    matureSize: { label: "Mature size", value: isSourcedValue(display.matureSize) ? display.matureSize : "" },
+    container: { label: "Container", value: isSourcedValue(display.containerMin) ? display.containerMin : "" },
+    deer: { label: "Deer", value: isSourcedValue(display.deerResistance) ? display.deerResistance : "" },
+    walnut: { label: "Black walnut", value: isSourcedValue(display.jugloneTolerance) ? display.jugloneTolerance : "" },
+    harvest: { label: "Harvest", value: isSourcedValue(display.harvestWindow) ? display.harvestWindow : "" }
+  };
+  const orderByHub = {
+    "planting-calendar": ["firstOutput", "harvest", "spacing", "zones"],
+    "native-plants": ["zones", "sun", "matureSize", "water"],
+    "fruit-trees": ["firstOutput", "yield", "spacing", "matureSize"],
+    "privacy-shrubs": ["matureSize", "spacing", "water", "zones"],
+    "low-water-plants": ["water", "sun", "spacing", "container"],
+    "vegetables-herbs": ["firstOutput", "yield", "spacing", "container"],
+    "zone-7-vegetables": ["firstOutput", "yield", "spacing", "harvest"],
+    "what-to-grow-in-a-4x8-raised-bed": ["spacing", "container", "yield", "firstOutput"],
+    "deer-resistant-garden-plants": ["deer", "spacing", "water", "sun"],
+    "black-walnut-tolerant-plants": ["walnut", "spacing", "sun", "water"],
+    "full-sun-clay-soil-plants": ["soil", "water", "spacing", "matureSize"],
+    "pollinator-plants": ["firstOutput", "yield", "sun", "deer"],
+    "container-garden-plants": ["container", "spacing", "yield", "firstOutput"],
+    "shade-plants": ["sun", "water", "matureSize", "spacing"],
+    "clay-soil-plants": ["soil", "water", "spacing", "matureSize"],
+    "sandy-soil-plants": ["soil", "water", "spacing", "container"],
+    "edible-hedges": ["yield", "matureSize", "spacing", "firstOutput"]
+  };
+  const order = orderByHub[hub?.slug] ?? ["zones", "water", "sun", "firstOutput", "yield", "spacing"];
+  return order
+    .map((key) => common[key])
+    .filter((fact) => fact?.value)
+    .slice(0, 4);
 }
 
 export function hubPlantTags(plant) {
@@ -326,6 +462,35 @@ export function hubPlantTags(plant) {
     ...plant.goals.slice(0, 2).map(formatGoal),
     ...plant.traits.slice(0, 2)
   ];
+}
+
+export function hubMethodCards(hub) {
+  const cards = hubMethodCopy[hub.slug] ?? [
+    ["Database filter", "Starts from structured plant records rather than freeform article text."],
+    ["Practical fit", "Keeps hardiness, light, soil, water, spacing, and timing visible."],
+    ["Local verification", "Profile pages link to source trails and caveats for high-stakes planting decisions."]
+  ];
+  return cards.map(([label, detail]) => ({ label, detail }));
+}
+
+export function hubSourceIntro(hub) {
+  return hubSourceCopy[hub.slug]
+    ?? "These are the most common planning references behind the visible records on this page.";
+}
+
+export function hubSourceKeyCounts(entries, limit = 6) {
+  const counts = new Map();
+  entries.forEach(({ metrics }) => {
+    [
+      ...(metrics.sourceKeys ?? []),
+      ...(metrics.deerResistanceSourceKeys ?? []),
+      ...(metrics.jugloneToleranceSourceKeys ?? [])
+    ].forEach((key) => counts.set(key, (counts.get(key) ?? 0) + 1));
+  });
+  return Array.from(counts.entries())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, limit)
+    .map(([key, count]) => ({ key, count }));
 }
 
 export function hubInternalLinks() {

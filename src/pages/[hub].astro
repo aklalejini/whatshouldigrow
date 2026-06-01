@@ -2,6 +2,7 @@
 import AnalyticsEvents from "../components/AnalyticsEvents.astro";
 import affiliateProducts from "../data/affiliateProducts.json";
 import plantArtEntries from "../data/plantArt.json";
+import plantMetricSources from "../data/plantMetricSources.json";
 import plantMetrics from "../data/plantMetrics.json";
 import plants from "../data/plants.json";
 import {
@@ -13,9 +14,13 @@ import {
 import {
   HUB_PAGES,
   hubInternalLinks,
+  hubMethodCards,
+  hubPlantDataPoints,
   hubPlantSummary,
   hubPlantTags,
   hubProductIds,
+  hubSourceIntro,
+  hubSourceKeyCounts,
   itemListForPlants,
   plantsForHub
 } from "../lib/hubData";
@@ -44,6 +49,10 @@ const hubEntries = plantsForHub(hub, plants, plantMetrics);
 const featuredEntries = hubEntries.slice(0, 24);
 const sourcedYieldCount = hubEntries.filter(({ metrics }) => isSourcedValue(metrics.display?.yieldLbs)).length;
 const sourceReadyCount = hubEntries.filter(({ metrics }) => isSourcedValue(metrics.display?.firstOutput)).length;
+const hubMethodNotes = hubMethodCards(hub);
+const hubSourceRows = hubSourceKeyCounts(hubEntries)
+  .map(({ key, count }) => ({ key, count, ...(plantMetricSources[key] ?? {}) }))
+  .filter((source) => source.title && source.url);
 const hubLinks = hubInternalLinks().filter((link) => link.href !== hub.path);
 const zoneGuideLinks = featuredZoneInternalLinks();
 const hubResourceProducts = hubProductIds(hub)
@@ -190,6 +199,27 @@ const collectionJsonLd = {
           </section>
         )}
 
+        <section class="hub-section hub-method-section" aria-labelledby="hub-method-title">
+          <div class="hub-section-head">
+            <div>
+              <p class="eyebrow">How this page is built</p>
+              <h2 id="hub-method-title">The filter behind {hub.shortTitle}</h2>
+            </div>
+            <p>
+              The list below is generated from structured plant records, then sorted by sourced metrics,
+              site fit, and planning usefulness.
+            </p>
+          </div>
+          <div class="hub-method-grid">
+            {hubMethodNotes.map((note) => (
+              <article>
+                <span>{note.label}</span>
+                <p>{note.detail}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section class="hub-section" aria-labelledby="hub-featured-title">
           <div class="hub-section-head">
             <div>
@@ -208,6 +238,7 @@ const collectionJsonLd = {
               const hasImage = Boolean(artEntry?.image);
               const kind = plantKind(plant);
               const tags = hubPlantTags(plant);
+              const dataPoints = hubPlantDataPoints(plant, metrics, hub);
               return (
                 <a class="hub-plant-card" href={plantUrl(plant)}>
                   <figure
@@ -220,7 +251,15 @@ const collectionJsonLd = {
                   <div>
                     <span>{sentenceCase(plant.type)}</span>
                     <h3>{plant.name}</h3>
-                    <p>{hubPlantSummary(plant, metrics)}</p>
+                    <p>{hubPlantSummary(plant, metrics, hub)}</p>
+                    <dl class="hub-data-points">
+                      {dataPoints.map((point) => (
+                        <div>
+                          <dt>{point.label}</dt>
+                          <dd>{point.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
                     <div class="hub-card-tags">
                       {tags.map((tag) => <span>{tag}</span>)}
                     </div>
@@ -230,6 +269,30 @@ const collectionJsonLd = {
             })}
           </div>
         </section>
+
+        {hubSourceRows.length > 0 && (
+          <section class="hub-section hub-source-section" aria-labelledby="hub-source-title">
+            <div class="hub-section-head">
+              <div>
+                <p class="eyebrow">Source trail</p>
+                <h2 id="hub-source-title">References used by this shortlist</h2>
+              </div>
+              <p>{hubSourceIntro(hub)}</p>
+            </div>
+            <div class="hub-source-list">
+              {hubSourceRows.map((source) => (
+                <a href={source.url} target="_blank" rel="noopener noreferrer">
+                  <span>{source.count} matching records</span>
+                  <strong>{source.title}</strong>
+                  <small>{source.note}</small>
+                </a>
+              ))}
+            </div>
+            <p class="hub-source-note">
+              Individual plant profiles show their own source links and caveats; this page shows the common references behind the current collection.
+            </p>
+          </section>
+        )}
 
         <section class="hub-section hub-crosslinks" aria-labelledby="hub-crosslinks-title">
           <div class="hub-section-head">

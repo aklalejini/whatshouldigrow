@@ -2165,6 +2165,45 @@ fieldset:nth-of-type(2) .segmented {
   padding: 28px;
 }
 
+.hub-method-section,
+.hub-source-section {
+  border: 1px solid #dfe7d8;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255, 253, 248, 0.98), rgba(246, 250, 242, 0.88));
+}
+
+.hub-method-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.hub-method-grid article {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #dfe7d8;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.hub-method-grid span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--terracotta);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hub-method-grid p {
+  margin: 0;
+  color: #405246;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
 .hub-card-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2210,6 +2249,37 @@ fieldset:nth-of-type(2) .segmented {
   line-height: 1.45;
 }
 
+.hub-data-points {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0 0;
+}
+
+.hub-data-points div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 6px;
+  border-top: 1px solid #e7eee2;
+}
+
+.hub-data-points dt {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hub-data-points dd {
+  max-width: 58%;
+  margin: 0;
+  color: var(--leaf-dark);
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-align: right;
+}
+
 .hub-plant-card > div > span {
   color: var(--terracotta);
   font-size: 0.64rem;
@@ -2242,7 +2312,7 @@ fieldset:nth-of-type(2) .segmented {
 }
 
 .garden-plan-facts {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .garden-plan-facts article,
@@ -2403,6 +2473,55 @@ fieldset:nth-of-type(2) .segmented {
 
 .hub-resource-card a:hover {
   background: var(--leaf-dark);
+}
+
+.hub-source-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.hub-source-list a {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #dfe7d8;
+  border-radius: 8px;
+  color: #2f3e34;
+  background: #fff;
+  text-decoration: none;
+}
+
+.hub-source-list a:hover {
+  border-color: rgba(39, 88, 58, 0.32);
+  background: #f6faf1;
+}
+
+.hub-source-list span {
+  color: var(--terracotta);
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hub-source-list strong {
+  color: var(--leaf-dark);
+  font-size: 0.9rem;
+  line-height: 1.25;
+}
+
+.hub-source-list small,
+.hub-source-note {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.hub-source-note {
+  margin: 14px 0 0;
 }
 
 .zone-intent-hero .hub-stats {
@@ -8730,7 +8849,9 @@ input.calendar-filter-search[type="search"]:focus {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .hub-method-grid,
   .hub-card-grid,
+  .hub-source-list,
   .hub-resource-grid,
   .garden-plan-facts,
   .zone-window-grid,
@@ -8850,7 +8971,9 @@ input.calendar-filter-search[type="search"]:focus {
   .home-hubs-head,
   .hub-section-head,
   .hub-hero,
+  .hub-method-grid,
   .hub-card-grid,
+  .hub-source-list,
   .hub-resource-grid,
   .garden-plan-facts,
   .zone-advice-grid,
