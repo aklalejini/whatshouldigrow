@@ -85,6 +85,73 @@ export const HUB_PAGES = [
     match: (plant) => plant.goals.includes("vegetables-herbs")
   },
   {
+    slug: "zone-7-vegetables",
+    path: "/zone-7-vegetables/",
+    shortTitle: "Zone 7 vegetables",
+    eyebrow: "Zone 7 kitchen garden",
+    title: "Best Vegetables and Herbs for Zone 7 Gardens",
+    description: "Browse vegetable and herb profiles whose hardiness ranges fit USDA zone 7, with timing, spacing, container, and yield data.",
+    summary: "Use this page as a Zone 7 shortlist before opening the ZIP calendar. It favors practical kitchen crops with first-output, spacing, and harvest data.",
+    ctaLabel: "Open the Zone 7 calendar",
+    ctaHref: "/planting-calendar/zone-7b/",
+    filterLabel: "Zone 7 kitchen crops",
+    match: (plant) => plant.goals.includes("vegetables-herbs") && (plantFitsZoneNumber(plant, 7) || plantFitsZoneNumber(plant, 7.5))
+  },
+  {
+    slug: "what-to-grow-in-a-4x8-raised-bed",
+    path: "/what-to-grow-in-a-4x8-raised-bed/",
+    shortTitle: "4x8 raised bed crops",
+    eyebrow: "Small-space crops",
+    title: "What to Grow in a 4x8 Raised Bed",
+    description: "Compare compact vegetables, herbs, and small-space crops that can make sense in a 4x8 raised bed.",
+    summary: "A 4x8 bed is only 32 square feet, so this collection favors crops with manageable spacing, container-friendly habits, or strong output per square foot.",
+    ctaLabel: "Open 4x8 garden templates",
+    ctaHref: "/garden-plans/zone-7-4x8-vegetable-garden/",
+    filterLabel: "Small-bed candidates",
+    match: (plant, metrics = {}) => plant.goals.includes("vegetables-herbs")
+      && !/tree|shrub|cane|nut|citrus/i.test(plant.type)
+      && (Number(metrics.spacingAreaSqFtMax) <= 16 || ["good", "workable"].includes(metrics.containerSuitability))
+  },
+  {
+    slug: "deer-resistant-garden-plants",
+    path: "/deer-resistant-garden-plants/",
+    shortTitle: "Deer-resistant plants",
+    eyebrow: "Browse-pressure planning",
+    title: "Deer-Resistant Garden Plants",
+    description: "Browse plants with better deer-resistance cues, based on the Plant by ZIP screening data and extension-style browsing categories.",
+    summary: "No plant is deer proof. This page filters for plants marked rarely damaged or seldom damaged so you can start with a better shortlist.",
+    ctaLabel: "Open deer-resistant bed plan",
+    ctaHref: "/garden-plans/deer-resistant-pollinator-bed/",
+    filterLabel: "Better deer cues",
+    match: (plant, metrics = {}) => ["rarely-damaged", "seldom-damaged"].includes(metrics.deerResistance)
+  },
+  {
+    slug: "black-walnut-tolerant-plants",
+    path: "/black-walnut-tolerant-plants/",
+    shortTitle: "Black walnut tolerant plants",
+    eyebrow: "Juglone planning",
+    title: "Plants That Tolerate Black Walnut",
+    description: "Find plants with black walnut or juglone tolerance cues in the Plant by ZIP database.",
+    summary: "Use this collection when planting near black walnut roots or canopy. It filters for tolerant records, then points you back to ZIP and site checks.",
+    ctaLabel: "Open the plant screener",
+    ctaHref: "/?swalnut=tolerant#screener",
+    filterLabel: "Juglone-tolerant profiles",
+    match: (plant, metrics = {}) => metrics.jugloneTolerance === "tolerant"
+  },
+  {
+    slug: "full-sun-clay-soil-plants",
+    path: "/full-sun-clay-soil-plants/",
+    shortTitle: "Full sun clay soil plants",
+    eyebrow: "Tough-site shortlist",
+    title: "Plants for Full Sun and Clay Soil",
+    description: "Browse plants marked for both full sun and clay soil, including vegetables, perennials, shrubs, and practical landscape plants.",
+    summary: "Clay soil and full sun can be productive when plants are chosen for the site. This page narrows the database to records with both cues.",
+    ctaLabel: "Match clay-soil plants by ZIP",
+    ctaHref: "/",
+    filterLabel: "Full-sun clay candidates",
+    match: (plant) => plant.sun.includes("full") && plant.soils.includes("clay")
+  },
+  {
     slug: "pollinator-plants",
     path: "/pollinator-plants/",
     shortTitle: "Pollinator plants",
@@ -205,6 +272,12 @@ function zoneToNumber(zone) {
   return Number(number) + (suffix === "b" ? 0.5 : 0);
 }
 
+function plantFitsZoneNumber(plant, targetZoneNumber) {
+  const min = zoneToNumber(plant.zones?.[0]);
+  const max = zoneToNumber(plant.zones?.[1]);
+  return Number.isFinite(min) && Number.isFinite(max) && targetZoneNumber >= min && targetZoneNumber <= max;
+}
+
 function hubScore(plant, metrics = {}, hub) {
   let score = 0;
   if (isSourcedValue(metrics.display?.yieldLbs)) score += 18;
@@ -222,7 +295,7 @@ function hubScore(plant, metrics = {}, hub) {
 
 export function plantsForHub(hub, plants, plantMetrics) {
   return plants
-    .filter((plant) => hub.match(plant))
+    .filter((plant) => hub.match(plant, plantMetrics[plant.id] ?? {}))
     .map((plant) => ({
       plant,
       metrics: plantMetrics[plant.id] ?? {},
@@ -270,6 +343,11 @@ const hubProductMap = {
   "privacy-shrubs": ["digging-spade", "organic-mulch", "drip-irrigation-kit", "animal-protection"],
   "low-water-plants": ["soil-test-lab-mailer", "organic-mulch", "drip-irrigation-kit", "shade-cloth"],
   "vegetables-herbs": ["seed-starting-trays", "seedling-heat-mat", "grow-light", "insect-netting"],
+  "zone-7-vegetables": ["seed-starting-trays", "seedling-heat-mat", "grow-light", "soil-thermometer"],
+  "what-to-grow-in-a-4x8-raised-bed": ["finished-compost", "drip-irrigation-kit", "tomato-cage-stakes", "insect-netting"],
+  "deer-resistant-garden-plants": ["animal-protection", "organic-mulch", "hand-trowel", "watering-wand"],
+  "black-walnut-tolerant-plants": ["soil-test-lab-mailer", "organic-mulch", "digging-spade", "watering-wand"],
+  "full-sun-clay-soil-plants": ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "digging-spade"],
   "pollinator-plants": ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "watering-wand"],
   "container-garden-plants": ["drainage-container", "container-potting-mix", "watering-wand", "plant-labels"],
   "shade-plants": ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "hand-trowel"],

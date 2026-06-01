@@ -1,0 +1,123 @@
+---
+import AnalyticsEvents from "../../components/AnalyticsEvents.astro";
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  SITE_NAME,
+  SITE_URL,
+  siteUrl
+} from "../../lib/site";
+import { gardenPlanInternalLinks } from "../../lib/gardenPlanTemplates";
+import "../../styles/global.css";
+
+const canonicalUrl = siteUrl("/garden-plans/");
+const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
+const planLinks = gardenPlanInternalLinks();
+const description = "Browse practical Plant by ZIP garden plan templates for raised beds, kitchen crops, salad gardens, and deer-resistant pollinator beds.";
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: SITE_NAME, item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "Garden plans", item: canonicalUrl }
+  ]
+};
+const collectionJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Garden Plan Templates",
+  description,
+  url: canonicalUrl,
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: planLinks.map((plan, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: plan.title,
+      url: siteUrl(plan.href)
+    }))
+  }
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`Garden Plan Templates | ${SITE_NAME}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`Garden Plan Templates | ${SITE_NAME}`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,750&family=Inter:wght@400;500;650;750;850&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
+    <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
+    <title>Garden Plan Templates | {SITE_NAME}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(collectionJsonLd)}></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <nav class="site-tabs" aria-label="Primary sections">
+        <a class="site-tab" href="/">Plant matcher</a>
+        <a class="site-tab" href="/#screener">Screener</a>
+        <a class="site-tab is-active" aria-current="page" href="/garden-plans/">Garden plans</a>
+        <a class="site-tab" href="/planting-calendar/">Calendar</a>
+        <a class="site-tab" href="/blog/">Guides</a>
+      </nav>
+
+      <article class="hub-page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Plant by ZIP</a>
+          <span aria-hidden="true">/</span>
+          <span>Garden plans</span>
+        </nav>
+
+        <header class="hub-hero">
+          <div>
+            <p class="eyebrow">Shareable templates</p>
+            <h1>Garden plans you can copy into the planner.</h1>
+            <p>{description} Each plan links into the interactive Garden Planner with saved plants, quantities, bed dimensions, and starter layout dots.</p>
+            <div class="hub-actions">
+              <a class="plant-page-action is-primary" href="/#garden-planner">Open Garden Planner</a>
+              <a class="plant-page-action is-secondary" href="/#screener">Build from the Screener</a>
+            </div>
+          </div>
+          <dl class="hub-stats" aria-label="Garden plan stats">
+            <div><dt>Templates</dt><dd>{planLinks.length}</dd></div>
+            <div><dt>Planner links</dt><dd>Ready</dd></div>
+          </dl>
+        </header>
+
+        <section class="hub-section hub-crosslinks" aria-labelledby="plan-list-title">
+          <div class="hub-section-head">
+            <div>
+              <p class="eyebrow">Copy a layout</p>
+              <h2 id="plan-list-title">Starter garden plan templates</h2>
+            </div>
+            <p>Use these as practical starting points, then adjust spacing, quantities, and timing for your ZIP and site.</p>
+          </div>
+          <div class="home-hub-grid">
+            {planLinks.map((plan) => (
+              <a href={plan.href}>
+                <span>{plan.title}</span>
+                <strong>{plan.description}</strong>
+              </a>
+            ))}
+          </div>
+        </section>
+      </article>
+    </main>
+    <AnalyticsEvents pageType="garden_plans" topic="index" />
+  </body>
+</html>

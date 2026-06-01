@@ -926,10 +926,13 @@ articleSearchEl.addEventListener("input", () => {
 });
 const initialParams = new URLSearchParams(window.location.search);
 const initialBlogQuery = initialParams.get("q");
+const gardenPlannerTemplateCatalog = Array.isArray(window.plantByZipGardenTemplates) ? window.plantByZipGardenTemplates : [];
+const requestedGardenTemplateSlug = initialParams.get("garden-template") || initialParams.get("garden-plan");
+let gardenPlannerTemplateApplied = false;
 const hasInitialScreenerQuery = screenerParamKeys.some((key) => initialParams.has(key));
 const hasInitialMatcherQuery = matcherParamKeys.some((key) => initialParams.has(key));
 const initialWantsScreener = hasInitialScreenerQuery || window.location.hash === "#screener" || window.location.hash === "#screener-view";
-const initialWantsGardenPlanner = window.location.hash === "#garden-planner" || window.location.hash === "#garden-planner-view";
+const initialWantsGardenPlanner = Boolean(requestedGardenTemplateSlug) || window.location.hash === "#garden-planner" || window.location.hash === "#garden-planner-view";
 const initialWantsCalendar = window.location.hash === "#calendar" || window.location.hash === "#calendar-view";
 const initialWantsZoneMap = window.location.hash === "#zone-map" || window.location.hash === "#zone-map-view";
 const initialWantsBlog = Boolean(initialBlogQuery) || window.location.hash === "#blog" || window.location.hash === "#blog-view";
@@ -6111,6 +6114,56 @@ function gardenPlannerSettingsFromControls() {
   };
 }
 
+function gardenPlannerStatusText() {
+  return `Using USDA zone ${gardenPlannerSettings.zone.toUpperCase()} with ${formatCompactNumber(gardenPlannerTotalSqFt(), 1)} sq ft of planned bed space.`;
+}
+
+function applyRequestedGardenPlannerTemplate() {
+  if (gardenPlannerTemplateApplied || !requestedGardenTemplateSlug) return "";
+  const template = gardenPlannerTemplateCatalog.find((entry) => entry.slug === requestedGardenTemplateSlug);
+  if (!template || !Array.isArray(template.plants)) return "";
+  gardenPlannerTemplateApplied = true;
+
+  const settings = template.settings ?? {};
+  if (settings.zone) gardenPlannerSettings.zone = cleanGardenPlannerZone(settings.zone);
+  gardenPlannerSettings.bedLength = cleanGardenPlannerNumber(settings.bedLength, gardenPlannerSettings.bedLength, 1, 200);
+  gardenPlannerSettings.bedWidth = cleanGardenPlannerNumber(settings.bedWidth, gardenPlannerSettings.bedWidth, 1, 200);
+  gardenPlannerSettings.bedCount = Math.round(cleanGardenPlannerNumber(settings.bedCount, gardenPlannerSettings.bedCount, 1, 50));
+  if (["full", "partial", "shade"].includes(settings.sun)) gardenPlannerSettings.sun = settings.sun;
+  if (["loam", "sandy", "clay"].includes(settings.soil)) gardenPlannerSettings.soil = settings.soil;
+  if (["low", "medium", "high"].includes(settings.water)) gardenPlannerSettings.water = settings.water;
+  if (["in-ground", "containers", "mixed"].includes(settings.mode)) gardenPlannerSettings.mode = settings.mode;
+  if (["ignore", "deer-pressure"].includes(settings.deerPressure)) gardenPlannerSettings.deerPressure = settings.deerPressure;
+  if (["ignore", "near-walnut"].includes(settings.walnut)) gardenPlannerSettings.walnut = settings.walnut;
+
+  screenerWatchlistIds = new Set();
+  gardenPlannerQuantities = {};
+  template.plants.forEach((entry) => {
+    const plantId = entry?.id;
+    if (!plantById(plantId)) return;
+    screenerWatchlistIds.add(plantId);
+    gardenPlannerQuantities[plantId] = Math.round(cleanGardenPlannerNumber(entry.quantity, 1, 1, 999));
+  });
+
+  gardenPlannerLayout = {};
+  Object.entries(template.layout ?? {}).forEach(([layoutId, position]) => {
+    const normalizedId = normalizeGardenPlannerLayoutId(layoutId);
+    const cleanPosition = cleanGardenPlannerLayoutPosition(position);
+    if (normalizedId && cleanPosition && gardenPlannerLayoutIdIsActive(normalizedId)) {
+      gardenPlannerLayout[normalizedId] = cleanPosition;
+    }
+  });
+  gardenPlannerSelectedLayoutId = null;
+  gardenPlannerCompareOpen = false;
+  normalizeGardenPlannerQuantities();
+  normalizeGardenPlannerLayout();
+  saveScreenerWatchlist();
+  saveGardenPlannerQuantities();
+  saveGardenPlannerSettings();
+  saveGardenPlannerLayout();
+  return template.title || "garden plan template";
+}
+
 function syncGardenPlannerSettingsFromControls() {
   gardenPlannerSettings = gardenPlannerSettingsFromControls();
   saveGardenPlannerSettings();
@@ -8655,9 +8708,12 @@ function initializeGardenPlanner() {
   loadGardenPlannerQuantities();
   loadGardenPlannerLayout();
   loadGardenPlannerSettings();
+  const appliedTemplateTitle = applyRequestedGardenPlannerTemplate();
   applyGardenPlannerSettingsToControls();
   if (gardenPlannerSettingsStatusEl) {
-    gardenPlannerSettingsStatusEl.textContent = `Using USDA zone ${gardenPlannerSettings.zone.toUpperCase()} with ${formatCompactNumber(gardenPlannerTotalSqFt(), 1)} sq ft of planned bed space.`;
+    gardenPlannerSettingsStatusEl.textContent = appliedTemplateTitle
+      ? `Loaded ${appliedTemplateTitle}. ${gardenPlannerStatusText()}`
+      : gardenPlannerStatusText();
   }
   gardenPlannerSettingsFormEl?.addEventListener("input", (event) => {
     if (event.target === gardenPlannerZipEl) {
@@ -8665,14 +8721,14 @@ function initializeGardenPlanner() {
     }
     syncGardenPlannerSettingsFromControls();
     if (gardenPlannerSettingsStatusEl) {
-      gardenPlannerSettingsStatusEl.textContent = `Using USDA zone ${gardenPlannerSettings.zone.toUpperCase()} with ${formatCompactNumber(gardenPlannerTotalSqFt(), 1)} sq ft of planned bed space.`;
+      gardenPlannerSettingsStatusEl.textContent = gardenPlannerStatusText();
     }
   });
   gardenPlannerSettingsFormEl?.addEventListener("change", () => {
     syncGardenPlannerSettingsFromControls();
     applyGardenPlannerSettingsToControls();
     if (gardenPlannerSettingsStatusEl) {
-      gardenPlannerSettingsStatusEl.textContent = `Using USDA zone ${gardenPlannerSettings.zone.toUpperCase()} with ${formatCompactNumber(gardenPlannerTotalSqFt(), 1)} sq ft of planned bed space.`;
+      gardenPlannerSettingsStatusEl.textContent = gardenPlannerStatusText();
     }
   });
   gardenPlannerSettingsFormEl?.addEventListener("submit", (event) => {

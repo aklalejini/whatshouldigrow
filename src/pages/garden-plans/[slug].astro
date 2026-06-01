@@ -1,0 +1,242 @@
+---
+import AnalyticsEvents from "../../components/AnalyticsEvents.astro";
+import affiliateProducts from "../../data/affiliateProducts.json";
+import plants from "../../data/plants.json";
+import plantMetrics from "../../data/plantMetrics.json";
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  SITE_NAME,
+  SITE_URL,
+  siteUrl
+} from "../../lib/site";
+import {
+  gardenPlanBySlug,
+  gardenPlanItemList,
+  gardenPlanPlannerUrl,
+  gardenPlanPlantEntries,
+  gardenPlanSpaceStats,
+  GARDEN_PLAN_TEMPLATES
+} from "../../lib/gardenPlanTemplates";
+import { isSourcedValue, plantUrl, sentenceCase } from "../../lib/plantUtils";
+import "../../styles/global.css";
+
+export function getStaticPaths() {
+  return GARDEN_PLAN_TEMPLATES.map((template) => ({
+    params: { slug: template.slug },
+    props: { template }
+  }));
+}
+
+function formatNumber(value, digits = 0) {
+  if (!Number.isFinite(value)) return "-";
+  return new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: digits,
+    minimumFractionDigits: 0
+  }).format(value);
+}
+
+function formatRange(min, max, unit, digits = 0) {
+  if (!Number.isFinite(min) && !Number.isFinite(max)) return "-";
+  if (Number.isFinite(min) && Number.isFinite(max) && Math.abs(min - max) < 0.05) return `${formatNumber(min, digits)} ${unit}`;
+  if (!Number.isFinite(min)) return `${formatNumber(max, digits)} ${unit}`;
+  if (!Number.isFinite(max)) return `${formatNumber(min, digits)} ${unit}`;
+  return `${formatNumber(min, digits)}-${formatNumber(max, digits)} ${unit}`;
+}
+
+const { template } = Astro.props;
+const canonicalUrl = siteUrl(template.path);
+const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
+const entries = gardenPlanPlantEntries(template, plants, plantMetrics);
+const stats = gardenPlanSpaceStats(template, plantMetrics);
+const totalPlants = template.plants.reduce((sum, plant) => sum + plant.quantity, 0);
+const products = template.productIds
+  .map((id) => affiliateProducts.find((product) => product.id === id))
+  .filter(Boolean);
+const plannerUrl = gardenPlanPlannerUrl(template);
+const bedSqFt = template.settings.bedLength * template.settings.bedWidth * template.settings.bedCount;
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: SITE_NAME, item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "Garden plans", item: siteUrl("/garden-plans/") },
+    { "@type": "ListItem", position: 3, name: template.title, item: canonicalUrl }
+  ]
+};
+const collectionJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: template.title,
+  description: template.description,
+  url: canonicalUrl,
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: entries.length,
+    itemListElement: gardenPlanItemList(entries, siteUrl)
+  }
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={template.description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={`${template.title} | ${SITE_NAME}`} />
+    <meta property="og:description" content={template.description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${template.title} | ${SITE_NAME}`} />
+    <meta name="twitter:description" content={template.description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,750&family=Inter:wght@400;500;650;750;850&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
+    <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
+    <title>{template.title} | {SITE_NAME}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(collectionJsonLd)}></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <nav class="site-tabs" aria-label="Primary sections">
+        <a class="site-tab" href="/">Plant matcher</a>
+        <a class="site-tab" href="/#screener">Screener</a>
+        <a class="site-tab is-active" aria-current="page" href="/garden-plans/">Garden plans</a>
+        <a class="site-tab" href="/planting-calendar/">Calendar</a>
+        <a class="site-tab" href="/blog/">Guides</a>
+      </nav>
+
+      <article class="hub-page garden-plan-page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Plant by ZIP</a>
+          <span aria-hidden="true">/</span>
+          <a href="/garden-plans/">Garden plans</a>
+          <span aria-hidden="true">/</span>
+          <span>{template.shortTitle}</span>
+        </nav>
+
+        <header class="hub-hero">
+          <div>
+            <p class="eyebrow">{template.eyebrow}</p>
+            <h1>{template.title}</h1>
+            <p>{template.summary}</p>
+            <div class="hub-actions">
+              <a class="plant-page-action is-primary" href={plannerUrl}>Open this plan in Garden Planner</a>
+              <a class="plant-page-action is-secondary" href="/#screener">Customize from the Screener</a>
+            </div>
+          </div>
+          <dl class="hub-stats" aria-label={`${template.title} stats`}>
+            <div><dt>Bed size</dt><dd>{template.settings.bedLength} x {template.settings.bedWidth}</dd></div>
+            <div><dt>Plants</dt><dd>{totalPlants}</dd></div>
+            <div><dt>Space range</dt><dd>{formatRange(stats.minSqFt, stats.maxSqFt, "sq ft", 1)}</dd></div>
+          </dl>
+        </header>
+
+        <section class="hub-section garden-plan-overview" aria-labelledby="plan-overview-title">
+          <div class="hub-section-head">
+            <div>
+              <p class="eyebrow">Plan setup</p>
+              <h2 id="plan-overview-title">What this template assumes</h2>
+            </div>
+            <p>
+              The planner link stores the template locally in your browser so you can change quantities, drag plants, export a bed PDF, or clear it.
+            </p>
+          </div>
+          <div class="garden-plan-facts">
+            <article>
+              <span>Bed footprint</span>
+              <strong>{formatNumber(bedSqFt, 1)} sq ft</strong>
+              <p>{template.settings.bedCount} bed at {template.settings.bedLength} x {template.settings.bedWidth} ft.</p>
+            </article>
+            <article>
+              <span>Site</span>
+              <strong>Zone {template.settings.zone.toUpperCase()}</strong>
+              <p>{sentenceCase(template.settings.sun)} sun, {template.settings.soil} soil, {template.settings.water} water.</p>
+            </article>
+            <article>
+              <span>Estimated output</span>
+              <strong>{stats.sourcedYieldRows ? formatRange(stats.minYield, stats.maxYield, "lb", 1) : "Varies"}</strong>
+              <p>Based on sourced yield rows where available; herbs and flowers may not have pound output.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="hub-section" aria-labelledby="plan-plants-title">
+          <div class="hub-section-head">
+            <div>
+              <p class="eyebrow">Plant list</p>
+              <h2 id="plan-plants-title">Plants in this layout</h2>
+            </div>
+            <p>Quantities are starting points. Use the Garden Planner to adjust spacing, layout, and risk checks.</p>
+          </div>
+          <div class="garden-plan-plant-list">
+            {entries.map(({ plant, metrics, quantity, role }) => (
+              <article>
+                <div>
+                  <span>{role}</span>
+                  <h3><a href={plantUrl(plant)}>{plant.name}</a></h3>
+                  <p>{sentenceCase(plant.type)} / zones {plant.zones[0]}-{plant.zones[1]}</p>
+                </div>
+                <dl>
+                  <div><dt>Qty</dt><dd>{quantity}</dd></div>
+                  <div><dt>Spacing</dt><dd>{metrics.display?.spacing ?? "-"}</dd></div>
+                  <div><dt>Yield</dt><dd>{isSourcedValue(metrics.display?.yieldLbs) ? metrics.display.yieldLbs : "-"}</dd></div>
+                </dl>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {products.length > 0 && (
+          <section class="hub-section hub-resource-box" aria-labelledby="plan-products-title">
+            <div class="hub-section-head">
+              <div>
+                <p class="eyebrow">Useful supplies</p>
+                <h2 id="plan-products-title">Setup items for this plan</h2>
+              </div>
+              <p>Product links may earn a commission and do not affect plant rankings.</p>
+            </div>
+            <div class="hub-resource-grid">
+              {products.map((product) => (
+                <article class="hub-resource-card">
+                  <div>
+                    <span>{product.category} / {product.timing}</span>
+                    <h3>{product.name}</h3>
+                    <p>{product.use}</p>
+                  </div>
+                  <a href={product.affiliateUrl} target="_blank" rel="sponsored noopener noreferrer" data-partner-placement="garden_plan_template">
+                    View
+                  </a>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section class="hub-section hub-crosslinks" aria-labelledby="plan-next-title">
+          <div class="hub-section-head">
+            <div>
+              <p class="eyebrow">Next step</p>
+              <h2 id="plan-next-title">Make it fit your yard</h2>
+            </div>
+            <p>Templates are useful shortcuts, but ZIP, frost window, deer pressure, black walnut, and sun exposure still matter.</p>
+          </div>
+          <div class="home-hub-grid">
+            <a href="/what-to-grow-in-a-4x8-raised-bed/"><span>4x8 raised bed crops</span><strong>Compare compact crops that make sense in a 32 sq ft bed.</strong></a>
+            <a href="/zone-7-vegetables/"><span>Zone 7 vegetables</span><strong>Browse Zone 7 kitchen crops with timing and spacing data.</strong></a>
+            <a href="/deer-resistant-garden-plants/"><span>Deer-resistant plants</span><strong>Start with plants that have better deer browsing cues.</strong></a>
+          </div>
+        </section>
+      </article>
+    </main>
+    <AnalyticsEvents pageType="garden_plan" topic={template.slug} zone={template.settings.zone} />
+  </body>
+</html>

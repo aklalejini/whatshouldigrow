@@ -2,6 +2,7 @@ import { getCollection } from "astro:content";
 import plants from "../data/plants.json";
 import plantMetrics from "../data/plantMetrics.json";
 import plantPhotos from "../data/plantPhotos.json";
+import { GARDEN_PLAN_TEMPLATES } from "../lib/gardenPlanTemplates";
 import { HUB_PAGES, TRUST_PAGES } from "../lib/hubData";
 import { SITE_LASTMOD, siteUrl } from "../lib/site";
 import { goalGroups, typeGroups, zoneGroups } from "../lib/plantDirectory";
@@ -31,6 +32,12 @@ export async function GET() {
       loc: siteUrl(page.path),
       lastmod: SITE_LASTMOD,
       priority: "0.82"
+    })),
+    { loc: siteUrl("/garden-plans/"), lastmod: SITE_LASTMOD, priority: "0.84" },
+    ...GARDEN_PLAN_TEMPLATES.map((template) => ({
+      loc: siteUrl(template.path),
+      lastmod: SITE_LASTMOD,
+      priority: "0.83"
     })),
     { loc: siteUrl("/plants/"), lastmod: SITE_LASTMOD, priority: "0.86" },
     ...goalGroups(plants).map((group) => ({

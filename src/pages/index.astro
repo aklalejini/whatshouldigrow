@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import AnalyticsEvents from "../components/AnalyticsEvents.astro";
 import plants from "../data/plants.json";
 import plantMetrics from "../data/plantMetrics.json";
+import { gardenPlanInternalLinks, gardenPlanTemplatePayloads } from "../lib/gardenPlanTemplates";
 import { hubInternalLinks } from "../lib/hubData";
 import {
   BLOG_IMAGE_WIDTHS,
@@ -22,6 +23,8 @@ import "../styles/global.css";
 
 const plantCount = Array.isArray(plants) ? plants.length : 0;
 const hubLinks = hubInternalLinks();
+const gardenPlanLinks = gardenPlanInternalLinks();
+const gardenPlanTemplates = gardenPlanTemplatePayloads();
 const zoneGuideLinks = featuredZoneInternalLinks();
 const plantMetricEntries = Object.values(plantMetrics);
 const poundYieldMetricCount = plantMetricEntries.filter((metric) => metric.yieldLbsMin !== null && metric.yieldLbsMax !== null).length;
@@ -419,6 +422,18 @@ const webAppJsonLd = {
         </div>
         <div class="home-hub-grid">
           {zoneGuideLinks.map((link) => (
+            <a href={link.href}>
+              <span>{link.title}</span>
+              <strong>{link.description}</strong>
+            </a>
+          ))}
+        </div>
+        <div class="home-hub-grid">
+          <a href="/garden-plans/">
+            <span>Garden plan templates</span>
+            <strong>Copy practical raised-bed and pollinator layouts into the Garden Planner, then adjust quantities and spacing.</strong>
+          </a>
+          {gardenPlanLinks.slice(0, 5).map((link) => (
             <a href={link.href}>
               <span>{link.title}</span>
               <strong>{link.description}</strong>
@@ -1537,6 +1552,9 @@ const webAppJsonLd = {
     </main>
 
     <AnalyticsEvents pageType="home" />
-    <script type="module" src="/js/plantbyzip-home.js?v=20260531-bed-kit-card"></script>
+    <script define:vars={{ gardenPlanTemplates }}>
+      window.plantByZipGardenTemplates = gardenPlanTemplates;
+    </script>
+    <script type="module" src="/js/plantbyzip-home.js?v=20260601-seo-garden-plans"></script>
   </body>
 </html>
