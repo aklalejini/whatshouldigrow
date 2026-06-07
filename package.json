@@ -7,6 +7,7 @@
     "dev": "astro dev --host 127.0.0.1",
     "data:build": "node scripts/build_public_data.mjs",
     "images:optimize": "node scripts/optimize_images.mjs",
+    "photos:audit": "node scripts/audit_plant_photo_applicability.mjs",
     "photos:dedupe": "node scripts/dedupe_plant_photo_metadata.mjs",
     "validate": "node scripts/validate_site_data.mjs",
     "build": "npm run data:build && astro build",

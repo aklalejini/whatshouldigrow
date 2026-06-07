@@ -54,17 +54,25 @@ const metricSources = (metrics.sourceKeys ?? [])
 const artEntry = plantArtEntry(plant, plantArtEntries);
 const artId = artEntry?.id ?? "generic-fruit";
 const kind = plantKind(plant);
-const hasImage = Boolean(artEntry?.image);
-const photoStyle = plantPhotoStyle(artEntry);
-const canonicalUrl = siteUrl(plantUrl(plant));
-const socialImageUrl = hasImage ? siteUrl(`/plant-art/${artEntry.image}`) : siteUrl(DEFAULT_SOCIAL_IMAGE);
 const plantPhotoEntry = plantPhotoEntries.find((entry) => entry.id === plant.id);
+const hasHeroPhoto = Boolean(plantPhotoEntry?.primary?.src);
+const hasFallbackArt = !hasHeroPhoto && Boolean(artEntry?.image);
+const photoStyle = hasHeroPhoto
+  ? [
+      `--plant-photo: url('${plantPhotoEntry.primary.src.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}')`
+    ].join("; ")
+  : plantPhotoStyle(artEntry);
+const heroPhotoLabel = hasHeroPhoto
+  ? (plantPhotoEntry.primary.alt ?? `${plant.name} plant photo`)
+  : `${plant.name} botanical plate`;
+const canonicalUrl = siteUrl(plantUrl(plant));
+const socialImageUrl = hasHeroPhoto ? siteUrl(plantPhotoEntry.primary.src) : siteUrl(DEFAULT_SOCIAL_IMAGE);
 const plantPhotoDetails = plantPhotoEntry?.details ?? [];
 const plantPhotoSources = plantPhotoEntry
   ? [plantPhotoEntry.primary, ...plantPhotoDetails]
       .filter((photo, index, list) => photo?.sourceUrl && list.findIndex((candidate) => candidate.sourceUrl === photo.sourceUrl) === index)
   : [];
-const plantPhotoImageUrl = plantPhotoEntry?.primary?.src ? siteUrl(plantPhotoEntry.primary.src) : socialImageUrl;
+const plantPhotoImageUrl = socialImageUrl;
 const metricDescription = metrics.yieldLbsMin !== null && metricDisplay.yieldLbs
   ? ` Planning metrics include ${metricDisplay.yieldLbs}, ${metricDisplay.spacing}, and ${metricDisplay.firstOutput}.`
   : "";
@@ -426,11 +434,11 @@ const breadcrumbJsonLd = {
 
         <header class="plant-page-hero">
           <figure
-            class={`plant-visual plant-page-visual ${kind} ${artId} ${hasImage ? "photo-plate" : ""}`}
-            aria-label={`${plant.name} botanical plate`}
+            class={`plant-visual plant-page-visual ${kind} ${artId} ${hasHeroPhoto ? "real-photo" : hasFallbackArt ? "photo-plate" : ""}`}
+            aria-label={heroPhotoLabel}
             style={photoStyle}
           >
-            {!hasImage && <span class="plant-visual-icon"></span>}
+            {!hasHeroPhoto && !hasFallbackArt && <span class="plant-visual-icon"></span>}
           </figure>
           <div class="plant-page-copy">
             <p class="eyebrow">{plant.type}</p>

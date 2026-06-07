@@ -373,17 +373,17 @@
   {
     "id": "apricot-sprite-agastache",
     "primary": {
-      "src": "/plant-photos/apricot-sprite-agastache/primary.jpg",
+      "src": "/plant-photos/agastache-blue-fortune/primary.jpg",
       "label": "Plant photo",
-      "alt": "Apricot branch showing leaves and orange fruit.",
-      "caption": "Apricot branch showing leaves and fruit.",
-      "credit": "Harry Van den Bulck / Wikimedia Commons",
+      "alt": "Apricot Sprite agastache shown with representative agastache foliage and flower spikes.",
+      "caption": "Agastache foliage and flower spikes as a representative reference for Apricot Sprite.",
+      "credit": "Chris Light / Wikimedia Commons",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APeach%20tree%20branch%20with%20fruits.jpg",
-      "bytes": 2172641
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAnise%20Hyssop%20P7010483.jpg",
+      "bytes": 491059
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "arbequina-olive",
@@ -1603,17 +1603,17 @@
   {
     "id": "blue-wonder-toad-lily",
     "primary": {
-      "src": "/plant-photos/hosta-blue-angel/primary.jpg",
+      "src": "/plant-photos/toad-lily/primary.jpg",
       "label": "Plant photo",
-      "alt": "Blue Wonder toad lily plant showing foliage and plant structure.",
-      "caption": "Blue Wonder toad lily uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "F. D. Richards from Clinton, MI / Wikimedia Commons",
-      "license": "CC BY-SA 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AHosta%20'Wide%20Brim'%205%202021%20Plantain%20Lily-%20(51185761581).jpg",
-      "bytes": 575476
+      "alt": "Blue Wonder toad lily shown with representative toad lily flowers and foliage.",
+      "caption": "Toad lily flowers and foliage as a representative reference for Blue Wonder.",
+      "credit": "小石川人晃",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tricyrtis_hirta_(at_Mito_Botanical_Garden,_Ibaraki,_Japan)_02.jpg",
+      "bytes": 363808
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "bluecrop-blueberry",
@@ -2439,32 +2439,32 @@
   {
     "id": "cherry-brandy-rudbeckia",
     "primary": {
-      "src": "/plant-photos/balaton-cherry/primary.jpg",
+      "src": "/plant-photos/black-eyed-susan/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cherry branch showing leaves and fruit.",
-      "caption": "Cherry branch showing leaves and fruit.",
-      "credit": "D-Kuru / Wikimedia Commons",
-      "license": "CC BY-SA 3.0 at",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFlower%20of%20sweet%20cherry%20after%20sherry%20grew%20out%20PNr%C2%B00023.jpg",
-      "bytes": 382513
+      "alt": "Cherry Brandy rudbeckia shown with representative rudbeckia flowers and foliage.",
+      "caption": "Rudbeckia flowers and leafy growth as a representative reference for Cherry Brandy.",
+      "credit": "AnRo0002 / Wikimedia Commons",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A20140827Rudbeckia%20hirta2.jpg",
+      "bytes": 434789
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "cherry-laurel-otto-luyken",
     "primary": {
-      "src": "/plant-photos/balaton-cherry/primary.jpg",
+      "src": "/plant-photos/cherry-laurel-otto-luyken/primary.jpg",
       "label": "Plant photo",
-      "alt": "Sweet cherry branch showing leaves and fruit.",
-      "caption": "Sweet cherry branch showing leaves and fruit.",
-      "credit": "D-Kuru / Wikimedia Commons",
-      "license": "CC BY-SA 3.0 at",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFlower%20of%20sweet%20cherry%20after%20sherry%20grew%20out%20PNr%C2%B00023.jpg",
-      "bytes": 382513
+      "alt": "Cherry laurel shrub showing glossy evergreen leaves and white flower clusters.",
+      "caption": "Cherry laurel showing glossy evergreen leaves and spring flower clusters.",
+      "credit": "Famartin",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2024-04-25_15_11_09_Laurel_Cherry_leaves_and_flowers_along_Willis_Drive_in_the_Mountainview_section_of_Ewing_Township,_Mercer_County,_New_Jersey.jpg",
+      "bytes": 482930
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "chester-blackberry",
@@ -2634,17 +2634,17 @@
   {
     "id": "chinese-hawthorn",
     "primary": {
-      "src": "/plant-photos/20th-century-asian-pear/primary.jpg",
+      "src": "/plant-photos/chinese-hawthorn/primary.jpg",
       "label": "Plant photo",
-      "alt": "Chinese hawthorn tree showing foliage and plant structure.",
-      "caption": "Chinese hawthorn uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Mleprince / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AComice%20plantation%20thomas%20le%20prince.jpg",
-      "bytes": 1146980
+      "alt": "Chinese hawthorn showing small tree habit and foliage.",
+      "caption": "Chinese hawthorn showing small tree habit and foliage.",
+      "credit": "Lokal_Profil",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Crataegus_pinnatifida,_RBGE_2008.jpg",
+      "bytes": 709835
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "chinese-multicolor-spinach",
@@ -3260,17 +3260,17 @@
   {
     "id": "crimson-fans-mukdenia",
     "primary": {
-      "src": "/plant-photos/hosta-blue-angel/primary.jpg",
+      "src": "/plant-photos/crimson-fans-mukdenia/primary.jpg",
       "label": "Plant photo",
-      "alt": "Crimson Fans mukdenia plant showing foliage and plant structure.",
-      "caption": "Crimson Fans mukdenia uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "F. D. Richards from Clinton, MI / Wikimedia Commons",
-      "license": "CC BY-SA 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AHosta%20'Wide%20Brim'%205%202021%20Plantain%20Lily-%20(51185761581).jpg",
-      "bytes": 575476
+      "alt": "Crimson Fans mukdenia showing spring flower clusters above leafy growth.",
+      "caption": "Mukdenia 'Karasuba' showing spring flowers and foliage as a representative reference for Crimson Fans.",
+      "credit": "Agnieszka Kwiecień, Nova",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mukdenia_rossii_%27Karasuba%27_Mukdenia_Rossa_2022-05-03_03.jpg",
+      "bytes": 300260
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "crimson-star-goji",
@@ -4160,17 +4160,17 @@
   {
     "id": "eryngium-yuccifolium",
     "primary": {
-      "src": "/plant-photos/aromatic-aster/primary.jpg",
+      "src": "/plant-photos/eryngium-yuccifolium/primary.jpg",
       "label": "Plant photo",
-      "alt": "Aromatic aster plant showing purple flowers and leafy stems.",
-      "caption": "Aromatic aster plant showing purple flowers and leafy stems.",
-      "credit": "Dr. Thomas G. Barnes, U.S. Fish and Wildlife Service / Wikimedia Commons",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAromatic%20aster.jpg",
-      "bytes": 442606
+      "alt": "Rattlesnake master showing upright stems, spiky foliage, and round flower heads.",
+      "caption": "Rattlesnake master showing upright stems, spiky leaves, and rounded flower heads.",
+      "credit": "Sesamehoneytart",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Eryngium_yuccifolium_rattlesnake_master.JPG",
+      "bytes": 550180
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "eureka-lemon",
@@ -4696,17 +4696,17 @@
   {
     "id": "gem-box-inkberry",
     "primary": {
-      "src": "/plant-photos/american-holly/primary.jpg",
+      "src": "/plant-photos/inkberry-shamrock/primary.jpg",
       "label": "Plant photo",
-      "alt": "Holly branch showing evergreen leaves and berries.",
-      "caption": "Holly branch showing leaves and berries.",
-      "credit": "Famartin / Wikimedia Commons",
+      "alt": "Gem Box inkberry shown with representative inkberry evergreen foliage and compact habit.",
+      "caption": "Inkberry evergreen foliage and compact shrub habit as a representative reference for Gem Box.",
+      "credit": "Michael Rivera",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2023-03-30_12_57_04_American_Holly_leaves_and_berries_along_Barbara_Lane_in_the_Mountainview_section_of_Ewing_Township,_Mercer_County,_New_Jersey.jpg",
-      "bytes": 689113
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Coastal_Georgia_Botanical_Gardens,_Inkberry_ilex_glabra_%27Shamrock%27.jpg",
+      "bytes": 722241
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "genovese-basil",
@@ -5776,17 +5776,17 @@
   {
     "id": "hyssop-anise",
     "primary": {
-      "src": "/plant-photos/hyssop-anise/primary.jpg",
+      "src": "/plant-photos/agastache-blue-fortune/primary.jpg",
       "label": "Plant photo",
-      "alt": "Lavender plant showing silver foliage and purple flower spikes.",
-      "caption": "Lavender plant showing silver foliage and purple flower spikes.",
-      "credit": "Kate Branch / Wikimedia Commons",
+      "alt": "Korean mint shown with representative agastache foliage and flower spikes.",
+      "caption": "Agastache foliage and flower spikes as a representative reference for Korean mint.",
+      "credit": "Chris Light / Wikimedia Commons",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAustralian%20Lavender.jpg",
-      "bytes": 314969
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAnise%20Hyssop%20P7010483.jpg",
+      "bytes": 491059
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "ichang-lemon",
@@ -5911,17 +5911,17 @@
   {
     "id": "inkberry-shamrock",
     "primary": {
-      "src": "/plant-photos/boxwood-green-mountain/primary.jpg",
+      "src": "/plant-photos/inkberry-shamrock/primary.jpg",
       "label": "Plant photo",
-      "alt": "Boxwood shrub showing dense evergreen leaves and clipped shrub habit.",
-      "caption": "Boxwood shrub showing dense evergreen leaves and clipped shrub habit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
+      "alt": "Shamrock inkberry shrub showing evergreen leaves and compact shrub habit.",
+      "caption": "Shamrock inkberry showing evergreen foliage and compact shrub habit.",
+      "credit": "Michael Rivera",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Buxus_sempervirens-Sunny_brook-1-yercaud-salem-India.JPG",
-      "bytes": 392671
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Coastal_Georgia_Botanical_Gardens,_Inkberry_ilex_glabra_%27Shamrock%27.jpg",
+      "bytes": 722241
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "inland-sea-oats",
@@ -5971,17 +5971,17 @@
   {
     "id": "iris-cristata",
     "primary": {
-      "src": "/plant-photos/hyssop-anise/primary.jpg",
+      "src": "/plant-photos/iris-virginica/primary.jpg",
       "label": "Plant photo",
-      "alt": "Lavender plant showing silver foliage and purple flower spikes.",
-      "caption": "Lavender plant showing silver foliage and purple flower spikes.",
-      "credit": "Kate Branch / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAustralian%20Lavender.jpg",
-      "bytes": 314969
+      "alt": "Dwarf crested iris shown with representative iris foliage and flowers.",
+      "caption": "Iris flowers and sword-like foliage as a representative reference for dwarf crested iris.",
+      "credit": "James St. John / Wikimedia Commons",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Iris_virginica_(Virginia_iris)_(Newark,_Ohio,_USA)_16.jpg",
+      "bytes": 461503
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "iris-virginica",
@@ -6766,17 +6766,17 @@
   {
     "id": "kleims-hardy-gardenia",
     "primary": {
-      "src": "/plant-photos/arbequina-olive/primary.jpg",
+      "src": "/plant-photos/august-beauty-gardenia/primary.jpg",
       "label": "Plant photo",
-      "alt": "Kleim's Hardy gardenia shrub showing foliage and plant structure.",
-      "caption": "Kleim's Hardy gardenia uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Manfred Werner - Tsui / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlumeng%C3%A4rten%20Hirschstetten%20Wien%202014%20Garten%20der%20Provence.jpg",
-      "bytes": 762069
+      "alt": "Kleim's Hardy gardenia shown with representative gardenia foliage and flowers.",
+      "caption": "Gardenia foliage and flowers as a representative reference for Kleim's Hardy.",
+      "credit": "Forest & Kim Starr",
+      "license": "CC BY 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr_080117-1709_Gardenia_augusta.jpg",
+      "bytes": 315779
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "kobold-liatris",
@@ -7021,17 +7021,17 @@
   {
     "id": "lavender-phenomenal",
     "primary": {
-      "src": "/plant-photos/aromatic-aster/primary.jpg",
+      "src": "/plant-photos/lavender-phenomenal/primary.jpg",
       "label": "Plant photo",
-      "alt": "Aromatic aster plant showing purple flowers and leafy stems.",
-      "caption": "Aromatic aster plant showing purple flowers and leafy stems.",
-      "credit": "Dr. Thomas G. Barnes, U.S. Fish and Wildlife Service / Wikimedia Commons",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAromatic%20aster.jpg",
-      "bytes": 442606
+      "alt": "Phenomenal lavandin shown with gray-green foliage and purple flower spikes.",
+      "caption": "Lavender plant showing gray-green foliage and purple flower spikes.",
+      "credit": "Kate Branch",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Australian_Lavender.jpg",
+      "bytes": 198639
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "leek-american-flag",
@@ -7276,32 +7276,32 @@
   {
     "id": "little-lemon-goldenrod",
     "primary": {
-      "src": "/plant-photos/eureka-lemon/primary.jpg",
+      "src": "/plant-photos/fireworks-goldenrod/primary.jpg",
       "label": "Plant photo",
-      "alt": "Citrus branch showing evergreen leaves and yellow fruit.",
-      "caption": "Citrus branch showing evergreen leaves and fruit.",
-      "credit": "Derk29 / Wikimedia Commons",
+      "alt": "Little Lemon goldenrod shown with representative goldenrod flower sprays and leaves.",
+      "caption": "Goldenrod yellow flower sprays and leaves as a representative reference for Little Lemon.",
+      "credit": "Daniel McClosky / Wikimedia Commons",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APromise%20in%20Green%20(lemon).jpg",
-      "bytes": 900455
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ASolidago%20canadensis%20var.%20hargeri%20section%20of%20capitulescence.jpg",
+      "bytes": 431919
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "little-lime-hydrangea",
     "primary": {
-      "src": "/plant-photos/eureka-lemon/primary.jpg",
+      "src": "/plant-photos/panicle-hydrangea/primary.jpg",
       "label": "Plant photo",
-      "alt": "Citrus branch showing evergreen leaves and yellow fruit.",
-      "caption": "Citrus branch showing evergreen leaves and fruit.",
-      "credit": "Derk29 / Wikimedia Commons",
+      "alt": "Little Lime panicle hydrangea shown with representative panicle hydrangea flowers and leaves.",
+      "caption": "Panicle hydrangea flowers and foliage as a representative reference for Little Lime.",
+      "credit": "Dietmar Rabich",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APromise%20in%20Green%20(lemon).jpg",
-      "bytes": 900455
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rispen-Hortensie_--_2021_--_3939.jpg",
+      "bytes": 281391
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "little-marvel-pea",
@@ -7411,17 +7411,17 @@
   {
     "id": "mache-corn-salad",
     "primary": {
-      "src": "/plant-photos/glass-gem-corn/primary.jpg",
+      "src": "/plant-photos/mache-corn-salad/primary.jpg",
       "label": "Plant photo",
-      "alt": "Corn plant showing leaves, tassels, and ears.",
-      "caption": "Corn plants showing leaves, stalks, and ears.",
-      "credit": "Dinesh Valke from Thane, India / Wikimedia Commons",
-      "license": "CC BY-SA 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABhutta%20(Hindi-%20%E0%A4%AD%E0%A5%81%E0%A4%9F%E0%A5%8D%E0%A4%9F%E0%A4%BE)%20(4666717168).jpg",
-      "bytes": 617448
+      "alt": "Mache corn salad plant showing low rosette leaves in soil.",
+      "caption": "Mache corn salad showing low rosette growth before harvest.",
+      "credit": "Corn salad, spring, close up",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Corn_salad,_spring,_close_up.JPG",
+      "bytes": 239625
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "madison-peach",
@@ -7696,17 +7696,17 @@
   {
     "id": "mayapple",
     "primary": {
-      "src": "/plant-photos/anna-apple/primary.jpg",
+      "src": "/plant-photos/mayapple/primary.jpg",
       "label": "Plant photo",
-      "alt": "Apple branch showing leaves and fruit.",
-      "caption": "Apple branch showing leaves and fruit.",
-      "credit": "User:Doncsecz / Wikimedia Commons",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AJablan%20na%20Verici.JPG",
-      "bytes": 1716835
+      "alt": "Mayapple plant showing umbrella-like leaves above low woodland growth.",
+      "caption": "Mayapple showing umbrella-like leaves and low woodland habit.",
+      "credit": "Photo by and (c)2016 Derek Ramsey ( Ram-Man )",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mayapple_Podophyllum_peltatum_Top.JPG",
+      "bytes": 384841
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "mayhaw-superberry",
@@ -8157,17 +8157,17 @@
   {
     "id": "munstead-lavender",
     "primary": {
-      "src": "/plant-photos/hyssop-anise/primary.jpg",
+      "src": "/plant-photos/lavender-phenomenal/primary.jpg",
       "label": "Plant photo",
-      "alt": "Lavender plant showing silver foliage and purple flower spikes.",
-      "caption": "Lavender plant showing silver foliage and purple flower spikes.",
-      "credit": "Kate Branch / Wikimedia Commons",
+      "alt": "Munstead lavender shown with representative lavender foliage and purple flower spikes.",
+      "caption": "Lavender foliage and flower spikes as a representative reference for Munstead.",
+      "credit": "Kate Branch",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAustralian%20Lavender.jpg",
-      "bytes": 314969
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Australian_Lavender.jpg",
+      "bytes": 198639
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "music-garlic",
@@ -8727,17 +8727,17 @@
   {
     "id": "orangeglo-watermelon",
     "primary": {
-      "src": "/plant-photos/eureka-lemon/primary.jpg",
+      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Citrus branch showing evergreen leaves and yellow fruit.",
-      "caption": "Citrus branch showing evergreen leaves and fruit.",
-      "credit": "Derk29 / Wikimedia Commons",
+      "alt": "Orangeglo watermelon shown with representative watermelon vine foliage and fruit.",
+      "caption": "Watermelon vine showing leaves and fruit as a representative reference for Orangeglo.",
+      "credit": "Famartin / Wikimedia Commons",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APromise%20in%20Green%20(lemon).jpg",
-      "bytes": 900455
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A2023-09-17%2016%2015%2000%20An%20overgrown%20watermelon%20vine%20growing%20out%20of%20the%20crack%20in%20a%20concrete%20patio%20along%20Mercer%20County%20Route%20526%20(Robbinsville-Edinburg%20Road)%20in%20Robbinsville%20Township%2C%20Mercer%20County%2C%20New%20Jersey.jpg",
+      "bytes": 1358314
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "oregano-greek",
@@ -8802,17 +8802,17 @@
   {
     "id": "osmanthus-fortunei",
     "primary": {
-      "src": "/plant-photos/arbequina-olive/primary.jpg",
+      "src": "/plant-photos/fragrant-tea-olive/primary.jpg",
       "label": "Plant photo",
-      "alt": "Olive branch showing narrow leaves and olives.",
-      "caption": "Olive branch showing narrow leaves and olives.",
-      "credit": "Manfred Werner - Tsui / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlumeng%C3%A4rten%20Hirschstetten%20Wien%202014%20Garten%20der%20Provence.jpg",
-      "bytes": 762069
+      "alt": "Fortune tea olive shown with representative osmanthus foliage and flowers.",
+      "caption": "Osmanthus foliage and flowers as a representative reference for Fortune tea olive.",
+      "credit": "Krzysztof Golik",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Osmanthus_fragrans_in_Auckland_Botanic_Gardens.jpg",
+      "bytes": 385495
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "ouachita-blackberry",
@@ -9698,17 +9698,17 @@
   {
     "id": "raspberry-wine-bee-balm",
     "primary": {
-      "src": "/plant-photos/fall-gold-raspberry/primary.jpg",
+      "src": "/plant-photos/balmy-purple-bee-balm/primary.jpg",
       "label": "Plant photo",
-      "alt": "Raspberry cane with leaves and ripening berries.",
-      "caption": "Raspberry cane with leaves and ripening fruit.",
-      "credit": "AnRo0002 / Wikimedia Commons",
-      "license": "CC0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A20130710Rubus%20idaeus3.jpg",
-      "bytes": 364610
+      "alt": "Raspberry Wine bee balm shown with representative bee balm flowers and leafy stems.",
+      "caption": "Bee balm flowers and leafy stems as a representative reference for Raspberry Wine.",
+      "credit": "Great Smoky Mountains National Park from Gatlinburg, TN / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AMonarda%20didyma%20(39371530400).jpg",
+      "bytes": 140029
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "rattlesnake-pole-bean",
@@ -11614,17 +11614,17 @@
   {
     "id": "sunflower-pawpaw",
     "primary": {
-      "src": "/plant-photos/helianthus-lemon-queen/primary.jpg",
+      "src": "/plant-photos/mango-pawpaw/primary.jpg",
       "label": "Plant photo",
-      "alt": "Sunflower plants showing tall stems, broad leaves, and blooms.",
-      "caption": "Sunflower plants showing tall stems, broad leaves, and blooms.",
-      "credit": "Famartin / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A2023-07-27%2018%2027%2057%20Sunflowers%20blooming%20along%20Holder%20Drive%20in%20the%20Mountainview%20section%20of%20Ewing%20Township%2C%20Mercer%20County%2C%20New%20Jersey.jpg",
-      "bytes": 788598
+      "alt": "Sunflower pawpaw shown with representative pawpaw leaves and fruit.",
+      "caption": "Pawpaw leaves and fruit as a representative reference for Sunflower pawpaw.",
+      "credit": "Scott Bauer, USDA ARS / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Asimina_triloba3.jpg",
+      "bytes": 1947609
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "sungold-tomato",
@@ -13084,17 +13084,17 @@
   {
     "id": "yellow-pear-tomato",
     "primary": {
-      "src": "/plant-photos/bartlett-pear/primary.jpg",
+      "src": "/plant-photos/sungold-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pear fruit hanging from a leafy branch.",
-      "caption": "Pear fruit held on a living branch with leaves.",
-      "credit": "Victor M. Vicente Selvas / Wikimedia Commons",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pyrus_communis_cvar._Max_red_Barlett_21_juliol_06_001.jpg",
-      "bytes": 2403063
+      "alt": "Yellow Pear tomato shown with representative tomato foliage and fruit clusters.",
+      "caption": "Tomato leaves, stems, and fruit clusters as a representative reference for Yellow Pear.",
+      "credit": "Joanna Boisse / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAtlas%20roslin%20pl%20Pomidor%20zwyczajny%2010793%207349.jpg",
+      "bytes": 594426
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "yellow-straightneck-squash",
@@ -13204,17 +13204,17 @@
   {
     "id": "zinnia-queen-lime",
     "primary": {
-      "src": "/plant-photos/eureka-lemon/primary.jpg",
+      "src": "/plant-photos/benary-zinnia/primary.jpg",
       "label": "Plant photo",
-      "alt": "Citrus branch showing evergreen leaves and yellow fruit.",
-      "caption": "Citrus branch showing evergreen leaves and fruit.",
-      "credit": "Derk29 / Wikimedia Commons",
+      "alt": "Queen Lime zinnia shown with representative zinnia flowers and foliage.",
+      "caption": "Zinnia flowers, stems, and leaves as a representative reference for Queen Lime.",
+      "credit": "Jeevan Jose, Kerala, India / Wikimedia Commons",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APromise%20in%20Green%20(lemon).jpg",
-      "bytes": 900455
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AZinnia%20elegans%20at%20Kadavoor.jpg",
+      "bytes": 256735
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
   },
   {
     "id": "zinnia-state-fair",
