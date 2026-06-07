@@ -5,6 +5,7 @@ import plants from "../data/plants.json";
 import plantMetrics from "../data/plantMetrics.json";
 import { gardenPlanInternalLinks, gardenPlanTemplatePayloads } from "../lib/gardenPlanTemplates";
 import { hubInternalLinks } from "../lib/hubData";
+import { toolInternalLinks } from "../lib/toolData";
 import {
   BLOG_IMAGE_WIDTHS,
   MAP_IMAGE_WIDTHS,
@@ -26,6 +27,7 @@ const hubLinks = hubInternalLinks();
 const gardenPlanLinks = gardenPlanInternalLinks();
 const gardenPlanTemplates = gardenPlanTemplatePayloads();
 const zoneGuideLinks = featuredZoneInternalLinks();
+const toolLinks = toolInternalLinks();
 const plantMetricEntries = Object.values(plantMetrics);
 const poundYieldMetricCount = plantMetricEntries.filter((metric) => metric.yieldLbsMin !== null && metric.yieldLbsMax !== null).length;
 const blogEntries = (await getCollection("blog")).sort(
@@ -422,6 +424,18 @@ const webAppJsonLd = {
         </div>
         <div class="home-hub-grid">
           {zoneGuideLinks.map((link) => (
+            <a href={link.href}>
+              <span>{link.title}</span>
+              <strong>{link.description}</strong>
+            </a>
+          ))}
+        </div>
+        <div class="home-hub-grid">
+          <a href="/tools/">
+            <span>Gardening calculators and checkers</span>
+            <strong>Use quick tools for this-week planting, pest damage, companion checks, containers, and drip irrigation.</strong>
+          </a>
+          {toolLinks.slice(0, 5).map((link) => (
             <a href={link.href}>
               <span>{link.title}</span>
               <strong>{link.description}</strong>

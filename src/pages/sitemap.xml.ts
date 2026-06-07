@@ -5,6 +5,7 @@ import plantPhotos from "../data/plantPhotos.json";
 import { GARDEN_PLAN_TEMPLATES } from "../lib/gardenPlanTemplates";
 import { HUB_PAGES, TRUST_PAGES } from "../lib/hubData";
 import { SITE_LASTMOD, siteUrl } from "../lib/site";
+import { TOOL_PAGES } from "../lib/toolData";
 import { goalGroups, typeGroups, zoneGroups } from "../lib/plantDirectory";
 import { plantUrl } from "../lib/plantUtils";
 import { ZONE_PAGE_TARGETS } from "../lib/zonePageData";
@@ -38,6 +39,12 @@ export async function GET() {
       loc: siteUrl(template.path),
       lastmod: SITE_LASTMOD,
       priority: "0.83"
+    })),
+    { loc: siteUrl("/tools/"), lastmod: SITE_LASTMOD, priority: "0.86" },
+    ...TOOL_PAGES.map((tool) => ({
+      loc: siteUrl(tool.path),
+      lastmod: SITE_LASTMOD,
+      priority: tool.slug === "what-to-plant-this-week" ? "0.9" : "0.84"
     })),
     { loc: siteUrl("/plants/"), lastmod: SITE_LASTMOD, priority: "0.86" },
     ...goalGroups(plants).map((group) => ({

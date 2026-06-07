@@ -228,6 +228,120 @@ export const HUB_PAGES = [
     ctaHref: "/",
     filterLabel: "Edible structure profiles",
     match: (plant) => plant.goals.includes("fruit") && (/shrub|cane|vine|tree/i.test(plant.type) || plant.goals.includes("privacy-screening"))
+  },
+  {
+    slug: "deer-resistant-shade-plants",
+    path: "/deer-resistant-shade-plants/",
+    shortTitle: "Deer-resistant shade plants",
+    eyebrow: "Shade and browse pressure",
+    title: "Deer-Resistant Shade Plants",
+    description: "Browse shade and part-sun plants with better deer-resistance cues for yards where browse pressure and lower light overlap.",
+    summary: "This page combines two common constraints: deer pressure and shade. No plant is deer proof, but these records are better starting points than tender favorites.",
+    ctaLabel: "Open this screen",
+    ctaHref: "/?ssun=shade&sdeer=better#screener",
+    filterLabel: "Shade plants with better deer cues",
+    match: (plant, metrics = {}) => (plant.sun.includes("shade") || plant.sun.includes("partial"))
+      && ["rarely-damaged", "seldom-damaged"].includes(metrics.deerResistance)
+  },
+  {
+    slug: "deer-resistant-pollinator-plants",
+    path: "/deer-resistant-pollinator-plants/",
+    shortTitle: "Deer-resistant pollinators",
+    eyebrow: "Pollinators plus browse pressure",
+    title: "Deer-Resistant Pollinator Plants",
+    description: "Find pollinator and wildlife plants with better deer-resistance cues for sunny or mixed-light habitat beds.",
+    summary: "Use this collection when you want flowers and habitat value but deer pressure is part of the site reality.",
+    ctaLabel: "Open deer pollinator screen",
+    ctaHref: "/?sgoal=pollinators-wildlife&sdeer=better#screener",
+    filterLabel: "Pollinator plants with better deer cues",
+    match: (plant, metrics = {}) => (plant.goals.includes("pollinators-wildlife") || hasNativeCue(plant))
+      && ["rarely-damaged", "seldom-damaged"].includes(metrics.deerResistance)
+  },
+  {
+    slug: "black-walnut-tolerant-shade-plants",
+    path: "/black-walnut-tolerant-shade-plants/",
+    shortTitle: "Walnut-tolerant shade plants",
+    eyebrow: "Walnut and lower light",
+    title: "Black Walnut Tolerant Shade Plants",
+    description: "Browse plants with black-walnut tolerance cues that also tolerate shade or part sun.",
+    summary: "Use this list for the hard planting problem under or near walnut canopy: juglone cue plus lower-light tolerance.",
+    ctaLabel: "Open walnut shade screen",
+    ctaHref: "/?ssun=shade&sjuglone=tolerant#screener",
+    filterLabel: "Walnut-tolerant shade profiles",
+    match: (plant, metrics = {}) => metrics.jugloneTolerance === "tolerant"
+      && (plant.sun.includes("shade") || plant.sun.includes("partial"))
+  },
+  {
+    slug: "container-vegetables",
+    path: "/container-vegetables/",
+    shortTitle: "Container vegetables",
+    eyebrow: "Patio food crops",
+    title: "Container Vegetables and Herbs",
+    description: "Compare vegetables and herbs with good or workable container cues, including pot size, timing, spacing, and output data.",
+    summary: "This is the crawlable companion to the Container Calculator: a shortlist of edible plants that can make sense in pots, grow bags, and patio containers.",
+    ctaLabel: "Open container calculator",
+    ctaHref: "/tools/container-garden-calculator/",
+    filterLabel: "Container edible profiles",
+    match: (plant, metrics = {}) => {
+      const minGallons = Number(metrics.containerMinGallons);
+      return plant.goals.includes("vegetables-herbs")
+        && (["good", "workable"].includes(metrics.containerSuitability)
+          || (Number.isFinite(minGallons) && minGallons > 0 && minGallons <= 10));
+    }
+  },
+  {
+    slug: "full-sun-clay-zone-7-plants",
+    path: "/full-sun-clay-zone-7-plants/",
+    shortTitle: "Zone 7 sun clay plants",
+    eyebrow: "Zone 7 tough site",
+    title: "Zone 7 Plants for Full Sun and Clay Soil",
+    description: "Browse Zone 7 plant profiles that combine full-sun tolerance with clay-soil fit.",
+    summary: "This page narrows the database to a very common suburban problem: Zone 7, full sun, and heavy soil.",
+    ctaLabel: "Open Zone 7 clay screen",
+    ctaHref: "/?szone=7b&ssun=full&ssoil=clay#screener",
+    filterLabel: "Zone 7 full-sun clay profiles",
+    match: (plant) => plant.sun.includes("full")
+      && plant.soils.includes("clay")
+      && (plantFitsZoneNumber(plant, 7) || plantFitsZoneNumber(plant, 7.5))
+  },
+  {
+    slug: "low-water-pollinator-plants",
+    path: "/low-water-pollinator-plants/",
+    shortTitle: "Low-water pollinators",
+    eyebrow: "Habitat with less irrigation",
+    title: "Low-Water Pollinator Plants",
+    description: "Find pollinator-friendly plants marked for lower water needs, with site fit, spacing, and deer/walnut cues visible.",
+    summary: "Use this collection for sunny habitat beds where irrigation needs to stay modest after establishment.",
+    ctaLabel: "Open low-water screen",
+    ctaHref: "/?sgoal=pollinators-wildlife&swater=low#screener",
+    filterLabel: "Low-water pollinator profiles",
+    match: (plant) => plant.water === "low" && (plant.goals.includes("pollinators-wildlife") || hasNativeCue(plant))
+  },
+  {
+    slug: "privacy-plants-for-clay-soil",
+    path: "/privacy-plants-for-clay-soil/",
+    shortTitle: "Clay-soil privacy plants",
+    eyebrow: "Screening in heavy soil",
+    title: "Privacy Plants for Clay Soil",
+    description: "Compare screening shrubs, trees, vines, and hedging plants that are marked as suitable for clay soil.",
+    summary: "This page starts with the screening goal, then keeps clay-soil fit and mature-size context visible.",
+    ctaLabel: "Open clay privacy screen",
+    ctaHref: "/?sgoal=privacy-screening&ssoil=clay#screener",
+    filterLabel: "Clay-soil screening profiles",
+    match: (plant) => plant.goals.includes("privacy-screening") && plant.soils.includes("clay")
+  },
+  {
+    slug: "sandy-soil-vegetables",
+    path: "/sandy-soil-vegetables/",
+    shortTitle: "Sandy-soil vegetables",
+    eyebrow: "Fast-draining kitchen beds",
+    title: "Vegetables and Herbs for Sandy Soil",
+    description: "Browse vegetables and herbs marked for sandy or fast-draining soil, with water and spacing data in view.",
+    summary: "Sandy soil can be productive when water and organic matter are managed. This page gives kitchen-garden candidates to start with.",
+    ctaLabel: "Open sandy vegetable screen",
+    ctaHref: "/?sgoal=vegetables-herbs&ssoil=sandy#screener",
+    filterLabel: "Sandy-soil edible profiles",
+    match: (plant) => plant.goals.includes("vegetables-herbs") && plant.soils.includes("sandy")
   }
 ];
 
@@ -378,6 +492,46 @@ const hubMethodCopy = {
     ["Food plus structure", "Requires edible or fruiting value along with hedge, vine, shrub, cane, or tree form."],
     ["Space and harvest", "Mature size, spacing, and output ranges show whether the hedge is practical or just romantic."],
     ["Multi-use value", "Wildlife, screening, and kitchen returns stay visible when a plant can do several jobs."]
+  ],
+  "deer-resistant-shade-plants": [
+    ["Two filters", "Requires shade or part-sun tolerance plus a better deer-resistance cue where the database has one."],
+    ["Not guaranteed", "Deer pressure varies by neighborhood, season, and herd hunger, so this page avoids deer-proof claims."],
+    ["Placement first", "Light, water, and spacing stay visible because a deer-resistant plant still has to fit the bed."]
+  ],
+  "deer-resistant-pollinator-plants": [
+    ["Habitat plus pressure", "Starts from pollinator, wildlife, or native cues, then keeps better deer-resistance ratings in view."],
+    ["Layered defense", "Young plants can still need fencing, netting, or repellents while roots establish."],
+    ["Useful tradeoff", "The page helps compare habitat value against maintenance risk instead of chasing one perfect plant."]
+  ],
+  "black-walnut-tolerant-shade-plants": [
+    ["Walnut cue", "Filters for black-walnut tolerance, then narrows to shade and part-sun plants for canopy-adjacent beds."],
+    ["Root-zone caveat", "Juglone tolerance is a planning cue, not a promise under every walnut, soil, and moisture condition."],
+    ["Understory fit", "Water, spacing, and mature size matter because walnut areas often include root competition."]
+  ],
+  "container-vegetables": [
+    ["Pot-size signal", "Favors edible records with good or workable container guidance or a sourced small-container minimum."],
+    ["Calculator handoff", "Use the container calculator to test a specific plant against the pot size you already have."],
+    ["Yield reality", "Cards keep timing and output visible because patio crops should earn their watering time."]
+  ],
+  "full-sun-clay-zone-7-plants": [
+    ["Three-way fit", "Requires Zone 7 fit, full sun, and clay-soil suitability to answer a very common yard problem."],
+    ["Prep still matters", "Clay-suitable plants still benefit from compost, mulch, and drainage checks before planting."],
+    ["Planner ready", "Spacing and size data help move from a shortlist into the garden planner."]
+  ],
+  "low-water-pollinator-plants": [
+    ["Habitat with restraint", "Starts from low-water records that also carry pollinator, wildlife, or native cues."],
+    ["Establishment note", "Low-water plants usually still need first-season watering before they behave like low-water plants."],
+    ["Site checks", "Sun, deer, and spacing facts stay visible so the bed works after the bloom fades."]
+  ],
+  "privacy-plants-for-clay-soil": [
+    ["Screening goal", "Requires privacy or screening intent, then filters for clay-soil suitability."],
+    ["Long-term scale", "Mature size and spacing are emphasized because screens become structural garden decisions."],
+    ["Setup context", "Mulch, irrigation, and hole preparation matter more for woody screens than one-time plant selection."]
+  ],
+  "sandy-soil-vegetables": [
+    ["Fast drainage", "Filters kitchen crops and herbs that are marked suitable for sandy or fast-draining soil."],
+    ["Water reality", "Sandy-soil vegetables often need consistent irrigation and organic matter even when the crop is suitable."],
+    ["Bed planning", "Spacing, timing, and output data help decide which crops deserve the amended space."]
   ]
 };
 
@@ -386,7 +540,15 @@ const hubSourceCopy = {
   "black-walnut-tolerant-plants": "Juglone cues are traced to black-walnut tolerance references where the database has a defensible source key.",
   "what-to-grow-in-a-4x8-raised-bed": "Spacing, container, and yield references matter most here because a 4x8 bed is a space-budget problem.",
   "zone-7-vegetables": "Vegetable timing, spacing, container, and yield sources are prioritized so the page can feed the calendar and planner.",
-  "fruit-trees": "Fruit-tree sources emphasize spacing, years to bearing, mature yield, rootstock caveats, and home-orchard planting guidance."
+  "fruit-trees": "Fruit-tree sources emphasize spacing, years to bearing, mature yield, rootstock caveats, and home-orchard planting guidance.",
+  "deer-resistant-shade-plants": "Deer and shade cues come from the structured plant metrics and profile fields behind each card.",
+  "deer-resistant-pollinator-plants": "This page combines pollinator or native cues with the deer-resistance source keys available in the database.",
+  "black-walnut-tolerant-shade-plants": "Juglone and shade cues are treated as planning filters, then profile pages carry the source trail.",
+  "container-vegetables": "Container volume, spacing, timing, and yield references are prioritized because patio crops are constrained by pot size.",
+  "full-sun-clay-zone-7-plants": "Hardiness, sun, soil, and spacing references are emphasized for this tough-site shortlist.",
+  "low-water-pollinator-plants": "Water-need and habitat cues are paired with spacing and deer context where available.",
+  "privacy-plants-for-clay-soil": "Screening pages emphasize mature size, spacing, soil fit, and establishment resources.",
+  "sandy-soil-vegetables": "Soil, water, spacing, and kitchen-output references matter most for sandy-bed planning."
 };
 
 export function plantsForHub(hub, plants, plantMetrics) {
@@ -448,7 +610,15 @@ export function hubPlantDataPoints(plant, metrics = {}, hub = null) {
     "shade-plants": ["sun", "water", "matureSize", "spacing"],
     "clay-soil-plants": ["soil", "water", "spacing", "matureSize"],
     "sandy-soil-plants": ["soil", "water", "spacing", "container"],
-    "edible-hedges": ["yield", "matureSize", "spacing", "firstOutput"]
+    "edible-hedges": ["yield", "matureSize", "spacing", "firstOutput"],
+    "deer-resistant-shade-plants": ["deer", "sun", "spacing", "water"],
+    "deer-resistant-pollinator-plants": ["deer", "sun", "firstOutput", "spacing"],
+    "black-walnut-tolerant-shade-plants": ["walnut", "sun", "spacing", "water"],
+    "container-vegetables": ["container", "yield", "firstOutput", "spacing"],
+    "full-sun-clay-zone-7-plants": ["soil", "water", "spacing", "zones"],
+    "low-water-pollinator-plants": ["water", "sun", "firstOutput", "deer"],
+    "privacy-plants-for-clay-soil": ["matureSize", "spacing", "soil", "water"],
+    "sandy-soil-vegetables": ["soil", "water", "yield", "firstOutput"]
   };
   const order = orderByHub[hub?.slug] ?? ["zones", "water", "sun", "firstOutput", "yield", "spacing"];
   return order
@@ -518,7 +688,15 @@ const hubProductMap = {
   "shade-plants": ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "hand-trowel"],
   "clay-soil-plants": ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "digging-spade"],
   "sandy-soil-plants": ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "drip-irrigation-kit"],
-  "edible-hedges": ["drip-irrigation-kit", "organic-mulch", "bypass-pruners", "trellis-netting"]
+  "edible-hedges": ["drip-irrigation-kit", "organic-mulch", "bypass-pruners", "trellis-netting"],
+  "deer-resistant-shade-plants": ["animal-protection", "organic-mulch", "hand-trowel", "watering-wand"],
+  "deer-resistant-pollinator-plants": ["animal-protection", "organic-mulch", "hand-trowel", "watering-wand"],
+  "black-walnut-tolerant-shade-plants": ["soil-test-lab-mailer", "organic-mulch", "hand-trowel", "watering-wand"],
+  "container-vegetables": ["drainage-container", "container-potting-mix", "watering-wand", "balanced-fertilizer"],
+  "full-sun-clay-zone-7-plants": ["soil-test-lab-mailer", "finished-compost", "organic-mulch", "digging-spade"],
+  "low-water-pollinator-plants": ["soil-test-lab-mailer", "organic-mulch", "watering-wand", "animal-protection"],
+  "privacy-plants-for-clay-soil": ["digging-spade", "organic-mulch", "drip-irrigation-kit", "animal-protection"],
+  "sandy-soil-vegetables": ["finished-compost", "organic-mulch", "drip-irrigation-kit", "soil-thermometer"]
 };
 
 export function hubProductIds(hub) {

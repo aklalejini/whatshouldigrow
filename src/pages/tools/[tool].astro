@@ -1,0 +1,182 @@
+---
+import ToolPageShell from "../../components/ToolPageShell.astro";
+import { TOOL_PAGES } from "../../lib/toolData";
+
+export function getStaticPaths() {
+  return TOOL_PAGES
+    .filter((tool) => tool.path.startsWith("/tools/") && tool.slug !== "tools")
+    .map((tool) => ({
+      params: { tool: tool.slug },
+      props: { tool }
+    }));
+}
+
+const { tool } = Astro.props;
+---
+
+<ToolPageShell tool={tool}>
+  {tool.toolId === "pest-triage" && (
+    <>
+      <section id="tool" class="hub-section tool-workbench" aria-labelledby="pest-triage-title">
+        <div class="hub-section-head">
+          <div>
+            <p class="eyebrow">Symptom first</p>
+            <h2 id="pest-triage-title">Start with what changed.</h2>
+          </div>
+          <p>Pick the most obvious symptoms. The result gives likely causes, what to inspect first, and the lowest-risk response to try before escalating.</p>
+        </div>
+        <form class="tool-form tool-form-wide" data-tool-form="pest-triage">
+          <label class="screener-field" for="pest-plant-group">
+            <span>Plant group</span>
+            <select id="pest-plant-group" name="group">
+              <option value="vegetable">Vegetables or herbs</option>
+              <option value="fruit">Fruit trees, berries, or vines</option>
+              <option value="ornamental">Flowers, shrubs, or ornamentals</option>
+              <option value="seedling">Seedlings or transplants</option>
+            </select>
+          </label>
+          <label class="screener-field" for="pest-location">
+            <span>Where is damage worst?</span>
+            <select id="pest-location" name="location">
+              <option value="leaves">Leaves</option>
+              <option value="stems">Stems or crown</option>
+              <option value="fruit">Fruit, pods, or flowers</option>
+              <option value="roots">Roots or whole plant</option>
+            </select>
+          </label>
+          <fieldset class="tool-check-grid">
+            <legend>Symptoms</legend>
+            <label><input type="checkbox" name="symptom" value="holes" /> Holes or ragged chewing</label>
+            <label><input type="checkbox" name="symptom" value="skeletonized" /> Skeletonized leaves</label>
+            <label><input type="checkbox" name="symptom" value="sticky" /> Sticky residue or clusters of insects</label>
+            <label><input type="checkbox" name="symptom" value="stippling" /> Pale speckling or fine webbing</label>
+            <label><input type="checkbox" name="symptom" value="powder" /> White powdery coating</label>
+            <label><input type="checkbox" name="symptom" value="spots" /> Dark spots, yellowing, or blotches</label>
+            <label><input type="checkbox" name="symptom" value="wilting" /> Wilting even when soil is moist</label>
+            <label><input type="checkbox" name="symptom" value="missing" /> Plants clipped, missing, or browsed overnight</label>
+          </fieldset>
+          <button class="plant-page-action is-primary" type="submit">Triage damage</button>
+        </form>
+        <div class="tool-result" data-tool-result="pest-triage" aria-live="polite">
+          <p class="tool-empty">Choose symptoms to see likely causes and first checks.</p>
+        </div>
+      </section>
+      <section class="hub-section tool-context" aria-labelledby="pest-context">
+        <div class="hub-section-head">
+          <div>
+            <p class="eyebrow">Good diagnosis habit</p>
+            <h2 id="pest-context">Inspect before treating.</h2>
+          </div>
+          <p>Look under leaves, check at dusk, compare damaged and healthy plants, and avoid spraying during bloom unless you have a confirmed target and a pollinator-safe plan.</p>
+        </div>
+      </section>
+    </>
+  )}
+
+  {tool.toolId === "companion-checker" && (
+    <section id="tool" class="hub-section tool-workbench" aria-labelledby="companion-title">
+      <div class="hub-section-head">
+        <div>
+          <p class="eyebrow">Two-plant check</p>
+          <h2 id="companion-title">Check whether two plants belong near each other.</h2>
+        </div>
+        <p>The checker looks for pairing rules, pollination/guild cues, shared site needs, and spacing conflicts.</p>
+      </div>
+      <form class="tool-form" data-tool-form="companion-checker">
+        <label class="screener-field" for="companion-a">
+          <span>Plant one</span>
+          <input id="companion-a" name="plantA" type="search" list="plantbyzip-tool-plants" placeholder="Tomato" required />
+        </label>
+        <label class="screener-field" for="companion-b">
+          <span>Plant two</span>
+          <input id="companion-b" name="plantB" type="search" list="plantbyzip-tool-plants" placeholder="Basil" required />
+        </label>
+        <button class="plant-page-action is-primary" type="submit">Check pairing</button>
+      </form>
+      <datalist id="plantbyzip-tool-plants"></datalist>
+      <div class="tool-result" data-tool-result="companion-checker" aria-live="polite">
+        <p class="tool-empty">Search two plant names to check relationship rules and site fit.</p>
+      </div>
+    </section>
+  )}
+
+  {tool.toolId === "container-calculator" && (
+    <section id="tool" class="hub-section tool-workbench" aria-labelledby="container-title">
+      <div class="hub-section-head">
+        <div>
+          <p class="eyebrow">Pot size</p>
+          <h2 id="container-title">Check whether your container is realistic.</h2>
+        </div>
+        <p>Container guidance is a planning range. Bigger pots are usually easier to water, especially in hot sun.</p>
+      </div>
+      <form class="tool-form" data-tool-form="container-calculator">
+        <label class="screener-field" for="container-plant">
+          <span>Plant</span>
+          <input id="container-plant" name="plant" type="search" list="plantbyzip-tool-plants" placeholder="Pepper, basil, blueberry..." required />
+        </label>
+        <label class="screener-field" for="container-gallons">
+          <span>Container size</span>
+          <input id="container-gallons" name="gallons" type="number" inputmode="decimal" min="0.5" step="0.5" value="10" />
+        </label>
+        <label class="screener-field" for="container-sun">
+          <span>Site</span>
+          <select id="container-sun" name="sun">
+            <option value="full">Full sun</option>
+            <option value="partial">Part sun</option>
+            <option value="shade">Shade</option>
+          </select>
+        </label>
+        <button class="plant-page-action is-primary" type="submit">Check container</button>
+      </form>
+      <datalist id="plantbyzip-tool-plants"></datalist>
+      <div class="tool-result" data-tool-result="container-calculator" aria-live="polite">
+        <p class="tool-empty">Enter a plant and pot size to see the container fit.</p>
+      </div>
+    </section>
+  )}
+
+  {tool.toolId === "drip-calculator" && (
+    <section id="tool" class="hub-section tool-workbench" aria-labelledby="drip-title">
+      <div class="hub-section-head">
+        <div>
+          <p class="eyebrow">Raised-bed water</p>
+          <h2 id="drip-title">Estimate a simple drip layout.</h2>
+        </div>
+        <p>This is a first-pass layout for raised beds. Adjust for slope, pressure, emitter specs, mulch, and local rainfall.</p>
+      </div>
+      <form class="tool-form tool-form-wide" data-tool-form="drip-calculator">
+        <label class="screener-field" for="drip-length">
+          <span>Bed length</span>
+          <input id="drip-length" name="length" type="number" inputmode="decimal" min="1" step="0.5" value="8" />
+        </label>
+        <label class="screener-field" for="drip-width">
+          <span>Bed width</span>
+          <input id="drip-width" name="width" type="number" inputmode="decimal" min="1" step="0.5" value="4" />
+        </label>
+        <label class="screener-field" for="drip-count">
+          <span>Bed count</span>
+          <input id="drip-count" name="count" type="number" inputmode="numeric" min="1" step="1" value="1" />
+        </label>
+        <label class="screener-field" for="drip-spacing">
+          <span>Line spacing</span>
+          <select id="drip-spacing" name="spacing">
+            <option value="12">12 in: greens and dense beds</option>
+            <option value="18" selected>18 in: mixed vegetables</option>
+            <option value="24">24 in: wide rows or mulch-heavy beds</option>
+          </select>
+        </label>
+        <label class="screener-field" for="drip-emitter">
+          <span>Emitter rate</span>
+          <select id="drip-emitter" name="emitter">
+            <option value="0.5" selected>0.5 gal/hr every 12 in</option>
+            <option value="0.9">0.9 gal/hr every 12 in</option>
+          </select>
+        </label>
+        <button class="plant-page-action is-primary" type="submit">Calculate layout</button>
+      </form>
+      <div class="tool-result" data-tool-result="drip-calculator" aria-live="polite">
+        <p class="tool-empty">Enter bed dimensions to estimate tubing, flow, and weekly runtime.</p>
+      </div>
+    </section>
+  )}
+</ToolPageShell>

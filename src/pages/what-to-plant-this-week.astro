@@ -1,0 +1,54 @@
+---
+import ToolPageShell from "../components/ToolPageShell.astro";
+import { toolPageBySlug } from "../lib/toolData";
+
+const tool = toolPageBySlug("what-to-plant-this-week");
+---
+
+<ToolPageShell tool={tool} breadcrumbs={[]}>
+  <section id="tool" class="hub-section tool-workbench" aria-labelledby="planting-now-title">
+    <div class="hub-section-head">
+      <div>
+        <p class="eyebrow">This week</p>
+        <h2 id="planting-now-title">Check what still makes sense to plant.</h2>
+      </div>
+      <p>The shortlist uses hardiness fit, frost-window timing, crop class, and days-to-maturity ranges. Use local weather before planting tender crops.</p>
+    </div>
+
+    <form class="tool-form" data-tool-form="planting-now">
+      <label class="screener-field" for="planting-now-zip">
+        <span>ZIP code</span>
+        <input id="planting-now-zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="38635" required />
+      </label>
+      <label class="screener-field" for="planting-now-focus">
+        <span>Focus</span>
+        <select id="planting-now-focus" name="focus">
+          <option value="kitchen">Vegetables and herbs</option>
+          <option value="quick">Fast crops</option>
+          <option value="containers">Containers</option>
+          <option value="all">All practical plants</option>
+        </select>
+      </label>
+      <button class="plant-page-action is-primary" type="submit">Show this week's options</button>
+    </form>
+
+    <div class="tool-result" data-tool-result="planting-now" aria-live="polite">
+      <p class="tool-empty">Enter a ZIP code to see a current planting shortlist.</p>
+    </div>
+  </section>
+
+  <section class="hub-section tool-context" aria-labelledby="planting-now-context">
+    <div class="hub-section-head">
+      <div>
+        <p class="eyebrow">How to use it</p>
+        <h2 id="planting-now-context">A planting answer, not a promise.</h2>
+      </div>
+      <p>Frost estimates are planning cues. Soil temperature, storms, heat waves, cultivar choice, and your exact microclimate still matter.</p>
+    </div>
+    <div class="hub-method-grid">
+      <article><span>Direct sow</span><p>Best for seeds that can go straight into the bed during the current window.</p></article>
+      <article><span>Transplant</span><p>Best for crops that usually move outside as starts after frost or into fall windows.</p></article>
+      <article><span>Start indoors</span><p>Best when the outdoor window is close but the crop benefits from protected germination.</p></article>
+    </div>
+  </section>
+</ToolPageShell>

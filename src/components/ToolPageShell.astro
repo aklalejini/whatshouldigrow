@@ -1,0 +1,156 @@
+---
+import AnalyticsEvents from "./AnalyticsEvents.astro";
+import affiliateProducts from "../data/affiliateProducts.json";
+import plants from "../data/plants.json";
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  SITE_NAME,
+  SITE_URL,
+  siteUrl
+} from "../lib/site";
+import "../styles/global.css";
+
+const {
+  tool,
+  activeNav = "tools",
+  breadcrumbs = [{ href: "/tools/", label: "Tools" }]
+} = Astro.props;
+
+const canonicalUrl = siteUrl(tool.path);
+const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
+const resourceProducts = (tool.productIds ?? [])
+  .map((id) => affiliateProducts.find((product) => product.id === id))
+  .filter(Boolean);
+const plantCount = Array.isArray(plants) ? plants.length : 0;
+const breadcrumbItems = [
+  { href: "/", label: "Plant by ZIP" },
+  ...breadcrumbs,
+  { label: tool.shortTitle }
+];
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: breadcrumbItems.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: item.label,
+    item: item.href ? siteUrl(item.href) : canonicalUrl
+  }))
+};
+const webApplicationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: tool.title,
+  url: canonicalUrl,
+  applicationCategory: "LifestyleApplication",
+  operatingSystem: "Any",
+  description: tool.description,
+  provider: {
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL
+  }
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={tool.description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${tool.title} | ${SITE_NAME}`} />
+    <meta property="og:description" content={tool.description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${tool.title} | ${SITE_NAME}`} />
+    <meta name="twitter:description" content={tool.description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,750&family=Inter:wght@400;500;650;750;850&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
+    <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
+    <title>{tool.title} | {SITE_NAME}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(webApplicationJsonLd)}></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <nav class="site-tabs" aria-label="Primary sections">
+        <a class="site-tab" href="/">Plant matcher</a>
+        <a class="site-tab" href="/#screener">Screener</a>
+        <a class={activeNav === "tools" ? "site-tab is-active" : "site-tab"} aria-current={activeNav === "tools" ? "page" : undefined} href="/tools/">Tools</a>
+        <a class="site-tab" href="/#garden-planner">Garden planner</a>
+        <a class="site-tab" href="/planting-calendar/">Calendar</a>
+        <a class="site-tab" href="/blog/">Guides</a>
+      </nav>
+
+      <article class="tool-page" data-tool-page={tool.toolId}>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          {breadcrumbItems.map((item, index) => (
+            <>
+              {item.href ? <a href={item.href}>{item.label}</a> : <span>{item.label}</span>}
+              {index < breadcrumbItems.length - 1 && <span aria-hidden="true">/</span>}
+            </>
+          ))}
+        </nav>
+
+        <header class="hub-hero tool-hero">
+          <div>
+            <p class="eyebrow">{tool.eyebrow}</p>
+            <h1>{tool.title}</h1>
+            <p>{tool.summary}</p>
+            <div class="hub-actions">
+              <a class="plant-page-action is-primary" href="#tool">{tool.ctaLabel}</a>
+              <a class="plant-page-action is-secondary" href="/#screener">Open plant screener</a>
+            </div>
+          </div>
+          <dl class="hub-stats tool-stats" aria-label={`${tool.shortTitle} stats`}>
+            <div><dt>Database</dt><dd>{plantCount} plants</dd></div>
+            <div><dt>Output</dt><dd>Shareable</dd></div>
+            <div><dt>Product links</dt><dd>Labeled</dd></div>
+          </dl>
+        </header>
+
+        <slot />
+
+        {resourceProducts.length > 0 && (
+          <section class="hub-section hub-resource-box" aria-labelledby="tool-resource-title">
+            <div class="hub-section-head">
+              <div>
+                <p class="eyebrow">Useful setup tools</p>
+                <h2 id="tool-resource-title">Supplies that fit this tool</h2>
+              </div>
+              <p>Product links are separate from recommendations and may earn a commission.</p>
+            </div>
+            <div class="hub-resource-grid">
+              {resourceProducts.map((product) => (
+                <article class="hub-resource-card">
+                  <div>
+                    <span>{product.category} / {product.timing}</span>
+                    <h3>{product.name}</h3>
+                    <p>{product.use}</p>
+                  </div>
+                  <a href={product.affiliateUrl} target="_blank" rel="sponsored noopener noreferrer" data-partner-placement="tool_resource_box">
+                    View
+                  </a>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+      </article>
+    </main>
+    <AnalyticsEvents pageType="tool" topic={tool.slug} />
+    <script type="module" src="/js/plantbyzip-tools.js?v=20260607-social-tools-prefill-ready"></script>
+  </body>
+</html>
