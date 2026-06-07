@@ -59,8 +59,9 @@ const hasHeroPhoto = Boolean(plantPhotoEntry?.primary?.src);
 const hasFallbackArt = !hasHeroPhoto && Boolean(artEntry?.image);
 const photoStyle = hasHeroPhoto
   ? [
-      `--plant-photo: url('${plantPhotoEntry.primary.src.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}')`
-    ].join("; ")
+      `--plant-photo: url('${plantPhotoEntry.primary.src.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}')`,
+      plantPhotoEntry.primary.position ? `--photo-position: ${plantPhotoEntry.primary.position}` : ""
+    ].filter(Boolean).join("; ")
   : plantPhotoStyle(artEntry);
 const heroPhotoLabel = hasHeroPhoto
   ? (plantPhotoEntry.primary.alt ?? `${plant.name} plant photo`)

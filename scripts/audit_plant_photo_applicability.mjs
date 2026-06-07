@@ -15,6 +15,11 @@ const plantById = new Map(plants.map((plant) => [plant.id, plant]));
 
 const collisionRules = [
   {
+    label: "plant assigned nursery catalog scan",
+    plant: /./i,
+    photo: /Henry G\. Gilbert|Nursery and Seed Trade Catalog|Currie's bulbs|Our new guide to rose culture|Planting guide/i
+  },
+  {
     label: "watermelon assigned citrus",
     plant: /watermelon/i,
     photo: /eureka-lemon|citrus|lemon branch|lime branch|citrus branch/i

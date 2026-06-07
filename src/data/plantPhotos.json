@@ -643,17 +643,18 @@
   {
     "id": "au-rosa-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Au Rosa Plum shown with a representative plum fruit reference.",
+      "caption": "Au Rosa Plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "august-beauty-gardenia",
@@ -928,17 +929,18 @@
   {
     "id": "beauty-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Beauty Plum shown with a representative plum fruit reference.",
+      "caption": "Beauty Plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "beautyberry",
@@ -1228,17 +1230,18 @@
   {
     "id": "black-ice-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Black Ice Plum shown with a representative plum fruit reference.",
+      "caption": "Black Ice Plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "black-krim-tomato",
@@ -3425,17 +3428,18 @@
   {
     "id": "damson-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Damson Plum shown with a representative plum fruit reference.",
+      "caption": "Damson Plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "danvers-carrot",
@@ -3712,15 +3716,16 @@
     "primary": {
       "src": "/plant-photos/double-blue-balloon-flower/primary.jpg",
       "label": "Plant photo",
-      "alt": "Double Blue balloon flower plant showing foliage and plant structure.",
-      "caption": "Double Blue balloon flower shown as a representative living plant reference.",
-      "credit": "Currie Brothers Company.; Henry G. Gilbert Nursery and Seed Trade Catalog Collection.",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Currie%27s_bulbs_and_plants_(Page_20)_(16363874046).jpg",
-      "bytes": 430255
+      "alt": "Purple balloon flower bloom and unopened bud on a leafy stem.",
+      "caption": "Purple balloon flower bloom and unopened bud on a leafy stem.",
+      "credit": "Krzysztof Golik / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Platycodon_grandiflorus_in_Jardin_botanique_de_la_Charme.jpg",
+      "bytes": 97977,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photos show a representative balloon flower in bloom. Double-flowered cultivars can vary in petal form, bloom density, color, and plant habit."
   },
   {
     "id": "doublefile-viburnum",
@@ -4055,17 +4060,18 @@
   {
     "id": "elephant-heart-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Elephant Heart Plum shown with a representative plum fruit reference.",
+      "caption": "Elephant Heart Plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "elliott-blueberry",
@@ -5328,15 +5334,16 @@
     "primary": {
       "src": "/plant-photos/heartnut/primary.jpg",
       "label": "Plant photo",
-      "alt": "Heartnut Japanese walnut tree showing foliage and plant structure.",
-      "caption": "Heartnut Japanese walnut shown as a representative living plant reference.",
-      "credit": "Bountiful Ridge Nurseries.; Henry G. Gilbert Nursery and Seed Trade Catalog Collection.",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Planting_guide_(16202333287).jpg",
-      "bytes": 318861
+      "alt": "Heartnut Japanese walnut branch showing leaves and developing nuts.",
+      "caption": "Heartnut Japanese walnut branch showing leaves and developing nuts.",
+      "credit": "Agnieszka Kwiecien, Nova / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Juglans_ailantifolia_var._cordiformis_2019-07-18_03.jpg",
+      "bytes": 249346,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photos show a representative heartnut fruiting on the tree. Nut shape, crop load, and leaf habit can vary by cultivar, season, and site."
   },
   {
     "id": "helianthus-lemon-queen",
@@ -5491,17 +5498,18 @@
   {
     "id": "hollywood-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Hollywood Japanese plum tree showing foliage and plant structure.",
-      "caption": "Hollywood Japanese plum uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Hollywood plum shown with a representative plum fruit reference.",
+      "caption": "Hollywood plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "holy-basil",
@@ -6243,15 +6251,16 @@
     "primary": {
       "src": "/plant-photos/japanese-snowball-viburnum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Japanese snowball viburnum shrub showing foliage and plant structure.",
-      "caption": "Japanese snowball viburnum shown as a representative living plant reference.",
-      "credit": "Dingee & Conard Co; Henry G. Gilbert Nursery and Seed Trade Catalog Collection",
-      "license": "No restrictions",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Our_new_guide_to_rose_culture_-_1898_(1898)_(14763585392).jpg",
-      "bytes": 674778
+      "alt": "Japanese snowball viburnum shrub showing white flower clusters and green leaves.",
+      "caption": "Japanese snowball viburnum showing white flower clusters and green leaves.",
+      "credit": "Kikucha / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Viburnum_plicatum_Thumb._photographed_at_the_Seitaikei_Park.jpg",
+      "bytes": 97458,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photos show a representative Japanese snowball viburnum in bloom. Flower density, bloom timing, and plant shape can vary by cultivar and site."
   },
   {
     "id": "japanese-snowbell",
@@ -7636,17 +7645,18 @@
   {
     "id": "mariposa-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Mariposa Japanese plum tree showing foliage and plant structure.",
-      "caption": "Mariposa Japanese plum uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Mariposa plum shown with a representative plum fruit reference.",
+      "caption": "Mariposa plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "marketmore-cucumber",
@@ -7786,17 +7796,18 @@
   {
     "id": "methley-plum",
     "primary": {
-      "src": "/plant-photos/methley-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080405-3956%20Prunus%20salicina.jpg",
-      "bytes": 596572
+      "alt": "Methley plum shown with a representative plum fruit reference.",
+      "caption": "Methley plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "mexican-bush-sage",
@@ -8097,17 +8108,18 @@
   {
     "id": "mount-royal-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Mount Royal Plum shown with a representative plum fruit reference.",
+      "caption": "Mount Royal Plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "mountain-fire-pieris",
@@ -8873,17 +8885,18 @@
   {
     "id": "ozark-premier-plum",
     "primary": {
-      "src": "/plant-photos/ozark-premier-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Ozark Premier plum tree showing foliage and plant structure.",
-      "caption": "Ozark Premier plum shown as a representative living plant reference.",
-      "credit": "Bountiful Ridge Nurseries.; Henry G. Gilbert Nursery and Seed Trade Catalog Collection.",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Planting_guide_(16200811440).jpg",
-      "bytes": 312430
+      "alt": "Ozark Premier plum shown with a representative plum fruit reference.",
+      "caption": "Ozark Premier plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "packera-aurea",
@@ -10523,32 +10536,34 @@
   {
     "id": "santa-rosa-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Santa Rosa plum shown on the tree with leaves and fruit.",
+      "caption": "Santa Rosa plum shown on the tree with leaves and fruit.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "santa-rosa-plum-2",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Santa Rosa plum shown on the tree with leaves and fruit.",
+      "caption": "Santa Rosa plum shown on the tree with leaves and fruit.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "sapodilla-alano",
@@ -10568,17 +10583,18 @@
   {
     "id": "satsuma-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Satsuma Plum shown with a representative plum fruit reference.",
+      "caption": "Satsuma Plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "saucy-seduction-yarrow",
@@ -10894,17 +10910,18 @@
   {
     "id": "shiro-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Shiro Plum shown with a representative plum fruit reference.",
+      "caption": "Shiro Plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "shishito-pepper",
@@ -11659,17 +11676,18 @@
   {
     "id": "superior-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Superior Plum shown with a representative plum fruit reference.",
+      "caption": "Superior Plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "susquehanna-pawpaw",
@@ -12124,17 +12142,18 @@
   {
     "id": "toka-plum",
     "primary": {
-      "src": "/plant-photos/au-rosa-plum/primary.jpg",
+      "src": "/plant-photos/japanese-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Plum branch showing leaves and fruit.",
-      "caption": "Plum branch showing leaves and fruit.",
-      "credit": "Forest & Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr%20080302-3152%20Prunus%20salicina.jpg",
-      "bytes": 405553
+      "alt": "Toka Plum shown with a representative plum fruit reference.",
+      "caption": "Toka Plum shown with a representative plum fruit reference.",
+      "credit": "Fir0002 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
+      "bytes": 175730,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "tokyo-bekana",

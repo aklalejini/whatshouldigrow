@@ -1230,7 +1230,7 @@ function plantArtPhotoStyle(entry) {
 }
 
 function plantRealPhotoStyle(entry) {
-  return plantVisualStyle(entry?.primary?.src);
+  return plantVisualStyle(entry?.primary?.src, entry?.primary ?? entry);
 }
 
 const relationshipCountCache = new Map();

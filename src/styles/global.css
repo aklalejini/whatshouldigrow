@@ -1026,10 +1026,10 @@ fieldset:nth-of-type(2) .segmented {
 
 .result-card {
   display: grid;
-  grid-template-columns: 112px minmax(0, 1fr);
-  grid-template-rows: auto auto 1fr;
-  gap: 14px;
-  min-height: 254px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto auto;
+  gap: 12px;
+  min-height: 0;
   padding: 12px;
   border: 1px solid #e0e5d7;
   border-radius: 18px;
@@ -1044,6 +1044,7 @@ fieldset:nth-of-type(2) .segmented {
 .result-card.top-card {
   grid-column: 1 / -1;
   grid-template-columns: minmax(260px, 0.45fr) minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr;
   min-height: 366px;
   padding: 18px;
   border-color: rgba(39, 88, 58, 0.28);
@@ -1054,20 +1055,42 @@ fieldset:nth-of-type(2) .segmented {
 
 .result-card > .plant-visual {
   grid-column: 1;
-  grid-row: 1 / 4;
+  grid-row: 1;
+  aspect-ratio: 4 / 3;
 }
 
 .result-card > .result-copy {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.result-card > .plant-details {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.result-card > .card-actions {
+  grid-column: 1;
+  grid-row: 4;
+}
+
+.result-card.top-card > .plant-visual {
+  grid-column: 1;
+  grid-row: 1 / 4;
+  aspect-ratio: auto;
+}
+
+.result-card.top-card > .result-copy {
   grid-column: 2;
   grid-row: 1;
 }
 
-.result-card > .plant-details {
+.result-card.top-card > .plant-details {
   grid-column: 2;
   grid-row: 2;
 }
 
-.result-card > .card-actions {
+.result-card.top-card > .card-actions {
   grid-column: 2;
   grid-row: 3;
 }
@@ -1083,6 +1106,12 @@ fieldset:nth-of-type(2) .segmented {
 
 .result-card:has(.plant-details[open]) > .plant-visual {
   min-height: 310px;
+  aspect-ratio: 4 / 3;
+}
+
+.result-card:has(.plant-details[open]) > .result-copy {
+  grid-column: 2;
+  grid-row: 1;
 }
 
 .result-card:has(.plant-details[open]) > .plant-details {
@@ -1113,7 +1142,7 @@ fieldset:nth-of-type(2) .segmented {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 100%;
+  min-height: 0;
   margin: 0;
   overflow: hidden;
   border-radius: 14px;
@@ -9203,8 +9232,8 @@ input.calendar-filter-search[type="search"]:focus {
     grid-column: auto;
   }
 
-  .result-card {
-    grid-template-columns: 104px minmax(0, 1fr);
+  .result-card.top-card {
+    grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr);
   }
 }
 
@@ -10191,16 +10220,27 @@ input.calendar-filter-search[type="search"]:focus {
     grid-template-columns: 1fr 1fr;
   }
 
-  .result-card,
   .result-card.top-card {
-    grid-template-columns: 96px minmax(0, 1fr);
-    min-height: 250px;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
     padding: 12px;
   }
 
-  .top-card .plant-visual,
-  .plant-visual {
-    min-height: 100%;
+  .result-card.top-card > .plant-visual,
+  .result-card.top-card > .result-copy,
+  .result-card.top-card > .plant-details,
+  .result-card.top-card > .card-actions,
+  .result-card:has(.plant-details[open]) > .plant-visual,
+  .result-card:has(.plant-details[open]) > .result-copy,
+  .result-card:has(.plant-details[open]) > .plant-details,
+  .result-card:has(.plant-details[open]) > .card-actions {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .result-card.top-card > .plant-visual {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
   }
 
   .top-card .plant-visual-icon {
@@ -10512,8 +10552,9 @@ input.calendar-filter-search[type="search"]:focus {
   }
 
   .plant-visual,
-  .top-card .plant-visual {
-    min-height: 160px;
+  .result-card.top-card > .plant-visual {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
   }
 
   .plant-page-stats div {
