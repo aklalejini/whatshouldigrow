@@ -2,10 +2,12 @@ let plants = [];
 let partners = {};
 let affiliateProducts = [];
 let plantArtEntries = [];
+let plantPhotoEntries = [];
 let plantMetrics = {};
 let plantRelationships = [];
 let blogSearchData = [];
 let plantArtById = {};
+let plantPhotoById = {};
 let coreDataPromise = null;
 let blogDataPromise = null;
 let zoneMapInitialized = false;
@@ -17,6 +19,7 @@ const dataUrls = {
   partners: "/data/affiliate-partners.json",
   affiliateProducts: "/data/affiliate-products.json",
   plantArt: "/data/plant-art.json",
+  plantPhotos: "/data/plant-photos.json",
   plantMetrics: "/data/plant-metrics-home.json",
   plantRelationships: "/data/plant-relationships.json",
   blogSearch: "/data/blog-search.json"
@@ -40,16 +43,19 @@ async function ensureCoreData() {
       loadJson(dataUrls.partners),
       loadJson(dataUrls.affiliateProducts),
       loadJson(dataUrls.plantArt),
+      loadJson(dataUrls.plantPhotos),
       loadJson(dataUrls.plantMetrics),
       loadJson(dataUrls.plantRelationships)
-    ]).then(([plantRows, partnerRows, productRows, artRows, metricRows, relationshipRows]) => {
+    ]).then(([plantRows, partnerRows, productRows, artRows, photoRows, metricRows, relationshipRows]) => {
       plants = plantRows;
       partners = partnerRows;
       affiliateProducts = productRows;
       plantArtEntries = artRows;
+      plantPhotoEntries = photoRows;
       plantMetrics = metricRows;
       plantRelationships = relationshipRows;
       plantArtById = Object.fromEntries(plantArtEntries.map((entry) => [entry.id, entry]));
+      plantPhotoById = Object.fromEntries(plantPhotoEntries.map((entry) => [entry.id, entry]));
     });
   }
   await coreDataPromise;
@@ -1200,14 +1206,31 @@ function plantArtEntry(plant) {
     ?? null;
 }
 
-function plantPhotoStyle(entry) {
-  if (!entry?.image) return "";
+function plantRealPhotoEntry(plant) {
+  return plantPhotoById[plant.id] ?? null;
+}
+
+function cssUrl(value) {
+  return String(value ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+}
+
+function plantVisualStyle(src, options = {}) {
+  if (!src) return "";
   const styles = [
-    `--plant-photo: url('/plant-art/${entry.image}')`,
-    entry.position ? `--photo-position: ${entry.position}` : "",
-    entry.plateBg ? `--plate-bg: ${entry.plateBg}` : ""
+    `--plant-photo: url('${cssUrl(src)}')`,
+    options.position ? `--photo-position: ${options.position}` : "",
+    options.plateBg ? `--plate-bg: ${options.plateBg}` : ""
   ].filter(Boolean);
   return ` style="${styles.join("; ")}"`;
+}
+
+function plantArtPhotoStyle(entry) {
+  if (!entry?.image) return "";
+  return plantVisualStyle(`/plant-art/${entry.image}`, entry);
+}
+
+function plantRealPhotoStyle(entry) {
+  return plantVisualStyle(entry?.primary?.src);
 }
 
 const relationshipCountCache = new Map();
@@ -9311,11 +9334,18 @@ function createResultItem(entry, index, inputs) {
   const item = document.createElement("li");
   const kind = plantKind(plant);
   const artEntry = plantArtEntry(plant);
+  const realPhotoEntry = plantRealPhotoEntry(plant);
   const art = artEntry?.id ?? genericArt(plant);
-  const hasImage = Boolean(artEntry?.image);
-  const photoStyle = plantPhotoStyle(artEntry);
+  const hasRealPhoto = Boolean(realPhotoEntry?.primary?.src);
+  const hasArtImage = Boolean(artEntry?.image);
+  const hasImage = hasRealPhoto || hasArtImage;
+  const photoStyle = hasRealPhoto ? plantRealPhotoStyle(realPhotoEntry) : plantArtPhotoStyle(artEntry);
+  const imageMode = hasRealPhoto ? "real-photo" : "photo-plate";
+  const detailImageLabel = hasRealPhoto
+    ? (realPhotoEntry.primary.alt || `${plant.name} plant photo`)
+    : `${plant.name} botanical plate`;
   const detailArt = hasImage
-    ? `<figure class="detail-art ${art}" role="img" aria-label="${plant.name} botanical plate"${photoStyle}>
+    ? `<figure class="detail-art ${art} ${hasRealPhoto ? "real-photo" : "vintage-art"}" role="img" aria-label="${escapeHtml(detailImageLabel)}"${photoStyle}>
         <span>${plant.name}</span>
       </figure>`
     : "";
@@ -9326,7 +9356,7 @@ function createResultItem(entry, index, inputs) {
   const sourceAction = sourceActionForPlant(plant);
   const climateNotes = renderPlantClimateNotes(plant, inputs);
   item.innerHTML = `
-    <figure class="plant-visual ${kind} ${art} ${hasImage ? "photo-plate" : ""}" aria-hidden="true"${photoStyle}>
+    <figure class="plant-visual ${kind} ${art} ${hasImage ? imageMode : ""}" aria-hidden="true"${photoStyle}>
       <span class="rank">${index + 1}</span>
       ${hasImage ? "" : `<span class="plant-visual-icon"></span>`}
     </figure>

@@ -10,6 +10,7 @@ const requiredPublicDataFiles = [
   "plants.json",
   "affiliate-partners.json",
   "plant-art.json",
+  "plant-photos.json",
   "plant-metrics-home.json",
   "plant-relationships.json",
   "blog-search.json"

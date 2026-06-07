@@ -1099,7 +1099,8 @@ fieldset:nth-of-type(2) .segmented {
   grid-template-columns: minmax(0, 1fr);
 }
 
-.result-card:has(.plant-details.has-art[open]) > .plant-visual.photo-plate {
+.result-card:has(.plant-details.has-art[open]) > .plant-visual.photo-plate,
+.result-card:has(.plant-details.has-art[open]) > .plant-visual.real-photo {
   display: none;
 }
 
@@ -1133,12 +1134,27 @@ fieldset:nth-of-type(2) .segmented {
     var(--plate-bg, var(--sage));
 }
 
+.plant-visual.real-photo {
+  background:
+    linear-gradient(180deg, rgba(13, 57, 35, 0.02), rgba(13, 57, 35, 0.16)),
+    var(--plant-photo) var(--photo-position, center) / cover no-repeat,
+    var(--sage);
+}
+
 .plant-visual::before {
   content: "";
   position: absolute;
   inset: 12px;
   border: 1px solid rgba(255, 255, 255, 0.56);
   border-radius: inherit;
+}
+
+.plant-visual.real-photo::before {
+  inset: 0;
+  border: 0;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.24),
+    inset 0 -70px 80px rgba(13, 57, 35, 0.1);
 }
 
 .plant-visual::after {
@@ -1190,7 +1206,8 @@ fieldset:nth-of-type(2) .segmented {
   --plate-icon: url("/icons/flower.svg");
 }
 
-.plant-visual.photo-plate::after {
+.plant-visual.photo-plate::after,
+.plant-visual.real-photo::after {
   display: none;
 }
 
@@ -1482,6 +1499,12 @@ fieldset:nth-of-type(2) .segmented {
   inset: 10px;
   border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 10px;
+}
+
+.detail-art.real-photo::after {
+  inset: 0;
+  border: 0;
+  box-shadow: inset 0 -90px 90px rgba(13, 57, 35, 0.16);
 }
 
 .detail-art span {

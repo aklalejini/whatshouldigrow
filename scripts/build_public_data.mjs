@@ -143,13 +143,14 @@ async function buildBlogSearchData() {
   );
 }
 
-const [plants, partners, plantArt, plantMetrics, plantRelationships, affiliateProducts] = await Promise.all([
+const [plants, partners, plantArt, plantMetrics, plantRelationships, affiliateProducts, plantPhotos] = await Promise.all([
   readJson("plants.json"),
   readJson("affiliatePartners.json"),
   readJson("plantArt.json"),
   readJson("plantMetrics.json"),
   readJson("plantRelationships.json"),
-  readJson("affiliateProducts.json")
+  readJson("affiliateProducts.json"),
+  readJson("plantPhotos.json")
 ]);
 
 await Promise.all([
@@ -157,6 +158,7 @@ await Promise.all([
   writeJson("affiliate-partners.json", partners),
   writeJson("affiliate-products.json", affiliateProducts),
   writeJson("plant-art.json", plantArt),
+  writeJson("plant-photos.json", plantPhotos),
   writeJson("plant-metrics-home.json", trimMetrics(plantMetrics)),
   writeJson("plant-relationships.json", plantRelationships),
   writeJson("blog-search.json", await buildBlogSearchData())
