@@ -34,7 +34,8 @@ import { relatedHubsForPlant } from "../../lib/hubData";
 import {
   optimizedImagePath,
   optimizedSrcset,
-  PLANT_PHOTO_WIDTHS
+  PLANT_PHOTO_WIDTHS,
+  versionedImagePath
 } from "../../lib/imageUtils";
 import "../../styles/global.css";
 
@@ -57,9 +58,10 @@ const kind = plantKind(plant);
 const plantPhotoEntry = plantPhotoEntries.find((entry) => entry.id === plant.id);
 const hasHeroPhoto = Boolean(plantPhotoEntry?.primary?.src);
 const hasFallbackArt = !hasHeroPhoto && Boolean(artEntry?.image);
+const heroPhotoSrc = hasHeroPhoto ? versionedImagePath(plantPhotoEntry.primary.src, plantPhotoEntry.primary.bytes) : "";
 const photoStyle = hasHeroPhoto
   ? [
-      `--plant-photo: url('${plantPhotoEntry.primary.src.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}')`,
+      `--plant-photo: url('${heroPhotoSrc.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}')`,
       plantPhotoEntry.primary.position ? `--photo-position: ${plantPhotoEntry.primary.position}` : ""
     ].filter(Boolean).join("; ")
   : plantPhotoStyle(artEntry);
@@ -543,9 +545,9 @@ const breadcrumbJsonLd = {
               <div class={`plant-photo-layout ${plantPhotoDetails.length === 0 ? "is-single" : ""}`}>
                 <figure class="plant-photo-primary">
                   <picture>
-                    <source type="image/avif" srcset={optimizedSrcset(plantPhotoEntry.primary.src, PLANT_PHOTO_WIDTHS, "avif")} sizes="(max-width: 760px) 100vw, 760px" />
-                    <source type="image/webp" srcset={optimizedSrcset(plantPhotoEntry.primary.src, PLANT_PHOTO_WIDTHS, "webp")} sizes="(max-width: 760px) 100vw, 760px" />
-                    <img src={optimizedImagePath(plantPhotoEntry.primary.src, 800, "webp")} alt={plantPhotoEntry.primary.alt} loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset={optimizedSrcset(plantPhotoEntry.primary.src, PLANT_PHOTO_WIDTHS, "avif", plantPhotoEntry.primary.bytes)} sizes="(max-width: 760px) 100vw, 760px" />
+                    <source type="image/webp" srcset={optimizedSrcset(plantPhotoEntry.primary.src, PLANT_PHOTO_WIDTHS, "webp", plantPhotoEntry.primary.bytes)} sizes="(max-width: 760px) 100vw, 760px" />
+                    <img src={optimizedImagePath(plantPhotoEntry.primary.src, 800, "webp", plantPhotoEntry.primary.bytes)} alt={plantPhotoEntry.primary.alt} loading="lazy" decoding="async" />
                   </picture>
                   <figcaption>
                     <strong>{plantPhotoEntry.primary.label}</strong>
@@ -558,9 +560,9 @@ const breadcrumbJsonLd = {
                     {plantPhotoDetails.map((photo) => (
                       <figure class="plant-photo-detail">
                         <picture>
-                          <source type="image/avif" srcset={optimizedSrcset(photo.src, PLANT_PHOTO_WIDTHS, "avif")} sizes="(max-width: 760px) 50vw, 360px" />
-                          <source type="image/webp" srcset={optimizedSrcset(photo.src, PLANT_PHOTO_WIDTHS, "webp")} sizes="(max-width: 760px) 50vw, 360px" />
-                          <img src={optimizedImagePath(photo.src, 480, "webp")} alt={photo.alt} loading="lazy" decoding="async" />
+                          <source type="image/avif" srcset={optimizedSrcset(photo.src, PLANT_PHOTO_WIDTHS, "avif", photo.bytes)} sizes="(max-width: 760px) 50vw, 360px" />
+                          <source type="image/webp" srcset={optimizedSrcset(photo.src, PLANT_PHOTO_WIDTHS, "webp", photo.bytes)} sizes="(max-width: 760px) 50vw, 360px" />
+                          <img src={optimizedImagePath(photo.src, 480, "webp", photo.bytes)} alt={photo.alt} loading="lazy" decoding="async" />
                         </picture>
                         <figcaption>
                           <strong>{photo.label}</strong>

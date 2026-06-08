@@ -1214,6 +1214,12 @@ function cssUrl(value) {
   return String(value ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
 
+function versionedPhotoSrc(src, photo) {
+  if (!src || photo?.bytes === undefined || photo?.bytes === null || photo?.bytes === "") return src;
+  const separator = String(src).includes("?") ? "&" : "?";
+  return `${src}${separator}v=${encodeURIComponent(String(photo.bytes))}`;
+}
+
 function plantVisualStyle(src, options = {}) {
   if (!src) return "";
   const styles = [
@@ -1230,7 +1236,8 @@ function plantArtPhotoStyle(entry) {
 }
 
 function plantRealPhotoStyle(entry) {
-  return plantVisualStyle(entry?.primary?.src, entry?.primary ?? entry);
+  const photo = entry?.primary ?? entry;
+  return plantVisualStyle(versionedPhotoSrc(photo?.src, photo), photo);
 }
 
 const relationshipCountCache = new Map();
