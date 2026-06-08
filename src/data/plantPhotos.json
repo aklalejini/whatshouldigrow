@@ -826,14 +826,15 @@
   {
     "id": "banana-pepper",
     "primary": {
-      "src": "/plant-photos/aji-amarillo-pepper/primary.jpg",
+      "src": "/plant-photos/banana-pepper/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pepper plant showing leaves and fruit.",
-      "caption": "Pepper plant showing leaves and fruit.",
-      "credit": "Salicyna / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACapsicum%20annuum%202020-07-28%201200.jpg",
-      "bytes": 536150
+      "alt": "Banana pepper fruit growing on a potted pepper plant.",
+      "caption": "Banana pepper fruit and leaves on a living plant.",
+      "credit": "Rusty Clark ~ 100K Photos / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/23206546@N04/7556439726",
+      "bytes": 152166,
+      "position": "48% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -1249,14 +1250,15 @@
   {
     "id": "black-krim-tomato",
     "primary": {
-      "src": "/plant-photos/amish-paste-tomato/primary.jpg",
+      "src": "/plant-photos/black-krim-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tomato plant showing leaves, stems, and fruit.",
-      "caption": "Tomato plant showing leaves, stems, and fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
-      "bytes": 988733
+      "alt": "Black Krim tomato fruit ripening on a leafy vine.",
+      "caption": "Black Krim tomato fruit ripening on the vine.",
+      "credit": "F. D. Richards / Flickr",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/50697352@N00/53107571124",
+      "bytes": 324145,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -1626,12 +1628,13 @@
     "primary": {
       "src": "/plant-photos/bluecrop-blueberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Blueberry fruit cluster on living stems and leaves.",
-      "caption": "Blueberry fruit cluster on living stems and leaves.",
-      "credit": "Judy Gallagher / Wikimedia Commons",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:High-bush_Blueberry_-_Vaccinium_corymbosum,_Julie_Metz_Wetlands,_Woodbridge,_Virginia.jpg",
-      "bytes": 508884
+      "alt": "Bluecrop blueberries ripening among leaves.",
+      "caption": "Bluecrop blueberry fruit ripening on the shrub.",
+      "credit": "Jonathan Billinger / Geograph",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ripening_Blueberry_%27Bluecrop%27_-_geograph.org.uk_-_1397769.jpg",
+      "bytes": 112129,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -2240,14 +2243,15 @@
   {
     "id": "cayenne-pepper",
     "primary": {
-      "src": "/plant-photos/aji-amarillo-pepper/primary.jpg",
+      "src": "/plant-photos/cayenne-pepper/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pepper plant showing leaves and fruit.",
-      "caption": "Pepper plant showing leaves and fruit.",
-      "credit": "Salicyna / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACapsicum%20annuum%202020-07-28%201200.jpg",
-      "bytes": 536150
+      "alt": "Cayenne peppers hanging on a leafy plant.",
+      "caption": "Cayenne peppers ripening on a living plant.",
+      "credit": "blumenbiene / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/47439717@N05/6133232355",
+      "bytes": 188273,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -3003,14 +3007,15 @@
   {
     "id": "concord-grape",
     "primary": {
-      "src": "/plant-photos/autumn-crisp-grape/primary.jpg",
+      "src": "/plant-photos/concord-grape/primary.jpg",
       "label": "Plant photo",
-      "alt": "Grape cluster hanging from a leafy vine.",
-      "caption": "Grape vine structure with leaves, stems, and fruit cluster.",
-      "credit": "Zeynel Cebeci / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vitis_labrusca_-_Isabella_grapevine_02.jpg",
-      "bytes": 451938
+      "alt": "Concord grapes ripening among grapevine leaves.",
+      "caption": "Concord grapes ripening on the vine.",
+      "credit": "DeusXFlorida / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/8363028@N08/3676936757",
+      "bytes": 159451,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -3375,14 +3380,15 @@
   {
     "id": "cubanelle-pepper",
     "primary": {
-      "src": "/plant-photos/aji-amarillo-pepper/primary.jpg",
+      "src": "/plant-photos/cubanelle-pepper/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pepper plant showing leaves and fruit.",
-      "caption": "Pepper plant showing leaves and fruit.",
-      "credit": "Salicyna / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACapsicum%20annuum%202020-07-28%201200.jpg",
-      "bytes": 536150
+      "alt": "Cubanelle pepper plant with flowers and emerging fruit.",
+      "caption": "Cubanelle pepper plant showing flowers and emerging fruit.",
+      "credit": "Downtowngal / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cubanelle_pepper_plant_with_flowers_and_emerging_fruit.jpg",
+      "bytes": 309899,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -4563,14 +4569,15 @@
   {
     "id": "fuji-apple",
     "primary": {
-      "src": "/plant-photos/anna-apple/primary.jpg",
+      "src": "/plant-photos/fuji-apple/primary.jpg",
       "label": "Plant photo",
-      "alt": "Apple branch showing leaves and fruit.",
-      "caption": "Apple branch showing leaves and fruit.",
-      "credit": "User:Doncsecz / Wikimedia Commons",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AJablan%20na%20Verici.JPG",
-      "bytes": 1716835
+      "alt": "Red Fuji apple fruit on a leafy tree branch.",
+      "caption": "Red Fuji apple fruit growing on the tree.",
+      "credit": "Forest & Kim / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/25869955@N05/12638822545",
+      "bytes": 156025,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -4595,12 +4602,13 @@
     "primary": {
       "src": "/plant-photos/fuyu-persimmon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Persimmon leaves and fruit on living stems.",
-      "caption": "Persimmon foliage with fruit on the plant.",
-      "credit": "Abrahami / Wikimedia Commons",
-      "license": "CC BY-SA 2.5",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Diospyros_kaki_leaves_fruit.jpg",
-      "bytes": 180575
+      "alt": "Fuyu persimmons ripening on a leafy tree branch.",
+      "caption": "Fuyu persimmons ripening on the tree.",
+      "credit": "Puddin Tain / Flickr",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/155396095@N08/30717563617",
+      "bytes": 113707,
+      "position": "50% 50%"
     },
     "details": [
       {
@@ -4649,14 +4657,15 @@
   {
     "id": "gala-apple",
     "primary": {
-      "src": "/plant-photos/anna-apple/primary.jpg",
+      "src": "/plant-photos/gala-apple/primary.jpg",
       "label": "Plant photo",
-      "alt": "Apple branch showing leaves and fruit.",
-      "caption": "Apple branch showing leaves and fruit.",
-      "credit": "User:Doncsecz / Wikimedia Commons",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AJablan%20na%20Verici.JPG",
-      "bytes": 1716835
+      "alt": "Royal Gala apples ripening on a leafy tree.",
+      "caption": "Royal Gala apples ripening with leaves and branches.",
+      "credit": "Fruitnet.com / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/11191108@N04/4409126424",
+      "bytes": 164378,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -5115,14 +5124,15 @@
   {
     "id": "green-zebra-tomato",
     "primary": {
-      "src": "/plant-photos/amish-paste-tomato/primary.jpg",
+      "src": "/plant-photos/green-zebra-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tomato plant showing leaves, stems, and fruit.",
-      "caption": "Tomato plant showing leaves, stems, and fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
-      "bytes": 988733
+      "alt": "Green Zebra tomatoes ripening on the vine with leaves and stems.",
+      "caption": "Green Zebra tomatoes ripening on a living vine.",
+      "credit": "conall.. / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/16176711@N02/53153135369",
+      "bytes": 58319,
+      "position": "50% 56%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -5160,14 +5170,15 @@
   {
     "id": "habanero-pepper",
     "primary": {
-      "src": "/plant-photos/aji-amarillo-pepper/primary.jpg",
+      "src": "/plant-photos/habanero-pepper/primary.jpg",
       "label": "Plant photo",
-      "alt": "Jalapeno pepper plant showing leaves and peppers.",
-      "caption": "Jalapeno pepper plant showing leaves and peppers.",
-      "credit": "Salicyna / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACapsicum%20annuum%202020-07-28%201200.jpg",
-      "bytes": 536150
+      "alt": "Habanero peppers ripening on a leafy pepper plant.",
+      "caption": "Habanero peppers ripening on the plant.",
+      "credit": "Garrett Heath / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/79459685@N03/9338124875",
+      "bytes": 176563,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -6093,14 +6104,15 @@
   {
     "id": "jalapeno-pepper",
     "primary": {
-      "src": "/plant-photos/aji-amarillo-pepper/primary.jpg",
+      "src": "/plant-photos/jalapeno-pepper/primary.jpg",
       "label": "Plant photo",
-      "alt": "Jalapeno pepper plant showing leaves and peppers.",
-      "caption": "Jalapeno pepper plant showing leaves and peppers.",
-      "credit": "Salicyna / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACapsicum%20annuum%202020-07-28%201200.jpg",
-      "bytes": 536150
+      "alt": "Jalapeno peppers ripening on a leafy plant.",
+      "caption": "Jalapeno peppers on a living plant.",
+      "credit": "wharman / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/96763131@N00/249180962",
+      "bytes": 212287,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -6529,14 +6541,15 @@
   {
     "id": "jonagold-apple",
     "primary": {
-      "src": "/plant-photos/anna-apple/primary.jpg",
+      "src": "/plant-photos/jonagold-apple/primary.jpg",
       "label": "Plant photo",
-      "alt": "Apple branch showing leaves and fruit.",
-      "caption": "Apple branch showing leaves and fruit.",
-      "credit": "User:Doncsecz / Wikimedia Commons",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AJablan%20na%20Verici.JPG",
-      "bytes": 1716835
+      "alt": "Jonagold apple fruit ripening on a tree in an orchard.",
+      "caption": "Jonagold apple fruit ripening on the tree.",
+      "credit": "La.Catholique / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/38559542@N02/8167935405",
+      "bytes": 192849,
+      "position": "66% 48%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -7174,14 +7187,15 @@
   {
     "id": "liberty-apple",
     "primary": {
-      "src": "/plant-photos/anna-apple/primary.jpg",
+      "src": "/plant-photos/liberty-apple/primary.jpg",
       "label": "Plant photo",
-      "alt": "Apple tree showing leaves, branches, and fruit.",
-      "caption": "Apple tree showing leaves, branches, and fruit.",
-      "credit": "User:Doncsecz / Wikimedia Commons",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AJablan%20na%20Verici.JPG",
-      "bytes": 1716835
+      "alt": "Liberty apples hanging from leafy tree branches.",
+      "caption": "Liberty apples on a living tree with leaves and branches.",
+      "credit": "grongar / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/70757891@N00/9612489523",
+      "bytes": 110167,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -8104,14 +8118,15 @@
   {
     "id": "mortgage-lifter-tomato",
     "primary": {
-      "src": "/plant-photos/amish-paste-tomato/primary.jpg",
+      "src": "/plant-photos/mortgage-lifter-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tomato plant showing leaves, stems, and fruit.",
-      "caption": "Tomato plant showing leaves, stems, and fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
-      "bytes": 988733
+      "alt": "Mortgage Lifter tomato fruit ripening on a leafy vine.",
+      "caption": "Mortgage Lifter tomato fruit ripening on the vine.",
+      "credit": "F. D. Richards / Flickr",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/50697352@N00/50211012446",
+      "bytes": 191575,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -9081,14 +9096,15 @@
   {
     "id": "patriot-blueberry",
     "primary": {
-      "src": "/plant-photos/bluecrop-blueberry/primary.jpg",
+      "src": "/plant-photos/patriot-blueberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Blueberry fruit cluster on living stems and leaves.",
-      "caption": "Blueberry fruit cluster on living stems and leaves.",
-      "credit": "Judy Gallagher / Wikimedia Commons",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:High-bush_Blueberry_-_Vaccinium_corymbosum,_Julie_Metz_Wetlands,_Woodbridge,_Virginia.jpg",
-      "bytes": 508884
+      "alt": "Patriot blueberries ripening among leaves.",
+      "caption": "Patriot blueberry fruit ripening on the shrub.",
+      "credit": "Rob Duval / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blueberry-patriot-ripe-2012.jpg",
+      "bytes": 67196,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -10524,14 +10540,15 @@
   {
     "id": "san-marzano-tomato",
     "primary": {
-      "src": "/plant-photos/amish-paste-tomato/primary.jpg",
+      "src": "/plant-photos/san-marzano-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tomato plant showing leaves, stems, and fruit.",
-      "caption": "Tomato plant showing leaves, stems, and fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
-      "bytes": 988733
+      "alt": "San Marzano tomatoes ripening on a leafy vine.",
+      "caption": "San Marzano tomatoes ripening on the vine.",
+      "credit": "houstonfoodie / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/33150334@N02/6174972795",
+      "bytes": 224014,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -10763,14 +10780,15 @@
   {
     "id": "serrano-pepper",
     "primary": {
-      "src": "/plant-photos/aji-amarillo-pepper/primary.jpg",
+      "src": "/plant-photos/serrano-pepper/primary.jpg",
       "label": "Plant photo",
-      "alt": "Jalapeno pepper plant showing leaves and peppers.",
-      "caption": "Jalapeno pepper plant showing leaves and peppers.",
-      "credit": "Salicyna / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACapsicum%20annuum%202020-07-28%201200.jpg",
-      "bytes": 536150
+      "alt": "Red serrano peppers ripening on a leafy plant.",
+      "caption": "Serrano peppers ripening on the plant.",
+      "credit": "blumenbiene / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/47439717@N05/31528265947",
+      "bytes": 149624,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -12312,14 +12330,15 @@
   {
     "id": "tromboncino-squash",
     "primary": {
-      "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
+      "src": "/plant-photos/tromboncino-squash/primary.jpg",
       "label": "Plant photo",
-      "alt": "Squash vine showing broad leaves and developing fruit.",
-      "caption": "Squash vine showing leaves and developing fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Tromboncino squash fruit hanging from a leafy trellis.",
+      "caption": "Tromboncino squash fruit hanging from the living vine.",
+      "credit": "wallygrom / Flickr",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/33037982@N04/14983691618",
+      "bytes": 338027,
+      "position": "50% 48%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -13109,14 +13128,15 @@
   {
     "id": "yellow-crookneck-squash",
     "primary": {
-      "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
+      "src": "/plant-photos/yellow-crookneck-squash/primary.jpg",
       "label": "Plant photo",
-      "alt": "Butternut squash vine showing large leaves and fruit.",
-      "caption": "Butternut squash vine showing large leaves and fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Yellow crookneck squash fruit growing on the plant.",
+      "caption": "Yellow crookneck squash fruit growing on the plant.",
+      "credit": "Girl Interrupted Eating / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/35468144810@N01/4928386161",
+      "bytes": 141009,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
