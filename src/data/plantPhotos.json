@@ -1129,13 +1129,13 @@
     "primary": {
       "label": "Plant photo",
       "src": "/plant-photos/bitter-melon/primary.jpg",
-      "alt": "Bitter melon fruit and leaves on a vine.",
-      "caption": "Bitter melon fruit and leaves on a vine.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-080613-9613-Momordica_charantia-fruit_and_leaves-Water_plant_Sand_Island-Midway_Atoll_(24625958460).jpg",
-      "bytes": 250101,
-      "position": "34% 58%"
+      "alt": "Green bitter melon fruit hanging from a vine in a garden.",
+      "caption": "Green bitter melon fruit on a living vine.",
+      "credit": "?????? / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Karela_-_%E0%B4%AA%E0%B4%BE%E0%B4%B5%E0%B5%BD_05.JPG",
+      "bytes": 264959,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
@@ -2151,12 +2151,13 @@
     "primary": {
       "src": "/plant-photos/north-star-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cherry-like fruit hanging from leafy branches.",
-      "caption": "Cherry-like fruit on living stems and leaves.",
-      "credit": "Montanabw / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AEvansCherry2.JPG",
-      "bytes": 2032609
+      "alt": "Tart cherry fruit hanging from leafy branches as a representative bush cherry reference.",
+      "caption": "Tart cherry fruit and leafy stems as a representative bush cherry reference.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 256529,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -7415,13 +7416,13 @@
     "primary": {
       "label": "Plant photo",
       "src": "/plant-photos/luffa-gourd/primary.jpg",
-      "alt": "Luffa gourd vine showing leaves, flower, and hanging fruit.",
-      "caption": "Luffa gourd vine showing leaves, flower, and hanging fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-120606-7064-Luffa_aegyptiaca-flower_fruit_leaves-Laulima_Farm_Kipahulu-Maui_(42837842754).jpg",
-      "bytes": 229437,
-      "position": "48% 43%"
+      "alt": "Luffa gourds hanging among vine leaves.",
+      "caption": "Luffa gourds hanging on a leafy vine.",
+      "credit": "ArpitShau1215 / Wikimedia Commons",
+      "license": "CC BY 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sponge_Gourd_in_my_garden.jpg",
+      "bytes": 282835,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
@@ -8254,14 +8255,15 @@
   {
     "id": "nanking-cherry",
     "primary": {
-      "src": "/plant-photos/north-star-cherry/primary.jpg",
+      "src": "/plant-photos/nanking-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cherry-like fruit hanging from leafy branches.",
-      "caption": "Cherry-like fruit on living stems and leaves.",
-      "credit": "Montanabw / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AEvansCherry2.JPG",
-      "bytes": 2032609
+      "alt": "Nanking cherry fruit on a leafy branch.",
+      "caption": "Nanking cherry fruit and leaves on a living branch.",
+      "credit": "Kristof Zyskowski & Yulia Bereshpolova / Wikimedia Commons",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rosaceae-_Prunus_tomentosa_(nanking_cherry)_2.jpg",
+      "bytes": 261284,
+      "position": "58% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -8511,12 +8513,13 @@
     "primary": {
       "src": "/plant-photos/north-star-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tart cherry branch showing leaves and fruit.",
-      "caption": "Tart cherry branch showing leaves and fruit.",
-      "credit": "Montanabw / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AEvansCherry2.JPG",
-      "bytes": 2032609
+      "alt": "Tart cherry fruit hanging from leafy branches.",
+      "caption": "Tart cherry fruit on living stems and leaves.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 256529,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -9034,12 +9037,13 @@
     "primary": {
       "src": "/plant-photos/russian-26-pomegranate/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pomegranate fruit on a leafy tree branch.",
-      "caption": "Pomegranate branch structure with foliage and fruit.",
-      "credit": "Yann Forget / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pomegranate_tree,_Dobhi,_Kullu_district.jpg",
-      "bytes": 922367
+      "alt": "Pomegranate fruit hanging among tree leaves.",
+      "caption": "Pomegranate fruit on a living tree with leafy branch structure.",
+      "credit": "Kevin Payravi / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:PomegranateTree.jpg",
+      "bytes": 440934,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -10189,12 +10193,13 @@
     "primary": {
       "src": "/plant-photos/north-star-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cherry-like fruit hanging from leafy branches.",
-      "caption": "Cherry-like fruit on living stems and leaves.",
-      "credit": "Montanabw / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AEvansCherry2.JPG",
-      "bytes": 2032609
+      "alt": "Tart cherry fruit hanging from leafy branches as a representative bush cherry reference.",
+      "caption": "Tart cherry fruit and leafy stems as a representative bush cherry reference.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 256529,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -10399,12 +10404,13 @@
     "primary": {
       "src": "/plant-photos/russian-26-pomegranate/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pomegranate fruit on a leafy tree branch.",
-      "caption": "Pomegranate branch structure with foliage and fruit.",
-      "credit": "Yann Forget / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pomegranate_tree,_Dobhi,_Kullu_district.jpg",
-      "bytes": 922367
+      "alt": "Pomegranate fruit hanging among tree leaves.",
+      "caption": "Pomegranate fruit on a living tree with leafy branch structure.",
+      "credit": "Kevin Payravi / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:PomegranateTree.jpg",
+      "bytes": 440934,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -10474,12 +10480,13 @@
     "primary": {
       "src": "/plant-photos/russian-26-pomegranate/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pomegranate fruit on a leafy tree branch.",
-      "caption": "Pomegranate branch structure with foliage and fruit.",
-      "credit": "Yann Forget / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pomegranate_tree,_Dobhi,_Kullu_district.jpg",
-      "bytes": 922367
+      "alt": "Pomegranate fruit hanging among tree leaves.",
+      "caption": "Pomegranate fruit on a living tree with leafy branch structure.",
+      "credit": "Kevin Payravi / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:PomegranateTree.jpg",
+      "bytes": 440934,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -12983,12 +12990,13 @@
     "primary": {
       "src": "/plant-photos/russian-26-pomegranate/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pomegranate fruit on a leafy tree branch.",
-      "caption": "Pomegranate branch structure with foliage and fruit.",
-      "credit": "Yann Forget / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pomegranate_tree,_Dobhi,_Kullu_district.jpg",
-      "bytes": 922367
+      "alt": "Pomegranate fruit hanging among tree leaves.",
+      "caption": "Pomegranate fruit on a living tree with leafy branch structure.",
+      "credit": "Kevin Payravi / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:PomegranateTree.jpg",
+      "bytes": 440934,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
