@@ -42,6 +42,7 @@ plantPhotos.forEach((entry) => {
   "/blog/garden-pest-cabbage-worms.jpg",
   "/blog/garden-pest-aphids.jpg",
   "/blog/garden-beds-hero.jpg",
+  "/blog/heat-tolerant-plants-hero.jpg",
   "/blog/fruit-tree-apple-hero.jpg",
   "/blog/drip-irrigation-hero.jpg",
   "/blog/zone-7-starter-kit-hero.jpg"
