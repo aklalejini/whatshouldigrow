@@ -358,14 +358,14 @@
   {
     "id": "apache-blackberry",
     "primary": {
-      "src": "/plant-photos/apache-blackberry/primary.jpg",
+      "src": "/plant-photos/ouachita-blackberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Bramble cane showing leaves and berries.",
-      "caption": "Bramble cane showing leaves and berries.",
-      "credit": "Rosser1954 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlackberry%20(Rubus%20fruticosus)%20flower%20-%20Shewalton.JPG",
-      "bytes": 642281
+      "alt": "Blackberry cane showing leaves and ripening fruit.",
+      "caption": "Blackberry cane with leaves and ripening fruit.",
+      "credit": "George Chernilevsky / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blackberry_fruits_2008_G1.jpg",
+      "bytes": 1776157
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -764,14 +764,14 @@
   {
     "id": "balaton-cherry",
     "primary": {
-      "src": "/plant-photos/balaton-cherry/primary.jpg",
+      "src": "/plant-photos/montmorency-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Sweet cherry branch showing leaves and fruit.",
-      "caption": "Sweet cherry branch showing leaves and fruit.",
-      "credit": "D-Kuru / Wikimedia Commons",
-      "license": "CC BY-SA 3.0 at",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFlower%20of%20sweet%20cherry%20after%20sherry%20grew%20out%20PNr%C2%B00023.jpg",
-      "bytes": 382513
+      "alt": "Cherry fruit hanging from leafy branches.",
+      "caption": "Cherry fruit on living stems and leaves.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 394388
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -1110,14 +1110,14 @@
   {
     "id": "bing-cherry",
     "primary": {
-      "src": "/plant-photos/balaton-cherry/primary.jpg",
+      "src": "/plant-photos/montmorency-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Sweet cherry branch showing leaves and fruit.",
-      "caption": "Sweet cherry branch showing leaves and fruit.",
-      "credit": "D-Kuru / Wikimedia Commons",
-      "license": "CC BY-SA 3.0 at",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFlower%20of%20sweet%20cherry%20after%20sherry%20grew%20out%20PNr%C2%B00023.jpg",
-      "bytes": 382513
+      "alt": "Cherry fruit hanging from leafy branches.",
+      "caption": "Cherry fruit on living stems and leaves.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 394388
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -1125,14 +1125,15 @@
   {
     "id": "bitter-melon",
     "primary": {
-      "src": "/plant-photos/bitter-melon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Bitter melon vine showing foliage and plant structure.",
-      "caption": "Bitter melon shown as a representative living plant reference.",
-      "credit": "HitroMilanese",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bitter_gourd-_bitter_melon_plant.JPG",
-      "bytes": 207198
+      "src": "/plant-photos/bitter-melon/primary.jpg",
+      "alt": "Bitter melon fruit and leaves on a vine.",
+      "caption": "Bitter melon fruit and leaves on a vine.",
+      "credit": "Forest and Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0 us",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-080613-9613-Momordica_charantia-fruit_and_leaves-Water_plant_Sand_Island-Midway_Atoll_(24625958460).jpg",
+      "bytes": 250101,
+      "position": "34% 58%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
@@ -1336,14 +1337,14 @@
   {
     "id": "black-tartarian-cherry",
     "primary": {
-      "src": "/plant-photos/balaton-cherry/primary.jpg",
+      "src": "/plant-photos/montmorency-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cherry branch showing leaves and fruit.",
-      "caption": "Cherry branch showing leaves and fruit.",
-      "credit": "D-Kuru / Wikimedia Commons",
-      "license": "CC BY-SA 3.0 at",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFlower%20of%20sweet%20cherry%20after%20sherry%20grew%20out%20PNr%C2%B00023.jpg",
-      "bytes": 382513
+      "alt": "Cherry fruit hanging from leafy branches.",
+      "caption": "Cherry fruit on living stems and leaves.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 394388
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -1366,14 +1367,14 @@
   {
     "id": "blackgold-cherry",
     "primary": {
-      "src": "/plant-photos/balaton-cherry/primary.jpg",
+      "src": "/plant-photos/montmorency-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Sweet cherry branch showing leaves and fruit.",
-      "caption": "Sweet cherry branch showing leaves and fruit.",
-      "credit": "D-Kuru / Wikimedia Commons",
-      "license": "CC BY-SA 3.0 at",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFlower%20of%20sweet%20cherry%20after%20sherry%20grew%20out%20PNr%C2%B00023.jpg",
-      "bytes": 382513
+      "alt": "Cherry fruit hanging from leafy branches.",
+      "caption": "Cherry fruit on living stems and leaves.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 394388
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -1786,14 +1787,14 @@
   {
     "id": "boysenberry",
     "primary": {
-      "src": "/plant-photos/apache-blackberry/primary.jpg",
+      "src": "/plant-photos/ouachita-blackberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Bramble cane showing leaves and berries.",
-      "caption": "Bramble cane showing leaves and berries.",
-      "credit": "Rosser1954 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlackberry%20(Rubus%20fruticosus)%20flower%20-%20Shewalton.JPG",
-      "bytes": 642281
+      "alt": "Blackberry cane showing leaves and ripening fruit.",
+      "caption": "Blackberry cane with leaves and ripening fruit.",
+      "credit": "George Chernilevsky / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blackberry_fruits_2008_G1.jpg",
+      "bytes": 1776157
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -2146,14 +2147,14 @@
   {
     "id": "carmine-jewel-cherry",
     "primary": {
-      "src": "/plant-photos/carmine-jewel-cherry/primary.jpg",
+      "src": "/plant-photos/north-star-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Nanking cherry shrub showing leafy branches and red cherry-like fruit.",
-      "caption": "Nanking cherry shrub showing leafy branches and red cherry-like fruit.",
-      "credit": "daryl_mitchell from Saskatoon, Saskatchewan, Canada / Wikimedia Commons",
-      "license": "CC BY-SA 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nanking_Cherry_Flowers_(7193648456).jpg",
-      "bytes": 921336
+      "alt": "Cherry-like fruit hanging from leafy branches.",
+      "caption": "Cherry-like fruit on living stems and leaves.",
+      "credit": "Montanabw / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AEvansCherry2.JPG",
+      "bytes": 2032609
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -2322,17 +2323,17 @@
   {
     "id": "changsha-mandarin",
     "primary": {
-      "src": "/plant-photos/yuzu-citrus/primary.jpg",
+      "src": "/plant-photos/owari-satsuma/primary.jpg",
       "label": "Plant photo",
-      "alt": "Changsha mandarin plant showing foliage and plant structure.",
-      "caption": "Changsha mandarin uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Kujiro / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yuzutreeikeda.png",
-      "bytes": 500512
+      "alt": "Mandarin branch showing evergreen leaves and orange fruit.",
+      "caption": "Mandarin branch showing evergreen leaves and orange fruit.",
+      "credit": "Horacio Cambeiro / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A%C3%81rbol%20de%20mandarinas%20en%20temporada%20de%20cosecha.jpg",
+      "bytes": 762676
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "charentais-melon",
@@ -2352,14 +2353,15 @@
   {
     "id": "charleston-gray-watermelon",
     "primary": {
-      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Watermelon vine showing lobed leaves and fruit.",
-      "caption": "Watermelon vine showing lobed leaves and fruit.",
-      "credit": "Famartin / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A2023-09-17%2016%2015%2000%20An%20overgrown%20watermelon%20vine%20growing%20out%20of%20the%20crack%20in%20a%20concrete%20patio%20along%20Mercer%20County%20Route%20526%20(Robbinsville-Edinburg%20Road)%20in%20Robbinsville%20Township%2C%20Mercer%20County%2C%20New%20Jersey.jpg",
-      "bytes": 1358314
+      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
+      "alt": "Watermelon fruit growing among leafy vines.",
+      "caption": "Watermelon fruit growing among leafy vines.",
+      "credit": "Forest and Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0 us",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-091108-9404-Citrullus_lanatus-fruit_and_vine_trailing_into_gulch-Olinda-Maui_(24962955856).jpg",
+      "bytes": 278973,
+      "position": "43% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -2472,14 +2474,14 @@
   {
     "id": "chester-blackberry",
     "primary": {
-      "src": "/plant-photos/apache-blackberry/primary.jpg",
+      "src": "/plant-photos/ouachita-blackberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Bramble cane showing leaves and berries.",
-      "caption": "Bramble cane showing leaves and berries.",
-      "credit": "Rosser1954 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlackberry%20(Rubus%20fruticosus)%20flower%20-%20Shewalton.JPG",
-      "bytes": 642281
+      "alt": "Blackberry cane showing leaves and ripening fruit.",
+      "caption": "Blackberry cane with leaves and ripening fruit.",
+      "credit": "George Chernilevsky / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blackberry_fruits_2008_G1.jpg",
+      "bytes": 1776157
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -3293,14 +3295,15 @@
   {
     "id": "crimson-sweet-watermelon",
     "primary": {
-      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Watermelon vine showing lobed leaves and fruit.",
-      "caption": "Watermelon vine showing lobed leaves and fruit.",
-      "credit": "Famartin / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A2023-09-17%2016%2015%2000%20An%20overgrown%20watermelon%20vine%20growing%20out%20of%20the%20crack%20in%20a%20concrete%20patio%20along%20Mercer%20County%20Route%20526%20(Robbinsville-Edinburg%20Road)%20in%20Robbinsville%20Township%2C%20Mercer%20County%2C%20New%20Jersey.jpg",
-      "bytes": 1358314
+      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
+      "alt": "Watermelon fruit growing among leafy vines.",
+      "caption": "Watermelon fruit growing among leafy vines.",
+      "credit": "Forest and Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0 us",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-091108-9404-Citrullus_lanatus-fruit_and_vine_trailing_into_gulch-Olinda-Maui_(24962955856).jpg",
+      "bytes": 278973,
+      "position": "43% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -3564,17 +3567,17 @@
   {
     "id": "dekopon-mandarin",
     "primary": {
-      "src": "/plant-photos/yuzu-citrus/primary.jpg",
+      "src": "/plant-photos/owari-satsuma/primary.jpg",
       "label": "Plant photo",
-      "alt": "Dekopon mandarin plant showing foliage and plant structure.",
-      "caption": "Dekopon mandarin uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Kujiro / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yuzutreeikeda.png",
-      "bytes": 500512
+      "alt": "Mandarin branch showing evergreen leaves and orange fruit.",
+      "caption": "Mandarin branch showing evergreen leaves and orange fruit.",
+      "credit": "Horacio Cambeiro / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A%C3%81rbol%20de%20mandarinas%20en%20temporada%20de%20cosecha.jpg",
+      "bytes": 762676
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "delicata-squash",
@@ -5227,14 +5230,14 @@
   {
     "id": "hami-melon",
     "primary": {
-      "src": "/plant-photos/korean-melon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Hami melon vine showing foliage and plant structure.",
-      "caption": "Hami melon uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Forest and Kim Starr",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-100611-6921-Cucumis_melo-Korean_melon_fruit-Olinda-Maui_(24744393430).jpg",
-      "bytes": 287972
+      "src": "/plant-photos/korean-melon/primary.jpg",
+      "alt": "Melon fruit growing among vine leaves as a representative plant reference for Hami melon.",
+      "caption": "Melon fruit growing among vine leaves as a representative reference for Hami melon.",
+      "credit": "Geumgang Farm / Wikimedia Commons",
+      "license": "CC BY 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Korean_melons_1.jpg",
+      "bytes": 95419
     },
     "details": [],
     "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
@@ -6760,17 +6763,17 @@
   {
     "id": "kishu-mandarin",
     "primary": {
-      "src": "/plant-photos/yuzu-citrus/primary.jpg",
+      "src": "/plant-photos/owari-satsuma/primary.jpg",
       "label": "Plant photo",
-      "alt": "Kishu mandarin plant showing foliage and plant structure.",
-      "caption": "Kishu mandarin uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Kujiro / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yuzutreeikeda.png",
-      "bytes": 500512
+      "alt": "Mandarin branch showing evergreen leaves and orange fruit.",
+      "caption": "Mandarin branch showing evergreen leaves and orange fruit.",
+      "credit": "Horacio Cambeiro / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A%C3%81rbol%20de%20mandarinas%20en%20temporada%20de%20cosecha.jpg",
+      "bytes": 762676
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "kleims-hardy-gardenia",
@@ -6865,14 +6868,14 @@
   {
     "id": "korean-melon",
     "primary": {
-      "src": "/plant-photos/korean-melon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Korean melon vine showing foliage and plant structure.",
-      "caption": "Korean melon shown as a representative living plant reference.",
-      "credit": "Forest and Kim Starr",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-100611-6921-Cucumis_melo-Korean_melon_fruit-Olinda-Maui_(24744393430).jpg",
-      "bytes": 287972
+      "src": "/plant-photos/korean-melon/primary.jpg",
+      "alt": "Korean melon fruit growing among vine leaves.",
+      "caption": "Korean melon fruit growing among vine leaves.",
+      "credit": "Geumgang Farm / Wikimedia Commons",
+      "license": "CC BY 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Korean_melons_1.jpg",
+      "bytes": 95419
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
@@ -7015,14 +7018,14 @@
   {
     "id": "lapins-cherry",
     "primary": {
-      "src": "/plant-photos/balaton-cherry/primary.jpg",
+      "src": "/plant-photos/montmorency-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cherry branch showing leaves and fruit.",
-      "caption": "Cherry branch showing leaves and fruit.",
-      "credit": "D-Kuru / Wikimedia Commons",
-      "license": "CC BY-SA 3.0 at",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFlower%20of%20sweet%20cherry%20after%20sherry%20grew%20out%20PNr%C2%B00023.jpg",
-      "bytes": 382513
+      "alt": "Cherry fruit hanging from leafy branches.",
+      "caption": "Cherry fruit on living stems and leaves.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 394388
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -7330,14 +7333,14 @@
   {
     "id": "loganberry",
     "primary": {
-      "src": "/plant-photos/apache-blackberry/primary.jpg",
+      "src": "/plant-photos/ouachita-blackberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Bramble cane showing leaves and berries.",
-      "caption": "Bramble cane showing leaves and berries.",
-      "credit": "Rosser1954 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlackberry%20(Rubus%20fruticosus)%20flower%20-%20Shewalton.JPG",
-      "bytes": 642281
+      "alt": "Blackberry cane showing leaves and ripening fruit.",
+      "caption": "Blackberry cane with leaves and ripening fruit.",
+      "credit": "George Chernilevsky / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blackberry_fruits_2008_G1.jpg",
+      "bytes": 1776157
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -7405,14 +7408,15 @@
   {
     "id": "luffa-gourd",
     "primary": {
-      "src": "/plant-photos/luffa-gourd/primary.jpg",
       "label": "Plant photo",
-      "alt": "Luffa gourd vine showing foliage and plant structure.",
-      "caption": "Luffa gourd shown as a representative living plant reference.",
-      "credit": "Dinkun Chen",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Luffa_aegyptiaca_Seedlings_(5).jpg",
-      "bytes": 312442
+      "src": "/plant-photos/luffa-gourd/primary.jpg",
+      "alt": "Luffa gourd vine showing leaves, flower, and hanging fruit.",
+      "caption": "Luffa gourd vine showing leaves, flower, and hanging fruit.",
+      "credit": "Forest and Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0 us",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-120606-7064-Luffa_aegyptiaca-flower_fruit_leaves-Laulima_Farm_Kipahulu-Maui_(42837842754).jpg",
+      "bytes": 229437,
+      "position": "48% 43%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
@@ -7736,14 +7740,14 @@
   {
     "id": "maypop-passionfruit",
     "primary": {
-      "src": "/plant-photos/maypop-passionfruit/primary.jpg",
       "label": "Plant photo",
-      "alt": "Maypop passionflower vine with leaves and flower.",
-      "caption": "Maypop vine foliage and flower structure.",
-      "credit": "Jhenderson777 / Wikimedia Commons",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Passiflora_incarnata_2.jpg",
-      "bytes": 558667
+      "src": "/plant-photos/maypop-passionfruit/primary.jpg",
+      "alt": "Maypop passionfruit hanging among vine leaves.",
+      "caption": "Maypop passionfruit hanging among vine leaves.",
+      "credit": "H. Zell / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Passiflora_incarnata_004.JPG",
+      "bytes": 593383
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -8033,14 +8037,15 @@
   {
     "id": "moon-and-stars-watermelon",
     "primary": {
-      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Watermelon vine showing leaves and fruit.",
-      "caption": "Watermelon vine showing leaves and fruit.",
-      "credit": "Famartin / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A2023-09-17%2016%2015%2000%20An%20overgrown%20watermelon%20vine%20growing%20out%20of%20the%20crack%20in%20a%20concrete%20patio%20along%20Mercer%20County%20Route%20526%20(Robbinsville-Edinburg%20Road)%20in%20Robbinsville%20Township%2C%20Mercer%20County%2C%20New%20Jersey.jpg",
-      "bytes": 1358314
+      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
+      "alt": "Watermelon fruit growing among leafy vines.",
+      "caption": "Watermelon fruit growing among leafy vines.",
+      "credit": "Forest and Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0 us",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-091108-9404-Citrullus_lanatus-fruit_and_vine_trailing_into_gulch-Olinda-Maui_(24962955856).jpg",
+      "bytes": 278973,
+      "position": "43% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -8244,14 +8249,14 @@
   {
     "id": "nanking-cherry",
     "primary": {
-      "src": "/plant-photos/carmine-jewel-cherry/primary.jpg",
+      "src": "/plant-photos/north-star-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Nanking cherry shrub showing leafy branches and red cherry-like fruit.",
-      "caption": "Nanking cherry shrub showing leafy branches and red cherry-like fruit.",
-      "credit": "daryl_mitchell from Saskatoon, Saskatchewan, Canada / Wikimedia Commons",
-      "license": "CC BY-SA 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nanking_Cherry_Flowers_(7193648456).jpg",
-      "bytes": 921336
+      "alt": "Cherry-like fruit hanging from leafy branches.",
+      "caption": "Cherry-like fruit on living stems and leaves.",
+      "credit": "Montanabw / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AEvansCherry2.JPG",
+      "bytes": 2032609
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -8319,14 +8324,14 @@
   {
     "id": "navajo-blackberry",
     "primary": {
-      "src": "/plant-photos/apache-blackberry/primary.jpg",
+      "src": "/plant-photos/ouachita-blackberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Blackberry cane showing leaves and berries.",
-      "caption": "Blackberry cane showing leaves and berries.",
-      "credit": "Rosser1954 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlackberry%20(Rubus%20fruticosus)%20flower%20-%20Shewalton.JPG",
-      "bytes": 642281
+      "alt": "Blackberry cane showing leaves and ripening fruit.",
+      "caption": "Blackberry cane with leaves and ripening fruit.",
+      "credit": "George Chernilevsky / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blackberry_fruits_2008_G1.jpg",
+      "bytes": 1776157
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -8739,14 +8744,15 @@
   {
     "id": "orangeglo-watermelon",
     "primary": {
-      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Orangeglo watermelon shown with representative watermelon vine foliage and fruit.",
-      "caption": "Watermelon vine showing leaves and fruit as a representative reference for Orangeglo.",
-      "credit": "Famartin / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A2023-09-17%2016%2015%2000%20An%20overgrown%20watermelon%20vine%20growing%20out%20of%20the%20crack%20in%20a%20concrete%20patio%20along%20Mercer%20County%20Route%20526%20(Robbinsville-Edinburg%20Road)%20in%20Robbinsville%20Township%2C%20Mercer%20County%2C%20New%20Jersey.jpg",
-      "bytes": 1358314
+      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
+      "alt": "Watermelon fruit and leafy vines shown as a representative plant reference for Orangeglo.",
+      "caption": "Watermelon fruit and leafy vines as a representative reference for Orangeglo.",
+      "credit": "Forest and Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0 us",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-091108-9404-Citrullus_lanatus-fruit_and_vine_trailing_into_gulch-Olinda-Maui_(24962955856).jpg",
+      "bytes": 278973,
+      "position": "43% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
@@ -9021,14 +9027,14 @@
   {
     "id": "parfianka-pomegranate",
     "primary": {
-      "src": "/plant-photos/parfianka-pomegranate/primary.jpg",
+      "src": "/plant-photos/russian-26-pomegranate/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pomegranate shrub showing leaves, stems, and fruit or flowers.",
-      "caption": "Pomegranate shrub showing leaves, stems, and fruit or flowers.",
-      "credit": "Nesaj210 / Wikimedia Commons",
-      "license": "CC0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AClose-up%20of%20Pomegranate%20Tree%20Branch.jpg",
-      "bytes": 391998
+      "alt": "Pomegranate fruit on a leafy tree branch.",
+      "caption": "Pomegranate branch structure with foliage and fruit.",
+      "credit": "Yann Forget / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pomegranate_tree,_Dobhi,_Kullu_district.jpg",
+      "bytes": 922367
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -9501,14 +9507,14 @@
   {
     "id": "prime-ark-freedom-blackberry",
     "primary": {
-      "src": "/plant-photos/apache-blackberry/primary.jpg",
+      "src": "/plant-photos/ouachita-blackberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Blackberry cane showing leaves and berries.",
-      "caption": "Blackberry cane showing leaves and berries.",
-      "credit": "Rosser1954 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlackberry%20(Rubus%20fruticosus)%20flower%20-%20Shewalton.JPG",
-      "bytes": 642281
+      "alt": "Blackberry cane showing leaves and ripening fruit.",
+      "caption": "Blackberry cane with leaves and ripening fruit.",
+      "credit": "George Chernilevsky / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blackberry_fruits_2008_G1.jpg",
+      "bytes": 1776157
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -9681,14 +9687,14 @@
   {
     "id": "rainier-cherry",
     "primary": {
-      "src": "/plant-photos/balaton-cherry/primary.jpg",
+      "src": "/plant-photos/montmorency-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Sweet cherry branch showing leaves and fruit.",
-      "caption": "Sweet cherry branch showing leaves and fruit.",
-      "credit": "D-Kuru / Wikimedia Commons",
-      "license": "CC BY-SA 3.0 at",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFlower%20of%20sweet%20cherry%20after%20sherry%20grew%20out%20PNr%C2%B00023.jpg",
-      "bytes": 382513
+      "alt": "Cherry fruit hanging from leafy branches.",
+      "caption": "Cherry fruit on living stems and leaves.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 394388
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -10071,14 +10077,14 @@
   {
     "id": "regent-serviceberry",
     "primary": {
-      "src": "/plant-photos/regent-serviceberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Serviceberry blossoms on woody stems with leaves.",
-      "caption": "Serviceberry flowers, stems, and emerging leaves.",
-      "credit": "brewbooks / Wikimedia Commons",
-      "license": "CC BY-SA 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Serviceberry_-_Flickr_-_brewbooks_(1).jpg",
-      "bytes": 375392
+      "src": "/plant-photos/regent-serviceberry/primary.jpg",
+      "alt": "Serviceberry fruit ripening on leafy branches.",
+      "caption": "Serviceberry fruit ripening on leafy branches.",
+      "credit": "terri_bateman / Wikimedia Commons",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Juneberry_(Amelanchier)_tree_with_fruit.jpg",
+      "bytes": 85169
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -10176,14 +10182,14 @@
   {
     "id": "romeo-bush-cherry",
     "primary": {
-      "src": "/plant-photos/carmine-jewel-cherry/primary.jpg",
+      "src": "/plant-photos/north-star-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Nanking cherry shrub showing leafy branches and red cherry-like fruit.",
-      "caption": "Nanking cherry shrub showing leafy branches and red cherry-like fruit.",
-      "credit": "daryl_mitchell from Saskatoon, Saskatchewan, Canada / Wikimedia Commons",
-      "license": "CC BY-SA 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nanking_Cherry_Flowers_(7193648456).jpg",
-      "bytes": 921336
+      "alt": "Cherry-like fruit hanging from leafy branches.",
+      "caption": "Cherry-like fruit on living stems and leaves.",
+      "credit": "Montanabw / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AEvansCherry2.JPG",
+      "bytes": 2032609
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -10461,14 +10467,14 @@
   {
     "id": "salavatski-pomegranate",
     "primary": {
-      "src": "/plant-photos/parfianka-pomegranate/primary.jpg",
+      "src": "/plant-photos/russian-26-pomegranate/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pomegranate shrub showing leaves, stems, and fruit or flowers.",
-      "caption": "Pomegranate shrub showing leaves, stems, and fruit or flowers.",
-      "credit": "Nesaj210 / Wikimedia Commons",
-      "license": "CC0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AClose-up%20of%20Pomegranate%20Tree%20Branch.jpg",
-      "bytes": 391998
+      "alt": "Pomegranate fruit on a leafy tree branch.",
+      "caption": "Pomegranate branch structure with foliage and fruit.",
+      "credit": "Yann Forget / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pomegranate_tree,_Dobhi,_Kullu_district.jpg",
+      "bytes": 922367
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -10760,14 +10766,14 @@
   {
     "id": "serviceberry-autumn-brilliance",
     "primary": {
-      "src": "/plant-photos/regent-serviceberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Serviceberry flowers, stems, and emerging leaves.",
-      "caption": "Serviceberry flowers, stems, and emerging leaves.",
-      "credit": "brewbooks / Wikimedia Commons",
-      "license": "CC BY-SA 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Serviceberry_-_Flickr_-_brewbooks_(1).jpg",
-      "bytes": 375392
+      "src": "/plant-photos/regent-serviceberry/primary.jpg",
+      "alt": "Serviceberry fruit ripening on leafy branches.",
+      "caption": "Serviceberry fruit ripening on leafy branches.",
+      "credit": "terri_bateman / Wikimedia Commons",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Juneberry_(Amelanchier)_tree_with_fruit.jpg",
+      "bytes": 85169
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -11331,14 +11337,14 @@
   {
     "id": "standing-ovation-serviceberry",
     "primary": {
-      "src": "/plant-photos/regent-serviceberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Serviceberry branch showing leaves, flowers, and fruit where visible.",
-      "caption": "Serviceberry branch showing leaves, flowers, and fruit where visible.",
-      "credit": "brewbooks / Wikimedia Commons",
-      "license": "CC BY-SA 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Serviceberry_-_Flickr_-_brewbooks_(1).jpg",
-      "bytes": 375392
+      "src": "/plant-photos/regent-serviceberry/primary.jpg",
+      "alt": "Serviceberry fruit ripening on leafy branches.",
+      "caption": "Serviceberry fruit ripening on leafy branches.",
+      "credit": "terri_bateman / Wikimedia Commons",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Juneberry_(Amelanchier)_tree_with_fruit.jpg",
+      "bytes": 85169
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -11361,14 +11367,14 @@
   {
     "id": "stella-cherry",
     "primary": {
-      "src": "/plant-photos/balaton-cherry/primary.jpg",
+      "src": "/plant-photos/montmorency-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Sweet cherry branch showing leaves and fruit.",
-      "caption": "Sweet cherry branch showing leaves and fruit.",
-      "credit": "D-Kuru / Wikimedia Commons",
-      "license": "CC BY-SA 3.0 at",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFlower%20of%20sweet%20cherry%20after%20sherry%20grew%20out%20PNr%C2%B00023.jpg",
-      "bytes": 382513
+      "alt": "Cherry fruit hanging from leafy branches.",
+      "caption": "Cherry fruit on living stems and leaves.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 394388
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -11436,29 +11442,30 @@
   {
     "id": "sudachi-citrus",
     "primary": {
-      "src": "/plant-photos/sudachi-citrus/primary.jpg",
+      "src": "/plant-photos/yuzu-citrus/primary.jpg",
       "label": "Plant photo",
-      "alt": "Sudachi citrus plant showing foliage and plant structure.",
-      "caption": "Sudachi citrus shown as a representative living plant reference.",
-      "credit": "Leo219",
+      "alt": "Citrus tree showing evergreen leaves and fruit.",
+      "caption": "Citrus tree showing evergreen leaves and fruit.",
+      "credit": "Kujiro / Wikimedia Commons",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_green_sudachi_citrus_fruit_against_white_background.png",
-      "bytes": 206105
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yuzutreeikeda.png",
+      "bytes": 500512
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "sugar-baby-watermelon",
     "primary": {
-      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Watermelon vine showing lobed leaves and fruit.",
-      "caption": "Watermelon vine showing lobed leaves and fruit.",
-      "credit": "Famartin / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A2023-09-17%2016%2015%2000%20An%20overgrown%20watermelon%20vine%20growing%20out%20of%20the%20crack%20in%20a%20concrete%20patio%20along%20Mercer%20County%20Route%20526%20(Robbinsville-Edinburg%20Road)%20in%20Robbinsville%20Township%2C%20Mercer%20County%2C%20New%20Jersey.jpg",
-      "bytes": 1358314
+      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
+      "alt": "Watermelon fruit growing among leafy vines.",
+      "caption": "Watermelon fruit growing among leafy vines.",
+      "credit": "Forest and Kim Starr / Wikimedia Commons",
+      "license": "CC BY 3.0 us",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-091108-9404-Citrullus_lanatus-fruit_and_vine_trailing_into_gulch-Olinda-Maui_(24962955856).jpg",
+      "bytes": 278973,
+      "position": "43% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -11782,14 +11789,14 @@
   {
     "id": "sweetheart-cherry",
     "primary": {
-      "src": "/plant-photos/balaton-cherry/primary.jpg",
+      "src": "/plant-photos/montmorency-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cherry branch showing leaves and fruit.",
-      "caption": "Cherry branch showing leaves and fruit.",
-      "credit": "D-Kuru / Wikimedia Commons",
-      "license": "CC BY-SA 3.0 at",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFlower%20of%20sweet%20cherry%20after%20sherry%20grew%20out%20PNr%C2%B00023.jpg",
-      "bytes": 382513
+      "alt": "Cherry fruit hanging from leafy branches.",
+      "caption": "Cherry fruit on living stems and leaves.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 394388
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -11917,14 +11924,14 @@
   {
     "id": "tayberry",
     "primary": {
-      "src": "/plant-photos/apache-blackberry/primary.jpg",
+      "src": "/plant-photos/ouachita-blackberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Bramble cane showing leaves and berries.",
-      "caption": "Bramble cane showing leaves and berries.",
-      "credit": "Rosser1954 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlackberry%20(Rubus%20fruticosus)%20flower%20-%20Shewalton.JPG",
-      "bytes": 642281
+      "alt": "Blackberry cane showing leaves and ripening fruit.",
+      "caption": "Blackberry cane with leaves and ripening fruit.",
+      "credit": "George Chernilevsky / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blackberry_fruits_2008_G1.jpg",
+      "bytes": 1776157
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -12263,14 +12270,14 @@
   {
     "id": "triple-crown-blackberry",
     "primary": {
-      "src": "/plant-photos/apache-blackberry/primary.jpg",
+      "src": "/plant-photos/ouachita-blackberry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Blackberry cane showing leaves and berries.",
-      "caption": "Blackberry cane showing leaves and berries.",
-      "credit": "Rosser1954 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlackberry%20(Rubus%20fruticosus)%20flower%20-%20Shewalton.JPG",
-      "bytes": 642281
+      "alt": "Blackberry cane showing leaves and ripening fruit.",
+      "caption": "Blackberry cane with leaves and ripening fruit.",
+      "credit": "George Chernilevsky / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blackberry_fruits_2008_G1.jpg",
+      "bytes": 1776157
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -12368,14 +12375,14 @@
   {
     "id": "utah-giant-cherry",
     "primary": {
-      "src": "/plant-photos/balaton-cherry/primary.jpg",
+      "src": "/plant-photos/montmorency-cherry/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cherry branch showing leaves and fruit.",
-      "caption": "Cherry branch showing leaves and fruit.",
-      "credit": "D-Kuru / Wikimedia Commons",
-      "license": "CC BY-SA 3.0 at",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AFlower%20of%20sweet%20cherry%20after%20sherry%20grew%20out%20PNr%C2%B00023.jpg",
-      "bytes": 382513
+      "alt": "Cherry fruit hanging from leafy branches.",
+      "caption": "Cherry fruit on living stems and leaves.",
+      "credit": "Boehringer Friedrich / Wikimedia Commons",
+      "license": "CC BY-SA 2.5",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sauerkirschenfrucht_Prunus_cerasus_2.JPG",
+      "bytes": 394388
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -12728,14 +12735,15 @@
   {
     "id": "white-bitter-melon",
     "primary": {
-      "src": "/plant-photos/white-bitter-melon/primary.jpg",
       "label": "Plant photo",
-      "alt": "White bitter melon vine showing foliage and plant structure.",
-      "caption": "White bitter melon shown as a representative living plant reference.",
-      "credit": "t.ohashi",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Momordica_charantia_(Bitter_melon)_and_a_kitten.jpg",
-      "bytes": 245632
+      "src": "/plant-photos/white-bitter-melon/primary.jpg",
+      "alt": "White bitter melon fruit hanging on a leafy vine.",
+      "caption": "White bitter melon fruit hanging on a leafy vine.",
+      "credit": "Ronggy / Wikimedia Commons",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Momordica_-_1.jpg",
+      "bytes": 91209,
+      "position": "52% 42%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
@@ -12968,14 +12976,14 @@
   {
     "id": "wonderful-pomegranate",
     "primary": {
-      "src": "/plant-photos/parfianka-pomegranate/primary.jpg",
+      "src": "/plant-photos/russian-26-pomegranate/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pomegranate shrub showing leaves, stems, and fruit or flowers.",
-      "caption": "Pomegranate shrub showing leaves, stems, and fruit or flowers.",
-      "credit": "Nesaj210 / Wikimedia Commons",
-      "license": "CC0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AClose-up%20of%20Pomegranate%20Tree%20Branch.jpg",
-      "bytes": 391998
+      "alt": "Pomegranate fruit on a leafy tree branch.",
+      "caption": "Pomegranate branch structure with foliage and fruit.",
+      "credit": "Yann Forget / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pomegranate_tree,_Dobhi,_Kullu_district.jpg",
+      "bytes": 922367
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
