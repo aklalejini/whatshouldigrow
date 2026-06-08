@@ -2259,17 +2259,18 @@
   {
     "id": "celebrity-tomato",
     "primary": {
-      "src": "/plant-photos/amish-paste-tomato/primary.jpg",
+      "src": "/plant-photos/celebrity-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tomato plant showing leaves, stems, and fruit.",
-      "caption": "Tomato plant showing leaves, stems, and fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
-      "bytes": 988733
+      "alt": "Celebrity tomato fruit developing on a leafy tomato plant.",
+      "caption": "Celebrity tomato fruit developing on the plant.",
+      "credit": "matt with / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/81531651@N00/3692711358",
+      "bytes": 123166,
+      "position": "50% 50%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo source identifies the named cultivar. Fruit color, size, and growth habit can still vary by season, nursery stock, and site."
   },
   {
     "id": "celeste-fig",
@@ -3441,18 +3442,18 @@
   {
     "id": "damson-plum",
     "primary": {
-      "src": "/plant-photos/japanese-plum/primary.jpg",
+      "src": "/plant-photos/damson-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Damson Plum shown with a representative plum fruit reference.",
-      "caption": "Damson Plum shown with a representative plum fruit reference.",
-      "credit": "Fir0002 / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plums.jpg",
-      "bytes": 175730,
-      "position": "50% 52%"
+      "alt": "Damson plum fruit ripening on a leafy branch.",
+      "caption": "Damson plum fruit ripening on the branch.",
+      "credit": "Peter O'Connor aka anemoneprojectors / Flickr",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/58414938@N00/19884486631",
+      "bytes": 212600,
+      "position": "50% 50%"
     },
     "details": [],
-    "note": "Photos show a representative plum fruiting on the tree. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo source identifies the named cultivar. Fruit color, size, and growth habit can still vary by season, nursery stock, and site."
   },
   {
     "id": "danvers-carrot",
@@ -3923,17 +3924,18 @@
   {
     "id": "early-girl-tomato",
     "primary": {
-      "src": "/plant-photos/amish-paste-tomato/primary.jpg",
+      "src": "/plant-photos/early-girl-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tomato plant showing leaves, stems, and fruit.",
-      "caption": "Tomato plant showing leaves, stems, and fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
-      "bytes": 988733
+      "alt": "Early Girl tomatoes developing on a leafy tomato vine.",
+      "caption": "Early Girl tomatoes developing on the vine.",
+      "credit": "Stacy Spensley / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/21001756@N06/3579529303",
+      "bytes": 117944,
+      "position": "52% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo source identifies the named cultivar. Fruit color, size, and growth habit can still vary by season, nursery stock, and site."
   },
   {
     "id": "early-golden-apricot",
@@ -4606,9 +4608,9 @@
       "caption": "Fuyu persimmons ripening on the tree.",
       "credit": "Puddin Tain / Flickr",
       "license": "CC BY-SA 2.0",
-      "sourceUrl": "https://www.flickr.com/photos/155396095@N08/30717563617",
-      "bytes": 113707,
-      "position": "50% 50%"
+      "sourceUrl": "https://www.flickr.com/photos/155396095@N08/30716637717",
+      "bytes": 82112,
+      "position": "55% 50%"
     },
     "details": [
       {
@@ -4622,7 +4624,7 @@
         "bytes": 531756
       }
     ],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo source identifies the named cultivar. Fruit color, size, and growth habit can still vary by season, nursery stock, and site."
   },
   {
     "id": "ga-866-jujube",
@@ -4973,17 +4975,18 @@
   {
     "id": "granny-smith-apple",
     "primary": {
-      "src": "/plant-photos/anna-apple/primary.jpg",
+      "src": "/plant-photos/granny-smith-apple/primary.jpg",
       "label": "Plant photo",
-      "alt": "Apple branch showing leaves and fruit.",
-      "caption": "Apple branch showing leaves and fruit.",
-      "credit": "User:Doncsecz / Wikimedia Commons",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AJablan%20na%20Verici.JPG",
-      "bytes": 1716835
+      "alt": "Granny Smith apples growing among leaves on a tree branch.",
+      "caption": "Granny Smith apples growing on the tree.",
+      "credit": "Apple and Pear Australia Ltd / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/113312228@N06/12600991674",
+      "bytes": 147537,
+      "position": "42% 48%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo source identifies the named cultivar. Fruit color, size, and growth habit can still vary by season, nursery stock, and site."
   },
   {
     "id": "gravenstein-apple",
@@ -5188,15 +5191,16 @@
     "primary": {
       "src": "/plant-photos/hachiya-persimmon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Asian persimmon branch showing leaves and fruit.",
-      "caption": "Asian persimmon branch showing leaves and fruit.",
-      "credit": "512bits / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADiospyros%20kaki%20'Tamopan'%20%2B2months.jpg",
-      "bytes": 830865
+      "alt": "Hachiya persimmons ripening on a tree branch.",
+      "caption": "Hachiya persimmons ripening on the tree.",
+      "credit": "Downtowngal / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hachiya_persimmons_on_tree_close-up.jpg",
+      "bytes": 416538,
+      "position": "50% 50%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo source identifies the named cultivar. Fruit color, size, and growth habit can still vary by season, nursery stock, and site."
   },
   {
     "id": "hakurei-turnip",
@@ -5894,17 +5898,18 @@
   {
     "id": "improved-meyer-lemon",
     "primary": {
-      "src": "/plant-photos/eureka-lemon/primary.jpg",
+      "src": "/plant-photos/improved-meyer-lemon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Lemon tree showing evergreen leaves and fruit.",
-      "caption": "Lemon tree showing evergreen leaves and fruit.",
-      "credit": "Derk29 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APromise%20in%20Green%20(lemon).jpg",
-      "bytes": 900455
+      "alt": "Meyer lemon tree with yellow fruit and evergreen leaves.",
+      "caption": "Meyer lemons ripening on the tree.",
+      "credit": "SimiWriter / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/64269231@N00/8510875231",
+      "bytes": 255121,
+      "position": "50% 52%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo source identifies the named cultivar. Fruit color, size, and growth habit can still vary by season, nursery stock, and site."
   },
   {
     "id": "incrediball-hydrangea",
@@ -6737,17 +6742,18 @@
   {
     "id": "key-lime",
     "primary": {
-      "src": "/plant-photos/eureka-lemon/primary.jpg",
+      "src": "/plant-photos/key-lime/primary.jpg",
       "label": "Plant photo",
-      "alt": "Citrus branch showing evergreen leaves and yellow fruit.",
-      "caption": "Citrus branch showing evergreen leaves and fruit.",
-      "credit": "Derk29 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APromise%20in%20Green%20(lemon).jpg",
-      "bytes": 900455
+      "alt": "Key lime fruit growing among glossy leaves.",
+      "caption": "Key lime fruit growing on the tree.",
+      "credit": "amanderson2 / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/49399018@N00/4974883423",
+      "bytes": 187401,
+      "position": "50% 50%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo source identifies the named cultivar. Fruit color, size, and growth habit can still vary by season, nursery stock, and site."
   },
   {
     "id": "kieffer-pear",
@@ -8331,17 +8337,18 @@
   {
     "id": "national-pickling-cucumber",
     "primary": {
-      "src": "/plant-photos/armenian-cucumber/primary.jpg",
+      "src": "/plant-photos/national-pickling-cucumber/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cucumber vine showing leaves and fruit.",
-      "caption": "Cucumber vine showing leaves and fruit.",
-      "credit": "Stephen Ausmus, USDA ARS / Wikimedia Commons",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AARS%20cucumber.jpg",
-      "bytes": 2078591
+      "alt": "Pickling cucumber fruit growing on a leafy cucumber vine.",
+      "caption": "Pickling cucumber fruit growing on the vine.",
+      "credit": "Lori L. Stalteri / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/69655432@N00/7761232242",
+      "bytes": 112430,
+      "position": "50% 50%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo shows a close representative plant with fruit on the vine. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "navajo-blackberry",
@@ -9337,17 +9344,18 @@
   {
     "id": "pink-lady-apple",
     "primary": {
-      "src": "/plant-photos/anna-apple/primary.jpg",
+      "src": "/plant-photos/pink-lady-apple/primary.jpg",
       "label": "Plant photo",
-      "alt": "Apple branch showing leaves and fruit.",
-      "caption": "Apple branch showing leaves and fruit.",
-      "credit": "User:Doncsecz / Wikimedia Commons",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AJablan%20na%20Verici.JPG",
-      "bytes": 1716835
+      "alt": "Pink Lady apples ripening on a leafy tree branch.",
+      "caption": "Pink Lady apples ripening on the tree.",
+      "credit": "Apple and Pear Australia Ltd / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/113312228@N06/28862625154",
+      "bytes": 108024,
+      "position": "50% 50%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo source identifies the named cultivar. Fruit color, size, and growth habit can still vary by season, nursery stock, and site."
   },
   {
     "id": "pink-lemonade-blueberry",
@@ -11307,17 +11315,18 @@
   {
     "id": "spaghetti-squash",
     "primary": {
-      "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
+      "src": "/plant-photos/spaghetti-squash/primary.jpg",
       "label": "Plant photo",
-      "alt": "Squash vine showing broad leaves and developing fruit.",
-      "caption": "Squash vine showing leaves and developing fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Spaghetti squash fruit growing on a leafy vine.",
+      "caption": "Spaghetti squash fruit growing on the vine.",
+      "credit": "OakleyOriginals / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/47264866@N00/19701687574",
+      "bytes": 102057,
+      "position": "50% 50%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo source identifies the named cultivar. Fruit color, size, and growth habit can still vary by season, nursery stock, and site."
   },
   {
     "id": "spicebush",
@@ -12646,17 +12655,18 @@
   {
     "id": "waltham-butternut",
     "primary": {
-      "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
+      "src": "/plant-photos/waltham-butternut/primary.jpg",
       "label": "Plant photo",
-      "alt": "Butternut squash vine showing large leaves and fruit.",
-      "caption": "Butternut squash vine showing large leaves and fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Butternut squash fruit growing on a vine.",
+      "caption": "Butternut squash fruit growing on the vine.",
+      "credit": "ancapron / Flickr",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/47301944@N00/5930836016",
+      "bytes": 170504,
+      "position": "44% 58%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo shows a close representative plant with fruit on the vine. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "warren-pear",
