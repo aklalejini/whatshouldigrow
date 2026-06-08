@@ -154,12 +154,13 @@
     "primary": {
       "src": "/plant-photos/ambrosia-cantaloupe/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cantaloupe vine showing leaves and melon fruit.",
-      "caption": "Cantaloupe vine showing leaves and melon fruit.",
-      "credit": "Rob Duval / Wikimedia Commons",
+      "alt": "Muskmelon fruit hanging from a leafy vine.",
+      "caption": "Muskmelon fruit hanging from a leafy vine.",
+      "credit": "Oleg Yunakov / Wikimedia Commons",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACantaloupe%20plant.JPG",
-      "bytes": 1048240
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_growing_muskmelon.jpg",
+      "bytes": 252227,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -630,12 +631,13 @@
     "primary": {
       "src": "/plant-photos/ambrosia-cantaloupe/primary.jpg",
       "label": "Plant photo",
-      "alt": "Melon vine showing leaves and fruit.",
-      "caption": "Melon vine showing leaves and fruit.",
-      "credit": "Rob Duval / Wikimedia Commons",
+      "alt": "Muskmelon fruit hanging from a leafy vine.",
+      "caption": "Muskmelon fruit hanging from a leafy vine.",
+      "credit": "Oleg Yunakov / Wikimedia Commons",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACantaloupe%20plant.JPG",
-      "bytes": 1048240
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_growing_muskmelon.jpg",
+      "bytes": 252227,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -2340,12 +2342,13 @@
     "primary": {
       "src": "/plant-photos/ambrosia-cantaloupe/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cantaloupe vine showing leaves and melon fruit.",
-      "caption": "Cantaloupe vine showing leaves and melon fruit.",
-      "credit": "Rob Duval / Wikimedia Commons",
+      "alt": "Melon fruit hanging from a leafy vine.",
+      "caption": "Melon fruit hanging from a leafy vine as a representative muskmelon reference.",
+      "credit": "Oleg Yunakov / Wikimedia Commons",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACantaloupe%20plant.JPG",
-      "bytes": 1048240
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_growing_muskmelon.jpg",
+      "bytes": 252227,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -2355,13 +2358,13 @@
     "primary": {
       "label": "Plant photo",
       "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
-      "alt": "Watermelon fruit growing among leafy vines.",
-      "caption": "Watermelon fruit growing among leafy vines.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-091108-9404-Citrullus_lanatus-fruit_and_vine_trailing_into_gulch-Olinda-Maui_(24962955856).jpg",
-      "bytes": 278973,
-      "position": "43% 50%"
+      "alt": "Watermelon fruit growing among leafy vines in a garden.",
+      "caption": "Watermelon fruit growing among leafy vines in a garden.",
+      "credit": "mwanasimba from La Reunion / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water_melon_in_Bahoni_garden_(2850525065).jpg",
+      "bytes": 600572,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -3296,14 +3299,14 @@
     "id": "crimson-sweet-watermelon",
     "primary": {
       "label": "Plant photo",
-      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
-      "alt": "Watermelon fruit growing among leafy vines.",
-      "caption": "Watermelon fruit growing among leafy vines.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-091108-9404-Citrullus_lanatus-fruit_and_vine_trailing_into_gulch-Olinda-Maui_(24962955856).jpg",
-      "bytes": 278973,
-      "position": "43% 50%"
+      "src": "/plant-photos/crimson-sweet-watermelon/primary.jpg",
+      "alt": "Watermelon fruit growing among live leaves on a garden vine.",
+      "caption": "Watermelon fruit growing among live vine leaves.",
+      "credit": "Foxy1219 / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Immature_watermelon_2021-06-05.jpg",
+      "bytes": 405373,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -5035,14 +5038,15 @@
   {
     "id": "green-flesh-honeydew",
     "primary": {
-      "src": "/plant-photos/ambrosia-cantaloupe/primary.jpg",
+      "src": "/plant-photos/green-flesh-honeydew/primary.jpg",
       "label": "Plant photo",
-      "alt": "Melon vine showing leaves and fruit.",
-      "caption": "Melon vine showing leaves and fruit.",
-      "credit": "Rob Duval / Wikimedia Commons",
+      "alt": "Green melon fruit hanging from a leafy vine as a representative honeydew reference.",
+      "caption": "Green melon fruit hanging from a leafy vine as a representative honeydew reference.",
+      "credit": "Oleg Yunakov / Wikimedia Commons",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACantaloupe%20plant.JPG",
-      "bytes": 1048240
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_growing_muskmelon.jpg",
+      "bytes": 252227,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -5202,12 +5206,13 @@
     "primary": {
       "src": "/plant-photos/ambrosia-cantaloupe/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cantaloupe vine showing leaves and melon fruit.",
-      "caption": "Cantaloupe vine showing leaves and melon fruit.",
-      "credit": "Rob Duval / Wikimedia Commons",
+      "alt": "Muskmelon fruit hanging from a leafy vine.",
+      "caption": "Muskmelon fruit hanging from a leafy vine.",
+      "credit": "Oleg Yunakov / Wikimedia Commons",
       "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACantaloupe%20plant.JPG",
-      "bytes": 1048240
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_growing_muskmelon.jpg",
+      "bytes": 252227,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -8038,14 +8043,14 @@
     "id": "moon-and-stars-watermelon",
     "primary": {
       "label": "Plant photo",
-      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
-      "alt": "Watermelon fruit growing among leafy vines.",
-      "caption": "Watermelon fruit growing among leafy vines.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-091108-9404-Citrullus_lanatus-fruit_and_vine_trailing_into_gulch-Olinda-Maui_(24962955856).jpg",
-      "bytes": 278973,
-      "position": "43% 50%"
+      "src": "/plant-photos/moon-and-stars-watermelon/primary.jpg",
+      "alt": "Watermelon fruit growing among leafy vines as a representative plant reference for Moon and Stars.",
+      "caption": "Watermelon fruit and leafy vine growth as a representative reference for Moon and Stars.",
+      "credit": "mwanasimba from La Reunion / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water_melon_in_Bahoni_garden_(2850525065).jpg",
+      "bytes": 600572,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
@@ -8745,17 +8750,17 @@
     "id": "orangeglo-watermelon",
     "primary": {
       "label": "Plant photo",
-      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
-      "alt": "Watermelon fruit and leafy vines shown as a representative plant reference for Orangeglo.",
-      "caption": "Watermelon fruit and leafy vines as a representative reference for Orangeglo.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-091108-9404-Citrullus_lanatus-fruit_and_vine_trailing_into_gulch-Olinda-Maui_(24962955856).jpg",
-      "bytes": 278973,
-      "position": "43% 50%"
+      "src": "/plant-photos/orangeglo-watermelon/primary.jpg",
+      "alt": "Watermelon fruit growing among live leaves as a representative plant reference for Orangeglo.",
+      "caption": "Watermelon fruit and live vine leaves as a representative reference for Orangeglo.",
+      "credit": "Foxy1219 / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Immature_watermelon_2021-06-05.jpg",
+      "bytes": 405373,
+      "position": "50% 50%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "oregano-greek",
@@ -11458,14 +11463,14 @@
     "id": "sugar-baby-watermelon",
     "primary": {
       "label": "Plant photo",
-      "src": "/plant-photos/charleston-gray-watermelon/primary.jpg",
-      "alt": "Watermelon fruit growing among leafy vines.",
-      "caption": "Watermelon fruit growing among leafy vines.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-091108-9404-Citrullus_lanatus-fruit_and_vine_trailing_into_gulch-Olinda-Maui_(24962955856).jpg",
-      "bytes": 278973,
-      "position": "43% 50%"
+      "src": "/plant-photos/sugar-baby-watermelon/primary.jpg",
+      "alt": "Watermelon fruit growing among leafy vines in a garden.",
+      "caption": "Watermelon fruit growing among leafy vines in a garden.",
+      "credit": "mwanasimba from La Reunion / Wikimedia Commons",
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water_melon_in_Bahoni_garden_(2850525065).jpg",
+      "bytes": 600572,
+      "position": "50% 50%"
     },
     "details": [],
     "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
