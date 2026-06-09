@@ -51,15 +51,15 @@
     "primary": {
       "src": "/plant-photos/agastache-blue-fortune/primary.jpg",
       "label": "Plant photo",
-      "alt": "Anise hyssop flower spikes above leafy stems.",
-      "caption": "Anise hyssop flower spikes above leafy stems.",
-      "credit": "Chris Light / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAnise%20Hyssop%20P7010483.jpg",
-      "bytes": 491059
+      "alt": "Anise hyssop plants with upright lavender flower spikes.",
+      "caption": "Anise hyssop plants in bloom.",
+      "credit": "Anna / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/agastache-foeniculum/",
+      "bytes": 88973
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "aji-amarillo-pepper",
@@ -235,15 +235,15 @@
     "primary": {
       "src": "/plant-photos/amish-paste-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tomato plant showing leaves, stems, and fruit.",
-      "caption": "Tomato plant showing leaves, stems, and fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
-      "bytes": 988733
+      "alt": "Tomato vines with ripe red fruits growing on a trellis.",
+      "caption": "Tomato vines with ripe fruits on a trellis.",
+      "credit": "fuentedelateja / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-lycopersicum/",
+      "bytes": 216775
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "amsonia-blue-ice",
@@ -385,30 +385,30 @@
     "primary": {
       "src": "/plant-photos/agastache-blue-fortune/primary.jpg",
       "label": "Plant photo",
-      "alt": "Apricot Sprite agastache shown with representative agastache foliage and flower spikes.",
-      "caption": "Agastache foliage and flower spikes as a representative reference for Apricot Sprite.",
-      "credit": "Chris Light / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAnise%20Hyssop%20P7010483.jpg",
-      "bytes": 491059
+      "alt": "Anise hyssop plants with upright lavender flower spikes.",
+      "caption": "Anise hyssop plants in bloom.",
+      "credit": "Anna / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/agastache-foeniculum/",
+      "bytes": 88973
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "arbequina-olive",
     "primary": {
       "src": "/plant-photos/arbequina-olive/primary.jpg",
       "label": "Plant photo",
-      "alt": "Olive branch showing narrow leaves and olives.",
-      "caption": "Olive branch showing narrow leaves and olives.",
-      "credit": "Manfred Werner - Tsui / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlumeng%C3%A4rten%20Hirschstetten%20Wien%202014%20Garten%20der%20Provence.jpg",
-      "bytes": 762069
+      "alt": "Olive fruits on a leafy branch.",
+      "caption": "Mature olive fruit and leaves.",
+      "credit": "H. Zell / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/olea-europaea/",
+      "bytes": 139559
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "arborvitae-emerald-green",
@@ -766,17 +766,17 @@
   {
     "id": "baby-kailaan",
     "primary": {
-      "src": "/plant-photos/shanghai-green-bok-choy/primary.jpg",
+      "src": "/plant-photos/baby-kailaan/primary.jpg",
       "label": "Plant photo",
-      "alt": "Baby kailaan plant showing foliage and plant structure.",
-      "caption": "Baby kailaan uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Schlaghecken Josef",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pak_Choi_(Brassica_rapa_subsp._chinensis_)_Kohlfliegen-Schaden-3-Josef_Schlaghecken.jpg",
-      "bytes": 514464
+      "alt": "Broccoli-type Brassica oleracea head surrounded by leaves.",
+      "caption": "Broccoli-type Brassica oleracea shown as a representative kailaan relative.",
+      "credit": "NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-oleracea-cauliflower-broccoli-group/",
+      "bytes": 134206
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "balaton-cherry",
@@ -1040,17 +1040,17 @@
   {
     "id": "belle-of-georgia-peach",
     "primary": {
-      "src": "/plant-photos/belle-of-georgia-peach/primary.jpg",
+      "src": "/plant-photos/redhaven-peach/primary.jpg",
       "label": "Plant photo",
-      "alt": "Peach tree showing leaves, stems, and fruit or blossoms.",
-      "caption": "Peach tree showing leaves, stems, and fruit or blossoms.",
-      "credit": "jjron / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ANectarine%20Fruit%20Development.jpg",
-      "bytes": 504128
+      "alt": "Peach fruits ripening among green leaves.",
+      "caption": "Peach fruit and leaves on a living branch.",
+      "credit": "Jim Robbins / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/prunus-persica/",
+      "bytes": 83412
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "ben-sarek-black-currant",
@@ -1117,15 +1117,15 @@
     "primary": {
       "src": "/plant-photos/amish-paste-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tomato plant showing leaves, stems, and fruit.",
-      "caption": "Tomato plant showing leaves, stems, and fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
-      "bytes": 988733
+      "alt": "Tomato vines with ripe red fruits growing on a trellis.",
+      "caption": "Tomato vines with ripe fruits on a trellis.",
+      "credit": "fuentedelateja / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-lycopersicum/",
+      "bytes": 216775
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "bing-cherry",
@@ -1164,30 +1164,30 @@
     "primary": {
       "src": "/plant-photos/agastache-blue-fortune/primary.jpg",
       "label": "Plant photo",
-      "alt": "Agastache flower spikes above leafy stems.",
-      "caption": "Agastache flower spikes above leafy stems.",
-      "credit": "Chris Light / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAnise%20Hyssop%20P7010483.jpg",
-      "bytes": 491059
+      "alt": "Anise hyssop plants with upright lavender flower spikes.",
+      "caption": "Anise hyssop plants in bloom.",
+      "credit": "Anna / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/agastache-foeniculum/",
+      "bytes": 88973
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "black-beauty-eggplant",
     "primary": {
       "src": "/plant-photos/black-beauty-eggplant/primary.jpg",
       "label": "Plant photo",
-      "alt": "Eggplant plant showing large leaves, stems, and purple fruit.",
-      "caption": "Eggplant plant showing large leaves, stems, and purple fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-090421-6294-Solanum_melongena-fruit_and_leaves-Pukalani-Maui_(24325576693).jpg",
-      "bytes": 279519
+      "alt": "Purple eggplants growing among green leaves.",
+      "caption": "Eggplant fruits growing on a living plant.",
+      "credit": "Joydeep / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-melongena/",
+      "bytes": 131737
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "black-beauty-muscadine",
@@ -1518,15 +1518,15 @@
     "primary": {
       "src": "/plant-photos/agastache-blue-fortune/primary.jpg",
       "label": "Plant photo",
-      "alt": "Agastache flower spikes above leafy stems.",
-      "caption": "Agastache flower spikes above leafy stems.",
-      "credit": "Chris Light / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAnise%20Hyssop%20P7010483.jpg",
-      "bytes": 491059
+      "alt": "Anise hyssop plants with upright lavender flower spikes.",
+      "caption": "Anise hyssop plants in bloom.",
+      "credit": "Anna / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/agastache-foeniculum/",
+      "bytes": 88973
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "blue-grama",
@@ -1563,15 +1563,15 @@
     "primary": {
       "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
       "label": "Plant photo",
-      "alt": "Squash vine showing broad leaves and developing fruit.",
-      "caption": "Squash vine showing leaves and developing fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Green winter squash fruit growing on a vine.",
+      "caption": "Green Cucurbita maxima fruit on a living vine.",
+      "credit": "Prenn / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/cucurbita-maxima/",
+      "bytes": 152052
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "blue-lake-bush-bean",
@@ -1838,15 +1838,15 @@
     "primary": {
       "src": "/plant-photos/amish-paste-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tomato plant showing leaves, stems, and fruit.",
-      "caption": "Tomato plant showing leaves, stems, and fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
-      "bytes": 988733
+      "alt": "Tomato vines with ripe red fruits growing on a trellis.",
+      "caption": "Tomato vines with ripe fruits on a trellis.",
+      "credit": "fuentedelateja / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-lycopersicum/",
+      "bytes": 216775
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "brandywine-viburnum",
@@ -1927,17 +1927,18 @@
   {
     "id": "brown-turkey-fig",
     "primary": {
-      "src": "/plant-photos/brown-turkey-fig/primary.jpg",
+      "src": "/plant-photos/black-mission-fig/primary.jpg",
       "label": "Plant photo",
-      "alt": "Fig branch showing broad leaves and fruit.",
-      "caption": "Fig branch showing broad leaves and fruit.",
-      "credit": "Joe Mabel / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABucharest%20Botanical%20Garden%20-%20Fig%20tree.jpg",
-      "bytes": 1144358
+      "alt": "Fig fruit growing beside large lobed leaves.",
+      "caption": "Fig fruit on a living branch with leaves.",
+      "credit": "Piotr Frydecki / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/ficus-carica/",
+      "bytes": 213263,
+      "position": "50% 50%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo reuses the reviewed fig fruiting-plant reference for this cultivar card. Fruit color, size, leaf form, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "buttercrunch-lettuce",
@@ -1972,17 +1973,17 @@
   {
     "id": "butternut-rogosa-violina",
     "primary": {
-      "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
+      "src": "/plant-photos/waltham-butternut/primary.jpg",
       "label": "Plant photo",
-      "alt": "Butternut squash vine showing large leaves and fruit.",
-      "caption": "Butternut squash vine showing large leaves and fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Butternut-type squash fruit growing on a vine.",
+      "caption": "Cucurbita moschata fruit on a living vine.",
+      "credit": "Girish Bhatt / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/cucurbita-moschata/",
+      "bytes": 116815
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "button-bush",
@@ -2004,15 +2005,15 @@
     "primary": {
       "src": "/plant-photos/calamondin/primary.jpg",
       "label": "Plant photo",
-      "alt": "Calamondin citrus showing evergreen leaves and small orange fruit.",
-      "caption": "Calamondin citrus showing evergreen leaves and small orange fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-080608-7463-Ficus_microcarpa-leaves_and_fruit-Citrus_grove_Sand_Island-Midway_Atoll_(24889986896).jpg",
-      "bytes": 242530
+      "alt": "Calamondin citrus plant with small orange fruit.",
+      "caption": "Calamondin citrus shown with fruit and leaves.",
+      "credit": "The Fun Chronicles / Wikimedia Commons",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:061_Citrus_X_Microcarpa%2C_AKA_Calamansi%2C_Philippine_Lime_(1).jpg",
+      "bytes": 189429
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from a public image source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "calendula-pacific-beauty",
@@ -2079,15 +2080,15 @@
     "primary": {
       "src": "/plant-photos/candy-onion/primary.jpg",
       "label": "Plant photo",
-      "alt": "Onion plant showing upright tubular leaves and bulb growth.",
-      "caption": "Onion plant showing upright tubular leaves and bulb growth.",
-      "credit": "Netha Hussain / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Onion_plant_in_a_pot_17.jpg",
-      "bytes": 170659
+      "alt": "Rows of onion plants with bulbs and upright leaves.",
+      "caption": "Onion plants growing in a garden bed.",
+      "credit": "Carl Lewis / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/allium-cepa/",
+      "bytes": 178209
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "caradonna-salvia",
@@ -2461,30 +2462,30 @@
     "primary": {
       "src": "/plant-photos/amish-paste-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tomato plant showing leaves, stems, and fruit.",
-      "caption": "Tomato plant showing leaves, stems, and fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
-      "bytes": 988733
+      "alt": "Tomato vines with ripe red fruits growing on a trellis.",
+      "caption": "Tomato vines with ripe fruits on a trellis.",
+      "credit": "fuentedelateja / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-lycopersicum/",
+      "bytes": 216775
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "cherry-belle-radish",
     "primary": {
       "src": "/plant-photos/cherry-belle-radish/primary.jpg",
       "label": "Plant photo",
-      "alt": "Radish plant showing leafy tops and edible roots.",
-      "caption": "Radish plant showing leafy tops and edible roots.",
-      "credit": "Schlaghecken Josef / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Raphanus_sativus,_Albugo_candida-2-JS.jpg",
-      "bytes": 409414
+      "alt": "Radish plants with red roots and leafy tops.",
+      "caption": "Radish plants growing with roots and leaves visible.",
+      "credit": "Rasbak / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/raphanus-sativus/",
+      "bytes": 211090
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "cherry-brandy-rudbeckia",
@@ -2613,30 +2614,30 @@
     "primary": {
       "src": "/plant-photos/chilean-guava/primary.jpg",
       "label": "Plant photo",
-      "alt": "Strawberry guava showing evergreen leaves and round fruit.",
-      "caption": "Strawberry guava showing evergreen leaves and round fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-090430-6955-Psidium_cattleianum-leaves_and_fruit-Enchanting_Floral_Gardens_of_Kula-Maui_(24586013759).jpg",
-      "bytes": 221634
+      "alt": "Chilean guava fruits among small green leaves.",
+      "caption": "Chilean guava fruit and leaves.",
+      "credit": "Dick Culbert / Wikimedia Commons",
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ugni_molinae%2C_fruit_(8651635743).jpg",
+      "bytes": 255638
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from a public image source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "china-rose-radish",
     "primary": {
       "src": "/plant-photos/cherry-belle-radish/primary.jpg",
       "label": "Plant photo",
-      "alt": "China Rose radish plant showing foliage and plant structure.",
-      "caption": "China Rose radish uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Schlaghecken Josef / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Raphanus_sativus,_Albugo_candida-2-JS.jpg",
-      "bytes": 409414
+      "alt": "Radish plants with red roots and leafy tops.",
+      "caption": "Radish plants growing with roots and leaves visible.",
+      "credit": "Rasbak / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/raphanus-sativus/",
+      "bytes": 211090
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "chinese-celery",
@@ -2674,30 +2675,30 @@
     "primary": {
       "src": "/plant-photos/chinese-fringe-tree/primary.jpg",
       "label": "Plant photo",
-      "alt": "Chinese fringe tree tree showing foliage and plant structure.",
-      "caption": "Chinese fringe tree shown as a representative living plant reference.",
-      "credit": "Alpsdake",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chionanthus_retusus_(trunk_s2).jpg",
-      "bytes": 401300
+      "alt": "Chinese fringe tree blooming with white fringe-like flowers.",
+      "caption": "Chinese fringe tree in bloom.",
+      "credit": "Zebulon Walton / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/chionanthus-retusus/",
+      "bytes": 128444
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "chinese-hawthorn",
     "primary": {
       "src": "/plant-photos/chinese-hawthorn/primary.jpg",
       "label": "Plant photo",
-      "alt": "Chinese hawthorn showing small tree habit and foliage.",
-      "caption": "Chinese hawthorn showing small tree habit and foliage.",
-      "credit": "Lokal_Profil",
-      "license": "CC BY-SA 2.5",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Crataegus_pinnatifida,_RBGE_2008.jpg",
-      "bytes": 709835
+      "alt": "Chinese hawthorn berries and leaves.",
+      "caption": "Chinese hawthorn berries and leaves in September.",
+      "credit": "Feiche / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/crataegus-pinnatifida/",
+      "bytes": 178608
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "chinese-multicolor-spinach",
@@ -2749,45 +2750,45 @@
     "primary": {
       "src": "/plant-photos/chinese-quince/primary.jpg",
       "label": "Plant photo",
-      "alt": "Chinese quince tree showing foliage and plant structure.",
-      "caption": "Chinese quince shown as a representative living plant reference.",
-      "credit": "Делфина",
-      "license": "CC0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D0%A6%D0%B2%D0%B5%D1%82%D0%BE%D0%B2%D0%B8_%D0%BE%D0%B4_%D1%98%D0%B0%D0%BF%D0%BE%D0%BD%D1%81%D0%BA%D0%B0_%D0%B4%D1%83%D1%9A%D0%B0_Chaenomeles_japonica.jpg",
-      "bytes": 230953
+      "alt": "Chinese quince fruit among green leaves.",
+      "caption": "Chinese quince fruit and leaves.",
+      "credit": "Jim Robbins / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/pseudocydonia-sinensis/",
+      "bytes": 119217
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "chinese-water-chestnut",
     "primary": {
       "src": "/plant-photos/chinese-water-chestnut/primary.jpg",
       "label": "Plant photo",
-      "alt": "Chinese water chestnut plant showing foliage and plant structure.",
-      "caption": "Chinese water chestnut shown as a representative living plant reference.",
-      "credit": "https://wellcomeimages.org/indexplus/obf_images/48/41/f7df18be9176f9fe8c9fbd753b4e.jpg (hi-res image) Gallery: https://wellcomeimages.org/indexplus/image/L0039421.html Wellcome Collection gallery (2018-03-31): https://wellcomecollection.org/works/r52dbkkq CC-BY-4.0",
-      "license": "CC BY 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ming_herbal_(painting);_Water_chestnut_Wellcome_L0039421.jpg",
-      "bytes": 388478
+      "alt": "Chinese water chestnut plant with upright green stems.",
+      "caption": "Chinese water chestnut shown as a living Eleocharis dulcis plant.",
+      "credit": "David J. Stang / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Eleocharis_dulcis_1zz.jpg",
+      "bytes": 139050
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from a public image source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "chioggia-beet",
     "primary": {
-      "src": "/plant-photos/chioggia-beet/primary.jpg",
+      "src": "/plant-photos/detroit-beet/primary.jpg",
       "label": "Plant photo",
-      "alt": "Beet plant showing leafy tops and roots where visible.",
-      "caption": "Beet plant showing leafy tops and roots where visible.",
-      "credit": "Dwight Sipler from Stow, MA, USA / Wikimedia Commons",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABeets%20starting%20to%20push%20up%20the%20covering%20medium%20(5595844295).jpg",
-      "bytes": 1100401
+      "alt": "Garden beet plants with red roots at the soil surface.",
+      "caption": "Garden beets growing with leaves and roots visible.",
+      "credit": "Dag Terje Filip Endresen / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/beta-vulgaris-garden-beet-group/",
+      "bytes": 159073
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "chives-common",
@@ -3203,17 +3204,17 @@
   {
     "id": "costata-romanesco-zucchini",
     "primary": {
-      "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
+      "src": "/plant-photos/costata-romanesco-zucchini/primary.jpg",
       "label": "Plant photo",
-      "alt": "Butternut squash vine showing large leaves and fruit.",
-      "caption": "Butternut squash vine showing large leaves and fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Zucchini fruit growing on a leafy squash plant.",
+      "caption": "Zucchini fruit on a living Cucurbita pepo plant.",
+      "credit": "Rasbak / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/cucurbita-pepo/",
+      "bytes": 158924
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "cowart-muscadine",
@@ -3312,15 +3313,15 @@
     "primary": {
       "src": "/plant-photos/flowering-quince/primary.jpg",
       "label": "Plant photo",
-      "alt": "Crimson and Gold quince shrub showing foliage and plant structure.",
-      "caption": "Crimson and Gold quince uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Делфина",
-      "license": "CC0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D0%A6%D0%B2%D0%B5%D1%82%D0%BE%D0%B2%D0%B8_%D0%BE%D0%B4_%D1%98%D0%B0%D0%BF%D0%BE%D0%BD%D1%81%D0%BA%D0%B0_%D0%B4%D1%83%D1%9A%D0%B0_Chaenomeles_japonica.jpg",
-      "bytes": 230953
+      "alt": "Flowering quince shrub covered with spring blossoms.",
+      "caption": "Flowering quince shrub in bloom.",
+      "credit": "Jim Lawrence / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/chaenomeles-speciosa/",
+      "bytes": 241128
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "crimson-fans-mukdenia",
@@ -3480,15 +3481,15 @@
     "primary": {
       "src": "/plant-photos/cherry-belle-radish/primary.jpg",
       "label": "Plant photo",
-      "alt": "Radish plant showing leafy tops and edible roots.",
-      "caption": "Radish plant showing leafy tops and edible roots.",
-      "credit": "Schlaghecken Josef / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Raphanus_sativus,_Albugo_candida-2-JS.jpg",
-      "bytes": 409414
+      "alt": "Radish plants with red roots and leafy tops.",
+      "caption": "Radish plants growing with roots and leaves visible.",
+      "credit": "Rasbak / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/raphanus-sativus/",
+      "bytes": 211090
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "damson-plum",
@@ -3509,32 +3510,32 @@
   {
     "id": "danvers-carrot",
     "primary": {
-      "src": "/plant-photos/american-purple-top-rutabaga/primary.jpg",
+      "src": "/plant-photos/danvers-carrot/primary.jpg",
       "label": "Plant photo",
-      "alt": "Carrot plant showing fern-like leaves and roots where visible.",
-      "caption": "Carrot plant showing fern-like leaves and roots where visible.",
-      "credit": "Rasbak / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADaucus%20carota%20flowers%2C%20peen%20'Napoli'.jpg",
-      "bytes": 835030
+      "alt": "Carrot root with green stems attached.",
+      "caption": "Carrot root and stems shown as a representative garden carrot.",
+      "credit": "NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/daucus-carota-subsp-sativus/",
+      "bytes": 43226
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "daphne-odora",
     "primary": {
       "src": "/plant-photos/daphne-odora/primary.jpg",
       "label": "Plant photo",
-      "alt": "Winter daphne shrub showing foliage and plant structure.",
-      "caption": "Winter daphne shown as a representative living plant reference.",
-      "credit": "Internet Archive Book Images",
-      "license": "No restrictions",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Trees_and_shrubs,_hardy_in_the_British_isles_(1914)_(14594808848).jpg",
-      "bytes": 177272
+      "alt": "Winter daphne shrub with variegated leaves and pink flower clusters.",
+      "caption": "Winter daphne shrub in flower.",
+      "credit": "Scott Zona / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/daphne-odora/",
+      "bytes": 169882
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "dark-towers-penstemon",
@@ -3644,17 +3645,17 @@
   {
     "id": "delicata-squash",
     "primary": {
-      "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
+      "src": "/plant-photos/delicata-squash/primary.jpg",
       "label": "Plant photo",
-      "alt": "Butternut squash vine showing large leaves and fruit.",
-      "caption": "Butternut squash vine showing large leaves and fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Striped Cucurbita pepo squash fruits after harvest.",
+      "caption": "Striped Cucurbita pepo squash fruits representative of delicata-type squash.",
+      "credit": "Dyogi / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/cucurbita-pepo/",
+      "bytes": 112180
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "deodar-cedar",
@@ -3690,32 +3691,32 @@
   {
     "id": "detroit-beet",
     "primary": {
-      "src": "/plant-photos/chioggia-beet/primary.jpg",
+      "src": "/plant-photos/detroit-beet/primary.jpg",
       "label": "Plant photo",
-      "alt": "Beet plant showing leafy tops and roots where visible.",
-      "caption": "Beet plant showing leafy tops and roots where visible.",
-      "credit": "Dwight Sipler from Stow, MA, USA / Wikimedia Commons",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABeets%20starting%20to%20push%20up%20the%20covering%20medium%20(5595844295).jpg",
-      "bytes": 1100401
+      "alt": "Garden beet plants with red roots at the soil surface.",
+      "caption": "Garden beets growing with leaves and roots visible.",
+      "credit": "Dag Terje Filip Endresen / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/beta-vulgaris-garden-beet-group/",
+      "bytes": 159073
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "di-cicco-broccoli",
     "primary": {
       "src": "/plant-photos/di-cicco-broccoli/primary.jpg",
       "label": "Plant photo",
-      "alt": "Broccoli plant showing broad leaves and central edible head.",
-      "caption": "Broccoli plant showing broad leaves and central edible head.",
-      "credit": "GT1976 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2018-06-01_(131)_Leaves_of_young_Brassica_oleracea_var._gongylodes_(Kohlrabi)_at_Bichlh%C3%A4usl_in_Frankenfels,_Austria.jpg",
-      "bytes": 524754
+      "alt": "Broccoli head surrounded by green leaves.",
+      "caption": "Broccoli head and surrounding leaves.",
+      "credit": "NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-oleracea-cauliflower-broccoli-group/",
+      "bytes": 134206
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "diabolo-ninebark",
@@ -3799,31 +3800,30 @@
     "primary": {
       "src": "/plant-photos/doublefile-viburnum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Doublefile viburnum shrub showing foliage and plant structure.",
-      "caption": "Doublefile viburnum shown as a representative living plant reference.",
-      "credit": "Another Believer",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Laurelhurst_Park,_Portland_-_Doublefile_Viburnum_plaque.JPG",
-      "bytes": 347085
+      "alt": "Doublefile viburnum shrub with layered branches and white flowers.",
+      "caption": "Doublefile viburnum shrub in bloom.",
+      "credit": "NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/viburnum-plicatum/",
+      "bytes": 105583
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "dragon-fruit-american-beauty",
     "primary": {
       "src": "/plant-photos/dragon-fruit-american-beauty/primary.jpg",
       "label": "Plant photo",
-      "alt": "Dragon fruit growing on climbing cactus stems.",
-      "caption": "Dragon fruit on living cactus stems.",
-      "credit": "Forest & Kim Starr / NC State Extension Plant Toolbox",
-      "license": "Educational/public institution source",
-      "sourceUrl": "https://plants.ces.ncsu.edu/plants/selenicereus-undatus/",
-      "bytes": 171697,
-      "position": "50% 50%"
+      "alt": "Dragon fruit ripening on a climbing cactus.",
+      "caption": "Dragon fruit on a living Hylocereus cactus.",
+      "credit": "Salim Khandoker / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E0%A6%A1%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%97%E0%A6%A8_%E0%A6%AB%E0%A6%B2%2C_%E0%A6%AC%E0%A6%BE%E0%A6%82%E0%A6%B2%E0%A6%A6%E0%A7%87%E0%A6%B6.jpg",
+      "bytes": 156911
     },
     "details": [],
-    "note": "Photo is from an educational/public institution source and shows a representative fruiting plant. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from a public image source and shows a representative fruiting cactus. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "dragon-tongue-bean",
@@ -3922,15 +3922,15 @@
     "primary": {
       "src": "/plant-photos/candy-onion/primary.jpg",
       "label": "Plant photo",
-      "alt": "Allium leaves and bulbs in garden growth.",
-      "caption": "Allium leaves and bulbs in garden growth.",
-      "credit": "Netha Hussain / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Onion_plant_in_a_pot_17.jpg",
-      "bytes": 170659
+      "alt": "Rows of onion plants with bulbs and upright leaves.",
+      "caption": "Onion plants growing in a garden bed.",
+      "credit": "Carl Lewis / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/allium-cepa/",
+      "bytes": 178209
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "dwarf-mondo-grass",
@@ -4060,30 +4060,30 @@
     "primary": {
       "src": "/plant-photos/eddoe-taro/primary.jpg",
       "label": "Plant photo",
-      "alt": "Eddoe taro plant showing foliage and plant structure.",
-      "caption": "Eddoe taro shown as a representative living plant reference.",
-      "credit": "API data Catalogue record Photo",
-      "license": "CC BY 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Colocasia_antiquorum_Schott_(AM_AK95474).jpg",
-      "bytes": 151676
+      "alt": "Taro plant with large heart-shaped leaves.",
+      "caption": "Taro foliage shown as a representative Colocasia plant.",
+      "credit": "Shihmei-Barger / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/colocasia-esculenta/",
+      "bytes": 69853
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "egyptian-walking-onion",
     "primary": {
       "src": "/plant-photos/candy-onion/primary.jpg",
       "label": "Plant photo",
-      "alt": "Onion plant showing upright tubular leaves and bulb growth.",
-      "caption": "Onion plant showing upright tubular leaves and bulb growth.",
-      "credit": "Netha Hussain / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Onion_plant_in_a_pot_17.jpg",
-      "bytes": 170659
+      "alt": "Rows of onion plants with bulbs and upright leaves.",
+      "caption": "Onion plants growing in a garden bed.",
+      "credit": "Carl Lewis / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/allium-cepa/",
+      "bytes": 178209
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "ein-shemer-apple",
@@ -4263,45 +4263,45 @@
     "primary": {
       "src": "/plant-photos/eureka-lemon/primary.jpg",
       "label": "Plant photo",
-      "alt": "Citrus branch showing evergreen leaves and yellow fruit.",
-      "caption": "Citrus branch showing evergreen leaves and fruit.",
-      "credit": "Derk29 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APromise%20in%20Green%20(lemon).jpg",
-      "bytes": 900455
+      "alt": "Lemon tree with yellow fruit and green leaves.",
+      "caption": "Lemon tree form with fruit.",
+      "credit": "Jean-Pol Grandmont / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/citrus-x-limon/",
+      "bytes": 261526
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "evergreen-bunching-onion",
     "primary": {
       "src": "/plant-photos/candy-onion/primary.jpg",
       "label": "Plant photo",
-      "alt": "Allium leaves and bulbs in garden growth.",
-      "caption": "Allium leaves and bulbs in garden growth.",
-      "credit": "Netha Hussain / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Onion_plant_in_a_pot_17.jpg",
-      "bytes": 170659
+      "alt": "Rows of onion plants with bulbs and upright leaves.",
+      "caption": "Onion plants growing in a garden bed.",
+      "credit": "Carl Lewis / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/allium-cepa/",
+      "bytes": 178209
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "fairy-tale-eggplant",
     "primary": {
       "src": "/plant-photos/black-beauty-eggplant/primary.jpg",
       "label": "Plant photo",
-      "alt": "Eggplant plant showing leaves and purple fruit.",
-      "caption": "Eggplant foliage and fruit on a living plant.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-090421-6294-Solanum_melongena-fruit_and_leaves-Pukalani-Maui_(24325576693).jpg",
-      "bytes": 279519
+      "alt": "Purple eggplants growing among green leaves.",
+      "caption": "Eggplant fruits growing on a living plant.",
+      "credit": "Joydeep / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-melongena/",
+      "bytes": 131737
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "fall-gold-raspberry",
@@ -4400,15 +4400,15 @@
     "primary": {
       "src": "/plant-photos/feijoa-coolidge/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pineapple guava showing evergreen leaves, flowers, and fruit where visible.",
-      "caption": "Pineapple guava showing evergreen leaves, flowers, and fruit where visible.",
-      "credit": "Didier Descouens / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Feijoa_sellowiana_.jpg",
-      "bytes": 309764
+      "alt": "Pineapple guava tree fruiting heavily among gray-green leaves.",
+      "caption": "Pineapple guava fruiting heavily at Kingscote Gardens.",
+      "credit": "Sairus Patel / Trees of Stanford & Environs",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://trees.stanford.edu/ENCYC/FEIJOAsel.htm",
+      "bytes": 431005
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "fennel-bronze",
@@ -4522,15 +4522,15 @@
     "primary": {
       "src": "/plant-photos/flowering-quince/primary.jpg",
       "label": "Plant photo",
-      "alt": "Flowering quince shrub showing foliage and plant structure.",
-      "caption": "Flowering quince shown as a representative living plant reference.",
-      "credit": "Делфина",
-      "license": "CC0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D0%A6%D0%B2%D0%B5%D1%82%D0%BE%D0%B2%D0%B8_%D0%BE%D0%B4_%D1%98%D0%B0%D0%BF%D0%BE%D0%BD%D1%81%D0%BA%D0%B0_%D0%B4%D1%83%D1%9A%D0%B0_Chaenomeles_japonica.jpg",
-      "bytes": 230953
+      "alt": "Flowering quince shrub covered with spring blossoms.",
+      "caption": "Flowering quince shrub in bloom.",
+      "credit": "Jim Lawrence / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/chaenomeles-speciosa/",
+      "bytes": 241128
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "foamflower",
@@ -4915,15 +4915,15 @@
     "primary": {
       "src": "/plant-photos/ginkgo/primary.jpg",
       "label": "Plant photo",
-      "alt": "Ginkgo tree showing foliage and plant structure.",
-      "caption": "Ginkgo shown as a representative living plant reference.",
-      "credit": "Anatoly Mikhaltsov",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D0%9F%D0%BE%D0%BF%D0%B5%D1%80%D0%B5%D1%87%D0%BD%D1%8B%D0%B9_%D1%81%D1%80%D0%B5%D0%B7_%D1%81%D1%82%D0%B5%D0%B1%D0%BB%D1%8F_Ginkgo_biloba.jpg",
-      "bytes": 658455
+      "alt": "Young ginkgo tree with golden fall foliage.",
+      "caption": "Young ginkgo tree showing autumn color and tree form.",
+      "credit": "Jim Robbins / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/ginkgo-biloba/",
+      "bytes": 140371
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "giombo-persimmon",
@@ -4974,17 +4974,17 @@
   {
     "id": "golden-beet",
     "primary": {
-      "src": "/plant-photos/chioggia-beet/primary.jpg",
+      "src": "/plant-photos/detroit-beet/primary.jpg",
       "label": "Plant photo",
-      "alt": "Beet plant showing leafy tops and roots where visible.",
-      "caption": "Beet plant showing leafy tops and roots where visible.",
-      "credit": "Dwight Sipler from Stow, MA, USA / Wikimedia Commons",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABeets%20starting%20to%20push%20up%20the%20covering%20medium%20(5595844295).jpg",
-      "bytes": 1100401
+      "alt": "Garden beet plants with red roots at the soil surface.",
+      "caption": "Garden beets growing with leaves and roots visible.",
+      "credit": "Dag Terje Filip Endresen / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/beta-vulgaris-garden-beet-group/",
+      "bytes": 159073
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "golden-fleece-goldenrod",
@@ -5203,18 +5203,17 @@
   {
     "id": "green-zebra-tomato",
     "primary": {
-      "src": "/plant-photos/green-zebra-tomato/primary.jpg",
+      "src": "/plant-photos/amish-paste-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Green Zebra tomatoes ripening on the vine with leaves and stems.",
-      "caption": "Green Zebra tomatoes ripening on a living vine.",
-      "credit": "conall.. / Flickr",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://www.flickr.com/photos/16176711@N02/53153135369",
-      "bytes": 58319,
-      "position": "50% 56%"
+      "alt": "Tomato vines with ripe red fruits growing on a trellis.",
+      "caption": "Tomato vines with ripe fruits on a trellis.",
+      "credit": "fuentedelateja / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-lycopersicum/",
+      "bytes": 216775
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "grimes-golden-apple",
@@ -5282,17 +5281,17 @@
   {
     "id": "hakurei-turnip",
     "primary": {
-      "src": "/plant-photos/american-purple-top-rutabaga/primary.jpg",
+      "src": "/plant-photos/purple-top-turnip/primary.jpg",
       "label": "Plant photo",
-      "alt": "Root vegetable foliage and harvested roots.",
-      "caption": "Root vegetable foliage and harvested roots.",
-      "credit": "Rasbak / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADaucus%20carota%20flowers%2C%20peen%20'Napoli'.jpg",
-      "bytes": 835030
+      "alt": "Turnip roots and leaves growing in a garden bed.",
+      "caption": "Turnips growing in a garden bed.",
+      "credit": "Ivan Lian / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-rapifera-group/",
+      "bytes": 78110
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "hales-best-melon",
@@ -5563,30 +5562,30 @@
     "primary": {
       "src": "/plant-photos/hinoki-cypress/primary.jpg",
       "label": "Plant photo",
-      "alt": "Hinoki cypress tree showing foliage and plant structure.",
-      "caption": "Hinoki cypress shown as a representative living plant reference.",
-      "credit": "Photo by and (c)2014 Derek Ramsey ( Ram-Man )",
-      "license": "GFDL 1.2",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dwarf_Hinoki_Falsecypress_Chamaecyparis_obtusa_%27Nana%27_(41-192-A)_Trunk_Bark.JPG",
-      "bytes": 313642
+      "alt": "Young Hinoki cypress with evergreen fan-like foliage.",
+      "caption": "Young Hinoki cypress showing full plant form.",
+      "credit": "Cathy Dewitt / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/chamaecyparis-obtusa/",
+      "bytes": 270637
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "hollow-crown-parsnip",
     "primary": {
-      "src": "/plant-photos/american-purple-top-rutabaga/primary.jpg",
+      "src": "/plant-photos/hollow-crown-parsnip/primary.jpg",
       "label": "Plant photo",
-      "alt": "Root vegetable foliage and harvested roots.",
-      "caption": "Root vegetable foliage and harvested roots.",
-      "credit": "Rasbak / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADaucus%20carota%20flowers%2C%20peen%20'Napoli'.jpg",
-      "bytes": 835030
+      "alt": "Parsnip roots after harvest.",
+      "caption": "Parsnip roots shown after harvest.",
+      "credit": "Troye Owens / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/pastinaca-sativa/",
+      "bytes": 88490
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "holly-fern",
@@ -5760,17 +5759,17 @@
   {
     "id": "horseradish",
     "primary": {
-      "src": "/plant-photos/cherry-belle-radish/primary.jpg",
+      "src": "/plant-photos/horseradish/primary.jpg",
       "label": "Plant photo",
-      "alt": "Radish plant showing leafy tops and edible roots.",
-      "caption": "Radish plant showing leafy tops and edible roots.",
-      "credit": "Schlaghecken Josef / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Raphanus_sativus,_Albugo_candida-2-JS.jpg",
-      "bytes": 409414
+      "alt": "Horseradish plant with broad green leaves.",
+      "caption": "Horseradish foliage on a living plant.",
+      "credit": "Ramin / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/armoracia-rusticana/",
+      "bytes": 98809
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "hosta-blue-angel",
@@ -5898,15 +5897,15 @@
     "primary": {
       "src": "/plant-photos/agastache-blue-fortune/primary.jpg",
       "label": "Plant photo",
-      "alt": "Korean mint shown with representative agastache foliage and flower spikes.",
-      "caption": "Agastache foliage and flower spikes as a representative reference for Korean mint.",
-      "credit": "Chris Light / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAnise%20Hyssop%20P7010483.jpg",
-      "bytes": 491059
+      "alt": "Anise hyssop plants with upright lavender flower spikes.",
+      "caption": "Anise hyssop plants in bloom.",
+      "credit": "Anna / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/agastache-foeniculum/",
+      "bytes": 88973
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "ichang-lemon",
@@ -5944,15 +5943,15 @@
     "primary": {
       "src": "/plant-photos/black-beauty-eggplant/primary.jpg",
       "label": "Plant photo",
-      "alt": "Ichiban eggplant plant showing foliage and plant structure.",
-      "caption": "Ichiban eggplant uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-090421-6294-Solanum_melongena-fruit_and_leaves-Pukalani-Maui_(24325576693).jpg",
-      "bytes": 279519
+      "alt": "Purple eggplants growing among green leaves.",
+      "caption": "Eggplant fruits growing on a living plant.",
+      "credit": "Joydeep / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-melongena/",
+      "bytes": 131737
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "ichikikeijiro-persimmon",
@@ -6187,17 +6186,17 @@
   {
     "id": "jack-o-lantern-pumpkin",
     "primary": {
-      "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
+      "src": "/plant-photos/jack-o-lantern-pumpkin/primary.jpg",
       "label": "Plant photo",
-      "alt": "Squash vine showing broad leaves and developing fruit.",
-      "caption": "Squash vine showing leaves and developing fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Orange squash fruit growing among vine leaves.",
+      "caption": "Orange Cucurbita maxima fruit on a living vine.",
+      "credit": "Hope Duckworth / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/cucurbita-maxima/",
+      "bytes": 195469
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "jalapeno-pepper",
@@ -6432,30 +6431,30 @@
     "primary": {
       "src": "/plant-photos/black-beauty-eggplant/primary.jpg",
       "label": "Plant photo",
-      "alt": "Japanese white eggplant plant showing foliage and plant structure.",
-      "caption": "Japanese white eggplant uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-090421-6294-Solanum_melongena-fruit_and_leaves-Pukalani-Maui_(24325576693).jpg",
-      "bytes": 279519
+      "alt": "Purple eggplants growing among green leaves.",
+      "caption": "Eggplant fruits growing on a living plant.",
+      "credit": "Joydeep / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-melongena/",
+      "bytes": 131737
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "japanese-white-pine",
     "primary": {
       "src": "/plant-photos/japanese-white-pine/primary.jpg",
       "label": "Plant photo",
-      "alt": "Japanese white pine tree showing foliage and plant structure.",
-      "caption": "Japanese white pine shown as a representative living plant reference.",
-      "credit": "Agnieszka Kwiecień, Nova",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pinus_parviflora_Sosna_drobnokwiatowa_2019-05-29_02.jpg",
-      "bytes": 398181
+      "alt": "Japanese white pine cone and blue-green needles.",
+      "caption": "Japanese white pine cone and needles.",
+      "credit": "Jim Robbins / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/pinus-parviflora/",
+      "bytes": 142037
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "japanese-zelkova",
@@ -6631,15 +6630,15 @@
     "primary": {
       "src": "/plant-photos/joi-choi-bok-choy/primary.jpg",
       "label": "Plant photo",
-      "alt": "Brassica greens showing leafy growth.",
-      "caption": "Brassica greens showing edible leafy growth.",
-      "credit": "Frank Vincentz / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AKluse%20-%20Brassica%20oleracea%20var.%20palmifolia%20-%20Ostfriesische%20Palme%2001%20ies.jpg",
-      "bytes": 935298
+      "alt": "Bok choy heads with green leaves and pale stems.",
+      "caption": "Bok choy shown as a representative Brassica rapa Chinensis Group crop.",
+      "credit": "Tom Taker / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-chinensis-group/",
+      "bytes": 123288
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "jonagold-apple",
@@ -6662,15 +6661,15 @@
     "primary": {
       "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
       "label": "Plant photo",
-      "alt": "Butternut squash vine showing large leaves and fruit.",
-      "caption": "Butternut squash vine showing large leaves and fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Green winter squash fruit growing on a vine.",
+      "caption": "Green Cucurbita maxima fruit on a living vine.",
+      "credit": "Prenn / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/cucurbita-maxima/",
+      "bytes": 152052
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "kabosu-citrus",
@@ -6846,16 +6845,15 @@
     "primary": {
       "src": "/plant-photos/key-lime/primary.jpg",
       "label": "Plant photo",
-      "alt": "Key lime fruit growing among glossy leaves.",
-      "caption": "Key lime fruit growing on the tree.",
-      "credit": "amanderson2 / Flickr",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://www.flickr.com/photos/49399018@N00/4974883423",
-      "bytes": 187401,
-      "position": "50% 50%"
+      "alt": "Key lime branch with green fruit and pointed leaves.",
+      "caption": "Key lime branch with fruit and leaves.",
+      "credit": "Martin Reith / UF/IFAS Florida Master Gardener Volunteer Program",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://gardeningsolutions.ifas.ufl.edu/mastergardener/resources/plantid/fruits-and-nuts/lime-key/",
+      "bytes": 36244
     },
     "details": [],
-    "note": "Photo source identifies the named cultivar. Fruit color, size, and growth habit can still vary by season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "kieffer-pear",
@@ -6876,17 +6874,17 @@
   {
     "id": "kintoki-carrot",
     "primary": {
-      "src": "/plant-photos/american-purple-top-rutabaga/primary.jpg",
+      "src": "/plant-photos/danvers-carrot/primary.jpg",
       "label": "Plant photo",
-      "alt": "Kintoki red carrot plant showing foliage and plant structure.",
-      "caption": "Kintoki red carrot uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Rasbak / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADaucus%20carota%20flowers%2C%20peen%20'Napoli'.jpg",
-      "bytes": 835030
+      "alt": "Carrot root with green stems attached.",
+      "caption": "Carrot root and stems shown as a representative garden carrot.",
+      "credit": "NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/daucus-carota-subsp-sativus/",
+      "bytes": 43226
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "kishu-mandarin",
@@ -6936,17 +6934,17 @@
   {
     "id": "komatsuna",
     "primary": {
-      "src": "/plant-photos/joi-choi-bok-choy/primary.jpg",
+      "src": "/plant-photos/tatsoi/primary.jpg",
       "label": "Plant photo",
-      "alt": "Brassica greens showing leafy growth.",
-      "caption": "Brassica greens showing edible leafy growth.",
-      "credit": "Frank Vincentz / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AKluse%20-%20Brassica%20oleracea%20var.%20palmifolia%20-%20Ostfriesische%20Palme%2001%20ies.jpg",
-      "bytes": 935298
+      "alt": "Tatsoi rosette with rounded green leaves.",
+      "caption": "Tatsoi rosette shown as a representative Asian green.",
+      "credit": "Forest & Kim Starr / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-var-rosularis/",
+      "bytes": 122661
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "korean-fir",
@@ -7014,15 +7012,15 @@
     "primary": {
       "src": "/plant-photos/cherry-belle-radish/primary.jpg",
       "label": "Plant photo",
-      "alt": "Korean mu radish plant showing foliage and plant structure.",
-      "caption": "Korean mu radish uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Schlaghecken Josef / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Raphanus_sativus,_Albugo_candida-2-JS.jpg",
-      "bytes": 409414
+      "alt": "Radish plants with red roots and leafy tops.",
+      "caption": "Radish plants growing with roots and leaves visible.",
+      "credit": "Rasbak / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/raphanus-sativus/",
+      "bytes": 211090
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "korean-pine-nut",
@@ -7088,17 +7086,17 @@
   {
     "id": "kuroda-carrot",
     "primary": {
-      "src": "/plant-photos/american-purple-top-rutabaga/primary.jpg",
+      "src": "/plant-photos/danvers-carrot/primary.jpg",
       "label": "Plant photo",
-      "alt": "Kuroda carrot plant showing foliage and plant structure.",
-      "caption": "Kuroda carrot uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Rasbak / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADaucus%20carota%20flowers%2C%20peen%20'Napoli'.jpg",
-      "bytes": 835030
+      "alt": "Carrot root with green stems attached.",
+      "caption": "Carrot root and stems shown as a representative garden carrot.",
+      "credit": "NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/daucus-carota-subsp-sativus/",
+      "bytes": 43226
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "lacebark-pine",
@@ -7133,17 +7131,18 @@
   {
     "id": "lang-jujube",
     "primary": {
-      "src": "/plant-photos/lang-jujube/primary.jpg",
+      "src": "/plant-photos/li-jujube/primary.jpg",
       "label": "Plant photo",
-      "alt": "Jujube branch showing small leaves and fruit.",
-      "caption": "Jujube branch showing small leaves and fruit.",
-      "credit": "Beasthwaite / Wikimedia Commons",
-      "license": "CC0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AZiziphus%20jujuba%20'Li'%20with%20fruit%20in%20mid-summer%20-%20live%20oak%20in%20background.JPG",
-      "bytes": 881349
+      "alt": "Jujube fruit ripening among leaves.",
+      "caption": "Jujube fruit on living tree branches.",
+      "credit": "Zeynel Cebeci / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/ziziphus-jujuba/",
+      "bytes": 105056,
+      "position": "50% 50%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo reuses the reviewed jujube fruiting-plant reference for this cultivar card. Fruit color, size, leaf form, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "lapins-cherry",
@@ -7378,15 +7377,15 @@
     "primary": {
       "src": "/plant-photos/lingonberry-koralle/primary.jpg",
       "label": "Plant photo",
-      "alt": "Lingonberry plant showing evergreen leaves and red berries.",
-      "caption": "Lingonberry plant showing evergreen leaves and red berries.",
-      "credit": "Staffan Enbom / Wikimedia Commons",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Icy_LingonBerry.jpg",
-      "bytes": 538702
+      "alt": "Lingonberry fruit clusters with evergreen leaves.",
+      "caption": "Lingonberry berries and leaves.",
+      "credit": "Mila Zinkova / Wikimedia Commons",
+      "license": "CC BY-SA 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vaccinium_vitis-idaea_berries.jpg",
+      "bytes": 74527
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from a public image source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "little-bluestem",
@@ -7484,15 +7483,15 @@
     "primary": {
       "src": "/plant-photos/black-beauty-eggplant/primary.jpg",
       "label": "Plant photo",
-      "alt": "Eggplant plant showing leaves and purple fruit.",
-      "caption": "Eggplant foliage and fruit on a living plant.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-090421-6294-Solanum_melongena-fruit_and_leaves-Pukalani-Maui_(24325576693).jpg",
-      "bytes": 279519
+      "alt": "Purple eggplants growing among green leaves.",
+      "caption": "Eggplant fruits growing on a living plant.",
+      "credit": "Joydeep / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-melongena/",
+      "bytes": 131737
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "lotus-root",
@@ -7527,17 +7526,18 @@
   {
     "id": "lsu-purple-fig",
     "primary": {
-      "src": "/plant-photos/lsu-purple-fig/primary.jpg",
+      "src": "/plant-photos/black-mission-fig/primary.jpg",
       "label": "Plant photo",
-      "alt": "Fig branch showing broad leaves and fruit.",
-      "caption": "Fig branch showing broad leaves and fruit.",
-      "credit": "Александровы АГ / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A0137Fb.%20Botanical%20Garden%20of%20Peter%20the%20Great%20in%20St.%20Petersburg.jpg",
-      "bytes": 1458918
+      "alt": "Fig fruit growing beside large lobed leaves.",
+      "caption": "Fig fruit on a living branch with leaves.",
+      "credit": "Piotr Frydecki / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/ficus-carica/",
+      "bytes": 213263,
+      "position": "50% 50%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo reuses the reviewed fig fruiting-plant reference for this cultivar card. Fruit color, size, leaf form, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "luffa-gourd",
@@ -7620,17 +7620,17 @@
   {
     "id": "magnolia-jane",
     "primary": {
-      "src": "/plant-photos/magnolia-ann/primary.jpg",
+      "src": "/plant-photos/magnolia-jane/primary.jpg",
       "label": "Plant photo",
-      "alt": "Saucer magnolia showing branching tree habit and pink spring flowers.",
-      "caption": "Saucer magnolia showing branching tree habit and pink spring flowers.",
-      "credit": "Crusier / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Magnolia_x_soulangeana_Rog%C3%B3w.JPG",
-      "bytes": 226264
+      "alt": "Jane magnolia shrub with pink tulip-shaped flowers.",
+      "caption": "Jane magnolia shrub in bloom.",
+      "credit": "Jim Robbins / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/magnolia-jane/",
+      "bytes": 223953
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "magnolia-little-gem",
@@ -7909,17 +7909,17 @@
   {
     "id": "mei-qing-choi",
     "primary": {
-      "src": "/plant-photos/shanghai-green-bok-choy/primary.jpg",
+      "src": "/plant-photos/joi-choi-bok-choy/primary.jpg",
       "label": "Plant photo",
-      "alt": "Mei Qing choi plant showing foliage and plant structure.",
-      "caption": "Mei Qing choi uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Schlaghecken Josef",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pak_Choi_(Brassica_rapa_subsp._chinensis_)_Kohlfliegen-Schaden-3-Josef_Schlaghecken.jpg",
-      "bytes": 514464
+      "alt": "Bok choy heads with green leaves and pale stems.",
+      "caption": "Bok choy shown as a representative Brassica rapa Chinensis Group crop.",
+      "credit": "Tom Taker / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-chinensis-group/",
+      "bytes": 123288
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "meiwa-kumquat",
@@ -7987,30 +7987,30 @@
     "primary": {
       "src": "/plant-photos/mibuna/primary.jpg",
       "label": "Plant photo",
-      "alt": "Mibuna plant showing foliage and plant structure.",
-      "caption": "Mibuna shown as a representative living plant reference.",
-      "credit": "Heenan, Peter",
-      "license": "CC BY 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brassica_rapa_%27Mibuna%27_L._(AM_AK351813).jpg",
-      "bytes": 122514
+      "alt": "Mibuna mustard greens with long narrow leaves.",
+      "caption": "Mibuna greens cropped from a comparison image with mizuna.",
+      "credit": "Kingfiser / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mibuna_and_Mizuna.JPG",
+      "bytes": 305097
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from a public image source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "michihili-cabbage",
     "primary": {
-      "src": "/plant-photos/shanghai-green-bok-choy/primary.jpg",
+      "src": "/plant-photos/napa-cabbage/primary.jpg",
       "label": "Plant photo",
-      "alt": "Michihili Chinese cabbage plant showing foliage and plant structure.",
-      "caption": "Michihili Chinese cabbage uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Schlaghecken Josef",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pak_Choi_(Brassica_rapa_subsp._chinensis_)_Kohlfliegen-Schaden-3-Josef_Schlaghecken.jpg",
-      "bytes": 514464
+      "alt": "Napa cabbage plant with pale green heading leaves.",
+      "caption": "Napa cabbage plant shown as a representative heading Brassica rapa.",
+      "credit": "Tom Christensen / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-pekinensis-group/",
+      "bytes": 178487
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "minowase-daikon",
@@ -8077,15 +8077,15 @@
     "primary": {
       "src": "/plant-photos/arbequina-olive/primary.jpg",
       "label": "Plant photo",
-      "alt": "Olive branch showing narrow leaves and olives.",
-      "caption": "Olive branch showing narrow leaves and olives.",
-      "credit": "Manfred Werner - Tsui / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ABlumeng%C3%A4rten%20Hirschstetten%20Wien%202014%20Garten%20der%20Provence.jpg",
-      "bytes": 762069
+      "alt": "Olive fruits on a leafy branch.",
+      "caption": "Mature olive fruit and leaves.",
+      "credit": "H. Zell / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/olea-europaea/",
+      "bytes": 139559
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "mitsuba",
@@ -8107,15 +8107,15 @@
     "primary": {
       "src": "/plant-photos/cherry-belle-radish/primary.jpg",
       "label": "Plant photo",
-      "alt": "Miyashige daikon plant showing foliage and plant structure.",
-      "caption": "Miyashige daikon uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Schlaghecken Josef / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Raphanus_sativus,_Albugo_candida-2-JS.jpg",
-      "bytes": 409414
+      "alt": "Radish plants with red roots and leafy tops.",
+      "caption": "Radish plants growing with roots and leaves visible.",
+      "credit": "Rasbak / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/raphanus-sativus/",
+      "bytes": 211090
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "mizuna",
@@ -8334,15 +8334,15 @@
     "primary": {
       "src": "/plant-photos/music-garlic/primary.jpg",
       "label": "Plant photo",
-      "alt": "Garlic plant with upright leaves and flower stalk.",
-      "caption": "Garlic plant structure with upright leaves and flowering stalk.",
-      "credit": "Daderot / Wikimedia Commons",
-      "license": "CC0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAllium%20sativum%20-%20Copenhagen%20Botanical%20Garden%20-%20DSC07941.JPG",
-      "bytes": 2013799
+      "alt": "Garlic plants growing with upright green leaves.",
+      "caption": "Garlic plants growing in a garden bed.",
+      "credit": "Christian Ries / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/allium-sativum/",
+      "bytes": 211432
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "myoga-ginger",
@@ -8379,15 +8379,15 @@
     "primary": {
       "src": "/plant-photos/nana-gracilis-hinoki/primary.jpg",
       "label": "Plant photo",
-      "alt": "Nana Gracilis Hinoki cypress shrub showing foliage and plant structure.",
-      "caption": "Nana Gracilis Hinoki cypress shown as a representative living plant reference.",
-      "credit": "Photo by and (c)2014 Derek Ramsey ( Ram-Man )",
-      "license": "GFDL 1.2",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dwarf_Hinoki_Falsecypress_Chamaecyparis_obtusa_%27Nana%27_(41-192-A)_Trunk_Bark.JPG",
-      "bytes": 313642
+      "alt": "Dwarf Hinoki cypress cultivar with compact evergreen form.",
+      "caption": "Compact Hinoki cypress cultivar showing full form.",
+      "credit": "Randy Harter / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/chamaecyparis-obtusa/",
+      "bytes": 188860
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "nanking-cherry",
@@ -8408,32 +8408,32 @@
   {
     "id": "nantes-carrot",
     "primary": {
-      "src": "/plant-photos/american-purple-top-rutabaga/primary.jpg",
+      "src": "/plant-photos/danvers-carrot/primary.jpg",
       "label": "Plant photo",
-      "alt": "Carrot plant showing fern-like leaves and roots where visible.",
-      "caption": "Carrot plant showing fern-like leaves and roots where visible.",
-      "credit": "Rasbak / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADaucus%20carota%20flowers%2C%20peen%20'Napoli'.jpg",
-      "bytes": 835030
+      "alt": "Carrot root with green stems attached.",
+      "caption": "Carrot root and stems shown as a representative garden carrot.",
+      "credit": "NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/daucus-carota-subsp-sativus/",
+      "bytes": 43226
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "napa-cabbage",
     "primary": {
       "src": "/plant-photos/napa-cabbage/primary.jpg",
       "label": "Plant photo",
-      "alt": "Napa cabbage plant showing foliage and plant structure.",
-      "caption": "Napa cabbage shown as a representative living plant reference.",
-      "credit": "SarKaLay စာကလေး",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Napa_Cabbage.jpg",
-      "bytes": 188805
+      "alt": "Napa cabbage plant with pale green heading leaves.",
+      "caption": "Napa cabbage plant shown as a representative heading Brassica rapa.",
+      "credit": "Tom Christensen / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-pekinensis-group/",
+      "bytes": 178487
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "natchez-crape-myrtle",
@@ -8485,17 +8485,17 @@
   {
     "id": "navel-orange",
     "primary": {
-      "src": "/plant-photos/eureka-lemon/primary.jpg",
+      "src": "/plant-photos/navel-orange/primary.jpg",
       "label": "Plant photo",
-      "alt": "Citrus branch showing evergreen leaves and yellow fruit.",
-      "caption": "Citrus branch showing evergreen leaves and fruit.",
-      "credit": "Derk29 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3APromise%20in%20Green%20(lemon).jpg",
-      "bytes": 900455
+      "alt": "Orange fruits ripening among green leaves.",
+      "caption": "Orange fruits and leaves on a citrus branch.",
+      "credit": "Emoke Denes / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/citrus-x-sinensis/",
+      "bytes": 151337
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "nellie-stevens-holly",
@@ -8593,15 +8593,15 @@
     "primary": {
       "src": "/plant-photos/feijoa-coolidge/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pineapple guava showing evergreen leaves, flowers, and fruit where visible.",
-      "caption": "Pineapple guava showing evergreen leaves, flowers, and fruit where visible.",
-      "credit": "Didier Descouens / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Feijoa_sellowiana_.jpg",
-      "bytes": 309764
+      "alt": "Pineapple guava tree fruiting heavily among gray-green leaves.",
+      "caption": "Pineapple guava fruiting heavily at Kingscote Gardens.",
+      "credit": "Sairus Patel / Trees of Stanford & Environs",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://trees.stanford.edu/ENCYC/FEIJOAsel.htm",
+      "bytes": 431005
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "nikitas-gift-persimmon",
@@ -9217,15 +9217,15 @@
     "primary": {
       "src": "/plant-photos/black-beauty-eggplant/primary.jpg",
       "label": "Plant photo",
-      "alt": "Eggplant plant showing leaves and purple fruit.",
-      "caption": "Eggplant foliage and fruit on a living plant.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-090421-6294-Solanum_melongena-fruit_and_leaves-Pukalani-Maui_(24325576693).jpg",
-      "bytes": 279519
+      "alt": "Purple eggplants growing among green leaves.",
+      "caption": "Eggplant fruits growing on a living plant.",
+      "credit": "Joydeep / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-melongena/",
+      "bytes": 131737
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "patriot-blueberry",
@@ -9261,17 +9261,17 @@
   {
     "id": "pattypan-squash",
     "primary": {
-      "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
+      "src": "/plant-photos/pattypan-squash/primary.jpg",
       "label": "Plant photo",
-      "alt": "Squash vine showing broad leaves and developing fruit.",
-      "caption": "Squash vine showing leaves and developing fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Pattypan squash fruits after harvest.",
+      "caption": "Pattypan squash fruits shown as a representative Cucurbita pepo crop.",
+      "credit": "USDA / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/cucurbita-pepo/",
+      "bytes": 35684
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "pawnee-pecan",
@@ -9445,15 +9445,15 @@
     "primary": {
       "src": "/plant-photos/black-beauty-eggplant/primary.jpg",
       "label": "Plant photo",
-      "alt": "Eggplant plant showing large leaves, stems, and purple fruit.",
-      "caption": "Eggplant plant showing large leaves, stems, and purple fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-090421-6294-Solanum_melongena-fruit_and_leaves-Pukalani-Maui_(24325576693).jpg",
-      "bytes": 279519
+      "alt": "Purple eggplants growing among green leaves.",
+      "caption": "Eggplant fruits growing on a living plant.",
+      "credit": "Joydeep / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-melongena/",
+      "bytes": 131737
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "pink-champagne-currant",
@@ -9766,17 +9766,17 @@
   {
     "id": "purple-haze-carrot",
     "primary": {
-      "src": "/plant-photos/american-purple-top-rutabaga/primary.jpg",
+      "src": "/plant-photos/danvers-carrot/primary.jpg",
       "label": "Plant photo",
-      "alt": "Carrot plant showing fern-like leaves and roots where visible.",
-      "caption": "Carrot plant showing fern-like leaves and roots where visible.",
-      "credit": "Rasbak / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADaucus%20carota%20flowers%2C%20peen%20'Napoli'.jpg",
-      "bytes": 835030
+      "alt": "Carrot root with green stems attached.",
+      "caption": "Carrot root and stems shown as a representative garden carrot.",
+      "credit": "NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/daucus-carota-subsp-sativus/",
+      "bytes": 43226
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "purple-love-grass",
@@ -9813,15 +9813,15 @@
     "primary": {
       "src": "/plant-photos/di-cicco-broccoli/primary.jpg",
       "label": "Plant photo",
-      "alt": "Broccoli plant showing broad leaves and central edible head.",
-      "caption": "Broccoli plant showing broad leaves and central edible head.",
-      "credit": "GT1976 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2018-06-01_(131)_Leaves_of_young_Brassica_oleracea_var._gongylodes_(Kohlrabi)_at_Bichlh%C3%A4usl_in_Frankenfels,_Austria.jpg",
-      "bytes": 524754
+      "alt": "Broccoli head surrounded by green leaves.",
+      "caption": "Broccoli head and surrounding leaves.",
+      "credit": "NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-oleracea-cauliflower-broccoli-group/",
+      "bytes": 134206
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "purple-sweet-potato",
@@ -9843,15 +9843,15 @@
     "primary": {
       "src": "/plant-photos/purple-top-turnip/primary.jpg",
       "label": "Plant photo",
-      "alt": "Turnip plant showing leafy tops and round roots where visible.",
-      "caption": "Turnip plant showing leafy tops and round roots where visible.",
-      "credit": "Schlaghecken Josef / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brassica_rapa_ssp_rapa-Herbstr%C3%BCbe-Alternaria-1.jpg",
-      "bytes": 516141
+      "alt": "Turnip roots and leaves growing in a garden bed.",
+      "caption": "Turnips growing in a garden bed.",
+      "credit": "Ivan Lian / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-rapifera-group/",
+      "bytes": 78110
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "rainier-cherry",
@@ -9874,15 +9874,15 @@
     "primary": {
       "src": "/plant-photos/rakkyo/primary.jpg",
       "label": "Plant photo",
-      "alt": "Rakkyo shallot plant showing foliage and plant structure.",
-      "caption": "Rakkyo shallot shown as a representative living plant reference.",
-      "credit": "Herbert",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Allium_chinense_(as_Caloscordum_exsertum)_Edwards%27s_Bot._Reg._33._5._1847.jpg",
-      "bytes": 103024
+      "alt": "Rakkyo allium plants with narrow green leaves.",
+      "caption": "Rakkyo plants shown as a representative Allium chinense crop.",
+      "credit": "Midori / Wikimedia Commons",
+      "license": "CC BY 3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Allium_chinense_Rakkyo.JPG",
+      "bytes": 253318
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from a public image source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "raspberry-wine-bee-balm",
@@ -9934,15 +9934,15 @@
     "primary": {
       "src": "/plant-photos/red-amaranth/primary.jpg",
       "label": "Plant photo",
-      "alt": "Red amaranth greens plant showing foliage and plant structure.",
-      "caption": "Red amaranth greens shown as a representative living plant reference.",
-      "credit": "https://wellcomeimages.org/indexplus/obf_images/06/c5/45a2335f40ef15625d9e04c08476.jpg (hi-res image) Gallery: https://wellcomeimages.org/indexplus/image/L0039407.html Wellcome Collection gallery (2018-03-29): https://wellcomecollection.org/works/v79swgy8 CC-BY-4.0",
-      "license": "CC BY 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Famine_Relief_Herbal_(1593);_Edible_amaranth_Wellcome_L0039407.jpg",
-      "bytes": 377883
+      "alt": "Red amaranth plants with colorful edible foliage.",
+      "caption": "Red amaranth plants shown as representative edible amaranth greens.",
+      "credit": "Jim Robbins / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/amaranthus-tricolor/",
+      "bytes": 177666
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "red-bells-enkianthus",
@@ -9979,15 +9979,15 @@
     "primary": {
       "src": "/plant-photos/candy-onion/primary.jpg",
       "label": "Plant photo",
-      "alt": "Allium leaves and bulbs in garden growth.",
-      "caption": "Allium leaves and bulbs in garden growth.",
-      "credit": "Netha Hussain / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Onion_plant_in_a_pot_17.jpg",
-      "bytes": 170659
+      "alt": "Rows of onion plants with bulbs and upright leaves.",
+      "caption": "Onion plants growing in a garden bed.",
+      "credit": "Carl Lewis / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/allium-cepa/",
+      "bytes": 178209
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "red-gem-goumi",
@@ -10235,15 +10235,15 @@
     "primary": {
       "src": "/plant-photos/redhaven-peach/primary.jpg",
       "label": "Plant photo",
-      "alt": "Peach branch showing narrow leaves and fruit.",
-      "caption": "Peach branch showing narrow leaves and fruit.",
-      "credit": "jjron / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ANectarine%20Fruit%20Development-BIG.jpg",
-      "bytes": 506522
+      "alt": "Peach fruits ripening among green leaves.",
+      "caption": "Peach fruit and leaves on a living branch.",
+      "credit": "Jim Robbins / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/prunus-persica/",
+      "bytes": 83412
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "regent-serviceberry",
@@ -10343,15 +10343,15 @@
     "primary": {
       "src": "/plant-photos/amish-paste-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tomato plant showing leaves, stems, and fruit.",
-      "caption": "Tomato plant showing leaves, stems, and fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
-      "bytes": 988733
+      "alt": "Tomato vines with ripe red fruits growing on a trellis.",
+      "caption": "Tomato vines with ripe fruits on a trellis.",
+      "credit": "fuentedelateja / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-lycopersicum/",
+      "bytes": 216775
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "romeo-bush-cherry",
@@ -10374,15 +10374,15 @@
     "primary": {
       "src": "/plant-photos/black-beauty-eggplant/primary.jpg",
       "label": "Plant photo",
-      "alt": "Eggplant plant showing large leaves, stems, and purple fruit.",
-      "caption": "Eggplant plant showing large leaves, stems, and purple fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-090421-6294-Solanum_melongena-fruit_and_leaves-Pukalani-Maui_(24325576693).jpg",
-      "bytes": 279519
+      "alt": "Purple eggplants growing among green leaves.",
+      "caption": "Eggplant fruits growing on a living plant.",
+      "credit": "Joydeep / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-melongena/",
+      "bytes": 131737
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "rose-julia-child",
@@ -10680,31 +10680,30 @@
     "primary": {
       "src": "/plant-photos/amish-paste-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tomato plant showing leaves, stems, and fruit.",
-      "caption": "Tomato plant showing leaves, stems, and fruit.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AStarr-090707-2302-Solanum%20lycopersicum-fruit%20flowers%20and%20leaves-Waikapu-Maui%20(24968852885).jpg",
-      "bytes": 988733
+      "alt": "Tomato vines with ripe red fruits growing on a trellis.",
+      "caption": "Tomato vines with ripe fruits on a trellis.",
+      "credit": "fuentedelateja / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-lycopersicum/",
+      "bytes": 216775
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "san-marzano-tomato",
     "primary": {
-      "src": "/plant-photos/san-marzano-tomato/primary.jpg",
+      "src": "/plant-photos/amish-paste-tomato/primary.jpg",
       "label": "Plant photo",
-      "alt": "San Marzano tomatoes ripening on a leafy vine.",
-      "caption": "San Marzano tomatoes ripening on the vine.",
-      "credit": "houstonfoodie / Flickr",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://www.flickr.com/photos/33150334@N02/6174972795",
-      "bytes": 224014,
-      "position": "50% 50%"
+      "alt": "Tomato vines with ripe red fruits growing on a trellis.",
+      "caption": "Tomato vines with ripe fruits on a trellis.",
+      "credit": "fuentedelateja / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-lycopersicum/",
+      "bytes": 216775
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "sansho-pepper",
@@ -10998,17 +10997,17 @@
   {
     "id": "shanghai-green-bok-choy",
     "primary": {
-      "src": "/plant-photos/shanghai-green-bok-choy/primary.jpg",
+      "src": "/plant-photos/joi-choi-bok-choy/primary.jpg",
       "label": "Plant photo",
-      "alt": "Shanghai green bok choy plant showing foliage and plant structure.",
-      "caption": "Shanghai green bok choy shown as a representative living plant reference.",
-      "credit": "Schlaghecken Josef",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pak_Choi_(Brassica_rapa_subsp._chinensis_)_Kohlfliegen-Schaden-3-Josef_Schlaghecken.jpg",
-      "bytes": 514464
+      "alt": "Bok choy heads with green leaves and pale stems.",
+      "caption": "Bok choy shown as a representative Brassica rapa Chinensis Group crop.",
+      "credit": "Tom Taker / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-chinensis-group/",
+      "bytes": 123288
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "shangri-la-mulberry",
@@ -11095,15 +11094,15 @@
     "primary": {
       "src": "/plant-photos/shipova/primary.jpg",
       "label": "Plant photo",
-      "alt": "Shipova tree showing leafy branches and small pear-like fruit where visible.",
-      "caption": "Shipova tree showing leafy branches and small pear-like fruit where visible.",
-      "credit": "Sdjurovic / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:20220606_143149_Sorbus_domestica.jpg",
-      "bytes": 518756
+      "alt": "Shipova fruits after harvest.",
+      "caption": "Shipova fruits shown as an exact fruit reference.",
+      "credit": "USDA / Wikimedia Commons",
+      "license": "Public domain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shipova_fruit.jpg",
+      "bytes": 17220
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from a public image source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "shiro-plum",
@@ -11154,17 +11153,17 @@
   {
     "id": "shogoin-turnip",
     "primary": {
-      "src": "/plant-photos/american-purple-top-rutabaga/primary.jpg",
+      "src": "/plant-photos/purple-top-turnip/primary.jpg",
       "label": "Plant photo",
-      "alt": "Shogoin turnip plant showing foliage and plant structure.",
-      "caption": "Shogoin turnip uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Rasbak / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADaucus%20carota%20flowers%2C%20peen%20'Napoli'.jpg",
-      "bytes": 835030
+      "alt": "Turnip roots and leaves growing in a garden bed.",
+      "caption": "Turnips growing in a garden bed.",
+      "credit": "Ivan Lian / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-rapifera-group/",
+      "bytes": 78110
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "showy-milkweed",
@@ -11364,32 +11363,32 @@
   {
     "id": "snowball-cauliflower",
     "primary": {
-      "src": "/plant-photos/di-cicco-broccoli/primary.jpg",
+      "src": "/plant-photos/snowball-cauliflower/primary.jpg",
       "label": "Plant photo",
-      "alt": "Cauliflower plant showing large leaves and a central head.",
-      "caption": "Cauliflower plant showing large leaves and a central head.",
-      "credit": "GT1976 / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2018-06-01_(131)_Leaves_of_young_Brassica_oleracea_var._gongylodes_(Kohlrabi)_at_Bichlh%C3%A4usl_in_Frankenfels,_Austria.jpg",
-      "bytes": 524754
+      "alt": "Mature cauliflower plant with white head and green leaves.",
+      "caption": "Mature cauliflower plant with head and leaves.",
+      "credit": "Koyre Logan / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-oleracea-cauliflower-broccoli-group/",
+      "bytes": 97504
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "softneck-garlic",
     "primary": {
-      "src": "/plant-photos/softneck-garlic/primary.jpg",
+      "src": "/plant-photos/music-garlic/primary.jpg",
       "label": "Plant photo",
-      "alt": "Garlic plant showing upright leaves and young scape.",
-      "caption": "Garlic plant showing upright leaves and young scape.",
-      "credit": "Ermell / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AKnoblauch%20(Allium%20sativum)-20200621-RM-085344.jpg",
-      "bytes": 138723
+      "alt": "Garlic plants growing with upright green leaves.",
+      "caption": "Garlic plants growing in a garden bed.",
+      "credit": "Christian Ries / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/allium-sativum/",
+      "bytes": 211432
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "solar-cascade-goldenrod",
@@ -11699,17 +11698,17 @@
   {
     "id": "sugar-pie-pumpkin",
     "primary": {
-      "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
+      "src": "/plant-photos/jack-o-lantern-pumpkin/primary.jpg",
       "label": "Plant photo",
-      "alt": "Squash vine showing broad leaves and developing fruit.",
-      "caption": "Squash vine showing leaves and developing fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Orange squash fruit growing among vine leaves.",
+      "caption": "Orange Cucurbita maxima fruit on a living vine.",
+      "credit": "Hope Duckworth / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/cucurbita-maxima/",
+      "bytes": 195469
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "sugar-snap-pea",
@@ -11896,17 +11895,18 @@
   {
     "id": "susquehanna-pawpaw",
     "primary": {
-      "src": "/plant-photos/susquehanna-pawpaw/primary.jpg",
+      "src": "/plant-photos/mango-pawpaw/primary.jpg",
       "label": "Plant photo",
-      "alt": "Pawpaw tree showing large leaves and branching structure.",
-      "caption": "Pawpaw tree showing large leaves and branching structure.",
-      "credit": "James St. John / Wikimedia Commons",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AAsimina%20triloba%20(pawpaw%20tree)%202%20(27705591799).jpg",
-      "bytes": 1006612
+      "alt": "Pawpaw fruit developing among large green leaves.",
+      "caption": "Pawpaw fruit on a living branch with leaves.",
+      "credit": "Photo by Phillip Merritt / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/asimina-triloba/",
+      "bytes": 46944,
+      "position": "50% 50%"
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo reuses the reviewed pawpaw fruiting-plant reference for this cultivar card. Fruit color, size, leaf form, and growth habit can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "suyo-long-cucumber",
@@ -12034,15 +12034,15 @@
     "primary": {
       "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
       "label": "Plant photo",
-      "alt": "Squash vine showing broad leaves and developing fruit.",
-      "caption": "Squash vine showing leaves and developing fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Green winter squash fruit growing on a vine.",
+      "caption": "Green Cucurbita maxima fruit on a living vine.",
+      "credit": "Prenn / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/cucurbita-maxima/",
+      "bytes": 152052
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "takinogawa-burdock",
@@ -12108,17 +12108,17 @@
   {
     "id": "tatsoi",
     "primary": {
-      "src": "/plant-photos/joi-choi-bok-choy/primary.jpg",
+      "src": "/plant-photos/tatsoi/primary.jpg",
       "label": "Plant photo",
-      "alt": "Brassica greens showing leafy growth.",
-      "caption": "Brassica greens showing edible leafy growth.",
-      "credit": "Frank Vincentz / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AKluse%20-%20Brassica%20oleracea%20var.%20palmifolia%20-%20Ostfriesische%20Palme%2001%20ies.jpg",
-      "bytes": 935298
+      "alt": "Tatsoi rosette with rounded green leaves.",
+      "caption": "Tatsoi rosette shown as a representative Asian green.",
+      "credit": "Forest & Kim Starr / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-var-rosularis/",
+      "bytes": 122661
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "tayberry",
@@ -12233,30 +12233,30 @@
     "primary": {
       "src": "/plant-photos/black-beauty-eggplant/primary.jpg",
       "label": "Plant photo",
-      "alt": "Thai long green eggplant plant showing foliage and plant structure.",
-      "caption": "Thai long green eggplant uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-090421-6294-Solanum_melongena-fruit_and_leaves-Pukalani-Maui_(24325576693).jpg",
-      "bytes": 279519
+      "alt": "Purple eggplants growing among green leaves.",
+      "caption": "Eggplant fruits growing on a living plant.",
+      "credit": "Joydeep / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-melongena/",
+      "bytes": 131737
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "thai-round-eggplant",
     "primary": {
       "src": "/plant-photos/black-beauty-eggplant/primary.jpg",
       "label": "Plant photo",
-      "alt": "Thai round eggplant plant showing foliage and plant structure.",
-      "caption": "Thai round eggplant uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Forest and Kim Starr / Wikimedia Commons",
-      "license": "CC BY 3.0 us",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Starr-090421-6294-Solanum_melongena-fruit_and_leaves-Pukalani-Maui_(24325576693).jpg",
-      "bytes": 279519
+      "alt": "Purple eggplants growing among green leaves.",
+      "caption": "Eggplant fruits growing on a living plant.",
+      "credit": "Joydeep / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/solanum-melongena/",
+      "bytes": 131737
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "thomcord-grape",
@@ -12369,32 +12369,32 @@
   {
     "id": "tokyo-bekana",
     "primary": {
-      "src": "/plant-photos/tokyo-bekana/primary.jpg",
+      "src": "/plant-photos/napa-cabbage/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tokyo Bekana cabbage plant showing foliage and plant structure.",
-      "caption": "Tokyo Bekana cabbage shown as a representative living plant reference.",
-      "credit": "Ben Smegelsky",
-      "license": "Public domain",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plant_Pillow_Preparation.jpg",
-      "bytes": 79349
+      "alt": "Napa cabbage plant with pale green heading leaves.",
+      "caption": "Napa cabbage plant shown as a representative heading Brassica rapa.",
+      "credit": "Tom Christensen / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-pekinensis-group/",
+      "bytes": 178487
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "tokyo-cross-turnip",
     "primary": {
-      "src": "/plant-photos/american-purple-top-rutabaga/primary.jpg",
+      "src": "/plant-photos/purple-top-turnip/primary.jpg",
       "label": "Plant photo",
-      "alt": "Tokyo Cross turnip plant showing foliage and plant structure.",
-      "caption": "Tokyo Cross turnip uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Rasbak / Wikimedia Commons",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ADaucus%20carota%20flowers%2C%20peen%20'Napoli'.jpg",
-      "bytes": 835030
+      "alt": "Turnip roots and leaves growing in a garden bed.",
+      "caption": "Turnips growing in a garden bed.",
+      "credit": "Ivan Lian / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-rapifera-group/",
+      "bytes": 78110
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "tomcot-apricot",
@@ -12415,17 +12415,17 @@
   {
     "id": "toy-choi",
     "primary": {
-      "src": "/plant-photos/shanghai-green-bok-choy/primary.jpg",
+      "src": "/plant-photos/joi-choi-bok-choy/primary.jpg",
       "label": "Plant photo",
-      "alt": "Toy Choy plant showing foliage and plant structure.",
-      "caption": "Toy Choy uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Schlaghecken Josef",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pak_Choi_(Brassica_rapa_subsp._chinensis_)_Kohlfliegen-Schaden-3-Josef_Schlaghecken.jpg",
-      "bytes": 514464
+      "alt": "Bok choy heads with green leaves and pale stems.",
+      "caption": "Bok choy shown as a representative Brassica rapa Chinensis Group crop.",
+      "credit": "Tom Taker / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-chinensis-group/",
+      "bytes": 123288
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "tree-peony",
@@ -12571,15 +12571,15 @@
     "primary": {
       "src": "/plant-photos/ume-plum/primary.jpg",
       "label": "Plant photo",
-      "alt": "Ume Japanese apricot tree showing foliage and plant structure.",
-      "caption": "Ume Japanese apricot shown as a representative living plant reference.",
-      "credit": "Nankou Oronain (as36…",
-      "license": "CC BY-SA 3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E6%84%8F%E8%B3%80%E7%BE%8E%E7%A5%9E%E7%A4%BE%E6%A2%85%E5%9C%92_%E6%9E%9A%E6%96%B9%E5%B8%82%E6%9E%9A%E6%96%B9%E4%B8%8A%E4%B9%8B%E7%94%BA_Ume_garden_in_Okami-jinja_2014.3.24_-_panoramio.jpg",
-      "bytes": 531076
+      "alt": "Ume plum fruit on a branch.",
+      "caption": "Ume plum fruit shown as a representative Prunus mume reference.",
+      "credit": "Jim Robbins / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/prunus-mume/",
+      "bytes": 129968
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "utah-giant-cherry",
@@ -12722,15 +12722,15 @@
     "primary": {
       "src": "/plant-photos/candy-onion/primary.jpg",
       "label": "Plant photo",
-      "alt": "Onion plant showing upright tubular leaves and bulb growth.",
-      "caption": "Onion plant showing upright tubular leaves and bulb growth.",
-      "credit": "Netha Hussain / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Onion_plant_in_a_pot_17.jpg",
-      "bytes": 170659
+      "alt": "Rows of onion plants with bulbs and upright leaves.",
+      "caption": "Onion plants growing in a garden bed.",
+      "credit": "Carl Lewis / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/allium-cepa/",
+      "bytes": 178209
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "vietnamese-coriander",
@@ -12814,31 +12814,30 @@
     "primary": {
       "src": "/plant-photos/candy-onion/primary.jpg",
       "label": "Plant photo",
-      "alt": "Onion plant showing upright tubular leaves and bulb growth.",
-      "caption": "Onion plant showing upright tubular leaves and bulb growth.",
-      "credit": "Netha Hussain / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Onion_plant_in_a_pot_17.jpg",
-      "bytes": 170659
+      "alt": "Rows of onion plants with bulbs and upright leaves.",
+      "caption": "Onion plants growing in a garden bed.",
+      "credit": "Carl Lewis / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/allium-cepa/",
+      "bytes": 178209
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "waltham-butternut",
     "primary": {
       "src": "/plant-photos/waltham-butternut/primary.jpg",
       "label": "Plant photo",
-      "alt": "Butternut squash fruit growing on a vine.",
-      "caption": "Butternut squash fruit growing on the vine.",
-      "credit": "ancapron / Flickr",
-      "license": "CC BY 2.0",
-      "sourceUrl": "https://www.flickr.com/photos/47301944@N00/5930836016",
-      "bytes": 170504,
-      "position": "44% 58%"
+      "alt": "Butternut-type squash fruit growing on a vine.",
+      "caption": "Cucurbita moschata fruit on a living vine.",
+      "credit": "Girish Bhatt / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/cucurbita-moschata/",
+      "bytes": 116815
     },
     "details": [],
-    "note": "Photo shows a close representative plant with fruit on the vine. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "warren-pear",
@@ -12891,30 +12890,30 @@
     "primary": {
       "src": "/plant-photos/cherry-belle-radish/primary.jpg",
       "label": "Plant photo",
-      "alt": "Watermelon radish plant showing foliage and plant structure.",
-      "caption": "Watermelon radish uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Schlaghecken Josef / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Raphanus_sativus,_Albugo_candida-2-JS.jpg",
-      "bytes": 409414
+      "alt": "Radish plants with red roots and leafy tops.",
+      "caption": "Radish plants growing with roots and leaves visible.",
+      "credit": "Rasbak / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/raphanus-sativus/",
+      "bytes": 211090
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "wax-gourd",
     "primary": {
       "src": "/plant-photos/wax-gourd/primary.jpg",
       "label": "Plant photo",
-      "alt": "Wax gourd vine showing foliage and plant structure.",
-      "caption": "Wax gourd shown as a representative living plant reference.",
-      "credit": "GTSPACE",
-      "license": "CC0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_winter_melon.jpg",
-      "bytes": 209497
+      "alt": "Wax gourds growing on a vine.",
+      "caption": "Wax gourd fruits growing on a living vine.",
+      "credit": "Adityamadhav83 / Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Winter_Melons_on_the_vine_in_Kurnool%2C_Andhra_Pradesh%2C_India_01.jpg",
+      "bytes": 313562
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Cultivar appearance, fruit color, bloom timing, and growth habit can vary by site and season."
+    "note": "Photo is from a public image source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "wax-myrtle",
@@ -12998,30 +12997,30 @@
     "primary": {
       "src": "/plant-photos/white-sapote/primary.jpg",
       "label": "Plant photo",
-      "alt": "White sapote tree showing leafy branches and green fruit where visible.",
-      "caption": "White sapote tree showing leafy branches and green fruit where visible.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Casimiroa_edulis-2-HRS-yercaud-salem-India.jpg",
-      "bytes": 177314
+      "alt": "White sapote tree with dense green foliage.",
+      "caption": "White sapote tree at Hanna House.",
+      "credit": "Sairus Patel / Trees of Stanford & Environs",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://trees.stanford.edu/ENCYC/CASedu.htm",
+      "bytes": 404531
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "white-stem-pak-choi",
     "primary": {
-      "src": "/plant-photos/shanghai-green-bok-choy/primary.jpg",
+      "src": "/plant-photos/joi-choi-bok-choy/primary.jpg",
       "label": "Plant photo",
-      "alt": "White stem pak choi plant showing foliage and plant structure.",
-      "caption": "White stem pak choi uses a representative plant reference while a closer photo is being sourced.",
-      "credit": "Schlaghecken Josef",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pak_Choi_(Brassica_rapa_subsp._chinensis_)_Kohlfliegen-Schaden-3-Josef_Schlaghecken.jpg",
-      "bytes": 514464
+      "alt": "Bok choy heads with green leaves and pale stems.",
+      "caption": "Bok choy shown as a representative Brassica rapa Chinensis Group crop.",
+      "credit": "Tom Taker / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/brassica-rapa-chinensis-group/",
+      "bytes": 123288
     },
     "details": [],
-    "note": "This is a representative garden photo used as a temporary reference. Replace with a closer cultivar or species image when one is sourced."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "white-swan-coneflower",
@@ -13347,17 +13346,17 @@
   {
     "id": "yellow-straightneck-squash",
     "primary": {
-      "src": "/plant-photos/blue-hubbard-squash/primary.jpg",
+      "src": "/plant-photos/costata-romanesco-zucchini/primary.jpg",
       "label": "Plant photo",
-      "alt": "Squash vine showing broad leaves and developing fruit.",
-      "caption": "Squash vine showing leaves and developing fruit.",
-      "credit": "Yercaud-elango / Wikimedia Commons",
-      "license": "CC BY-SA 4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ACucurbita%20moschata-1-nallur-yercaud-salem-India.jpg",
-      "bytes": 1494503
+      "alt": "Zucchini fruit growing on a leafy squash plant.",
+      "caption": "Zucchini fruit on a living Cucurbita pepo plant.",
+      "credit": "Rasbak / NC State Extension Plant Toolbox",
+      "license": "Educational/public institution source",
+      "sourceUrl": "https://plants.ces.ncsu.edu/plants/cucurbita-pepo/",
+      "bytes": 158924
     },
     "details": [],
-    "note": "Photos show a representative plant in the garden. Fruit color, size, and growth habit can vary by cultivar, season, nursery stock, and site."
+    "note": "Photo is from an educational/public institution source and shows a representative living plant or plant part. Appearance can vary by cultivar, season, nursery stock, and site."
   },
   {
     "id": "yellow-wax-bells",
