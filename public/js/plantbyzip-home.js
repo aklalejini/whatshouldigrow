@@ -9777,6 +9777,53 @@ function renderVariantComparison(entry, inputs) {
   `;
 }
 
+function renderGroupedDetailContent(entry, inputs, detailArt) {
+  const plant = entry.plant;
+  const metrics = metricFor(plant);
+  const fit = overallFit(entry.score);
+  const climateNotes = plantClimateNotes(plant, inputs);
+  const stats = [
+    { label: "Top variety", value: plant.name },
+    { label: "Hardiness", value: `Zones ${plant.zones[0]}-${plant.zones[1]}` },
+    { label: "Sun", value: formatList(plant.sun) },
+    { label: "Soil", value: formatList(plant.soils) },
+    { label: "Water", value: plant.water },
+    { label: "First output", value: metricDisplayValue(metrics.display?.firstOutput) },
+    { label: "Yield", value: metricDisplayValue(metrics.display?.yieldLbs) },
+    { label: "Spacing", value: metricDisplayValue(metrics.display?.spacing) }
+  ];
+
+  return `
+    <div class="details-grid group-details-grid">
+      ${detailArt}
+      <div class="detail-panel group-overview-panel">
+        <div class="group-overview-head">
+          <div>
+            <h4>Top match snapshot</h4>
+            <strong>${escapeHtml(plant.name)}</strong>
+          </div>
+          <span class="group-fit-pill ${fit.tone}">${fit.percent}% ${fit.label}</span>
+        </div>
+        <p>${escapeHtml(cardSummaryText(plant))}</p>
+        ${renderMatchFacts(plant, inputs, metrics)}
+        ${renderZoneRange(plant, inputs)}
+        <dl class="group-stats">
+          ${stats
+            .map((stat) => `<div><dt>${escapeHtml(stat.label)}</dt><dd>${escapeHtml(stat.value)}</dd></div>`)
+            .join("")}
+        </dl>
+        ${climateNotes.length
+          ? `<div class="group-climate">
+              <h4>Climate checks</h4>
+              <ul>${climateNotes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul>
+            </div>`
+          : ""}
+      </div>
+      ${renderVariantComparison(entry, inputs)}
+    </div>
+  `;
+}
+
 function createResultItem(entry, index, inputs) {
   const { plant, score } = entry;
   const metrics = metricFor(plant);
@@ -9813,6 +9860,35 @@ function createResultItem(entry, index, inputs) {
   const fit = overallFit(score);
   const sourceAction = sourceActionForPlant(plant);
   const climateNotes = renderPlantClimateNotes(plant, inputs);
+  const detailContent = grouped
+    ? renderGroupedDetailContent(entry, inputs, detailArt)
+    : `
+      <div class="details-grid">
+        ${detailArt}
+        <div class="detail-panel">
+          <h4>Fit breakdown</h4>
+          <div class="fit-chart">
+            ${renderFitRows(breakdown.details)}
+          </div>
+        </div>
+        <div class="detail-panel">
+          <h4>Plant data</h4>
+          ${renderZoneRange(plant, inputs)}
+          <dl class="plant-stats">
+            <div><dt>Sun</dt><dd>${formatList(plant.sun)}</dd></div>
+            <div><dt>Soil</dt><dd>${formatList(plant.soils)}</dd></div>
+            <div><dt>Water</dt><dd>${plant.water}</dd></div>
+            <div><dt>First output</dt><dd>${escapeHtml(metricDisplayValue(metrics.display?.firstOutput))}</dd></div>
+            <div><dt>Spacing</dt><dd>${escapeHtml(metricDisplayValue(metrics.display?.spacing))}</dd></div>
+            <div><dt>Yield return</dt><dd>${escapeHtml(metricDisplayValue(metrics.display?.yieldLbs))}</dd></div>
+            <div><dt>Goals</dt><dd>${formatGoalList(plant.goals)}</dd></div>
+          </dl>
+        </div>
+        ${climateNotes}
+        ${renderRelationshipPanel(plant)}
+        <p class="grow-note">${plant.notes}</p>
+      </div>
+    `;
   item.innerHTML = `
     <figure class="plant-visual ${kind} ${art} ${hasImage ? imageMode : ""}" aria-hidden="true"${photoStyle}>
       <span class="rank">${index + 1}</span>
@@ -9843,32 +9919,7 @@ function createResultItem(entry, index, inputs) {
           <path d="M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6 1.4-1.4Z"></path>
         </svg>
       </summary>
-      <div class="details-grid">
-        ${detailArt}
-        ${renderVariantComparison(entry, inputs)}
-        <div class="detail-panel">
-          <h4>Fit breakdown</h4>
-          <div class="fit-chart">
-            ${renderFitRows(breakdown.details)}
-          </div>
-        </div>
-        <div class="detail-panel">
-          <h4>Plant data</h4>
-          ${renderZoneRange(plant, inputs)}
-          <dl class="plant-stats">
-            <div><dt>Sun</dt><dd>${formatList(plant.sun)}</dd></div>
-            <div><dt>Soil</dt><dd>${formatList(plant.soils)}</dd></div>
-            <div><dt>Water</dt><dd>${plant.water}</dd></div>
-            <div><dt>First output</dt><dd>${escapeHtml(metricDisplayValue(metrics.display?.firstOutput))}</dd></div>
-            <div><dt>Spacing</dt><dd>${escapeHtml(metricDisplayValue(metrics.display?.spacing))}</dd></div>
-            <div><dt>Yield return</dt><dd>${escapeHtml(metricDisplayValue(metrics.display?.yieldLbs))}</dd></div>
-            <div><dt>Goals</dt><dd>${formatGoalList(plant.goals)}</dd></div>
-          </dl>
-        </div>
-        ${climateNotes}
-        ${renderRelationshipPanel(plant)}
-        <p class="grow-note">${plant.notes}</p>
-      </div>
+      ${detailContent}
     </details>
     <div class="card-actions">
       <a class="plant-page-action" href="${plantPagePath(plant)}">${pageActionLabel}</a>
