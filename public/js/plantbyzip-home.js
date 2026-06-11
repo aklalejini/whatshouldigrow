@@ -1183,6 +1183,393 @@ function plantIdentity(plant) {
   return `${plant.id} ${plant.name} ${plant.query ?? ""}`.toLowerCase();
 }
 
+function resultGroupIdentity(plant) {
+  return `${plant.id} ${plant.name} ${plant.query ?? ""} ${plant.type ?? ""}`
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function hasResultTerm(identity, term) {
+  const normalizedTerm = String(term ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  if (!normalizedTerm) return false;
+  return ` ${identity} `.includes(` ${normalizedTerm} `);
+}
+
+function hasAnyResultTerm(identity, terms) {
+  return terms.some((term) => hasResultTerm(identity, term));
+}
+
+function hasNoResultTerm(identity, terms) {
+  return !hasAnyResultTerm(identity, terms);
+}
+
+const resultGroupRules = [
+  {
+    id: "hot-pepper",
+    label: "Hot pepper",
+    match: ({ identity, type }) => type.includes("vegetable")
+      && hasResultTerm(identity, "pepper")
+      && hasNoResultTerm(identity, ["sweet pepper", "bell pepper", "pimento", "cubanelle", "banana pepper", "peppermint"])
+  },
+  {
+    id: "sweet-pepper",
+    label: "Sweet pepper",
+    match: ({ identity, type }) => type.includes("vegetable")
+      && hasAnyResultTerm(identity, ["sweet pepper", "bell pepper", "pimento", "cubanelle", "banana pepper"])
+  },
+  {
+    id: "watermelon",
+    label: "Watermelon",
+    match: ({ identity, type }) => type.includes("vine")
+      && hasResultTerm(identity, "watermelon")
+      && hasNoResultTerm(identity, ["watermelon radish"])
+  },
+  {
+    id: "cantaloupe-melon",
+    label: "Cantaloupe and muskmelon",
+    match: ({ identity, type }) => type.includes("vine")
+      && hasAnyResultTerm(identity, ["cantaloupe", "charentais melon", "hales best melon"])
+  },
+  {
+    id: "specialty-melon",
+    label: "Specialty melon",
+    match: ({ identity, type }) => type.includes("vine")
+      && hasAnyResultTerm(identity, ["korean melon", "hami melon"])
+  },
+  {
+    id: "bitter-melon",
+    label: "Bitter melon",
+    match: ({ identity, type }) => type.includes("vine")
+      && hasResultTerm(identity, "bitter melon")
+  },
+  {
+    id: "summer-squash",
+    label: "Summer squash",
+    match: ({ identity, type }) => type.includes("vegetable")
+      && hasAnyResultTerm(identity, ["summer squash", "crookneck squash", "straightneck squash", "pattypan squash", "tromboncino squash"])
+  },
+  {
+    id: "winter-squash",
+    label: "Winter squash",
+    match: ({ identity, type }) => type.includes("vegetable")
+      && hasAnyResultTerm(identity, ["winter squash", "butternut", "delicata squash", "kabocha squash", "acorn squash", "spaghetti squash", "hubbard squash"])
+  },
+  {
+    id: "tomato",
+    label: "Tomato",
+    match: ({ identity, type }) => type.includes("vegetable") && hasResultTerm(identity, "tomato")
+  },
+  {
+    id: "cucumber",
+    label: "Cucumber",
+    match: ({ identity }) => hasResultTerm(identity, "cucumber")
+  },
+  {
+    id: "eggplant",
+    label: "Eggplant",
+    match: ({ identity, type }) => type.includes("vegetable") && hasResultTerm(identity, "eggplant")
+  },
+  {
+    id: "sweet-corn",
+    label: "Sweet corn",
+    match: ({ identity, type }) => type.includes("vegetable")
+      && hasResultTerm(identity, "corn")
+      && hasNoResultTerm(identity, ["corn salad", "acorn", "cornelian"])
+  },
+  {
+    id: "asian-pear",
+    label: "Asian pear",
+    match: ({ identity, type }) => type.includes("tree") && hasResultTerm(identity, "asian pear")
+  },
+  {
+    id: "pear",
+    label: "Pear",
+    match: ({ identity, type }) => type.includes("tree")
+      && hasResultTerm(identity, "pear")
+      && hasNoResultTerm(identity, ["asian pear", "shipova", "yellow pear tomato"])
+  },
+  {
+    id: "apple",
+    label: "Apple",
+    match: ({ identity, type }) => type.includes("tree")
+      && hasResultTerm(identity, "apple")
+      && hasNoResultTerm(identity, ["pineapple", "mayapple"])
+  },
+  {
+    id: "peach",
+    label: "Peach",
+    match: ({ identity, type }) => type.includes("tree")
+      && hasResultTerm(identity, "peach")
+      && hasNoResultTerm(identity, ["peaches and cream"])
+  },
+  {
+    id: "nectarine",
+    label: "Nectarine",
+    match: ({ identity, type }) => type.includes("tree") && hasResultTerm(identity, "nectarine")
+  },
+  {
+    id: "apricot",
+    label: "Apricot",
+    match: ({ identity, type }) => type.includes("tree")
+      && hasResultTerm(identity, "apricot")
+      && hasNoResultTerm(identity, ["japanese apricot"])
+  },
+  {
+    id: "quince",
+    label: "Quince",
+    match: ({ identity, type }) => type.includes("tree") && hasResultTerm(identity, "quince")
+  },
+  {
+    id: "flowering-quince",
+    label: "Flowering quince",
+    match: ({ identity, type }) => type.includes("shrub") && hasResultTerm(identity, "quince")
+  },
+  {
+    id: "japanese-plum",
+    label: "Japanese plum",
+    match: ({ identity, type }) => type.includes("tree")
+      && hasAnyResultTerm(identity, ["japanese plum", "santa rosa plum", "burbank plum", "methley plum", "shiro plum", "beauty plum", "satsuma plum", "elephant heart plum", "hollywood plum", "mariposa plum", "ozark premier plum"])
+  },
+  {
+    id: "european-plum",
+    label: "European plum",
+    match: ({ identity, type }) => type.includes("tree")
+      && hasAnyResultTerm(identity, ["stanley plum", "prune plum", "damson plum", "mount royal plum"])
+  },
+  {
+    id: "native-plum",
+    label: "Native plum",
+    match: ({ identity }) => hasAnyResultTerm(identity, ["chickasaw plum", "toka plum", "superior plum", "au rosa plum", "black ice plum"])
+  },
+  {
+    id: "sweet-cherry",
+    label: "Sweet cherry",
+    match: ({ identity, type }) => type.includes("tree") && hasResultTerm(identity, "sweet cherry")
+  },
+  {
+    id: "tart-cherry",
+    label: "Tart cherry",
+    match: ({ identity, type }) => type.includes("tree") && hasAnyResultTerm(identity, ["tart cherry", "sour cherry"])
+  },
+  {
+    id: "bush-cherry",
+    label: "Bush cherry",
+    match: ({ identity, type }) => type.includes("shrub")
+      && hasResultTerm(identity, "cherry")
+      && hasNoResultTerm(identity, ["cornelian cherry dogwood"])
+  },
+  {
+    id: "fig",
+    label: "Fig",
+    match: ({ identity, type }) => type.includes("tree") && hasResultTerm(identity, "fig")
+  },
+  {
+    id: "asian-persimmon",
+    label: "Asian persimmon",
+    match: ({ identity, type }) => type.includes("tree")
+      && hasAnyResultTerm(identity, ["asian persimmon", "fuyu persimmon", "hachiya persimmon", "saijo persimmon", "jiro persimmon", "ichi ki kei jiro", "ichikikeijiro", "coffee cake persimmon", "chocolate persimmon", "tamopan persimmon", "giombo persimmon"])
+  },
+  {
+    id: "american-hybrid-persimmon",
+    label: "American and hybrid persimmon",
+    match: ({ identity, type }) => type.includes("tree")
+      && hasAnyResultTerm(identity, ["american persimmon", "nikita"])
+  },
+  {
+    id: "pawpaw",
+    label: "Pawpaw",
+    match: ({ identity, type }) => type.includes("tree") && hasResultTerm(identity, "pawpaw")
+  },
+  {
+    id: "jujube",
+    label: "Jujube",
+    match: ({ identity, type }) => type.includes("tree") && hasResultTerm(identity, "jujube")
+  },
+  {
+    id: "mulberry",
+    label: "Mulberry",
+    match: ({ identity, type }) => type.includes("tree") && hasResultTerm(identity, "mulberry")
+  },
+  {
+    id: "pomegranate",
+    label: "Pomegranate",
+    match: ({ identity, type }) => type.includes("shrub") && hasResultTerm(identity, "pomegranate")
+  },
+  {
+    id: "kiwi",
+    label: "Kiwi",
+    match: ({ identity, type }) => type.includes("vine") && hasResultTerm(identity, "kiwi")
+  },
+  {
+    id: "almond",
+    label: "Almond",
+    match: ({ identity, type }) => type.includes("nut tree") && hasResultTerm(identity, "almond")
+  },
+  {
+    id: "pecan",
+    label: "Pecan",
+    match: ({ identity, type }) => type.includes("nut tree") && hasResultTerm(identity, "pecan")
+  },
+  {
+    id: "chestnut",
+    label: "Chestnut",
+    match: ({ identity, type }) => type.includes("nut tree") && hasResultTerm(identity, "chestnut")
+  },
+  {
+    id: "olive",
+    label: "Olive",
+    match: ({ identity, type }) => type.includes("tree")
+      && hasResultTerm(identity, "olive")
+      && hasNoResultTerm(identity, ["tea olive"])
+  },
+  {
+    id: "rabbiteye-blueberry",
+    label: "Rabbiteye blueberry",
+    match: ({ identity }) => hasResultTerm(identity, "rabbiteye blueberry")
+  },
+  {
+    id: "highbush-blueberry",
+    label: "Highbush blueberry",
+    match: ({ identity }) => hasAnyResultTerm(identity, ["highbush blueberry", "bluecrop blueberry", "legacy blueberry", "duke blueberry", "reka blueberry", "elliott blueberry", "patriot blueberry", "northland blueberry", "emerald blueberry"])
+  },
+  {
+    id: "compact-blueberry",
+    label: "Compact blueberry",
+    match: ({ identity }) => hasAnyResultTerm(identity, ["sunshine blue blueberry", "pink lemonade blueberry"])
+  },
+  {
+    id: "blackberry",
+    label: "Blackberry",
+    match: ({ identity, type }) => type.includes("cane") && hasResultTerm(identity, "blackberry")
+  },
+  {
+    id: "gooseberry",
+    label: "Gooseberry",
+    match: ({ identity, type }) => type.includes("shrub") && hasResultTerm(identity, "gooseberry")
+  },
+  {
+    id: "currant",
+    label: "Currant",
+    match: ({ identity, type }) => type.includes("shrub") && hasResultTerm(identity, "currant")
+  },
+  {
+    id: "elderberry",
+    label: "Elderberry",
+    match: ({ identity, type }) => type.includes("shrub") && hasResultTerm(identity, "elderberry")
+  },
+  {
+    id: "serviceberry",
+    label: "Serviceberry",
+    match: ({ identity }) => hasResultTerm(identity, "serviceberry")
+  },
+  {
+    id: "red-raspberry",
+    label: "Red raspberry",
+    match: ({ identity, type }) => type.includes("cane") && hasResultTerm(identity, "red raspberry")
+  },
+  {
+    id: "raspberry",
+    label: "Raspberry",
+    match: ({ identity, type }) => type.includes("cane") && hasResultTerm(identity, "raspberry")
+  },
+  {
+    id: "day-neutral-strawberry",
+    label: "Day-neutral strawberry",
+    match: ({ identity, type }) => type.includes("perennial") && hasResultTerm(identity, "day neutral strawberry")
+  },
+  {
+    id: "strawberry",
+    label: "Strawberry",
+    match: ({ identity, type }) => type.includes("perennial")
+      && hasResultTerm(identity, "strawberry")
+      && hasNoResultTerm(identity, ["day neutral strawberry"])
+  },
+  {
+    id: "muscadine-grape",
+    label: "Muscadine grape",
+    match: ({ identity, type }) => type.includes("vine") && hasResultTerm(identity, "muscadine")
+  },
+  {
+    id: "bunch-grape",
+    label: "Bunch grape",
+    match: ({ identity, type }) => type.includes("vine")
+      && hasResultTerm(identity, "grape")
+      && hasNoResultTerm(identity, ["muscadine"])
+  },
+  {
+    id: "lemon",
+    label: "Lemon",
+    match: ({ identity, type }) => type.includes("citrus") && hasResultTerm(identity, "lemon")
+  },
+  {
+    id: "lime",
+    label: "Lime",
+    match: ({ identity, type }) => type.includes("citrus") && hasResultTerm(identity, "lime")
+  },
+  {
+    id: "mandarin",
+    label: "Mandarin",
+    match: ({ identity, type }) => type.includes("citrus") && hasAnyResultTerm(identity, ["mandarin", "satsuma"])
+  }
+];
+
+function resultGroupForPlant(plant) {
+  const identity = resultGroupIdentity(plant);
+  const type = String(plant.type ?? "").toLowerCase();
+  const rule = resultGroupRules.find((candidate) => candidate.match({ identity, type, plant }));
+  return rule ? { id: rule.id, label: rule.label } : null;
+}
+
+function singleResultEntry(entry) {
+  return { kind: "single", plant: entry.plant, score: entry.score, rankScore: entry.rankScore };
+}
+
+function groupRankedResults(ranked) {
+  const groups = new Map();
+  const grouped = [];
+
+  ranked.forEach((entry) => {
+    const group = resultGroupForPlant(entry.plant);
+    if (!group) {
+      grouped.push(singleResultEntry(entry));
+      return;
+    }
+
+    const variant = singleResultEntry(entry);
+    const existing = groups.get(group.id);
+    if (existing) {
+      existing.entries.push(variant);
+      return;
+    }
+
+    const groupEntry = {
+      kind: "group",
+      group,
+      entries: [variant],
+      plant: entry.plant,
+      score: entry.score,
+      rankScore: entry.rankScore
+    };
+    groups.set(group.id, groupEntry);
+    grouped.push(groupEntry);
+  });
+
+  return grouped.map((entry) => {
+    if (entry.kind !== "group") return entry;
+    entry.entries.sort((a, b) => b.rankScore - a.rankScore || b.score - a.score || a.plant.name.localeCompare(b.plant.name));
+    const best = entry.entries[0];
+    entry.plant = best.plant;
+    entry.score = best.score;
+    entry.rankScore = best.rankScore;
+    return entry.entries.length > 1 ? entry : best;
+  });
+}
+
+function isGroupedResult(entry) {
+  return entry?.kind === "group" && Array.isArray(entry.entries) && entry.entries.length > 1;
+}
+
 function matchesArtEntry(identity, entry) {
   const matches = entry.match ?? [];
   const excludes = entry.exclude ?? [];
@@ -1708,14 +2095,17 @@ function currentPlanSnapshot() {
     visibleCount,
     plants: currentRanked.slice(0, visibleCount).map((entry, index) => {
       const fit = overallFit(entry.score);
+      const grouped = isGroupedResult(entry);
       return {
         id: entry.plant.id,
-        name: entry.plant.name,
-        type: entry.plant.type,
+        name: grouped ? entry.group.label : entry.plant.name,
+        type: grouped ? `${entry.entries.length} varieties` : entry.plant.type,
         fitPercent: fit.percent,
         fitLabel: fit.label,
         url: plantPagePath(entry.plant),
-        note: cardSummaryText(entry.plant)
+        note: grouped
+          ? `Best match: ${entry.plant.name}. ${entry.entries.length} varieties grouped for cleaner ZIP results.`
+          : cardSummaryText(entry.plant)
       };
     })
   };
@@ -9335,10 +9725,63 @@ function renderZoneRange(plant, inputs) {
   `;
 }
 
+function groupedResultSummary(entry) {
+  const count = entry.entries.length;
+  const label = entry.group.label.toLowerCase();
+  return `Best match: ${entry.plant.name}. Expand to compare ${count} ${label} ${count === 1 ? "variety" : "varieties"} for your conditions.`;
+}
+
+function renderVariantComparison(entry, inputs) {
+  if (!isGroupedResult(entry)) return "";
+  return `
+    <div class="detail-panel variety-panel">
+      <h4>${escapeHtml(entry.group.label)} varieties</h4>
+      <p class="variant-intro">Sorted by the same ZIP, goal, sun, soil, and water fit as the main results.</p>
+      <div class="variant-list">
+        ${entry.entries.map((variant) => {
+          const variantPlant = variant.plant;
+          const fit = overallFit(variant.score);
+          const metrics = metricFor(variantPlant);
+          const firstOutput = metricDisplayValue(metrics.display?.firstOutput);
+          const output = metricDisplayValue(metrics.display?.yieldLbs);
+          const sourceAction = sourceActionForPlant(variantPlant);
+          const meta = [
+            firstOutput ? `First: ${firstOutput}` : "",
+            output ? `Output: ${output}` : "",
+            `Zones ${variantPlant.zones[0]}-${variantPlant.zones[1]}`
+          ].filter(Boolean);
+          return `
+            <article class="variant-item">
+              <div class="variant-head">
+                <div>
+                  <a href="${plantPagePath(variantPlant)}">${escapeHtml(variantPlant.name)}</a>
+                  <span>${escapeHtml(variantPlant.type)}</span>
+                </div>
+                <strong class="variant-fit ${fit.tone}">${fit.percent}% ${fit.label}</strong>
+              </div>
+              <p>${escapeHtml(cardSummaryText(variantPlant))}</p>
+              <div class="variant-meta">
+                ${meta.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
+              </div>
+              <div class="variant-actions">
+                <a href="${plantPagePath(variantPlant)}">Plant page</a>
+                ${sourceAction
+                  ? `<a href="${escapeHtml(sourceAction.href)}" target="_blank" rel="${sourceAction.rel}" data-partner-placement="matcher_variant_source">${escapeHtml(sourceAction.label)}</a>`
+                  : ""}
+              </div>
+            </article>
+          `;
+        }).join("")}
+      </div>
+    </div>
+  `;
+}
+
 function createResultItem(entry, index, inputs) {
   const { plant, score } = entry;
   const metrics = metricFor(plant);
   const item = document.createElement("li");
+  const grouped = isGroupedResult(entry);
   const kind = plantKind(plant);
   const artEntry = plantArtEntry(plant);
   const realPhotoEntry = plantRealPhotoEntry(plant);
@@ -9356,7 +9799,15 @@ function createResultItem(entry, index, inputs) {
         <span>${plant.name}</span>
       </figure>`
     : "";
-  item.className = `result-card ${index === 0 ? "top-card" : ""} ${kind}-card ${art}-art`;
+  const displayName = grouped ? entry.group.label : plant.name;
+  const displayType = grouped ? `${entry.entries.length} varieties matched` : plant.type;
+  const summaryText = grouped ? groupedResultSummary(entry) : cardSummaryText(plant);
+  const detailSummaryText = grouped ? "Compare varieties" : "More data";
+  const pageActionLabel = grouped ? "View top variety" : "View plant page";
+  const traitLabels = grouped
+    ? [`${entry.entries.length} varieties`, ...plant.traits].slice(0, 3)
+    : plant.traits.slice(0, 2);
+  item.className = `result-card ${index === 0 ? "top-card" : ""} ${kind}-card ${art}-art ${grouped ? "grouped-result" : ""}`;
 
   const breakdown = scoreBreakdown(plant, inputs);
   const fit = overallFit(score);
@@ -9369,8 +9820,8 @@ function createResultItem(entry, index, inputs) {
     </figure>
     <div class="result-copy">
       <div class="result-title">
-        <h3><a class="plant-name-link" href="${plantPagePath(plant)}">${plant.name}</a></h3>
-        <span>${plant.type}</span>
+        <h3><a class="plant-name-link" href="${plantPagePath(plant)}">${escapeHtml(displayName)}</a></h3>
+        <span>${escapeHtml(displayType)}</span>
       </div>
       <div class="overall-fit ${fit.tone}" style="--fit: ${fit.percent}%" aria-label="Overall fit ${fit.percent} percent, ${fit.label}">
         <div class="fit-ring" aria-hidden="true"><span>${fit.percent}</span></div>
@@ -9379,21 +9830,22 @@ function createResultItem(entry, index, inputs) {
           <strong>${fit.label}</strong>
         </div>
       </div>
-      <p class="result-summary">${escapeHtml(cardSummaryText(plant))}</p>
+      <p class="result-summary">${escapeHtml(summaryText)}</p>
       ${renderMatchFacts(plant, inputs, metrics)}
       <div class="trait-row">
-        ${plant.traits.slice(0, 2).map((trait) => `<span>${trait}</span>`).join("")}
+        ${traitLabels.map((trait) => `<span>${escapeHtml(trait)}</span>`).join("")}
       </div>
     </div>
     <details class="plant-details ${hasImage ? "has-art" : ""}">
       <summary>
-        <span>More data</span>
+        <span>${detailSummaryText}</span>
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6 1.4-1.4Z"></path>
         </svg>
       </summary>
       <div class="details-grid">
         ${detailArt}
+        ${renderVariantComparison(entry, inputs)}
         <div class="detail-panel">
           <h4>Fit breakdown</h4>
           <div class="fit-chart">
@@ -9419,7 +9871,7 @@ function createResultItem(entry, index, inputs) {
       </div>
     </details>
     <div class="card-actions">
-      <a class="plant-page-action" href="${plantPagePath(plant)}">View plant page</a>
+      <a class="plant-page-action" href="${plantPagePath(plant)}">${pageActionLabel}</a>
       ${sourceAction
         ? `<a class="plant-page-action" href="${escapeHtml(sourceAction.href)}" target="_blank" rel="${sourceAction.rel}" data-partner-placement="matcher_result_source">${escapeHtml(sourceAction.label)}</a>`
         : `<span class="nursery-placeholder">Source link coming soon</span>`}
@@ -9463,7 +9915,7 @@ function renderResults(zoneData, inputs) {
     return;
   }
 
-  currentRanked = ranked;
+  currentRanked = groupRankedResults(ranked);
   currentInputs = inputs;
   visibleCount = Math.min(12, currentRanked.length);
   saveListEl.hidden = false;
@@ -9476,7 +9928,8 @@ function renderResults(zoneData, inputs) {
     sun: inputs.sun,
     soil: inputs.soil,
     water: inputs.water,
-    result_count: ranked.length
+    result_count: currentRanked.length,
+    plant_result_count: ranked.length
   });
 }
 

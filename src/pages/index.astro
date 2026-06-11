@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import AnalyticsEvents from "../components/AnalyticsEvents.astro";
 import plants from "../data/plants.json";
 import plantMetrics from "../data/plantMetrics.json";
+import plantPhotos from "../data/plantPhotos.json";
 import { gardenPlanInternalLinks, gardenPlanTemplatePayloads } from "../lib/gardenPlanTemplates";
 import { hubInternalLinks } from "../lib/hubData";
 import { toolInternalLinks } from "../lib/toolData";
@@ -67,6 +68,58 @@ const webAppJsonLd = {
   operatingSystem: "Any",
   description: `Match ${plantCount} practical plant options to a ZIP code, light, soil, water, and garden goal, then build a ZIP-based planting calendar.`
 };
+
+const heroPhotoSelections = [
+  { id: "benary-zinnia", position: "48% 42%" },
+  { id: "cheyenne-spirit-coneflower", position: "48% 44%" },
+  { id: "dragon-fruit-american-beauty", position: "46% 50%" },
+  { id: "russian-26-pomegranate", position: "52% 48%" },
+  { id: "black-mission-fig", position: "50% 45%" },
+  { id: "magness-pear", position: "58% 48%" },
+  { id: "shenandoah-pawpaw", position: "48% 50%" },
+  { id: "bluecrop-blueberry", position: "50% 50%" },
+  { id: "tree-peony", position: "50% 45%" },
+  { id: "variegated-japanese-iris", position: "52% 48%" },
+  { id: "bowl-of-beauty-peony", position: "50% 48%" },
+  { id: "aromatic-aster", position: "50% 45%" },
+  { id: "coreopsis-moonbeam", position: "50% 48%" },
+  { id: "apricot-sprite-agastache", position: "48% 42%" },
+  { id: "chilean-guava", position: "50% 50%" },
+  { id: "eureka-lemon", position: "52% 45%" }
+];
+
+const photoById = new Map(plantPhotos.map((entry) => [entry.id, entry]));
+const cssUrl = (value) => value.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+const heroPhotoStyle = (property, photo, width, position, index) => [
+  `${property}: url('${cssUrl(optimizedImagePath(photo.src, width, "webp", photo.bytes))}')`,
+  `--photo-position: ${position}`,
+  `--i: ${index}`
+].join("; ");
+
+const heroPhotos = heroPhotoSelections
+  .map((selection, index) => {
+    const photo = photoById.get(selection.id)?.primary;
+    if (!photo?.src) return null;
+    const position = selection.position ?? photo.position ?? "50% 50%";
+    return {
+      id: selection.id,
+      photo,
+      position,
+      mainStyle: heroPhotoStyle("--hero-image", photo, 1200, position, index)
+    };
+  })
+  .filter(Boolean);
+
+const heroSpecimens = heroPhotos.flatMap((_, cycleIndex) => (
+  ["a", "b", "c"].map((slot, slotIndex) => {
+    const photo = heroPhotos[(cycleIndex + 3 + slotIndex * 5) % heroPhotos.length];
+    return {
+      slot,
+      style: heroPhotoStyle("--specimen-image", photo.photo, 480, photo.position, cycleIndex),
+      isFirst: cycleIndex === 0
+    };
+  })
+));
 ---
 
 <!doctype html>
@@ -182,26 +235,15 @@ const webAppJsonLd = {
             and practical next steps for your place.
           </p>
           <figure class="hero-plate hero-gallery" aria-hidden="true">
-            <span class="hero-frame" style="--hero-image: url('/plant-art/fig.webp'); --i: 0"></span>
-            <span class="hero-frame" style="--hero-image: url('/plant-art/blueberry.webp'); --i: 1"></span>
-            <span class="hero-frame" style="--hero-image: url('/plant-art/persimmon.webp'); --i: 2"></span>
-            <span class="hero-frame" style="--hero-image: url('/plant-art/plum.webp'); --i: 3"></span>
-            <span class="hero-frame" style="--hero-image: url('/plant-art/elderberry.webp'); --i: 4"></span>
-            <span class="hero-specimen hero-specimen-a is-first" style="--specimen-image: url('/plant-art/serviceberry.webp'); --i: 0"></span>
-            <span class="hero-specimen hero-specimen-b is-first" style="--specimen-image: url('/plant-art/raspberry.webp'); --i: 0"></span>
-            <span class="hero-specimen hero-specimen-c is-first" style="--specimen-image: url('/plant-art/generic-vine.webp'); --i: 0"></span>
-            <span class="hero-specimen hero-specimen-a" style="--specimen-image: url('/plant-art/grape.webp'); --i: 1"></span>
-            <span class="hero-specimen hero-specimen-b" style="--specimen-image: url('/plant-art/hardy-kiwi.webp'); --i: 1"></span>
-            <span class="hero-specimen hero-specimen-c" style="--specimen-image: url('/plant-art/gooseberry.webp'); --i: 1"></span>
-            <span class="hero-specimen hero-specimen-a" style="--specimen-image: url('/plant-art/plum.webp'); --i: 2"></span>
-            <span class="hero-specimen hero-specimen-b" style="--specimen-image: url('/plant-art/maypop-passionfruit.webp'); --i: 2"></span>
-            <span class="hero-specimen hero-specimen-c" style="--specimen-image: url('/plant-art/aronia.webp'); --i: 2"></span>
-            <span class="hero-specimen hero-specimen-a" style="--specimen-image: url('/plant-art/blackberry.webp'); --i: 3"></span>
-            <span class="hero-specimen hero-specimen-b" style="--specimen-image: url('/plant-art/blueberry.webp'); --i: 3"></span>
-            <span class="hero-specimen hero-specimen-c" style="--specimen-image: url('/plant-art/elderberry.webp'); --i: 3"></span>
-            <span class="hero-specimen hero-specimen-a" style="--specimen-image: url('/plant-art/fig.webp'); --i: 4"></span>
-            <span class="hero-specimen hero-specimen-b" style="--specimen-image: url('/plant-art/persimmon.webp'); --i: 4"></span>
-            <span class="hero-specimen hero-specimen-c" style="--specimen-image: url('/plant-art/generic-flower-herb.webp'); --i: 4"></span>
+            {heroPhotos.map((photo) => (
+              <span class="hero-frame" style={photo.mainStyle}></span>
+            ))}
+            {heroSpecimens.map((photo) => (
+              <span
+                class={`hero-specimen hero-specimen-${photo.slot} ${photo.isFirst ? "is-first" : ""}`}
+                style={photo.style}
+              ></span>
+            ))}
           </figure>
         </div>
 
@@ -1569,6 +1611,6 @@ const webAppJsonLd = {
     <script define:vars={{ gardenPlanTemplates }}>
       window.plantByZipGardenTemplates = gardenPlanTemplates;
     </script>
-    <script type="module" src="/js/plantbyzip-home.js?v=20260607-fruit-photo-cache-bust"></script>
+    <script type="module" src="/js/plantbyzip-home.js?v=20260610-expanded-crop-groups"></script>
   </body>
 </html>
