@@ -9648,6 +9648,10 @@ input.calendar-filter-search[type="search"]:focus {
     padding: 20px;
   }
 
+  .intro-panel::after {
+    display: none;
+  }
+
   .hero-plate,
   .app-shell:not(.has-started) .hero-plate {
     display: none;
