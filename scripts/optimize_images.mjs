@@ -45,6 +45,7 @@ plantPhotos.forEach((entry) => {
   "/blog/heat-tolerant-plants-hero.jpg",
   "/blog/fruit-tree-apple-hero.jpg",
   "/blog/drip-irrigation-hero.jpg",
+  "/blog/zone-6-starter-kit-hero.png",
   "/blog/zone-7-starter-kit-hero.jpg"
 ].forEach((src) => addJob(src, [640, 1200, 1600]));
 
