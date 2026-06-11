@@ -109,17 +109,6 @@ const heroPhotos = heroPhotoSelections
     };
   })
   .filter(Boolean);
-
-const heroSpecimens = heroPhotos.flatMap((_, cycleIndex) => (
-  ["a", "b", "c"].map((slot, slotIndex) => {
-    const photo = heroPhotos[(cycleIndex + 3 + slotIndex * 5) % heroPhotos.length];
-    return {
-      slot,
-      style: heroPhotoStyle("--specimen-image", photo.photo, 480, photo.position, cycleIndex),
-      isFirst: cycleIndex === 0
-    };
-  })
-));
 ---
 
 <!doctype html>
@@ -237,12 +226,6 @@ const heroSpecimens = heroPhotos.flatMap((_, cycleIndex) => (
           <figure class="hero-plate hero-gallery" aria-hidden="true">
             {heroPhotos.map((photo) => (
               <span class="hero-frame" style={photo.mainStyle}></span>
-            ))}
-            {heroSpecimens.map((photo) => (
-              <span
-                class={`hero-specimen hero-specimen-${photo.slot} ${photo.isFirst ? "is-first" : ""}`}
-                style={photo.style}
-              ></span>
             ))}
           </figure>
         </div>
