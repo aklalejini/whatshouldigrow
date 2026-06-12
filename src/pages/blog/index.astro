@@ -25,6 +25,30 @@ const articles = posts.map((post) => ({
 }));
 const canonicalUrl = siteUrl("/blog/");
 const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: SITE_NAME, item: siteUrl("/") },
+    { "@type": "ListItem", position: 2, name: "Guides", item: canonicalUrl }
+  ]
+};
+const collectionJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `Guides | ${SITE_NAME}`,
+  description: `Garden planning articles from ${SITE_NAME}. ${SITE_DESCRIPTION}`,
+  url: canonicalUrl,
+  hasPart: {
+    "@type": "ItemList",
+    itemListElement: articles.map((article, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: article.title,
+      url: siteUrl(article.url)
+    }))
+  }
+};
 ---
 
 <!doctype html>
@@ -54,6 +78,8 @@ const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
     <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
     <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
     <title>Guides | {SITE_NAME}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(collectionJsonLd)}></script>
   </head>
   <body>
     <AnalyticsEvents pageType="blog_index" topic="blog" />

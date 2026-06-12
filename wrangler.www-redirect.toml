@@ -1,0 +1,8 @@
+name = "plantbyzip-www-redirect"
+main = "workers/www-redirect.js"
+compatibility_date = "2026-06-12"
+workers_dev = false
+
+routes = [
+  { pattern = "www.plantbyzip.com/*", zone_name = "plantbyzip.com" }
+]

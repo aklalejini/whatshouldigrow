@@ -45,6 +45,18 @@ const blogArticles = blogEntries.map((entry) => ({
   pubDate: entry.data.pubDate.toISOString(),
   url: `/blog/${entry.data.slug}/`
 }));
+const homepageGuideLinks = [
+  {
+    href: "/blog/",
+    label: "Guide library",
+    title: "Browse all Plant by ZIP articles, zone guides, pest notes, irrigation help, and plant-selection explainers."
+  },
+  ...blogArticles.slice(0, 5).map((article) => ({
+    href: article.url,
+    label: article.category,
+    title: article.title
+  }))
+];
 const canonicalUrl = siteUrl("/");
 const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
 const websiteJsonLd = {
@@ -438,6 +450,14 @@ const heroPhotos = heroPhotoSelections
             These crawlable guides expose the plant database by season, purpose, water needs,
             and site fit while keeping ZIP-based results inside the matcher.
           </p>
+        </div>
+        <div class="home-hub-grid" aria-label="Featured garden articles">
+          {homepageGuideLinks.map((link) => (
+            <a href={link.href}>
+              <span>{link.label}</span>
+              <strong>{link.title}</strong>
+            </a>
+          ))}
         </div>
         <div class="home-hub-grid">
           {hubLinks.map((link) => (
