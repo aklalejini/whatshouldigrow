@@ -1089,7 +1089,6 @@ fieldset:nth-of-type(2) .segmented {
   grid-template-columns: minmax(0, 1fr);
 }
 
-.result-card:has(.plant-details.has-art[open]) > .plant-visual.photo-plate,
 .result-card:has(.plant-details.has-art[open]) > .plant-visual.real-photo {
   display: none;
 }
@@ -1115,13 +1114,6 @@ fieldset:nth-of-type(2) .segmented {
 .top-card .plant-visual {
   min-height: 330px;
   border-radius: 18px;
-}
-
-.plant-visual.photo-plate {
-  background:
-    var(--plant-photo) var(--photo-position, center) / cover no-repeat,
-    linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(31, 45, 35, 0.04)),
-    var(--plate-bg, var(--sage));
 }
 
 .plant-visual.real-photo {
@@ -1196,7 +1188,6 @@ fieldset:nth-of-type(2) .segmented {
   --plate-icon: url("/icons/flower.svg");
 }
 
-.plant-visual.photo-plate::after,
 .plant-visual.real-photo::after {
   display: none;
 }

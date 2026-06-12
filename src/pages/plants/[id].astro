@@ -2,7 +2,6 @@
 import AnalyticsEvents from "../../components/AnalyticsEvents.astro";
 import plants from "../../data/plants.json";
 import partners from "../../data/affiliatePartners.json";
-import plantArtEntries from "../../data/plantArt.json";
 import plantPhotoEntries from "../../data/plantPhotos.json";
 import affiliateProducts from "../../data/affiliateProducts.json";
 import plantMetricSources from "../../data/plantMetricSources.json";
@@ -22,9 +21,7 @@ import {
   formatList,
   goalLabels,
   isSourcedValue,
-  plantArtEntry,
   plantKind,
-  plantPhotoStyle,
   plantUrl,
   relationshipEntriesForPlant,
   relationshipTypeLabels,
@@ -53,22 +50,19 @@ const metricDisplay = metrics.display ?? {};
 const metricSources = (metrics.sourceKeys ?? [])
   .map((key) => ({ key, ...(plantMetricSources[key] ?? {}) }))
   .filter((source) => source.title && source.url);
-const artEntry = plantArtEntry(plant, plantArtEntries);
-const artId = artEntry?.id ?? "generic-fruit";
 const kind = plantKind(plant);
 const plantPhotoEntry = plantPhotoEntries.find((entry) => entry.id === plant.id);
 const hasHeroPhoto = Boolean(plantPhotoEntry?.primary?.src);
-const hasFallbackArt = !hasHeroPhoto && Boolean(artEntry?.image);
 const heroPhotoSrc = hasHeroPhoto ? versionedImagePath(plantPhotoEntry.primary.src, plantPhotoEntry.primary.bytes) : "";
 const photoStyle = hasHeroPhoto
   ? [
       `--plant-photo: url('${heroPhotoSrc.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}')`,
       plantPhotoEntry.primary.position ? `--photo-position: ${plantPhotoEntry.primary.position}` : ""
     ].filter(Boolean).join("; ")
-  : plantPhotoStyle(artEntry);
+  : "";
 const heroPhotoLabel = hasHeroPhoto
   ? (plantPhotoEntry.primary.alt ?? `${plant.name} plant photo`)
-  : `${plant.name} botanical plate`;
+  : `${plant.name} plant profile`;
 const canonicalUrl = siteUrl(plantUrl(plant));
 const socialImageUrl = hasHeroPhoto ? siteUrl(plantPhotoEntry.primary.src) : siteUrl(DEFAULT_SOCIAL_IMAGE);
 const plantPhotoDetails = plantPhotoEntry?.details ?? [];
@@ -480,11 +474,11 @@ const faqJsonLd = searchAnswerRows.length > 0 ? {
 
         <header class="plant-page-hero">
           <figure
-            class={`plant-visual plant-page-visual ${kind} ${artId} ${hasHeroPhoto ? "real-photo" : hasFallbackArt ? "photo-plate" : ""}`}
+            class={`plant-visual plant-page-visual ${kind} ${hasHeroPhoto ? "real-photo" : ""}`}
             aria-label={heroPhotoLabel}
             style={photoStyle}
           >
-            {!hasHeroPhoto && !hasFallbackArt && <span class="plant-visual-icon"></span>}
+            {!hasHeroPhoto && <span class="plant-visual-icon"></span>}
           </figure>
           <div class="plant-page-copy">
             <p class="eyebrow">{plant.type}</p>

@@ -1,12 +1,10 @@
 let plants = [];
 let partners = {};
 let affiliateProducts = [];
-let plantArtEntries = [];
 let plantPhotoEntries = [];
 let plantMetrics = {};
 let plantRelationships = [];
 let blogSearchData = [];
-let plantArtById = {};
 let plantPhotoById = {};
 let coreDataPromise = null;
 let blogDataPromise = null;
@@ -18,7 +16,6 @@ const dataUrls = {
   plants: "/data/plants.json",
   partners: "/data/affiliate-partners.json",
   affiliateProducts: "/data/affiliate-products.json",
-  plantArt: "/data/plant-art.json",
   plantPhotos: "/data/plant-photos.json",
   plantMetrics: "/data/plant-metrics-home.json",
   plantRelationships: "/data/plant-relationships.json",
@@ -42,19 +39,16 @@ async function ensureCoreData() {
       loadJson(dataUrls.plants),
       loadJson(dataUrls.partners),
       loadJson(dataUrls.affiliateProducts),
-      loadJson(dataUrls.plantArt),
       loadJson(dataUrls.plantPhotos),
       loadJson(dataUrls.plantMetrics),
       loadJson(dataUrls.plantRelationships)
-    ]).then(([plantRows, partnerRows, productRows, artRows, photoRows, metricRows, relationshipRows]) => {
+    ]).then(([plantRows, partnerRows, productRows, photoRows, metricRows, relationshipRows]) => {
       plants = plantRows;
       partners = partnerRows;
       affiliateProducts = productRows;
-      plantArtEntries = artRows;
       plantPhotoEntries = photoRows;
       plantMetrics = metricRows;
       plantRelationships = relationshipRows;
-      plantArtById = Object.fromEntries(plantArtEntries.map((entry) => [entry.id, entry]));
       plantPhotoById = Object.fromEntries(plantPhotoEntries.map((entry) => [entry.id, entry]));
     });
   }
@@ -1687,13 +1681,6 @@ function isGroupedResult(entry) {
   return entry?.kind === "group" && Array.isArray(entry.entries) && entry.entries.length > 1;
 }
 
-function matchesArtEntry(identity, entry) {
-  const matches = entry.match ?? [];
-  const excludes = entry.exclude ?? [];
-  return matches.some((term) => identity.includes(term.toLowerCase()))
-    && !excludes.some((term) => identity.includes(term.toLowerCase()));
-}
-
 function genericArt(plant) {
   const type = plant.type.toLowerCase();
   if (type.includes("flower") || type.includes("herb") || type.includes("grass") || type.includes("ornamental")) return "generic-flower-herb";
@@ -1701,13 +1688,6 @@ function genericArt(plant) {
   if (type.includes("vine")) return "generic-vine";
   if (type.includes("tree")) return "generic-tree";
   return "generic-fruit";
-}
-
-function plantArtEntry(plant) {
-  const identity = plantIdentity(plant);
-  return plantArtEntries.find((entry) => matchesArtEntry(identity, entry))
-    ?? plantArtById[genericArt(plant)]
-    ?? null;
 }
 
 function plantRealPhotoEntry(plant) {
@@ -1732,11 +1712,6 @@ function plantVisualStyle(src, options = {}) {
     options.plateBg ? `--plate-bg: ${options.plateBg}` : ""
   ].filter(Boolean);
   return ` style="${styles.join("; ")}"`;
-}
-
-function plantArtPhotoStyle(entry) {
-  if (!entry?.image) return "";
-  return plantVisualStyle(`/plant-art/${entry.image}`, entry);
 }
 
 function plantRealPhotoStyle(entry) {
@@ -9947,19 +9922,15 @@ function createResultItem(entry, index, inputs) {
   const item = document.createElement("li");
   const grouped = isGroupedResult(entry);
   const kind = plantKind(plant);
-  const artEntry = plantArtEntry(plant);
   const realPhotoEntry = plantRealPhotoEntry(plant);
-  const art = artEntry?.id ?? genericArt(plant);
+  const art = genericArt(plant);
   const hasRealPhoto = Boolean(realPhotoEntry?.primary?.src);
-  const hasArtImage = Boolean(artEntry?.image);
-  const hasImage = hasRealPhoto || hasArtImage;
-  const photoStyle = hasRealPhoto ? plantRealPhotoStyle(realPhotoEntry) : plantArtPhotoStyle(artEntry);
-  const imageMode = hasRealPhoto ? "real-photo" : "photo-plate";
-  const detailImageLabel = hasRealPhoto
-    ? (realPhotoEntry.primary.alt || `${plant.name} plant photo`)
-    : `${plant.name} botanical plate`;
-  const detailArt = hasImage
-    ? `<figure class="detail-art ${art} ${hasRealPhoto ? "real-photo" : "vintage-art"}" role="img" aria-label="${escapeHtml(detailImageLabel)}"${photoStyle}>
+  const hasImage = hasRealPhoto;
+  const photoStyle = hasRealPhoto ? plantRealPhotoStyle(realPhotoEntry) : "";
+  const imageMode = hasRealPhoto ? "real-photo" : "";
+  const detailImageLabel = realPhotoEntry?.primary?.alt || `${plant.name} plant photo`;
+  const detailArt = hasRealPhoto
+    ? `<figure class="detail-art ${art} real-photo" role="img" aria-label="${escapeHtml(detailImageLabel)}"${photoStyle}>
         <span>${plant.name}</span>
       </figure>`
     : "";

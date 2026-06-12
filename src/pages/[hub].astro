@@ -1,9 +1,9 @@
 ---
 import AnalyticsEvents from "../components/AnalyticsEvents.astro";
 import affiliateProducts from "../data/affiliateProducts.json";
-import plantArtEntries from "../data/plantArt.json";
 import plantMetricSources from "../data/plantMetricSources.json";
 import plantMetrics from "../data/plantMetrics.json";
+import plantPhotoEntries from "../data/plantPhotos.json";
 import plants from "../data/plants.json";
 import {
   DEFAULT_SOCIAL_IMAGE,
@@ -26,9 +26,9 @@ import {
 } from "../lib/hubData";
 import {
   isSourcedValue,
-  plantArtEntry,
   plantKind,
-  plantPhotoStyle,
+  plantPrimaryPhotoEntry,
+  plantRealPhotoStyle,
   plantUrl,
   sentenceCase
 } from "../lib/plantUtils";
@@ -234,17 +234,17 @@ const collectionJsonLd = {
 
           <div class="hub-card-grid">
             {featuredEntries.map(({ plant, metrics }) => {
-              const artEntry = plantArtEntry(plant, plantArtEntries);
-              const hasImage = Boolean(artEntry?.image);
+              const photoEntry = plantPrimaryPhotoEntry(plant, plantPhotoEntries);
+              const hasImage = Boolean(photoEntry?.primary?.src);
               const kind = plantKind(plant);
               const tags = hubPlantTags(plant);
               const dataPoints = hubPlantDataPoints(plant, metrics, hub);
               return (
                 <a class="hub-plant-card" href={plantUrl(plant)}>
                   <figure
-                    class={`plant-visual hub-plant-visual ${kind} ${artEntry?.id ?? "generic-fruit"} ${hasImage ? "photo-plate" : ""}`}
-                    aria-label={`${plant.name} botanical plate`}
-                    style={plantPhotoStyle(artEntry)}
+                    class={`plant-visual hub-plant-visual ${kind} ${hasImage ? "real-photo" : ""}`}
+                    aria-label={photoEntry?.primary?.alt ?? `${plant.name} plant photo`}
+                    style={plantRealPhotoStyle(photoEntry)}
                   >
                     {!hasImage && <span class="plant-visual-icon"></span>}
                   </figure>

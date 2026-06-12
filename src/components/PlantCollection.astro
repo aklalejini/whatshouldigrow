@@ -1,9 +1,9 @@
 ---
-import plantArtEntries from "../data/plantArt.json";
+import plantPhotoEntries from "../data/plantPhotos.json";
 import {
-  plantArtEntry,
   plantKind,
-  plantPhotoStyle,
+  plantPrimaryPhotoEntry,
+  plantRealPhotoStyle,
   plantUrl,
   sentenceCase
 } from "../lib/plantUtils";
@@ -15,16 +15,16 @@ const visibleEntries = entries.slice(0, limit);
 
 <div class="hub-card-grid">
   {visibleEntries.map(({ plant, metrics }) => {
-    const artEntry = plantArtEntry(plant, plantArtEntries);
-    const hasImage = Boolean(artEntry?.image);
+    const photoEntry = plantPrimaryPhotoEntry(plant, plantPhotoEntries);
+    const hasImage = Boolean(photoEntry?.primary?.src);
     const kind = plantKind(plant);
     const tags = hubPlantTags(plant);
     return (
       <a class="hub-plant-card" href={plantUrl(plant)}>
         <figure
-          class={`plant-visual hub-plant-visual ${kind} ${artEntry?.id ?? "generic-fruit"} ${hasImage ? "photo-plate" : ""}`}
-          aria-label={`${plant.name} botanical plate`}
-          style={plantPhotoStyle(artEntry)}
+          class={`plant-visual hub-plant-visual ${kind} ${hasImage ? "real-photo" : ""}`}
+          aria-label={photoEntry?.primary?.alt ?? `${plant.name} plant photo`}
+          style={plantRealPhotoStyle(photoEntry)}
         >
           {!hasImage && <span class="plant-visual-icon"></span>}
         </figure>

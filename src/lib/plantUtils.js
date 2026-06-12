@@ -56,36 +56,26 @@ export function plantIdentity(plant) {
   return `${plant.id} ${plant.name} ${plant.query ?? ""}`.toLowerCase();
 }
 
-export function matchesArtEntry(identity, entry) {
-  const matches = entry.match ?? [];
-  const excludes = entry.exclude ?? [];
-  return matches.some((term) => identity.includes(term.toLowerCase()))
-    && !excludes.some((term) => identity.includes(term.toLowerCase()));
+function cssUrl(value) {
+  return String(value ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
 
-export function genericArt(plant) {
-  const type = plant.type.toLowerCase();
-  if (type.includes("flower") || type.includes("herb") || type.includes("grass") || type.includes("ornamental")) return "generic-flower-herb";
-  if (type.includes("vegetable")) return "generic-vegetable";
-  if (type.includes("vine")) return "generic-vine";
-  if (type.includes("tree")) return "generic-tree";
-  return "generic-fruit";
+function versionedPhotoSrc(photo) {
+  if (!photo?.src || photo.bytes === undefined || photo.bytes === null || photo.bytes === "") return photo?.src ?? "";
+  const separator = photo.src.includes("?") ? "&" : "?";
+  return `${photo.src}${separator}v=${encodeURIComponent(String(photo.bytes))}`;
 }
 
-export function plantArtEntry(plant, plantArtEntries) {
-  const plantArtById = Object.fromEntries(plantArtEntries.map((entry) => [entry.id, entry]));
-  const identity = plantIdentity(plant);
-  return plantArtEntries.find((entry) => matchesArtEntry(identity, entry))
-    ?? plantArtById[genericArt(plant)]
-    ?? null;
+export function plantPrimaryPhotoEntry(plant, plantPhotoEntries) {
+  return plantPhotoEntries.find((entry) => entry.id === plant.id) ?? null;
 }
 
-export function plantPhotoStyle(entry) {
-  if (!entry?.image) return "";
+export function plantRealPhotoStyle(entry) {
+  const photo = entry?.primary ?? entry;
+  if (!photo?.src) return "";
   return [
-    `--plant-photo: url('/plant-art/${entry.image}')`,
-    entry.position ? `--photo-position: ${entry.position}` : "",
-    entry.plateBg ? `--plate-bg: ${entry.plateBg}` : ""
+    `--plant-photo: url('${cssUrl(versionedPhotoSrc(photo))}')`,
+    photo.position ? `--photo-position: ${photo.position}` : ""
   ].filter(Boolean).join("; ");
 }
 
