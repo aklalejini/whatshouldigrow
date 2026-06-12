@@ -4961,6 +4961,8 @@ fieldset:nth-of-type(2) .segmented {
 
 .screener-supply-card {
   display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  align-items: start;
   gap: 8px;
   min-width: 0;
   padding: 12px;
@@ -4994,13 +4996,17 @@ fieldset:nth-of-type(2) .segmented {
   justify-self: start;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  align-self: end;
   min-height: 28px;
+  min-width: 44px;
   padding: 0 9px;
   border-radius: 999px;
   color: #fff;
   background: var(--leaf);
   font-size: 0.7rem;
   font-weight: 850;
+  line-height: 1;
   text-decoration: none;
 }
 
@@ -5023,6 +5029,7 @@ fieldset:nth-of-type(2) .segmented {
 .screener-portfolio-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: flex-end;
   gap: 8px;
 }
@@ -5284,6 +5291,7 @@ fieldset:nth-of-type(2) .segmented {
 .screener-toolbar div {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: flex-end;
   gap: 8px;
 }
@@ -5291,9 +5299,12 @@ fieldset:nth-of-type(2) .segmented {
 .screener-toolbar a,
 .screener-toolbar button,
 .screener-source-toggle {
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
-  min-height: 36px;
+  justify-content: center;
+  height: 38px;
+  min-height: 38px;
   padding: 0 12px;
   border: 1px solid #cfdac8;
   border-radius: 999px;
@@ -5301,8 +5312,18 @@ fieldset:nth-of-type(2) .segmented {
   background: rgba(255, 253, 248, 0.94);
   font-size: 0.82rem;
   font-weight: 850;
+  line-height: 1;
   text-decoration: none;
   cursor: pointer;
+  white-space: nowrap;
+}
+
+.screener-portfolio-actions button,
+.screener-compare-head button {
+  box-sizing: border-box;
+  height: 38px;
+  min-height: 38px;
+  line-height: 1;
 }
 
 .screener-toolbar a:hover,
@@ -5314,9 +5335,15 @@ fieldset:nth-of-type(2) .segmented {
 
 .screener-source-toggle {
   gap: 7px;
+  margin: 0;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .screener-source-toggle input {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
   margin: 0;
   accent-color: var(--leaf);
 }
