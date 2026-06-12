@@ -31,6 +31,7 @@ import {
   sentenceCase
 } from "../../lib/plantUtils";
 import { relatedHubsForPlant } from "../../lib/hubData";
+import { entriesForFamily, familiesForPlant, familyComparisonUrl } from "../../lib/plantFamilies";
 import {
   optimizedImagePath,
   optimizedSrcset,
@@ -298,6 +299,28 @@ const yieldYearOneNote = yieldYearOne?.max === 0
 const harvestInsight = hasPoundYield
   ? `Harvest window: ${plant.harvest}. Once established, the current pound-return model uses ${metricDisplay.yieldLbs ?? "the sourced yield range"} with a harvest window of ${metricDisplay.harvestWindow ?? "seasonal timing"}.`
   : `Timing: ${plant.harvest}. This profile tracks ${metricDisplay.output ?? "the listed output range"} with a harvest or display window of ${metricDisplay.harvestWindow ?? "seasonal timing"} where defensible.`;
+const spacingAnswer = cleanMetric(metricDisplay.spacing)
+  ? `Plant ${plant.name} at ${cleanMetric(metricDisplay.spacing)}. Adjust this starting point for trellises, hedges, rootstock, containers, pruning style, or local extension guidance.`
+  : cleanMetric(metricDisplay.matureSize)
+    ? `A sourced spacing value is not available yet for ${plant.name}; use the mature size (${cleanMetric(metricDisplay.matureSize)}) as the first planning constraint and confirm with the nursery label.`
+    : null;
+const returnAnswer = primaryReturnValue
+  ? `${plant.name} ${hasPoundYield ? "yield" : "output"} is modeled as ${primaryReturnValue}. Treat that as a planning range, because weather, soil, watering, pruning, pests, and local pressure can change the real result.`
+  : null;
+const firstOutputAnswer = cleanMetric(metricDisplay.firstOutput)
+  ? `${plant.name} usually reaches first useful harvest or display in ${cleanMetric(metricDisplay.firstOutput)} under suitable conditions.`
+  : null;
+const howToGrowAnswer = `Grow ${plant.name} in USDA zones ${plant.zones[0]}-${plant.zones[1]} with ${formatList(plant.sun)} light, ${formatList(plant.soils)} soil, and ${plant.water} water. ${spacingAnswer ? `Use ${cleanMetric(metricDisplay.spacing) ?? "local spacing guidance"} for layout planning.` : ""} Match the plant to drainage, heat, chill, and pest pressure before scaling up.`;
+const containerAnswer = cleanMetric(metricDisplay.containerMin)
+  ? `${plant.name} can start with a container of about ${cleanMetric(metricDisplay.containerMin)}. Larger containers usually buffer heat and moisture swings better than the minimum.`
+  : null;
+const searchAnswerRows = [
+  { question: `How far apart should you plant ${plant.name}?`, answer: spacingAnswer },
+  { question: `How much does ${plant.name} produce?`, answer: returnAnswer },
+  { question: `How long does ${plant.name} take to produce?`, answer: firstOutputAnswer },
+  { question: `How do you grow ${plant.name}?`, answer: howToGrowAnswer },
+  { question: `Can ${plant.name} grow in a container?`, answer: containerAnswer }
+].filter((row) => row.answer);
 const returnFact = metricFact(primaryReturnLabel, primaryReturnValue, hasPoundYield);
 const supportingHeroFacts = [
   { label: "Zones", value: `${plant.zones[0]}-${plant.zones[1]}` },
@@ -342,6 +365,13 @@ const siteRiskRows = [
   }
 ];
 const relatedHubs = relatedHubsForPlant(plant);
+const comparisonFamilies = familiesForPlant(plant, plants, plantMetrics)
+  .map((family) => ({
+    ...family,
+    count: entriesForFamily(family, plants, plantMetrics).length
+  }))
+  .filter((family) => family.count > 1)
+  .slice(0, 3);
 const cultivarRelationshipEntries = relationshipEntries.filter(({ relationship }) => (
   /pollinat|cultivar|compatible|fruit set|another/i.test(`${relationship.id} ${relationship.note}`)
 ));
@@ -390,6 +420,18 @@ const breadcrumbJsonLd = {
     }
   ]
 };
+const faqJsonLd = searchAnswerRows.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: searchAnswerRows.slice(0, 5).map((row) => ({
+    "@type": "Question",
+    name: row.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: row.answer
+    }
+  }))
+} : null;
 ---
 
 <!doctype html>
@@ -421,6 +463,7 @@ const breadcrumbJsonLd = {
     <title>{pageTitle} | {SITE_NAME}</title>
     <script type="application/ld+json" set:html={JSON.stringify(plantJsonLd)}></script>
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
+    {faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>}
   </head>
   <body>
     <main class="app-shell">
@@ -527,6 +570,24 @@ const breadcrumbJsonLd = {
               ) : (
                 <span class="nursery-placeholder">No source link available yet</span>
               )}
+            </div>
+          </section>
+
+          <section class="detail-panel plant-page-search-answers" aria-labelledby="plant-answer-title">
+            <div class="plant-answer-head">
+              <div>
+                <p class="eyebrow">Quick answers</p>
+                <h2 id="plant-answer-title">Spacing, Yield, and Growing Answers</h2>
+              </div>
+              <p>Direct planning answers for common grower searches, backed by the sourced profile data where available.</p>
+            </div>
+            <div class="plant-answer-grid">
+              {searchAnswerRows.map((row) => (
+                <article class="plant-answer-card">
+                  <h3>{row.question}</h3>
+                  <p>{row.answer}</p>
+                </article>
+              ))}
             </div>
           </section>
 
@@ -727,6 +788,21 @@ const breadcrumbJsonLd = {
                   <a href={hub.path}>
                     <span>{hub.shortTitle}</span>
                     <strong>{hub.description}</strong>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {comparisonFamilies.length > 0 && (
+            <section class="detail-panel plant-page-panel plant-page-family-links">
+              <h2>Variety Comparisons</h2>
+              <p>Compare {plant.name} with related varieties by spacing, yield or output, first production, and site fit.</p>
+              <div class="plant-page-guide-links">
+                {comparisonFamilies.map((family) => (
+                  <a href={familyComparisonUrl(family)}>
+                    <span>{family.label}</span>
+                    <strong>{family.count} profiles compared</strong>
                   </a>
                 ))}
               </div>

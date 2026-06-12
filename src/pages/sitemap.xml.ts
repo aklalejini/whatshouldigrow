@@ -7,6 +7,7 @@ import { HUB_PAGES, TRUST_PAGES } from "../lib/hubData";
 import { SITE_LASTMOD, siteUrl } from "../lib/site";
 import { TOOL_PAGES } from "../lib/toolData";
 import { goalGroups, typeGroups, zoneGroups } from "../lib/plantDirectory";
+import { activePlantFamilies, familyComparisonUrl } from "../lib/plantFamilies";
 import { plantUrl } from "../lib/plantUtils";
 import { ZONE_PAGE_TARGETS } from "../lib/zonePageData";
 
@@ -47,6 +48,11 @@ export async function GET() {
       priority: tool.slug === "what-to-plant-this-week" ? "0.9" : "0.84"
     })),
     { loc: siteUrl("/plants/"), lastmod: SITE_LASTMOD, priority: "0.86" },
+    ...activePlantFamilies(plants, plantMetrics).map((family) => ({
+      loc: siteUrl(familyComparisonUrl(family)),
+      lastmod: SITE_LASTMOD,
+      priority: "0.78"
+    })),
     ...goalGroups(plants).map((group) => ({
       loc: siteUrl(`/plants/goal/${group.slug}/`),
       lastmod: SITE_LASTMOD,

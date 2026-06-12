@@ -1,0 +1,244 @@
+---
+import AnalyticsEvents from "../../../components/AnalyticsEvents.astro";
+import PlantCollection from "../../../components/PlantCollection.astro";
+import plants from "../../../data/plants.json";
+import plantMetrics from "../../../data/plantMetrics.json";
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  SITE_NAME,
+  SITE_URL,
+  siteUrl
+} from "../../../lib/site";
+import {
+  activePlantFamilies,
+  entriesForFamily,
+  familyComparisonJsonLd,
+  familyComparisonUrl,
+  familyMetricCoverage,
+  familyZoneRange
+} from "../../../lib/plantFamilies";
+import { formatList, isSourcedValue, plantUrl, sentenceCase } from "../../../lib/plantUtils";
+import "../../../styles/global.css";
+
+export function getStaticPaths() {
+  return activePlantFamilies(plants, plantMetrics).map((family) => ({
+    params: { family: family.slug },
+    props: { family }
+  }));
+}
+
+const { family } = Astro.props;
+const entries = entriesForFamily(family, plants, plantMetrics);
+const relatedFamilies = activePlantFamilies(plants, plantMetrics)
+  .filter((candidate) => candidate.slug !== family.slug)
+  .slice(0, 8);
+const canonicalUrl = siteUrl(familyComparisonUrl(family));
+const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
+const zoneRange = familyZoneRange(entries);
+const coverage = familyMetricCoverage(entries);
+const description = `${family.title}: compare ${entries.length} Plant by ZIP profiles by zones, spacing, first output, yield or harvest return, and practical garden fit.`;
+const pageTitle = `${family.title}: Spacing, Yield & Zones`;
+
+function cleanMetric(value, fallback = "Not available yet") {
+  return isSourcedValue(value) ? value : fallback;
+}
+
+function comparisonCue(plant, metrics = {}) {
+  const cues = [];
+  if (isSourcedValue(metrics.display?.containerMin)) cues.push(`Container: ${metrics.display.containerMin}`);
+  if (isSourcedValue(metrics.display?.matureSize)) cues.push(`Mature size: ${metrics.display.matureSize}`);
+  if (plant.traits?.[0]) cues.push(sentenceCase(plant.traits[0]));
+  if (plant.goals?.[0]) cues.push(sentenceCase(plant.goals[0].replaceAll("-", " ")));
+  return cues.slice(0, 2).join("; ") || plant.notes;
+}
+
+function decisionCopy(point) {
+  if (/spacing|trellis|row|cane|vine/i.test(point)) {
+    return "Start with the spacing column, then adjust for trellises, pruning, containers, rootstock, or local extension guidance.";
+  }
+  if (/yield|output|bearing|maturity|days/i.test(point)) {
+    return "Use first output and return ranges as comparison signals. Weather, soil, pests, and cultivar source can move real harvests.";
+  }
+  if (/pollination/i.test(point)) {
+    return "When pollination matters, plant compatible partners close enough to bloom together and confirm local recommendations before buying.";
+  }
+  if (/container/i.test(point)) {
+    return "Use container notes as minimum planning guidance; larger containers usually buffer heat, water swings, and root restriction better.";
+  }
+  return "Compare the profiles side by side, then use the ZIP matcher for local zone, sun, soil, and water ranking.";
+}
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: SITE_NAME, item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "Plants", item: siteUrl("/plants/") },
+    { "@type": "ListItem", position: 3, name: family.title, item: canonicalUrl }
+  ]
+};
+const collectionJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: family.title,
+  description,
+  url: canonicalUrl,
+  isPartOf: {
+    "@type": "WebSite",
+    name: SITE_NAME,
+    url: SITE_URL
+  },
+  mainEntity: familyComparisonJsonLd(family, entries, siteUrl)
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${pageTitle} | ${SITE_NAME}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${pageTitle} | ${SITE_NAME}`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,750&family=Inter:wght@400;500;650;750;850&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
+    <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
+    <title>{pageTitle} | {SITE_NAME}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(collectionJsonLd)}></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <nav class="site-tabs" aria-label="Primary sections">
+        <a class="site-tab" href="/">Plant matcher</a>
+        <a class="site-tab" href="/planting-calendar/">Calendar</a>
+        <a class="site-tab" href="/#zone-map">Zone map</a>
+        <a class="site-tab is-active" aria-current="page" href="/plants/">Plants</a>
+        <a class="site-tab" href="/blog/">Guides</a>
+      </nav>
+
+      <article class="hub-page plant-family-page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Plant by ZIP</a>
+          <span aria-hidden="true">/</span>
+          <a href="/plants/">Plants</a>
+          <span aria-hidden="true">/</span>
+          <span>{family.shortLabel}</span>
+        </nav>
+
+        <header class="hub-hero">
+          <div>
+            <p class="eyebrow">Variety comparison</p>
+            <h1>{family.title}</h1>
+            <p>{family.intro}</p>
+            <div class="hub-actions">
+              <a class="plant-page-action is-primary" href="/">Open ZIP matcher</a>
+              <a class="plant-page-action is-secondary" href="/plants/">Browse plants</a>
+            </div>
+          </div>
+          <dl class="hub-stats" aria-label={`${family.shortLabel} comparison stats`}>
+            <div><dt>Profiles</dt><dd>{entries.length}</dd></div>
+            {zoneRange && <div><dt>Zones</dt><dd>{zoneRange}</dd></div>}
+            <div><dt>Spacing data</dt><dd>{coverage.hasSpacing}</dd></div>
+            <div><dt>Return data</dt><dd>{coverage.hasYield}</dd></div>
+          </dl>
+        </header>
+
+        <section class="hub-section plant-family-section" aria-labelledby="family-table-title">
+          <div class="hub-section-head">
+            <div>
+              <p class="eyebrow">Quick comparison</p>
+              <h2 id="family-table-title">Spacing, output, and site fit</h2>
+            </div>
+            <p>Sorted by available sourced spacing, yield, first-output, and profile detail.</p>
+          </div>
+          <div class="plant-comparison-table" role="table" aria-label={`${family.shortLabel} variety comparison`}>
+            <div class="plant-comparison-row is-head" role="row">
+              <span role="columnheader">Plant</span>
+              <span role="columnheader">Zones</span>
+              <span role="columnheader">Spacing</span>
+              <span role="columnheader">First output</span>
+              <span role="columnheader">Yield</span>
+              <span role="columnheader">Best clue</span>
+            </div>
+            {entries.map(({ plant, metrics }) => (
+              <a class="plant-comparison-row" href={plantUrl(plant)} role="row">
+                <span role="cell">
+                  <strong>{plant.name}</strong>
+                  <small>{sentenceCase(plant.type)}</small>
+                </span>
+                <span role="cell" data-label="Zones">{plant.zones[0]}-{plant.zones[1]}</span>
+                <span role="cell" data-label="Spacing">{cleanMetric(metrics.display?.spacing)}</span>
+                <span role="cell" data-label="First output">{cleanMetric(metrics.display?.firstOutput)}</span>
+                <span role="cell" data-label="Yield">{cleanMetric(metrics.display?.yieldLbs ?? metrics.display?.output)}</span>
+                <span role="cell" data-label="Best clue">{comparisonCue(plant, metrics)}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section class="hub-section plant-family-section" aria-labelledby="family-choice-title">
+          <div class="hub-section-head">
+            <div>
+              <p class="eyebrow">How to choose</p>
+              <h2 id="family-choice-title">Narrow the list faster</h2>
+            </div>
+            <p>Use these as first-pass filters before checking ZIP-level fit.</p>
+          </div>
+          <div class="plant-family-choice-grid">
+            {family.decisionPoints.map((point) => (
+              <article>
+                <h3>{point}</h3>
+                <p>{decisionCopy(point)}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="hub-section plant-family-section" aria-labelledby="family-profiles-title">
+          <div class="hub-section-head">
+            <div>
+              <p class="eyebrow">Profiles</p>
+              <h2 id="family-profiles-title">Open the full growing guides</h2>
+            </div>
+            <p>Each profile includes photos where available, planting checklist items, source notes, and related plants.</p>
+          </div>
+          <PlantCollection entries={entries} limit={24} />
+        </section>
+
+        <section class="hub-section hub-crosslinks" aria-labelledby="family-related-title">
+          <div class="hub-section-head">
+            <div>
+              <p class="eyebrow">More comparisons</p>
+              <h2 id="family-related-title">Related variety pages</h2>
+            </div>
+          </div>
+          <div class="home-hub-grid">
+            {relatedFamilies.map((relatedFamily) => (
+              <a href={familyComparisonUrl(relatedFamily)}>
+                <span>{relatedFamily.label}</span>
+                <strong>{relatedFamily.count} profiles</strong>
+              </a>
+            ))}
+          </div>
+        </section>
+      </article>
+    </main>
+    <AnalyticsEvents pageType="plant_family" topic={family.slug} />
+  </body>
+</html>

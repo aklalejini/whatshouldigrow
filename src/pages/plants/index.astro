@@ -16,6 +16,7 @@ import {
   typeGroups,
   zoneGroups
 } from "../../lib/plantDirectory";
+import { activePlantFamilies, familyComparisonUrl } from "../../lib/plantFamilies";
 import "../../styles/global.css";
 
 const canonicalUrl = siteUrl("/plants/");
@@ -24,6 +25,7 @@ const featuredEntries = directoryEntries(plants, plantMetrics, () => true).slice
 const typeLinks = typeGroups(plants);
 const goalLinks = goalGroups(plants);
 const zoneLinks = zoneGroups(plants);
+const comparisonLinks = activePlantFamilies(plants, plantMetrics);
 const description = `Browse ${plants.length} Plant by ZIP plant profiles by type, goal, and USDA hardiness zone.`;
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
@@ -117,6 +119,11 @@ const collectionJsonLd = {
               <p class="eyebrow">Browse paths</p>
               <h2 id="directory-paths-title">Choose a plant collection</h2>
             </div>
+          </div>
+          <div class="home-hub-grid">
+            {comparisonLinks.slice(0, 18).map((link) => (
+              <a href={familyComparisonUrl(link)}><span>{link.label}</span><strong>{link.count} profiles compared</strong></a>
+            ))}
           </div>
           <div class="home-hub-grid">
             {goalLinks.map((link) => (
