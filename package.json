@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
     "data:build": "node scripts/build_public_data.mjs",
@@ -18,5 +21,7 @@
   "dependencies": {
     "astro": "^6.3.7"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "sharp": "^0.35.1"
+  }
 }

@@ -1,0 +1,91 @@
+---
+import AnalyticsEvents from "../components/AnalyticsEvents.astro";
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  siteUrl
+} from "../lib/site";
+import "../styles/global.css";
+
+const pageTitle = `Page not found | ${SITE_NAME}`;
+const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="This Plant by ZIP page could not be found. Start a new plant match, browse guides, or explore plant profiles." />
+    <meta name="robots" content="noindex, follow" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={SITE_DESCRIPTION} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={SITE_DESCRIPTION} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,750&family=Inter:wght@400;500;650;750;850&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" sizes="512x512" href="/brand/plantbyzip-icon.png" />
+    <link rel="apple-touch-icon" href="/brand/plantbyzip-icon.png" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <AnalyticsEvents pageType="error_page" topic="404" />
+    <main class="app-shell">
+      <nav class="site-tabs" aria-label="Primary sections">
+        <a class="site-tab" href="/">Plant matcher</a>
+        <a class="site-tab" href="/#screener">Screener</a>
+        <a class="site-tab" href="/planting-calendar/">Calendar</a>
+        <a class="site-tab" href="/#zone-map">Zone map</a>
+        <a class="site-tab" href="/plants/">Plants</a>
+        <a class="site-tab" href="/blog/">Guides</a>
+      </nav>
+
+      <article class="trust-page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Plant by ZIP</a>
+          <span aria-hidden="true">/</span>
+          <span>Page not found</span>
+        </nav>
+
+        <header class="trust-hero">
+          <p class="eyebrow">404</p>
+          <h1>This page is not in the garden anymore.</h1>
+          <p>
+            The link may have moved, or the plant profile may have changed names.
+            Start with the ZIP matcher, browse the plant directory, or use a guide to find your way back.
+          </p>
+          <div class="plant-page-hero-actions">
+            <a class="plant-page-action" href="/">Open ZIP matcher</a>
+            <a class="plant-page-action is-secondary" href="/plants/">Browse plants</a>
+            <a class="plant-page-action is-secondary" href="/blog/">Read guides</a>
+          </div>
+        </header>
+
+        <section class="trust-grid" aria-label="Helpful next steps">
+          <article>
+            <h2>Match a plant</h2>
+            <p>Use your ZIP, light, soil, water, and garden goal to get ranked plant picks.</p>
+          </article>
+          <article>
+            <h2>Compare profiles</h2>
+            <p>Browse plant pages with photos, growing notes, source links, and comparable varieties.</p>
+          </article>
+          <article>
+            <h2>Plan the season</h2>
+            <p>Open the planting calendar for frost-aware windows and practical timing notes.</p>
+          </article>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

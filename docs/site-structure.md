@@ -53,13 +53,13 @@ flowchart TD
 ```mermaid
 flowchart LR
   subgraph data["Structured Data"]
-    plants["src/data/plants.json<br/>478 core plant records"]
+    plants["src/data/plants.json<br/>core plant records"]
     metrics["src/data/plantMetrics.json<br/>yield, spacing, depth, timing"]
     sources["src/data/plantMetricSources.json<br/>source references"]
     relationships["src/data/plantRelationships.json<br/>companions, conflicts, pairings"]
     art["src/data/plantArt.json<br/>botanical card art mapping"]
     photos["src/data/plantPhotos.json<br/>profile photo metadata"]
-    checklist["src/data/plantingChecklist.json<br/>profile checklist + links"]
+    checklist["src/lib/plantChecklist.js<br/>profile checklist builder"]
     partners["src/data/affiliatePartners.json<br/>partner/search config"]
   end
 
@@ -143,7 +143,7 @@ flowchart TD
   relationships["plantRelationships.json"] --> profile
   art["plantArt.json + public/plant-art"] --> profile
   photos["plantPhotos.json + public/plant-photos"] --> profile
-  checklist["plantingChecklist.json"] --> profile
+  checklist["plantChecklist.js"] --> profile
   partners["affiliatePartners.json"] --> profile
   utilities["plantUtils.js + plantChecklist.js + hubData.js"] --> profile
 
@@ -167,7 +167,7 @@ flowchart TD
   staticPages --> homepage["Homepage tool"]
   staticPages --> hubs["Goal hubs"]
   staticPages --> zoneIntent["Zone/season/intent pages"]
-  staticPages --> plantProfiles["478 plant profiles"]
+  staticPages --> plantProfiles["plant profiles"]
   staticPages --> blog["Blog articles"]
   staticPages --> trust["About + methodology"]
 
