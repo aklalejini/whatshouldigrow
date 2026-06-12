@@ -1204,6 +1204,20 @@ function hasNoResultTerm(identity, terms) {
   return !hasAnyResultTerm(identity, terms);
 }
 
+function hasAnyResultType(type, typeTerms = []) {
+  return !typeTerms.length || typeTerms.some((term) => type.includes(String(term).toLowerCase()));
+}
+
+function resultTermGroupRule({ id, label, terms, typeIncludes = [], excludeTerms = [] }) {
+  return {
+    id,
+    label,
+    match: ({ identity, type }) => hasAnyResultType(type, typeIncludes)
+      && hasAnyResultTerm(identity, terms)
+      && hasNoResultTerm(identity, excludeTerms)
+  };
+}
+
 const resultGroupRules = [
   {
     id: "hot-pepper",
@@ -1272,7 +1286,7 @@ const resultGroupRules = [
   },
   {
     id: "sweet-corn",
-    label: "Sweet corn",
+    label: "Corn",
     match: ({ identity, type }) => type.includes("vegetable")
       && hasResultTerm(identity, "corn")
       && hasNoResultTerm(identity, ["corn salad", "acorn", "cornelian"])
@@ -1357,7 +1371,7 @@ const resultGroupRules = [
     label: "Bush cherry",
     match: ({ identity, type }) => type.includes("shrub")
       && hasResultTerm(identity, "cherry")
-      && hasNoResultTerm(identity, ["cornelian cherry dogwood"])
+      && hasNoResultTerm(identity, ["cornelian cherry dogwood", "cherry laurel"])
   },
   {
     id: "fig",
@@ -1500,7 +1514,9 @@ const resultGroupRules = [
   {
     id: "lemon",
     label: "Lemon",
-    match: ({ identity, type }) => type.includes("citrus") && hasResultTerm(identity, "lemon")
+    match: ({ identity, type }) => type.includes("citrus")
+      && hasResultTerm(identity, "lemon")
+      && hasNoResultTerm(identity, ["ichang lemon"])
   },
   {
     id: "lime",
@@ -1511,7 +1527,108 @@ const resultGroupRules = [
     id: "mandarin",
     label: "Mandarin",
     match: ({ identity, type }) => type.includes("citrus") && hasAnyResultTerm(identity, ["mandarin", "satsuma"])
-  }
+  },
+  ...[
+    { id: "kumquat", label: "Kumquat", terms: ["kumquat"], typeIncludes: ["citrus"] },
+    { id: "orange-citrus", label: "Orange citrus", terms: ["orange", "calamondin"], typeIncludes: ["citrus"], excludeTerms: ["hardy orange", "flying dragon"] },
+    { id: "hardy-asian-citrus", label: "Hardy Asian citrus", terms: ["yuzu", "sudachi", "kabosu", "ichang", "hardy orange", "flying dragon"], typeIncludes: ["citrus"] },
+    { id: "pineapple-guava", label: "Pineapple guava", terms: ["pineapple guava", "feijoa"], typeIncludes: ["fruit shrub"] },
+    { id: "guava", label: "Guava", terms: ["guava"], typeIncludes: ["fruit shrub"], excludeTerms: ["pineapple guava"] },
+    { id: "goumi", label: "Goumi", terms: ["goumi"], typeIncludes: ["berry shrub"] },
+    { id: "goji", label: "Goji", terms: ["goji"], typeIncludes: ["berry shrub"] },
+    { id: "honeyberry", label: "Honeyberry", terms: ["honeyberry"], typeIncludes: ["berry shrub"] },
+    { id: "seaberry", label: "Seaberry", terms: ["seaberry"], typeIncludes: ["berry shrub"] },
+    { id: "aronia", label: "Aronia", terms: ["aronia", "chokeberry"], typeIncludes: ["berry shrub", "ornamental shrub"] },
+    { id: "cranberry", label: "Cranberry", terms: ["cranberry"], typeIncludes: ["berry perennial"] },
+    { id: "hybrid-cane-berry", label: "Hybrid cane berry", terms: ["boysenberry", "loganberry", "tayberry"], typeIncludes: ["berry cane"] },
+    { id: "passionfruit", label: "Passionfruit", terms: ["passionfruit", "maypop"], typeIncludes: ["fruit vine"] },
+    { id: "walnut", label: "Walnut", terms: ["walnut", "heartnut"], typeIncludes: ["nut tree"] },
+    { id: "sichuan-sansho-pepper", label: "Sichuan and sansho pepper", terms: ["sichuan pepper", "sansho pepper"], typeIncludes: ["fruit shrub"] },
+    { id: "sweet-potato", label: "Sweet potato", terms: ["sweet potato"], typeIncludes: ["vegetable"] },
+    { id: "potato", label: "Potato", terms: ["potato"], typeIncludes: ["vegetable"], excludeTerms: ["sweet potato"] },
+    { id: "bean", label: "Bean", terms: ["bean", "soybean"], typeIncludes: ["vegetable", "annual fruit vine"] },
+    { id: "pea", label: "Pea", terms: ["pea", "cowpea"], typeIncludes: ["vegetable"] },
+    { id: "lettuce", label: "Lettuce", terms: ["lettuce", "celtuce"], typeIncludes: ["vegetable"] },
+    { id: "spinach", label: "Spinach", terms: ["spinach"], typeIncludes: ["vegetable", "annual fruit vine"] },
+    { id: "kale", label: "Kale", terms: ["kale"], typeIncludes: ["vegetable"] },
+    { id: "arugula", label: "Arugula", terms: ["arugula"], typeIncludes: ["vegetable"] },
+    { id: "carrot", label: "Carrot", terms: ["carrot"], typeIncludes: ["vegetable"] },
+    { id: "beet", label: "Beet", terms: ["beet"], typeIncludes: ["vegetable"] },
+    { id: "radish-daikon", label: "Radish and daikon", terms: ["radish", "daikon"], typeIncludes: ["vegetable"] },
+    { id: "turnip", label: "Turnip", terms: ["turnip"], typeIncludes: ["vegetable"] },
+    { id: "onion", label: "Onion", terms: ["onion", "shallot"], typeIncludes: ["vegetable"] },
+    { id: "garlic", label: "Garlic", terms: ["garlic"], typeIncludes: ["vegetable"] },
+    { id: "okra", label: "Okra", terms: ["okra"], typeIncludes: ["vegetable"] },
+    { id: "broccoli", label: "Broccoli", terms: ["broccoli", "gai lan"], typeIncludes: ["vegetable"] },
+    { id: "cabbage", label: "Cabbage", terms: ["cabbage", "tokyo bekana"], typeIncludes: ["vegetable"] },
+    { id: "cauliflower", label: "Cauliflower", terms: ["cauliflower"], typeIncludes: ["vegetable"] },
+    { id: "gourd", label: "Gourd", terms: ["luffa gourd", "snake gourd", "wax gourd"], typeIncludes: ["annual fruit vine"] },
+    { id: "taro", label: "Taro", terms: ["taro"], typeIncludes: ["vegetable"] },
+    { id: "basil", label: "Basil", terms: ["basil"], typeIncludes: ["herb"] },
+    { id: "shiso", label: "Shiso", terms: ["shiso", "perilla"], typeIncludes: ["herb"] },
+    { id: "chives", label: "Chives", terms: ["chives"], typeIncludes: ["herb"] },
+    { id: "thyme", label: "Thyme", terms: ["thyme"], typeIncludes: ["herb"] },
+    { id: "fennel", label: "Fennel", terms: ["fennel"], typeIncludes: ["herb", "vegetable"] },
+    { id: "lavender", label: "Lavender", terms: ["lavender", "lavandin"], typeIncludes: ["herb"] },
+    { id: "mint", label: "Mint", terms: ["spearmint", "peppermint", "mountain mint"], typeIncludes: ["herb", "perennial flower"] },
+    { id: "bee-balm", label: "Bee balm", terms: ["bee balm", "bergamot"], typeIncludes: ["flower"] },
+    { id: "hyssop-agastache", label: "Hyssop and agastache", terms: ["hyssop", "agastache", "korean mint"], typeIncludes: ["flower", "herb"] },
+    { id: "yarrow", label: "Yarrow", terms: ["yarrow"], typeIncludes: ["flower"] },
+    { id: "coreopsis", label: "Coreopsis", terms: ["coreopsis"], typeIncludes: ["flower"] },
+    { id: "sage-salvia", label: "Sage and salvia", terms: ["sage", "salvia"], typeIncludes: ["flower", "herb"] },
+    { id: "blazing-star-liatris", label: "Blazing star and liatris", terms: ["blazing star", "liatris"], typeIncludes: ["flower"] },
+    { id: "goldenrod", label: "Goldenrod", terms: ["goldenrod"], typeIncludes: ["flower"] },
+    { id: "aster", label: "Aster", terms: ["aster"], typeIncludes: ["flower"] },
+    { id: "penstemon", label: "Penstemon", terms: ["penstemon", "beardtongue"], typeIncludes: ["flower"] },
+    { id: "phlox", label: "Phlox", terms: ["phlox"], typeIncludes: ["flower"] },
+    { id: "zinnia", label: "Zinnia", terms: ["zinnia"], typeIncludes: ["flower"] },
+    { id: "cosmos", label: "Cosmos", terms: ["cosmos"], typeIncludes: ["flower"] },
+    { id: "marigold", label: "Marigold", terms: ["marigold"], typeIncludes: ["flower", "herb"] },
+    { id: "sunflower", label: "Sunflower", terms: ["sunflower"], typeIncludes: ["flower"] },
+    { id: "milkweed", label: "Milkweed", terms: ["milkweed"], typeIncludes: ["flower"] },
+    { id: "coneflower", label: "Coneflower", terms: ["coneflower", "echinacea"], typeIncludes: ["flower"] },
+    { id: "rudbeckia", label: "Black-eyed Susan and rudbeckia", terms: ["black eyed susan", "rudbeckia"], typeIncludes: ["flower"] },
+    { id: "catmint", label: "Catmint", terms: ["catmint"], typeIncludes: ["flower"] },
+    { id: "verbena", label: "Verbena", terms: ["verbena"], typeIncludes: ["flower"] },
+    { id: "peony", label: "Peony", terms: ["peony"], typeIncludes: ["flower", "shrub"] },
+    { id: "daylily", label: "Daylily", terms: ["daylily"], typeIncludes: ["flower"] },
+    { id: "iris", label: "Iris", terms: ["iris"], typeIncludes: ["flower"] },
+    { id: "astilbe", label: "Astilbe", terms: ["astilbe"], typeIncludes: ["flower"] },
+    { id: "amsonia-bluestar", label: "Amsonia and bluestar", terms: ["amsonia", "bluestar"], typeIncludes: ["flower"] },
+    { id: "baptisia", label: "Baptisia and wild indigo", terms: ["baptisia", "wild indigo"], typeIncludes: ["flower"] },
+    { id: "hosta", label: "Hosta", terms: ["hosta"], typeIncludes: ["ornamental perennial", "flower"] },
+    { id: "coral-bells", label: "Coral bells", terms: ["coral bells", "heuchera"], typeIncludes: ["ornamental perennial", "flower"] },
+    { id: "fern", label: "Fern", terms: ["fern"], typeIncludes: ["ornamental perennial"] },
+    { id: "hydrangea", label: "Hydrangea", terms: ["hydrangea"], typeIncludes: ["shrub", "vine"] },
+    { id: "witch-hazel", label: "Witch hazel", terms: ["witch hazel"], typeIncludes: ["shrub"] },
+    { id: "dogwood", label: "Dogwood", terms: ["dogwood"], typeIncludes: ["shrub", "tree"] },
+    { id: "viburnum", label: "Viburnum", terms: ["viburnum"], typeIncludes: ["shrub"] },
+    { id: "ninebark", label: "Ninebark", terms: ["ninebark"], typeIncludes: ["shrub"] },
+    { id: "weigela", label: "Weigela", terms: ["weigela"], typeIncludes: ["shrub"] },
+    { id: "beautybush", label: "Beautybush", terms: ["beautybush"], typeIncludes: ["shrub"] },
+    { id: "lilac", label: "Lilac", terms: ["lilac"], typeIncludes: ["shrub", "tree"] },
+    { id: "boxwood", label: "Boxwood", terms: ["boxwood"], typeIncludes: ["shrub"] },
+    { id: "rose-of-sharon", label: "Rose of Sharon", terms: ["rose of sharon"], typeIncludes: ["shrub"] },
+    { id: "rose", label: "Rose", terms: ["rose"], typeIncludes: ["shrub"], excludeTerms: ["rose of sharon"] },
+    { id: "arborvitae", label: "Arborvitae", terms: ["arborvitae"], typeIncludes: ["tree", "shrub"] },
+    { id: "bayberry-wax-myrtle", label: "Bayberry and wax myrtle", terms: ["wax myrtle", "northern bayberry"], typeIncludes: ["shrub"] },
+    { id: "yew", label: "Yew", terms: ["yew"], typeIncludes: ["shrub"] },
+    { id: "sumac", label: "Sumac", terms: ["sumac"], typeIncludes: ["shrub", "tree"] },
+    { id: "sweetspire", label: "Sweetspire", terms: ["sweetspire"], typeIncludes: ["shrub"] },
+    { id: "inkberry", label: "Inkberry", terms: ["inkberry"], typeIncludes: ["shrub"] },
+    { id: "holly", label: "Holly", terms: ["holly"], typeIncludes: ["shrub", "tree"], excludeTerms: ["holly fern"] },
+    { id: "crape-myrtle", label: "Crape myrtle", terms: ["crape myrtle"], typeIncludes: ["tree"] },
+    { id: "redbud", label: "Redbud", terms: ["redbud"], typeIncludes: ["tree"] },
+    { id: "magnolia", label: "Magnolia", terms: ["magnolia"], typeIncludes: ["tree"] },
+    { id: "cryptomeria", label: "Cryptomeria", terms: ["cryptomeria"], typeIncludes: ["tree", "shrub"] },
+    { id: "hornbeam", label: "Hornbeam", terms: ["hornbeam"], typeIncludes: ["tree"] },
+    { id: "maple", label: "Maple", terms: ["maple"], typeIncludes: ["tree"] },
+    { id: "oak", label: "Oak", terms: ["oak"], typeIncludes: ["tree"] },
+    { id: "switchgrass", label: "Switchgrass", terms: ["switchgrass"], typeIncludes: ["grass"] },
+    { id: "bluestem", label: "Bluestem grass", terms: ["bluestem"], typeIncludes: ["grass"] },
+    { id: "bamboo", label: "Clumping bamboo", terms: ["bamboo"], typeIncludes: ["grass"] },
+    { id: "sedge", label: "Sedge", terms: ["sedge"], typeIncludes: ["grass"] }
+  ].map(resultTermGroupRule)
 ];
 
 function resultGroupForPlant(plant) {
