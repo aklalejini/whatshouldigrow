@@ -46,18 +46,6 @@ const blogArticles = blogEntries.map((entry) => ({
   pubDate: entry.data.pubDate.toISOString(),
   url: `/blog/${entry.data.slug}/`
 }));
-const homepageGuideLinks = [
-  {
-    href: "/blog/",
-    label: "Guide library",
-    title: "Browse all Plant by ZIP articles, zone guides, pest notes, irrigation help, and plant-selection explainers."
-  },
-  ...blogArticles.slice(0, 5).map((article) => ({
-    href: article.url,
-    label: article.category,
-    title: article.title
-  }))
-];
 const canonicalUrl = siteUrl("/");
 const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
 const websiteJsonLd = {
@@ -82,46 +70,52 @@ const webAppJsonLd = {
   description: `Match ${plantCount} practical plant options to a ZIP code, light, soil, water, and garden goal, then build a ZIP-based planting calendar.`
 };
 
-const heroPhotoSelections = [
-  { id: "benary-zinnia", position: "48% 42%" },
-  { id: "cheyenne-spirit-coneflower", position: "48% 44%" },
-  { id: "dragon-fruit-american-beauty", position: "46% 50%" },
-  { id: "russian-26-pomegranate", position: "52% 48%" },
-  { id: "black-mission-fig", position: "50% 45%" },
-  { id: "magness-pear", position: "58% 48%" },
-  { id: "shenandoah-pawpaw", position: "48% 50%" },
-  { id: "bluecrop-blueberry", position: "50% 50%" },
-  { id: "tree-peony", position: "50% 45%" },
-  { id: "variegated-japanese-iris", position: "52% 48%" },
-  { id: "bowl-of-beauty-peony", position: "50% 48%" },
-  { id: "aromatic-aster", position: "50% 45%" },
-  { id: "coreopsis-moonbeam", position: "50% 48%" },
-  { id: "apricot-sprite-agastache", position: "48% 42%" },
-  { id: "chilean-guava", position: "50% 50%" },
-  { id: "eureka-lemon", position: "52% 45%" }
-];
-
 const photoById = new Map(plantPhotos.map((entry) => [entry.id, entry]));
-const cssUrl = (value) => value.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-const heroPhotoStyle = (property, photo, width, position, index) => [
-  `${property}: url('${cssUrl(optimizedImagePath(photo.src, width, "webp", photo.bytes))}')`,
-  `--photo-position: ${position}`,
-  `--i: ${index}`
-].join("; ");
-
-const heroPhotos = heroPhotoSelections
-  .map((selection, index) => {
-    const photo = photoById.get(selection.id)?.primary;
-    if (!photo?.src) return null;
-    const position = selection.position ?? photo.position ?? "50% 50%";
-    return {
-      id: selection.id,
-      photo,
-      position,
-      mainStyle: heroPhotoStyle("--hero-image", photo, 1200, position, index)
-    };
-  })
-  .filter(Boolean);
+const HOME_PLANT_IMAGE_WIDTHS = [480, 800, 1200];
+const pictureFromPlant = (id, sizes) => {
+  const photo = photoById.get(id)?.primary;
+  if (!photo?.src) return null;
+  return {
+    alt: photo.alt,
+    sizes,
+    src: optimizedImagePath(photo.src, 800, "webp", photo.bytes),
+    avif: optimizedSrcset(photo.src, HOME_PLANT_IMAGE_WIDTHS, "avif", photo.bytes),
+    webp: optimizedSrcset(photo.src, HOME_PLANT_IMAGE_WIDTHS, "webp", photo.bytes)
+  };
+};
+const pictureFromBlog = (src, alt, sizes) => ({
+  alt,
+  sizes,
+  src: optimizedImagePath(src, 640, "webp"),
+  avif: optimizedSrcset(src, BLOG_IMAGE_WIDTHS, "avif"),
+  webp: optimizedSrcset(src, BLOG_IMAGE_WIDTHS, "webp")
+});
+const homeHeroImage = pictureFromPlant("bowl-of-beauty-peony", "(max-width: 760px) 100vw, 520px");
+const homeNoteImage = pictureFromPlant("cinnamon-basil", "(max-width: 760px) 92vw, 310px");
+const homeGuideAccentImage = pictureFromPlant("cheyenne-spirit-coneflower", "(max-width: 760px) 92vw, 420px");
+const homeResultsImage = pictureFromBlog(
+  "/blog/garden-beds-hero.jpg",
+  "Raised beds filled with herbs, greens, tomatoes, and garden supports.",
+  "(max-width: 760px) 92vw, 360px"
+);
+const homepageGuideLinks = [
+  {
+    href: "/blog/",
+    label: "Guide library",
+    title: "Browse all Plant by ZIP guides, zone advice, pest notes, irrigation help, and plant-selection explainers.",
+    image: pictureFromBlog(
+      "/blog/garden-beds-hero.jpg",
+      "Raised vegetable beds with greens, herbs, and tomatoes.",
+      "(max-width: 760px) 84vw, 240px"
+    )
+  },
+  ...blogArticles.slice(0, 4).map((article) => ({
+    href: article.url,
+    label: article.category,
+    title: article.title,
+    image: pictureFromBlog(article.heroImage, article.heroAlt, "(max-width: 760px) 84vw, 240px")
+  }))
+];
 ---
 
 <!doctype html>
@@ -164,22 +158,32 @@ const heroPhotos = heroPhotoSelections
       <PrimaryNav mode="tabs" active="matcher" />
 
       <div id="matcher-view" class="view-panel is-active" role="tabpanel" data-view-panel="matcher">
-      <section class="workspace" aria-labelledby="app-title">
-        <div class="intro-panel">
-          <div class="brand-lockup" aria-label={SITE_NAME}>
-            <img class="brand-mark" src="/brand/plantbyzip-icon.png" alt="" aria-hidden="true" />
-            <span>{SITE_NAME}</span>
+      <section class="workspace home-workspace" aria-labelledby="app-title">
+        <div class="intro-panel home-intro-panel">
+          <div class="home-intro-copy">
+            <div class="brand-lockup" aria-label={SITE_NAME}>
+              <img class="brand-mark" src="/brand/plantbyzip-icon.png" alt="" aria-hidden="true" />
+              <span>{SITE_NAME}</span>
+            </div>
+            <h1 id="app-title">What should I grow here?</h1>
+            <p>
+              Enter a ZIP code and garden goal to get climate-aware plant picks, planting windows,
+              and practical next steps for your place.
+            </p>
+            <p class="home-signature" aria-label="Better plants. Right place.">
+              <span>Better plants.</span>
+              <span>Right place.</span>
+            </p>
           </div>
-          <h1 id="app-title">What should I grow here?</h1>
-          <p>
-            Enter a ZIP code and garden goal to get climate-aware plant picks, planting windows,
-            and practical next steps for your place.
-          </p>
-          <figure class="hero-plate hero-gallery" aria-hidden="true">
-            {heroPhotos.map((photo) => (
-              <span class="hero-frame" style={photo.mainStyle}></span>
-            ))}
-          </figure>
+          {homeHeroImage && (
+            <figure class="home-hero-photo">
+              <picture>
+                <source type="image/avif" srcset={homeHeroImage.avif} sizes={homeHeroImage.sizes} />
+                <source type="image/webp" srcset={homeHeroImage.webp} sizes={homeHeroImage.sizes} />
+                <img src={homeHeroImage.src} alt={homeHeroImage.alt} loading="eager" decoding="async" />
+              </picture>
+            </figure>
+          )}
         </div>
 
         <form class="matcher-panel" id="matcher-form">
@@ -192,16 +196,23 @@ const heroPhotos = heroPhotoSelections
               <label for="zip">ZIP code</label>
               <p>Hardiness zone anchors the ranking.</p>
             </div>
-            <input
-              id="zip"
-              name="zip"
-              inputmode="numeric"
-              pattern="[0-9]{5}"
-              maxlength="5"
-              autocomplete="postal-code"
-              placeholder="75001"
-              required
-            />
+            <div class="zip-control">
+              <input
+                id="zip"
+                name="zip"
+                inputmode="numeric"
+                pattern="[0-9]{5}"
+                maxlength="5"
+                autocomplete="postal-code"
+                placeholder="75001"
+                required
+              />
+              <button class="zip-submit-button" type="submit" aria-label="Find plants for this ZIP code">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M13.3 5.3 20 12l-6.7 6.7-1.4-1.4 4.3-4.3H4v-2h12.2l-4.3-4.3 1.4-1.4Z"></path>
+                </svg>
+              </button>
+            </div>
             <div id="zone-preview" class="zone-preview" hidden></div>
           </div>
 
@@ -302,7 +313,7 @@ const heroPhotos = heroPhotoSelections
         </form>
       </section>
 
-      <section class="results-band" aria-live="polite">
+      <section class="results-band home-results-band" aria-live="polite">
         <div class="results-head">
           <div>
             <p class="eyebrow">Ranked picks</p>
@@ -315,6 +326,15 @@ const heroPhotos = heroPhotoSelections
           Rankings are based on plant fit, not partner links. Direct affiliate listings are labeled and may earn a commission;
           ordinary source links are supplier searches.
         </p>
+        {homeResultsImage && (
+          <figure class="home-results-photo" aria-hidden="true">
+            <picture>
+              <source type="image/avif" srcset={homeResultsImage.avif} sizes={homeResultsImage.sizes} />
+              <source type="image/webp" srcset={homeResultsImage.webp} sizes={homeResultsImage.sizes} />
+              <img src={homeResultsImage.src} alt="" loading="lazy" decoding="async" />
+            </picture>
+          </figure>
+        )}
         <div id="climate-panel" class="climate-panel" hidden></div>
         <ol id="results" class="results-grid"></ol>
         <div class="results-actions">
@@ -350,8 +370,17 @@ const heroPhotos = heroPhotoSelections
         </section>
       </section>
 
-      <section class="public-notes" aria-labelledby="public-notes-title">
-        <div>
+      <section class="public-notes home-note-panel" aria-labelledby="public-notes-title">
+        {homeNoteImage && (
+          <figure class="home-note-photo">
+            <picture>
+              <source type="image/avif" srcset={homeNoteImage.avif} sizes={homeNoteImage.sizes} />
+              <source type="image/webp" srcset={homeNoteImage.webp} sizes={homeNoteImage.sizes} />
+              <img src={homeNoteImage.src} alt={homeNoteImage.alt} loading="lazy" decoding="async" />
+            </picture>
+          </figure>
+        )}
+        <div class="home-note-copy">
           <p class="eyebrow">Before you plant</p>
           <h2 id="public-notes-title">Use these recommendations as a strong starting point.</h2>
         </div>
@@ -391,15 +420,32 @@ const heroPhotos = heroPhotoSelections
             and site fit while keeping ZIP-based results inside the matcher.
           </p>
         </div>
-        <div class="home-hub-grid" aria-label="Featured garden articles">
+        <div class="home-guide-showcase" aria-label="Featured garden articles">
           {homepageGuideLinks.map((link) => (
-            <a href={link.href}>
+            <a class="home-guide-card" href={link.href}>
+              {link.image && (
+                <picture>
+                  <source type="image/avif" srcset={link.image.avif} sizes={link.image.sizes} />
+                  <source type="image/webp" srcset={link.image.webp} sizes={link.image.sizes} />
+                  <img src={link.image.src} alt={link.image.alt} loading="lazy" decoding="async" />
+                </picture>
+              )}
               <span>{link.label}</span>
               <strong>{link.title}</strong>
             </a>
           ))}
         </div>
-        <div class="home-hub-grid">
+        <a class="home-guides-cta" href="/blog/">Explore all guides</a>
+        {homeGuideAccentImage && (
+          <figure class="home-hubs-accent" aria-hidden="true">
+            <picture>
+              <source type="image/avif" srcset={homeGuideAccentImage.avif} sizes={homeGuideAccentImage.sizes} />
+              <source type="image/webp" srcset={homeGuideAccentImage.webp} sizes={homeGuideAccentImage.sizes} />
+              <img src={homeGuideAccentImage.src} alt="" loading="lazy" decoding="async" />
+            </picture>
+          </figure>
+        )}
+        <div class="home-hub-grid home-hub-grid-secondary">
           {hubLinks.map((link) => (
             <a href={link.href}>
               <span>{link.title}</span>
@@ -407,7 +453,7 @@ const heroPhotos = heroPhotoSelections
             </a>
           ))}
         </div>
-        <div class="home-hub-grid">
+        <div class="home-hub-grid home-hub-grid-secondary">
           {zoneGuideLinks.map((link) => (
             <a href={link.href}>
               <span>{link.title}</span>
@@ -415,7 +461,7 @@ const heroPhotos = heroPhotoSelections
             </a>
           ))}
         </div>
-        <div class="home-hub-grid">
+        <div class="home-hub-grid home-hub-grid-secondary">
           <a href="/tools/">
             <span>Gardening calculators and checkers</span>
             <strong>Use quick tools for this-week planting, pest damage, companion checks, containers, and drip irrigation.</strong>
@@ -427,7 +473,7 @@ const heroPhotos = heroPhotoSelections
             </a>
           ))}
         </div>
-        <div class="home-hub-grid">
+        <div class="home-hub-grid home-hub-grid-secondary">
           <a href="/garden-plans/">
             <span>Garden plan templates</span>
             <strong>Copy practical raised-bed and pollinator layouts into the Garden Planner, then adjust quantities and spacing.</strong>

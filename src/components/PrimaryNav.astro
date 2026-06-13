@@ -26,37 +26,44 @@ const tabItems = [
 ];
 ---
 
-{mode === "tabs" ? (
-  <nav class="site-tabs" aria-label="Primary sections" role="tablist">
-    {tabItems.map((item) => {
-      const isActive = item.key === active;
-      return (
-        <button
-          class={isActive ? "site-tab is-active" : "site-tab"}
-          type="button"
-          role="tab"
-          aria-selected={String(isActive)}
-          aria-controls={item.control}
-          data-view={item.key}
-        >
-          {item.label}
-        </button>
-      );
-    })}
-  </nav>
-) : (
-  <nav class="site-tabs" aria-label="Primary sections">
-    {linkItems.map((item) => {
-      const isActive = item.key === active;
-      return (
-        <a
-          class={isActive ? "site-tab is-active" : "site-tab"}
-          aria-current={isActive ? "page" : undefined}
-          href={item.href}
-        >
-          {item.label}
-        </a>
-      );
-    })}
-  </nav>
-)}
+<header class="site-topbar">
+  <a class="site-brand" href="/" aria-label="Plant by ZIP home">
+    <img class="brand-mark" src="/brand/plantbyzip-icon.png" alt="" aria-hidden="true" />
+    <span>Plant by ZIP</span>
+  </a>
+
+  {mode === "tabs" ? (
+    <nav class="site-tabs" aria-label="Primary sections" role="tablist">
+      {tabItems.map((item) => {
+        const isActive = item.key === active;
+        return (
+          <button
+            class={isActive ? "site-tab is-active" : "site-tab"}
+            type="button"
+            role="tab"
+            aria-selected={String(isActive)}
+            aria-controls={item.control}
+            data-view={item.key}
+          >
+            {item.label}
+          </button>
+        );
+      })}
+    </nav>
+  ) : (
+    <nav class="site-tabs" aria-label="Primary sections">
+      {linkItems.map((item) => {
+        const isActive = item.key === active;
+        return (
+          <a
+            class={isActive ? "site-tab is-active" : "site-tab"}
+            aria-current={isActive ? "page" : undefined}
+            href={item.href}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+    </nav>
+  )}
+</header>
