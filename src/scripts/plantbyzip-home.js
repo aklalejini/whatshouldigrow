@@ -6017,6 +6017,23 @@ function groupCounts(entries) {
   }, new Map());
 }
 
+function uniqueScreenerGroupValues(entries, reader) {
+  const values = [];
+  const seen = new Set();
+  entries.forEach((plant) => {
+    const raw = reader(plant);
+    const list = Array.isArray(raw) ? raw : [raw];
+    list.forEach((value) => {
+      const text = String(value ?? "").trim();
+      const key = text.toLowerCase();
+      if (!text || seen.has(key)) return;
+      seen.add(key);
+      values.push(text);
+    });
+  });
+  return values;
+}
+
 function activeScreenerColumns() {
   const preset = screenerColumnPresetEl?.value || "core";
   return new Set(screenerColumnPresets[preset] ?? screenerColumnPresets.core);
@@ -6033,26 +6050,230 @@ function updateScreenerColumnVisibility() {
   });
 }
 
-function sortGroupedScreenerPlants(entries) {
-  return [...entries].sort((a, b) => {
-    const aGroup = plantGroupLabel(a);
-    const bGroup = plantGroupLabel(b);
-    const groupCompare = aGroup.localeCompare(bGroup);
-    if (groupCompare !== 0) return groupCompare;
-    return sortScreenerPlants([a, b])[0].id === a.id ? -1 : 1;
+function compareScreenerSortValues(aValue, bValue, direction) {
+  if (typeof aValue === "number" && typeof bValue === "number") {
+    return (aValue - bValue) * direction;
+  }
+  return String(aValue).localeCompare(String(bValue)) * direction;
+}
+
+function sortScreenerGroups(groups) {
+  const direction = screenerSort.direction === "asc" ? 1 : -1;
+  return groups.sort((a, b) => {
+    if (["name", "type"].includes(screenerSort.key)) {
+      return a.label.localeCompare(b.label) * direction
+        || a.plant.name.localeCompare(b.plant.name);
+    }
+    const groupCompare = compareScreenerSortValues(
+      screenerSortValue(a.plant, screenerSort.key),
+      screenerSortValue(b.plant, screenerSort.key),
+      direction
+    );
+    return groupCompare || a.label.localeCompare(b.label) || a.plant.name.localeCompare(b.plant.name);
   });
 }
 
-function renderScreenerGroupedRows(entries, counts) {
-  let currentGroup = "";
-  return entries.map((plant) => {
-    const group = plantGroupLabel(plant);
-    const heading = group === currentGroup
-      ? ""
-      : `<tr class="screener-group-row"><td colspan="${visibleScreenerColumnCount()}"><strong>${escapeHtml(group)}</strong><span>${counts.get(group) ?? 0} ${(counts.get(group) ?? 0) === 1 ? "variety" : "varieties"}</span></td></tr>`;
-    currentGroup = group;
-    return `${heading}${renderScreenerRow(plant)}`;
+function screenerGroupEntries(entries) {
+  const groups = new Map();
+  entries.forEach((plant) => {
+    const label = plantGroupLabel(plant);
+    const id = calendarOptionKey(label) || label.toLowerCase();
+    if (!groups.has(id)) {
+      groups.set(id, { id, label, entries: [] });
+    }
+    groups.get(id).entries.push(plant);
+  });
+  const groupEntries = Array.from(groups.values()).map((group) => {
+    const sortedEntries = sortScreenerPlants([...group.entries]);
+    return {
+      ...group,
+      entries: sortedEntries,
+      plant: sortedEntries[0],
+      count: sortedEntries.length
+    };
+  });
+  return sortScreenerGroups(groupEntries);
+}
+
+function formatScreenerGroupCount(count) {
+  return `${count} ${count === 1 ? "variety" : "varieties"}`;
+}
+
+function screenerGroupZoneRange(group) {
+  const lows = group.entries
+    .map((plant) => ({ label: plant.zones[0], value: zoneToNumber(plant.zones[0]) }))
+    .filter((zone) => Number.isFinite(zone.value))
+    .sort((a, b) => a.value - b.value);
+  const highs = group.entries
+    .map((plant) => ({ label: plant.zones[1], value: zoneToNumber(plant.zones[1]) }))
+    .filter((zone) => Number.isFinite(zone.value))
+    .sort((a, b) => b.value - a.value);
+  if (!lows.length || !highs.length) return `${group.plant.zones[0]}-${group.plant.zones[1]}`;
+  return `${lows[0].label}-${highs[0].label}`;
+}
+
+function screenerGroupMetricRange(group, reader, digits = 0, unit = "") {
+  const values = group.entries
+    .map((plant) => reader(metricFor(plant), plant))
+    .filter((value) => Number.isFinite(value));
+  if (!values.length) return "â€”";
+  return formatCompactRange(Math.min(...values), Math.max(...values), digits, unit);
+}
+
+function firstOutputGroupValue(metrics) {
+  if (metrics.firstYieldYearsMax === 0) {
+    const days = metrics.daysToMaturityMax ?? metrics.daysToMaturityMin;
+    return Number.isFinite(days) ? days / 365 : 0;
+  }
+  const values = [metrics.firstYieldYearsMin, metrics.firstYieldYearsMax].filter((value) => Number.isFinite(value));
+  if (!values.length) return null;
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function renderScreenerGroupPills(group, reader, formatter = (value) => value, limit = 3) {
+  return renderScreenerPills(uniqueScreenerGroupValues(group.entries, reader), formatter, limit);
+}
+
+function renderScreenerGroupVarieties(group) {
+  return group.entries.map((plant) => {
+    const metrics = metricFor(plant);
+    const meta = [
+      `${plant.zones[0]}-${plant.zones[1]}`,
+      metricDisplayValue(metrics.display?.firstOutput, ""),
+      metricDisplayValue(metrics.display?.yieldLbs, "")
+    ].filter(Boolean);
+    return `
+      <span class="screener-group-variety">
+        <a href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a>
+        <small>${escapeHtml(meta.join(" | "))}</small>
+      </span>
+    `;
   }).join("");
+}
+
+function renderScreenerGroupNameCell(group) {
+  const plant = group.plant;
+  const isCompared = screenerCompareIds.has(plant.id);
+  const isWatched = screenerWatchlistIds.has(plant.id);
+  const countLabel = formatScreenerGroupCount(group.count);
+  const compareLabel = group.count > 1 ? "Compare top" : "Compare";
+  const watchLabel = group.count > 1
+    ? (isWatched ? "Top saved" : "Save top")
+    : (isWatched ? "In garden" : "Save to garden");
+  const watchTitle = isWatched ? "Remove from garden" : `Save ${plant.name} to garden`;
+  return `
+    <td class="screener-name-cell screener-group-name-cell" data-label="Name" data-screener-col="name">
+      <span class="screener-row-actions">
+        <label title="${escapeHtml(`Compare ${plant.name}`)}">
+          <input class="screener-compare-input" type="checkbox" value="${escapeHtml(plant.id)}" ${isCompared ? "checked" : ""} />
+          ${escapeHtml(compareLabel)}
+        </label>
+        <button class="screener-watch-button ${isWatched ? "is-active" : ""}" type="button" data-watch-plant="${escapeHtml(plant.id)}" aria-pressed="${isWatched ? "true" : "false"}" title="${escapeHtml(watchTitle)}">${escapeHtml(watchLabel)}</button>
+      </span>
+      <div class="screener-group-title-row">
+        <strong>${escapeHtml(group.label)}</strong>
+        <span>${escapeHtml(countLabel)}</span>
+      </div>
+      <a class="screener-plant-link screener-group-lead" href="${plantPagePath(plant)}">${escapeHtml(plant.name)}</a>
+      <small class="screener-group-note">Top variety for the active sort.</small>
+      ${group.count > 1
+        ? `<details class="screener-group-details">
+            <summary>Compare varieties</summary>
+            <div class="screener-group-varieties">${renderScreenerGroupVarieties(group)}</div>
+          </details>`
+        : ""}
+    </td>
+  `;
+}
+
+function renderScreenerGroupScreeningCell(group) {
+  const plant = group.plant;
+  const metrics = metricFor(plant);
+  const screening = screeningProfile(plant, metrics);
+  return `
+    <span class="screener-cue-list screener-group-cues" title="Grouped rows show the active sort's top variety plus compact group ranges. Expand the group to compare varieties.">
+      <span><strong>Top</strong> ${escapeHtml(plant.name)}</span>
+      <span><strong>pH</strong> ${escapeHtml(screening.ph)}</span>
+      <span><strong>Pollination</strong> ${escapeHtml(screening.pollination)}</span>
+      <span><strong>Support</strong> ${escapeHtml(screening.support)}</span>
+      <span><strong>Climate</strong> ${escapeHtml(screening.heat)}; ${escapeHtml(screening.chill)}</span>
+    </span>
+  `;
+}
+
+function renderScreenerGroupRow(group) {
+  const plant = group.plant;
+  const metrics = metricFor(plant);
+  const pairings = sumNumber(group.entries.map(relationshipCount)) ?? 0;
+  const nativeCount = group.entries.filter(hasNativeCue).length;
+  const lowWaterCount = group.entries.filter(hasLowWaterCue).length;
+  const averageDifficulty = averageNumber(group.entries.map((entry) => metricFor(entry).difficultyScore));
+  const averageReliability = averageNumber(group.entries.map((entry) => metricFor(entry).reliabilityScore));
+  const typeLabels = uniqueScreenerGroupValues(group.entries, (entry) => entry.type);
+  const typeSummary = typeLabels.length === 1 ? typeLabels[0] : `${typeLabels.length} forms`;
+  const firstOutputRange = screenerGroupMetricRange(group, firstOutputGroupValue, 1, " yrs");
+  const containerRange = screenerGroupMetricRange(group, (entryMetrics) => entryMetrics.containerMinGallons, 0, " gal");
+  const yieldRange = screenerGroupMetricRange(group, yieldMidpoint, 0, " lb/yr");
+  const yieldSpaceRange = screenerGroupMetricRange(group, yieldPer100SqFt, 0, " lb/100 sq ft");
+  return `
+    <tr class="screener-aggregate-row">
+      ${renderScreenerGroupNameCell(group)}
+      <td data-label="Type/form" data-screener-col="type">${escapeHtml(typeSummary)}<span class="screener-metric-note">${escapeHtml(formatScreenerGroupCount(group.count))}</span></td>
+      <td data-label="Zone range" data-screener-col="zone"><strong>${escapeHtml(screenerGroupZoneRange(group))}</strong></td>
+      <td data-label="First output" data-screener-col="firstOutput">
+        <span class="screener-pill">${escapeHtml(firstOutputRange)}</span>
+        <span class="screener-metric-note">Top: ${escapeHtml(metricDisplayValue(metrics.display?.firstOutput))}</span>
+      </td>
+      <td data-label="Spacing" data-screener-col="spacing">
+        ${escapeHtml(metricDisplayValue(metrics.display?.spacing))}
+        <span class="screener-metric-note">Top variety spacing</span>
+      </td>
+      <td data-label="Planting depth" data-screener-col="plantingDepth">
+        ${escapeHtml(metricDisplayValue(metrics.display?.plantingDepth))}
+        <span class="screener-metric-note">Top variety depth</span>
+      </td>
+      <td data-label="Container min" data-screener-col="container">
+        <span class="screener-pill">${escapeHtml(containerRange)}</span>
+        <span class="screener-metric-note">Top: ${escapeHtml(metricDisplayValue(metrics.display?.containerMin))}</span>
+      </td>
+      <td data-label="Yield (lbs)" data-screener-col="yield">
+        <strong>${escapeHtml(yieldRange)}</strong>
+        <span class="screener-metric-note">Top: ${escapeHtml(metricDisplayValue(metrics.display?.yieldLbs))}</span>
+      </td>
+      <td data-label="Yield / 100 sq ft" data-screener-col="yieldPerSpace">
+        <strong>${escapeHtml(yieldSpaceRange)}</strong>
+        <span class="screener-metric-note">Across matched varieties</span>
+      </td>
+      <td data-label="Scores" data-screener-col="score">${renderScreenerScoreCell(metrics)}</td>
+      <td data-label="Difficulty" data-screener-col="difficulty">
+        <span class="screener-pill">${escapeHtml(formatCompactNumber(averageDifficulty, 1))}/5</span>
+        <span class="screener-metric-note">Group average</span>
+      </td>
+      <td data-label="Reliability" data-screener-col="reliability">
+        <span class="screener-pill">${escapeHtml(formatCompactNumber(averageReliability, 1))}/5</span>
+        <span class="screener-metric-note">Group average</span>
+      </td>
+      <td data-label="Data" data-screener-col="data">${renderScreenerDataCell(metrics)}</td>
+      <td data-label="Sun" data-screener-col="sun">${renderScreenerGroupPills(group, (entry) => entry.sun, sentenceCase)}</td>
+      <td data-label="Soil" data-screener-col="soil">${renderScreenerGroupPills(group, (entry) => entry.soils, sentenceCase)}</td>
+      <td data-label="Water" data-screener-col="water">${renderScreenerGroupPills(group, (entry) => entry.water, sentenceCase)}</td>
+      <td data-label="Goals" data-screener-col="goals">${renderScreenerGroupPills(group, (entry) => entry.goals, formatGoal, 3)}</td>
+      <td data-label="Harvest" data-screener-col="harvest">${renderScreenerGroupPills(group, (entry) => entry.harvest, (value) => value, 2)}</td>
+      <td data-label="Traits" data-screener-col="traits">${renderScreenerGroupPills(group, (entry) => entry.traits, (value) => value, 3)}</td>
+      <td data-label="Native flag" data-screener-col="native"><span class="screener-pill ${nativeCount ? "is-positive" : "is-muted"}">${nativeCount ? `${nativeCount}/${group.count}` : "-"}</span></td>
+      <td data-label="Low water" data-screener-col="lowWater"><span class="screener-pill ${lowWaterCount ? "is-positive" : "is-muted"}">${lowWaterCount ? `${lowWaterCount}/${group.count}` : "-"}</span></td>
+      <td data-label="Pairings" data-screener-col="pairings"><span class="screener-count" title="${pairings} total plant ${pairings === 1 ? "pairing" : "pairings"} across this group">${pairings}</span></td>
+      <td data-label="Deer" data-screener-col="deer">${renderSiteRiskCell("deer", metrics)}</td>
+      <td data-label="Walnut" data-screener-col="juglone">${renderSiteRiskCell("juglone", metrics)}</td>
+      <td data-label="Screening cues" data-screener-col="screening">${renderScreenerGroupScreeningCell(group)}</td>
+      <td data-label="Source" data-screener-col="source">${renderScreenerSourceCell(plant)}<span class="screener-metric-note">Top variety source</span></td>
+      <td class="screener-profile-cell" data-label="Profile" data-screener-col="profile"><a class="screener-profile-link" href="${plantPagePath(plant)}">View top</a></td>
+    </tr>
+  `;
+}
+
+function renderScreenerGroupedRows(groups) {
+  return groups.map(renderScreenerGroupRow).join("");
 }
 
 function updateScreenerSortUI() {
@@ -9214,21 +9435,21 @@ function syncScreenerViewTabs() {
 
 function renderScreener() {
   const matchingPlants = plants.filter(plantMatchesScreener);
-  const filtered = screenerGroupedByType
-    ? sortGroupedScreenerPlants(matchingPlants)
-    : sortScreenerPlants(matchingPlants);
+  const filtered = sortScreenerPlants([...matchingPlants]);
+  const groups = screenerGroupedByType ? screenerGroupEntries(matchingPlants) : [];
+  const rowEntries = screenerGroupedByType ? groups : filtered;
   screenerLastFiltered = filtered;
-  const visible = filtered.slice(0, screenerVisibleLimit);
+  const visible = rowEntries.slice(0, screenerVisibleLimit);
   const counts = groupCounts(filtered);
   screenerBodyEl.innerHTML = screenerGroupedByType
-    ? renderScreenerGroupedRows(visible, counts)
+    ? renderScreenerGroupedRows(visible)
     : visible.map(renderScreenerRow).join("");
   updateScreenerColumnVisibility();
   renderScreenerSupplyPanel(filtered);
   renderScreenerComparePanel();
   renderScreenerPortfolioPanel();
   screenerVisibleCountEl.textContent = String(filtered.length);
-  if (screenerTypeCountEl) screenerTypeCountEl.textContent = String(new Set(filtered.map((plant) => plant.type)).size);
+  if (screenerTypeCountEl) screenerTypeCountEl.textContent = String(counts.size);
   if (screenerYieldCountEl) {
     screenerYieldCountEl.textContent = String(filtered.filter((plant) => Number.isFinite(yieldMidpoint(metricFor(plant)))).length);
   }
@@ -9239,17 +9460,19 @@ function renderScreener() {
   screenerGroupTypeEl.setAttribute("aria-pressed", String(screenerGroupedByType));
   if (filtered.length === 0) {
     screenerSummaryEl.textContent = "No plants match those filters.";
+  } else if (screenerGroupedByType) {
+    const coveringAllPlants = filtered.length === plants.length;
+    const coverageLabel = coveringAllPlants ? `all ${filtered.length} plants` : `${filtered.length} matching plants`;
+    screenerSummaryEl.textContent = visible.length === groups.length
+      ? `Showing ${groups.length} plant groups covering ${coverageLabel}.`
+      : `Showing ${visible.length} of ${groups.length} plant groups covering ${coverageLabel}.`;
   } else if (filtered.length === plants.length && visible.length === filtered.length) {
-    screenerSummaryEl.textContent = screenerGroupedByType
-      ? `Showing all ${plants.length} plants in ${counts.size} type groups.`
-      : `Showing all ${plants.length} plants.`;
+    screenerSummaryEl.textContent = `Showing all ${plants.length} plants.`;
   } else {
-    screenerSummaryEl.textContent = screenerGroupedByType
-      ? `Showing ${visible.length} of ${filtered.length} matching plants in ${counts.size} type groups.`
-      : `Showing ${visible.length} of ${filtered.length} matching plants.`;
+    screenerSummaryEl.textContent = `Showing ${visible.length} of ${filtered.length} matching plants.`;
   }
-  if (filtered.length > visible.length) {
-    const remaining = filtered.length - visible.length;
+  if (rowEntries.length > visible.length) {
+    const remaining = rowEntries.length - visible.length;
     screenerMoreEl.hidden = false;
     screenerMoreEl.textContent = `Show more (${remaining} left)`;
   } else {
