@@ -226,6 +226,7 @@ const zoneMapUseCalendarEl = document.getElementById("zone-map-use-calendar");
 const screenerSearchEl = document.getElementById("screener-search");
 const screenerColumnPresetEl = document.getElementById("screener-column-preset");
 const screenerSavedScreenEl = document.getElementById("screener-saved-screen");
+const screenerSaveScreenEl = document.getElementById("screener-save-screen");
 const screenerTypeEl = document.getElementById("screener-type");
 const screenerZoneEl = document.getElementById("screener-zone");
 const screenerHorizonEl = document.getElementById("screener-horizon");
@@ -304,9 +305,12 @@ const screenerSummaryEl = document.getElementById("screener-summary");
 const screenerEmptyEl = document.getElementById("screener-empty");
 const screenerVisibleCountEl = document.getElementById("screener-visible-count");
 const screenerTypeCountEl = document.getElementById("screener-type-count");
+const screenerYieldCountEl = document.getElementById("screener-yield-count");
 const screenerRelationCountEl = document.getElementById("screener-relation-count");
 const screenerPortfolioCountEl = document.getElementById("screener-portfolio-count");
+const screenerPortfolioMetricEl = document.getElementById("screener-portfolio-metric");
 const screenerSortButtons = Array.from(document.querySelectorAll("[data-screener-sort]"));
+const screenerViewTabEls = Array.from(document.querySelectorAll("[data-screener-view-tab]"));
 const screenerFilterEls = [
   screenerSearchEl,
   screenerColumnPresetEl,
@@ -398,6 +402,7 @@ let zoneMapSelectedPlantOverlay = null;
 const screenerPageSize = 120;
 const screenerCompareLimit = 5;
 const screenerWatchlistStorageKey = "plantbyzip.screenerWatchlist.v1";
+const screenerSavedScreenStorageKey = "plantbyzip.savedScreens.v1";
 const gardenPlannerQuantityStorageKey = "plantbyzip.gardenPlannerQuantities.v1";
 const gardenPlannerSettingsStorageKey = "plantbyzip.gardenPlannerSettings.v1";
 const gardenPlannerLayoutStorageKey = "plantbyzip.gardenPlannerLayout.v1";
@@ -444,15 +449,15 @@ const gardenPlannerBedKitProducts = [
   }
 ];
 const screenerColumnPresets = {
-  core: ["name", "type", "zone", "firstOutput", "yield", "difficulty", "data", "source", "profile"],
+  core: ["name", "type", "zone", "firstOutput", "yield", "difficulty", "data", "profile"],
   yield: ["name", "type", "zone", "firstOutput", "yield", "yieldPerSpace", "score", "difficulty", "reliability", "data", "source", "profile"],
   space: ["name", "type", "zone", "spacing", "container", "yield", "yieldPerSpace", "score", "sun", "water", "profile"],
-  container: ["name", "type", "zone", "container", "yield", "score", "sun", "soil", "water", "screening", "source", "profile"],
-  risk: ["name", "type", "zone", "difficulty", "reliability", "data", "deer", "juglone", "screening", "water", "pairings", "source", "profile"],
-  ecology: ["name", "type", "zone", "sun", "soil", "water", "goals", "traits", "native", "lowWater", "deer", "juglone", "pairings", "screening", "profile"],
+  container: ["name", "type", "zone", "container", "yield", "source", "data", "screening", "profile"],
+  risk: ["name", "type", "zone", "sun", "soil", "water", "difficulty", "reliability", "deer", "juglone", "screening", "data", "profile"],
+  ecology: ["name", "type", "zone", "goals", "traits", "native", "lowWater", "pairings", "screening", "profile"],
   all: ["name", "type", "zone", "firstOutput", "spacing", "plantingDepth", "container", "yield", "yieldPerSpace", "score", "difficulty", "reliability", "data", "sun", "soil", "water", "goals", "harvest", "traits", "native", "lowWater", "pairings", "deer", "juglone", "screening", "source", "profile"]
 };
-const screenerSavedScreens = {
+const defaultScreenerSavedScreens = {
   "high-yield-small-space": {
     label: "High-yield small-space edibles",
     columnPreset: "space",
@@ -496,6 +501,7 @@ const screenerSavedScreens = {
     sort: { key: "containerEfficiency", direction: "desc" }
   }
 };
+let screenerSavedScreens = { ...defaultScreenerSavedScreens };
 const zoneCache = new Map();
 const zoneStorageKey = "plantbyzip.zoneCache.v1";
 const zoneLookupTimeoutMs = 8000;
@@ -2478,7 +2484,7 @@ function timeToPayoffScore(metrics) {
   return yieldValue / years;
 }
 
-function formatCompactNumber(value, digits = 0, fallback = "-") {
+function formatCompactNumber(value, digits = 0, fallback = "—") {
   if (!Number.isFinite(value)) return fallback;
   return value.toLocaleString(undefined, {
     maximumFractionDigits: digits,
@@ -2486,7 +2492,7 @@ function formatCompactNumber(value, digits = 0, fallback = "-") {
   });
 }
 
-function formatCompactRange(min, max, digits = 1, unit = "", fallback = "-") {
+function formatCompactRange(min, max, digits = 1, unit = "", fallback = "—") {
   const hasMin = Number.isFinite(min);
   const hasMax = Number.isFinite(max);
   if (!hasMin && !hasMax) return fallback;
@@ -2684,7 +2690,7 @@ function screeningProfile(plant, metrics = metricFor(plant)) {
   };
 }
 
-function metricDisplayValue(value, fallback = "Not available yet") {
+function metricDisplayValue(value, fallback = "—") {
   return value && value !== "Needs source" ? value : fallback;
 }
 
@@ -5978,16 +5984,17 @@ function defaultScreenerDirection(key) {
 }
 
 function screenerSortIndicator(key, direction) {
+  const arrow = direction === "asc" ? "↑" : "↓";
   if (["name", "type", "harvest", "traits", "partner", "sun", "soil"].includes(key)) {
-    return direction === "asc" ? "Asc A-Z" : "Desc Z-A";
+    return direction === "asc" ? `${arrow} A-Z` : `${arrow} Z-A`;
   }
-  if (key === "firstOutput") return direction === "asc" ? "Fast first" : "Slow first";
-  if (key === "difficulty") return direction === "asc" ? "Easy first" : "Hard first";
-  if (key === "container") return direction === "asc" ? "Small first" : "Large first";
-  if (key === "plantingDepth") return direction === "asc" ? "Shallow first" : "Deep first";
-  if (key === "deer") return direction === "asc" ? "Browse risk first" : "Deer-resistant first";
-  if (key === "juglone") return direction === "asc" ? "Sensitive first" : "Walnut-fit first";
-  return direction === "asc" ? "Low first" : "High first";
+  if (key === "firstOutput") return direction === "asc" ? `${arrow} Fast` : `${arrow} Slow`;
+  if (key === "difficulty") return direction === "asc" ? `${arrow} Easy` : `${arrow} Hard`;
+  if (key === "container") return direction === "asc" ? `${arrow} Small` : `${arrow} Large`;
+  if (key === "plantingDepth") return direction === "asc" ? `${arrow} Shallow` : `${arrow} Deep`;
+  if (key === "deer") return direction === "asc" ? `${arrow} Risk` : `${arrow} Resist`;
+  if (key === "juglone") return direction === "asc" ? `${arrow} Sensitive` : `${arrow} Fit`;
+  return direction === "asc" ? `${arrow} Low` : `${arrow} High`;
 }
 
 function sortScreenerPlants(entries) {
@@ -6054,7 +6061,10 @@ function updateScreenerSortUI() {
     const indicator = button.querySelector(".sort-indicator");
     const header = button.closest("th");
     if (indicator) indicator.textContent = isActive ? screenerSortIndicator(screenerSort.key, screenerSort.direction) : "";
-    if (header) header.setAttribute("aria-sort", isActive ? (screenerSort.direction === "asc" ? "ascending" : "descending") : "none");
+    if (header) {
+      header.setAttribute("aria-sort", isActive ? (screenerSort.direction === "asc" ? "ascending" : "descending") : "none");
+      header.classList.toggle("is-sorted", isActive);
+    }
   });
 }
 
@@ -6215,19 +6225,19 @@ function renderScreenerPortfolioStats(entries) {
         <span>saved plants</span>
       </div>
       <div>
-        <strong>-</strong>
+        <strong>—</strong>
         <span>est. lb/year</span>
       </div>
       <div>
-        <strong>-</strong>
+        <strong>—</strong>
         <span>avg first output</span>
       </div>
       <div>
-        <strong>-</strong>
+        <strong>—</strong>
         <span>avg reliability</span>
       </div>
       <div>
-        <strong>-</strong>
+        <strong>—</strong>
         <span>density leader</span>
       </div>
     `;
@@ -6359,6 +6369,7 @@ function renderScreenerPortfolioPanel() {
   const entries = screenerPortfolioEntries();
   const count = entries.length;
   if (screenerPortfolioCountEl) screenerPortfolioCountEl.textContent = String(count);
+  if (screenerPortfolioMetricEl) screenerPortfolioMetricEl.hidden = count === 0;
   if (screenerPortfolioTitleEl) {
     screenerPortfolioTitleEl.textContent = count
       ? `${count} saved plant${count === 1 ? "" : "s"}`
@@ -7867,23 +7878,23 @@ function renderGardenPlannerStats(entries) {
         <span>saved plants</span>
       </div>
       <div>
-        <strong>-</strong>
+        <strong>—</strong>
         <span>plant count</span>
       </div>
       <div>
-        <strong>-</strong>
+        <strong>—</strong>
         <span>est. lb/year</span>
       </div>
       <div>
-        <strong>-</strong>
+        <strong>—</strong>
         <span>space budget</span>
       </div>
       <div>
-        <strong>-</strong>
+        <strong>—</strong>
         <span>avg first output</span>
       </div>
       <div>
-        <strong>-</strong>
+        <strong>—</strong>
         <span>risk watch</span>
       </div>
     `;
@@ -9071,6 +9082,136 @@ function saveScreenerWatchlist() {
   }
 }
 
+function screenerScreenSlug(label) {
+  return String(label ?? "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 42) || "screen";
+}
+
+function cleanScreenerScreen(screen) {
+  if (!screen || typeof screen !== "object") return null;
+  const label = String(screen.label ?? "").trim().slice(0, 80);
+  if (!label) return null;
+  const columnPreset = screenerColumnPresets[screen.columnPreset] ? screen.columnPreset : "core";
+  const values = Object.fromEntries(
+    Object.entries(screen.values ?? {}).filter(([key, value]) => screenerParamMap[key] && value !== "")
+  );
+  const ranges = Object.fromEntries(
+    Object.entries(screen.ranges ?? {}).filter(([key, value]) => screenerParamMap[key] && value !== "")
+  );
+  const sort = screen.sort && typeof screen.sort === "object"
+    ? {
+        key: String(screen.sort.key ?? "name"),
+        direction: screen.sort.direction === "desc" ? "desc" : "asc"
+      }
+    : { key: "name", direction: "asc" };
+  return { label, columnPreset, values, ranges, sort, custom: Boolean(screen.custom), createdAt: screen.createdAt };
+}
+
+function loadScreenerSavedScreens() {
+  let customScreens = {};
+  try {
+    const parsed = JSON.parse(localStorage.getItem(screenerSavedScreenStorageKey) || "{}");
+    customScreens = Object.fromEntries(
+      Object.entries(parsed)
+        .map(([id, screen]) => [
+          String(id).startsWith("custom-") ? id : `custom-${screenerScreenSlug(id)}`,
+          cleanScreenerScreen({ ...screen, custom: true })
+        ])
+        .filter(([, screen]) => screen)
+    );
+  } catch {
+    customScreens = {};
+  }
+  screenerSavedScreens = { ...defaultScreenerSavedScreens, ...customScreens };
+}
+
+function saveScreenerSavedScreens() {
+  const customScreens = Object.fromEntries(
+    Object.entries(screenerSavedScreens).filter(([id, screen]) => id.startsWith("custom-") && screen.custom)
+  );
+  try {
+    localStorage.setItem(screenerSavedScreenStorageKey, JSON.stringify(customScreens));
+  } catch {
+    // Saved screens are a local convenience; the current URL remains shareable.
+  }
+}
+
+function populateScreenerSavedScreenOptions(selectedValue = screenerSavedScreenEl?.value ?? "") {
+  if (!screenerSavedScreenEl) return;
+  screenerSavedScreenEl.innerHTML = "";
+  addSelectOption(screenerSavedScreenEl, "", "All plants");
+  const builtInEntries = Object.entries(defaultScreenerSavedScreens);
+  const customEntries = Object.entries(screenerSavedScreens).filter(([id, screen]) => id.startsWith("custom-") && screen.custom);
+  const appendGroup = (label, entries) => {
+    if (!entries.length) return;
+    const group = document.createElement("optgroup");
+    group.label = label;
+    entries.forEach(([value, screen]) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = screen.label;
+      group.append(option);
+    });
+    screenerSavedScreenEl.append(group);
+  };
+  appendGroup("Presets", builtInEntries);
+  appendGroup("Saved here", customEntries);
+  screenerSavedScreenEl.value = screenerSavedScreens[selectedValue] ? selectedValue : "";
+}
+
+function currentScreenerScreen(label) {
+  const values = {};
+  const ranges = {};
+  const rangeControls = new Set(screenerRangeEls);
+  Object.entries(screenerParamMap).forEach(([key, control]) => {
+    if (!control?.value || key === "sview") return;
+    if (rangeControls.has(control)) {
+      ranges[key] = control.value;
+    } else {
+      values[key] = control.value;
+    }
+  });
+  return {
+    label,
+    columnPreset: screenerColumnPresetEl?.value || "core",
+    values,
+    ranges,
+    sort: { ...screenerSort },
+    custom: true,
+    createdAt: new Date().toISOString()
+  };
+}
+
+function saveCurrentScreenerScreen() {
+  const activeLabel = screenerSavedScreenEl?.selectedOptions?.[0]?.textContent?.trim();
+  const fallback = activeLabel && screenerSavedScreenEl.value ? `${activeLabel} copy` : "My plant screen";
+  const label = window.prompt("Name this plant screen", fallback)?.trim();
+  if (!label) return;
+  const id = `custom-${screenerScreenSlug(label)}-${Date.now().toString(36)}`;
+  screenerSavedScreens[id] = currentScreenerScreen(label);
+  saveScreenerSavedScreens();
+  populateScreenerSavedScreenOptions(id);
+  writeScreenerUrl();
+  trackEvent("filter_apply", {
+    tool: "screener",
+    action: "save_screen",
+    filter_count: activeScreenerFilterCount()
+  });
+}
+
+function syncScreenerViewTabs() {
+  const activePreset = screenerColumnPresetEl?.value || "core";
+  const activeTabPreset = activePreset === "space" ? "yield" : activePreset;
+  screenerViewTabEls.forEach((button) => {
+    const isActive = button.dataset.screenerViewTab === activeTabPreset;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+}
+
 function renderScreener() {
   const matchingPlants = plants.filter(plantMatchesScreener);
   const filtered = screenerGroupedByType
@@ -9087,6 +9228,13 @@ function renderScreener() {
   renderScreenerComparePanel();
   renderScreenerPortfolioPanel();
   screenerVisibleCountEl.textContent = String(filtered.length);
+  if (screenerTypeCountEl) screenerTypeCountEl.textContent = String(new Set(filtered.map((plant) => plant.type)).size);
+  if (screenerYieldCountEl) {
+    screenerYieldCountEl.textContent = String(filtered.filter((plant) => Number.isFinite(yieldMidpoint(metricFor(plant)))).length);
+  }
+  if (screenerRelationCountEl) {
+    screenerRelationCountEl.textContent = String(filtered.filter((plant) => relationshipCount(plant) > 0).length);
+  }
   screenerGroupTypeEl.classList.toggle("is-active", screenerGroupedByType);
   screenerGroupTypeEl.setAttribute("aria-pressed", String(screenerGroupedByType));
   if (filtered.length === 0) {
@@ -9109,6 +9257,7 @@ function renderScreener() {
   }
   screenerEmptyEl.hidden = filtered.length > 0;
   updateScreenerSortUI();
+  syncScreenerViewTabs();
 }
 
 function addSelectOption(select, value, label) {
@@ -9385,15 +9534,14 @@ function initializeGardenPlanner() {
 
 function initializeScreener() {
   loadScreenerWatchlist();
+  loadScreenerSavedScreens();
   loadGardenPlannerQuantities();
   loadGardenPlannerLayout();
   const typeCounts = plants.reduce((counts, plant) => {
     counts.set(plant.type, (counts.get(plant.type) ?? 0) + 1);
     return counts;
   }, new Map());
-  Object.entries(screenerSavedScreens).forEach(([value, screen]) => {
-    addSelectOption(screenerSavedScreenEl, value, screen.label);
-  });
+  populateScreenerSavedScreenOptions();
   [...typeCounts.keys()]
     .sort((a, b) => a.localeCompare(b))
     .forEach((type) => addSelectOption(screenerTypeEl, type, `${sentenceCase(type)} (${typeCounts.get(type)})`));
@@ -9406,13 +9554,34 @@ function initializeScreener() {
     .forEach(([value]) => addSelectOption(screenerPartnerEl, value, partnerName(value)));
 
   applyInitialScreenerState();
-  screenerTypeCountEl.textContent = String(new Set(plants.map((plant) => plant.type)).size);
-  screenerRelationCountEl.textContent = String(plants.filter((plant) => relationshipCount(plant) > 0).length);
   screenerFilterEls.forEach((control) => control.addEventListener("input", handleScreenerFilterChange));
   screenerSavedScreenEl?.addEventListener("input", () => {
     if (screenerSavedScreenEl.value) {
       applyScreenerSavedScreen(screenerSavedScreenEl.value);
+    } else {
+      clearScreenerBaseFilters();
+      if (screenerColumnPresetEl) screenerColumnPresetEl.value = "core";
+      screenerSort = { key: "name", direction: "asc" };
+      screenerGroupedByType = false;
+      screenerVisibleLimit = screenerPageSize;
+      writeScreenerUrl();
+      renderScreener();
     }
+  });
+  screenerSaveScreenEl?.addEventListener("click", saveCurrentScreenerScreen);
+  screenerViewTabEls.forEach((button) => {
+    button.addEventListener("click", () => {
+      const preset = button.dataset.screenerViewTab;
+      if (!preset || !screenerColumnPresets[preset] || !screenerColumnPresetEl) return;
+      screenerColumnPresetEl.value = preset;
+      handleScreenerFilterChange();
+      if (screenerTableWrapEl) screenerTableWrapEl.scrollLeft = 0;
+      trackEvent("filter_apply", {
+        tool: "screener",
+        action: "column_view_tab",
+        view: preset
+      });
+    });
   });
   screenerShowSourceLinksEl?.addEventListener("input", () => {
     renderScreener();

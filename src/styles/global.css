@@ -3311,6 +3311,7 @@ fieldset:nth-of-type(2) .segmented {
 .screener-shell,
 .garden-planner-shell {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
 }
 
@@ -3377,6 +3378,41 @@ fieldset:nth-of-type(2) .segmented {
   font-weight: 850;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.screener-portfolio-metric[hidden] {
+  display: none;
+}
+
+.screener-header {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.78fr);
+  align-items: center;
+  padding: 16px 18px;
+}
+
+.screener-header > * {
+  min-width: 0;
+}
+
+.screener-header h1 {
+  max-width: 100%;
+  margin-bottom: 4px;
+  font-size: 2.18rem;
+  overflow-wrap: break-word;
+}
+
+.screener-header p:not(.eyebrow) {
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.screener-metrics div {
+  min-height: 58px;
+  padding: 10px;
+}
+
+.screener-metrics strong {
+  font-size: 1.42rem;
 }
 
 .garden-planner-stats {
@@ -4827,84 +4863,248 @@ fieldset:nth-of-type(2) .segmented {
   margin: 0 4px 5px 0;
 }
 
+.screener-header {
+  order: 1;
+}
+
+.screener-view-bar {
+  order: 2;
+}
+
 .screener-controls {
-  display: grid;
-  grid-template-columns: minmax(250px, 1.35fr) repeat(5, minmax(120px, 1fr));
-  gap: 10px;
-  padding: 14px;
+  order: 3;
+}
+
+.screener-toolbar {
+  order: 4;
+}
+
+.screener-table-wrap {
+  order: 5;
+}
+
+.screener-empty {
+  order: 6;
+}
+
+.screener-load-more {
+  order: 7;
+}
+
+.screener-compare-panel {
+  order: 8;
+}
+
+.screener-portfolio-panel {
+  order: 9;
+}
+
+.screener-supply-panel {
+  order: 10;
+}
+
+.screener-screenbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.screener-screenbar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  margin-bottom: 0;
+  padding: 0 12px;
+  border: 1px solid #cfdac8;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.screener-screenbar label span {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.screener-screenbar select {
+  max-width: 210px;
+  border: 0;
+  color: var(--leaf-dark);
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.screener-screenbar button,
+.screener-view-tab,
+.screener-more-filters summary {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid #cfdac8;
+  border-radius: 999px;
+  color: var(--leaf-dark);
+  background: rgba(255, 253, 248, 0.96);
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.screener-screenbar button:hover,
+.screener-view-tab:hover,
+.screener-more-filters summary:hover {
+  border-color: rgba(39, 88, 58, 0.42);
+  background: #fff;
+}
+
+.screener-view-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 2px 0;
+}
+
+.screener-view-tab.is-active {
+  color: #fff;
+  border-color: var(--leaf);
+  background: var(--leaf);
+}
+
+.screener-native-view-select {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.screener-controls {
+  position: relative;
+  z-index: 4;
+  padding: 9px 10px;
   border: 1px solid #dfe6d8;
   border-radius: 18px;
-  background: rgba(255, 253, 248, 0.94);
-  box-shadow: 0 12px 28px rgba(31, 45, 35, 0.08);
+  background: rgba(255, 253, 248, 0.96);
+  box-shadow: 0 10px 24px rgba(31, 45, 35, 0.07);
+}
+
+.screener-filter-rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 
 .screener-search,
 .screener-field {
   display: grid;
-  gap: 6px;
+  gap: 2px;
   min-width: 0;
 }
 
-.screener-search label,
+.screener-filter-chip {
+  min-height: 40px;
+  margin-bottom: 0;
+  padding: 5px 10px;
+  border: 1px solid #ccd8c6;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.screener-search {
+  flex: 1 1 220px;
+  max-width: 300px;
+}
+
+.screener-field {
+  flex: 0 1 128px;
+}
+
+.screener-search span,
 .screener-field span {
-  color: var(--leaf-dark);
-  font-size: 0.72rem;
-  font-weight: 850;
+  color: var(--muted);
+  font-size: 0.6rem;
+  font-weight: 900;
+  line-height: 1;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
 }
 
 .screener-search input,
 .screener-field input,
 .screener-field select {
   width: 100%;
-  min-height: 40px;
-  border: 1px solid #ccd8c6;
-  border-radius: 10px;
+  height: auto;
+  min-height: 20px;
+  border: 0;
   color: var(--ink);
-  background: #fff;
-  font-size: 0.86rem;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 850;
+  text-overflow: ellipsis;
 }
 
 .screener-search input,
 .screener-field input {
-  padding: 0 12px;
+  padding: 0;
 }
 
 .screener-field select {
-  padding: 0 30px 0 10px;
+  padding: 0 18px 0 0;
 }
 
 .screener-search input:focus,
 .screener-field input:focus,
-.screener-field select:focus {
+.screener-field select:focus,
+.screener-screenbar select:focus {
+  outline: 0;
+}
+
+.screener-filter-chip:focus-within,
+.screener-screenbar label:focus-within {
   outline: 3px solid rgba(223, 123, 79, 0.22);
   border-color: rgba(39, 88, 58, 0.45);
 }
 
-.screener-range-panel {
-  grid-column: 1 / -1;
-  border: 1px solid #dfe6d8;
-  border-radius: 14px;
-  background: #fbfcf8;
+.screener-more-filters {
+  position: relative;
+  flex: 0 0 auto;
 }
 
-.screener-range-panel summary {
-  min-height: 42px;
-  padding: 12px 14px;
-  color: var(--leaf-dark);
-  font-size: 0.78rem;
-  font-weight: 850;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  cursor: pointer;
+.screener-more-filters summary {
+  list-style: none;
 }
 
-.screener-range-grid {
+.screener-more-filters summary::-webkit-details-marker {
+  display: none;
+}
+
+.screener-more-filter-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 30;
   display: grid;
-  grid-template-columns: repeat(4, minmax(120px, 1fr));
-  gap: 10px;
-  padding: 0 14px 14px;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 8px;
+  width: min(900px, calc(100vw - 48px));
+  padding: 12px;
+  border: 1px solid #dfe6d8;
+  border-radius: 18px;
+  background: #fffdf8;
+  box-shadow: 0 22px 56px rgba(31, 45, 35, 0.18);
 }
 
 .screener-supply-panel,
@@ -5354,6 +5554,36 @@ fieldset:nth-of-type(2) .segmented {
   background: var(--leaf);
 }
 
+.screener-load-more {
+  display: flex;
+  justify-content: center;
+}
+
+.screener-load-more button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 16px;
+  border: 1px solid #cfdac8;
+  border-radius: 999px;
+  color: var(--leaf-dark);
+  background: rgba(255, 253, 248, 0.96);
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.screener-load-more button:hover {
+  border-color: rgba(39, 88, 58, 0.42);
+  background: #fff;
+}
+
+.screener-load-more button[hidden] {
+  display: none;
+}
+
 .screener-table-wrap {
   overflow: auto;
   border: 1px solid #dfe6d8;
@@ -5364,7 +5594,7 @@ fieldset:nth-of-type(2) .segmented {
 
 .screener-table {
   width: 100%;
-  min-width: 2020px;
+  min-width: 1120px;
   border-collapse: separate;
   border-spacing: 0;
   font-size: 0.8rem;
@@ -5399,6 +5629,15 @@ fieldset:nth-of-type(2) .segmented {
 .screener-table th:first-child {
   z-index: 3;
   background: #f3f8ee;
+}
+
+.screener-table th.is-sorted {
+  color: #fff;
+  background: var(--leaf);
+}
+
+.screener-table th.is-sorted:first-child {
+  background: var(--leaf);
 }
 
 .screener-table tbody tr:hover td:first-child {
@@ -5440,7 +5679,7 @@ fieldset:nth-of-type(2) .segmented {
 
 .sort-indicator {
   min-width: 38px;
-  color: var(--terracotta);
+  color: inherit;
   font-size: 0.62rem;
   font-weight: 850;
   text-align: right;
@@ -10155,7 +10394,34 @@ input.calendar-filter-search[type="search"]:focus {
   }
 
   .screener-controls {
-    grid-template-columns: 1fr 1fr;
+    padding: 8px;
+  }
+
+  .screener-filter-rail,
+  .screener-view-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .screener-filter-chip {
+    flex: 0 0 auto;
+    min-width: 150px;
+  }
+
+  .screener-search {
+    flex-basis: 230px;
+  }
+
+  .screener-more-filter-panel {
+    position: fixed;
+    top: auto;
+    right: 12px;
+    left: 12px;
+    grid-template-columns: 1fr;
+    width: auto;
+    max-height: 68vh;
+    overflow: auto;
   }
 
   .plant-page-key-stats {
@@ -10304,21 +10570,6 @@ input.calendar-filter-search[type="search"]:focus {
     font-weight: 850;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-  }
-
-  .screener-table td[data-label="Spacing"],
-  .screener-table td[data-label="Planting depth"],
-  .screener-table td[data-label="Container min"],
-  .screener-table td[data-label="Yield (lbs)"],
-  .screener-table td[data-label="Soil"],
-  .screener-table td[data-label="Water"],
-  .screener-table td[data-label="Harvest"],
-  .screener-table td[data-label="Traits"],
-  .screener-table td[data-label="Native flag"],
-  .screener-table td[data-label="Low water"],
-  .screener-table td[data-label="Pairings"],
-  .screener-table td[data-label="Source"] {
-    display: none;
   }
 
   .screener-name-cell {
@@ -10647,6 +10898,80 @@ input.calendar-filter-search[type="search"]:focus {
   .garden-planner-supply-groups,
   .screener-controls {
     grid-template-columns: 1fr;
+  }
+
+  .screener-header {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .screener-header h1 {
+    font-size: 2.05rem;
+  }
+
+  .screener-header p:not(.eyebrow) {
+    display: none;
+  }
+
+  .screener-screenbar {
+    flex-wrap: nowrap;
+    gap: 6px;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 10px;
+  }
+
+  .screener-screenbar label {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0 10px;
+  }
+
+  .screener-screenbar select {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .screener-screenbar button {
+    flex: 0 0 auto;
+    padding: 0 10px;
+  }
+
+  .screener-metrics {
+    width: 100%;
+    max-width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .screener-metrics div {
+    min-height: 52px;
+    padding: 8px;
+  }
+
+  .screener-metrics strong {
+    font-size: 1.18rem;
+  }
+
+  .screener-metrics span {
+    font-size: 0.62rem;
+  }
+
+  .screener-toolbar {
+    gap: 8px;
+  }
+
+  .screener-toolbar div {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 2px;
+  }
+
+  .screener-toolbar button,
+  .screener-toolbar a,
+  .screener-toolbar label {
+    flex: 0 0 auto;
   }
 
   .garden-planner-supply-item {

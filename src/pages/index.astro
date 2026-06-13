@@ -992,6 +992,15 @@ const heroPhotos = heroPhotoSelections
                 Screen the full Plant by ZIP database like a compact market table:
                 filter by growing needs, sort by practical fields, and jump into any plant profile.
               </p>
+              <div class="screener-screenbar" aria-label="Saved plant screens">
+                <label for="screener-saved-screen">
+                  <span>Screen</span>
+                  <select id="screener-saved-screen">
+                    <option value="">All plants</option>
+                  </select>
+                </label>
+                <button id="screener-save-screen" type="button">Save screen</button>
+              </div>
             </div>
             <div class="screener-metrics" aria-label="Screener database summary">
               <div>
@@ -1003,190 +1012,192 @@ const heroPhotos = heroPhotoSelections
                 <span>plant types</span>
               </div>
               <div>
-                <strong>{poundYieldMetricCount}</strong>
+                <strong id="screener-yield-count">{poundYieldMetricCount}</strong>
                 <span>lb returns</span>
               </div>
               <div>
                 <strong id="screener-relation-count">0</strong>
                 <span>with pairings</span>
               </div>
-              <div>
+              <div id="screener-portfolio-metric" class="screener-portfolio-metric" hidden>
                 <strong id="screener-portfolio-count">0</strong>
-                <span>portfolio</span>
+                <span>saved</span>
               </div>
             </div>
           </header>
 
+          <div class="screener-view-bar" aria-label="Column views">
+            <button type="button" class="screener-view-tab is-active" data-screener-view-tab="core" aria-pressed="true">Overview</button>
+            <button type="button" class="screener-view-tab" data-screener-view-tab="yield" aria-pressed="false">Yield &amp; density</button>
+            <button type="button" class="screener-view-tab" data-screener-view-tab="risk" aria-pressed="false">Care &amp; difficulty</button>
+            <button type="button" class="screener-view-tab" data-screener-view-tab="ecology" aria-pressed="false">Pairings</button>
+            <button type="button" class="screener-view-tab" data-screener-view-tab="container" aria-pressed="false">Sourcing</button>
+            <button type="button" class="screener-view-tab" data-screener-view-tab="all" aria-pressed="false">All columns</button>
+            <select id="screener-column-preset" class="screener-native-view-select" aria-label="Column view">
+              <option value="core">Overview</option>
+              <option value="yield">Yield &amp; density</option>
+              <option value="space">Space efficiency</option>
+              <option value="container">Sourcing</option>
+              <option value="risk">Care &amp; difficulty</option>
+              <option value="ecology">Pairings</option>
+              <option value="all">All columns</option>
+            </select>
+          </div>
+
           <section class="screener-controls" aria-label="Plant screener filters">
-            <div class="screener-search">
-              <label for="screener-search">Search</label>
-              <input id="screener-search" type="search" placeholder="Name, trait, harvest, source" />
-            </div>
-            <label class="screener-field" for="screener-column-preset">
-              <span>Column view</span>
-              <select id="screener-column-preset">
-                <option value="core">Core screener</option>
-                <option value="yield">Yield view</option>
-                <option value="space">Space efficiency</option>
-                <option value="container">Container view</option>
-                <option value="risk">Risk view</option>
-                <option value="ecology">Native/ecology</option>
-                <option value="all">All columns</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-saved-screen">
-              <span>Saved screen</span>
-              <select id="screener-saved-screen">
-                <option value="">Choose a screen</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-type">
-              <span>Type/form</span>
-              <select id="screener-type">
-                <option value="">Any type/form</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-zone">
-              <span>Zone fit</span>
-              <select id="screener-zone">
-                <option value="">Any zone</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-horizon">
-              <span>Time horizon</span>
-              <select id="screener-horizon">
-                <option value="">Any horizon</option>
-                <option value="quick">Quick harvest</option>
-                <option value="seasonal">Seasonal annual</option>
-                <option value="fast-perennial">Fast perennial</option>
-                <option value="medium">Medium horizon</option>
-                <option value="long">Long horizon</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-container">
-              <span>Container min</span>
-              <select id="screener-container">
-                <option value="">Any container</option>
-                <option value="1">1 gal or less</option>
-                <option value="2">2 gal or less</option>
-                <option value="5">5 gal or less</option>
-                <option value="10">10 gal or less</option>
-                <option value="15">15 gal or less</option>
-                <option value="25">25 gal or less</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-sun">
-              <span>Sun</span>
-              <select id="screener-sun">
-                <option value="">Any sun</option>
-                <option value="full">Full</option>
-                <option value="partial">Partial</option>
-                <option value="shade">Shade</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-soil">
-              <span>Soil</span>
-              <select id="screener-soil">
-                <option value="">Any soil</option>
-                <option value="clay">Clay</option>
-                <option value="loam">Loam</option>
-                <option value="sandy">Sandy</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-water">
-              <span>Water</span>
-              <select id="screener-water">
-                <option value="">Any water</option>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-goal">
-              <span>Goal</span>
-              <select id="screener-goal">
-                <option value="">Any goal</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-flag">
-              <span title="Filter by native flags, low-water needs, or plant pairings.">Attribute</span>
-              <select id="screener-flag">
-                <option value="">Any attribute</option>
-                <option value="native">Native flag</option>
-                <option value="low-water">Low water need</option>
-                <option value="pairings">Has pairings</option>
-                <option value="watchlist">Portfolio</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-deer">
-              <span title="Planning cue based on extension deer browsing categories. No plant is deer proof.">Deer pressure</span>
-              <select id="screener-deer">
-                <option value="">Any deer cue</option>
-                <option value="better">Better for deer pressure</option>
-                <option value="avoid-frequent">Hide frequent browse risk</option>
-                <option value="rarely">Rarely damaged only</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-juglone">
-              <span title="Planning cue for black walnut / juglone-sensitive sites.">Black walnut</span>
-              <select id="screener-juglone">
-                <option value="">Any walnut cue</option>
-                <option value="tolerant">Better near black walnut</option>
-                <option value="avoid-sensitive">Hide juglone-sensitive plants</option>
-                <option value="sensitive">Sensitive plants only</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-partner">
-              <span>Source</span>
-              <select id="screener-partner">
-                <option value="">Any source</option>
-              </select>
-            </label>
-            <label class="screener-field" for="screener-confidence">
-              <span>Data</span>
-              <select id="screener-confidence">
-                <option value="">Any data quality</option>
-                <option value="medium">Medium+</option>
-                <option value="low">Low only</option>
-              </select>
-            </label>
-            <details class="screener-range-panel" open>
-              <summary>Numeric filters</summary>
-              <div class="screener-range-grid">
-                <label class="screener-field" for="screener-min-yield">
+            <div class="screener-filter-rail">
+              <label class="screener-search screener-filter-chip" for="screener-search">
+                <span>Search</span>
+                <input id="screener-search" type="search" placeholder="Name, trait, harvest, source" />
+              </label>
+              <label class="screener-field screener-filter-chip" for="screener-type">
+                <span>Type/form</span>
+                <select id="screener-type">
+                  <option value="">Any type/form</option>
+                </select>
+              </label>
+              <label class="screener-field screener-filter-chip" for="screener-zone">
+                <span>Zone fit</span>
+                <select id="screener-zone">
+                  <option value="">Any zone</option>
+                </select>
+              </label>
+              <label class="screener-field screener-filter-chip" for="screener-goal">
+                <span>Goal</span>
+                <select id="screener-goal">
+                  <option value="">Any goal</option>
+                </select>
+              </label>
+              <label class="screener-field screener-filter-chip" for="screener-sun">
+                <span>Sun</span>
+                <select id="screener-sun">
+                  <option value="">Any sun</option>
+                  <option value="full">Full</option>
+                  <option value="partial">Partial</option>
+                  <option value="shade">Shade</option>
+                </select>
+              </label>
+              <label class="screener-field screener-filter-chip" for="screener-soil">
+                <span>Soil</span>
+                <select id="screener-soil">
+                  <option value="">Any soil</option>
+                  <option value="clay">Clay</option>
+                  <option value="loam">Loam</option>
+                  <option value="sandy">Sandy</option>
+                </select>
+              </label>
+              <label class="screener-field screener-filter-chip" for="screener-water">
+                <span>Water</span>
+                <select id="screener-water">
+                  <option value="">Any water</option>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </label>
+              <details class="screener-more-filters">
+                <summary>+ Filters</summary>
+                <div class="screener-more-filter-panel">
+                <label class="screener-field screener-filter-chip" for="screener-horizon">
+                  <span>Time horizon</span>
+                  <select id="screener-horizon">
+                    <option value="">Any horizon</option>
+                    <option value="quick">Quick harvest</option>
+                    <option value="seasonal">Seasonal annual</option>
+                    <option value="fast-perennial">Fast perennial</option>
+                    <option value="medium">Medium horizon</option>
+                    <option value="long">Long horizon</option>
+                  </select>
+                </label>
+                <label class="screener-field screener-filter-chip" for="screener-container">
+                  <span>Container min</span>
+                  <select id="screener-container">
+                    <option value="">Any container</option>
+                    <option value="1">1 gal or less</option>
+                    <option value="2">2 gal or less</option>
+                    <option value="5">5 gal or less</option>
+                    <option value="10">10 gal or less</option>
+                    <option value="15">15 gal or less</option>
+                    <option value="25">25 gal or less</option>
+                  </select>
+                </label>
+                <label class="screener-field screener-filter-chip" for="screener-flag">
+                  <span title="Filter by native flags, low-water needs, or plant pairings.">Attribute</span>
+                  <select id="screener-flag">
+                    <option value="">Any attribute</option>
+                    <option value="native">Native flag</option>
+                    <option value="low-water">Low water need</option>
+                    <option value="pairings">Has pairings</option>
+                    <option value="watchlist">Saved plants</option>
+                  </select>
+                </label>
+                <label class="screener-field screener-filter-chip" for="screener-deer">
+                  <span title="Planning cue based on extension deer browsing categories. No plant is deer proof.">Deer pressure</span>
+                  <select id="screener-deer">
+                    <option value="">Any deer cue</option>
+                    <option value="better">Better for deer pressure</option>
+                    <option value="avoid-frequent">Hide frequent browse risk</option>
+                    <option value="rarely">Rarely damaged only</option>
+                  </select>
+                </label>
+                <label class="screener-field screener-filter-chip" for="screener-juglone">
+                  <span title="Planning cue for black walnut / juglone-sensitive sites.">Black walnut</span>
+                  <select id="screener-juglone">
+                    <option value="">Any walnut cue</option>
+                    <option value="tolerant">Better near black walnut</option>
+                    <option value="avoid-sensitive">Hide juglone-sensitive plants</option>
+                    <option value="sensitive">Sensitive plants only</option>
+                  </select>
+                </label>
+                <label class="screener-field screener-filter-chip" for="screener-partner">
+                  <span>Source</span>
+                  <select id="screener-partner">
+                    <option value="">Any source</option>
+                  </select>
+                </label>
+                <label class="screener-field screener-filter-chip" for="screener-confidence">
+                  <span>Data</span>
+                  <select id="screener-confidence">
+                    <option value="">Any data quality</option>
+                    <option value="medium">Medium+</option>
+                    <option value="low">Low only</option>
+                  </select>
+                </label>
+                <label class="screener-field screener-filter-chip" for="screener-min-yield">
                   <span>Min yield lb</span>
                   <input id="screener-min-yield" type="number" inputmode="decimal" min="0" step="1" placeholder="Any" />
                 </label>
-                <label class="screener-field" for="screener-min-yield-space">
+                <label class="screener-field screener-filter-chip" for="screener-min-yield-space">
                   <span>Min lb / 100 sq ft</span>
                   <input id="screener-min-yield-space" type="number" inputmode="decimal" min="0" step="1" placeholder="Any" />
                 </label>
-                <label class="screener-field" for="screener-max-first-output">
+                <label class="screener-field screener-filter-chip" for="screener-max-first-output">
                   <span>Max first output yrs</span>
                   <input id="screener-max-first-output" type="number" inputmode="decimal" min="0" step="0.25" placeholder="Any" />
                 </label>
-                <label class="screener-field" for="screener-max-container">
+                <label class="screener-field screener-filter-chip" for="screener-max-container">
                   <span>Max container gal</span>
                   <input id="screener-max-container" type="number" inputmode="decimal" min="0" step="1" placeholder="Any" />
                 </label>
-                <label class="screener-field" for="screener-max-difficulty">
+                <label class="screener-field screener-filter-chip" for="screener-max-difficulty">
                   <span>Max difficulty</span>
-                  <input id="screener-max-difficulty" type="number" inputmode="numeric" min="1" max="5" step="1" placeholder="1-5" />
+                  <input id="screener-max-difficulty" type="number" inputmode="numeric" min="1" max="5" step="1" placeholder="Any" />
                 </label>
-                <label class="screener-field" for="screener-min-reliability">
+                <label class="screener-field screener-filter-chip" for="screener-min-reliability">
                   <span>Min reliability</span>
-                  <input id="screener-min-reliability" type="number" inputmode="numeric" min="1" max="5" step="1" placeholder="1-5" />
+                  <input id="screener-min-reliability" type="number" inputmode="numeric" min="1" max="5" step="1" placeholder="Any" />
                 </label>
-                <label class="screener-field" for="screener-max-height">
+                <label class="screener-field screener-filter-chip" for="screener-max-height">
                   <span>Max height ft</span>
                   <input id="screener-max-height" type="number" inputmode="decimal" min="0" step="1" placeholder="Any" />
                 </label>
-                <label class="screener-field" for="screener-min-density">
+                <label class="screener-field screener-filter-chip" for="screener-min-density">
                   <span>Min plants / 100 sq ft</span>
                   <input id="screener-min-density" type="number" inputmode="decimal" min="0" step="1" placeholder="Any" />
                 </label>
-              </div>
-            </details>
+                </div>
+              </details>
+            </div>
           </section>
 
           <section id="screener-supply-panel" class="screener-supply-panel" aria-labelledby="screener-supply-title" hidden>
@@ -1207,7 +1218,6 @@ const heroPhotos = heroPhotoSelections
                 <span>Show source links</span>
               </label>
               <a href="/exports/plants.csv">CSV export</a>
-              <button id="screener-more" type="button" hidden>Show more</button>
               <button id="screener-reset" type="button">Reset filters</button>
             </div>
           </div>
@@ -1280,6 +1290,9 @@ const heroPhotos = heroPhotoSelections
             </table>
           </div>
           <p id="screener-empty" class="screener-empty" hidden>No plants match those filters.</p>
+          <div class="screener-load-more">
+            <button id="screener-more" type="button" hidden>Show more</button>
+          </div>
         </div>
       </section>
 
