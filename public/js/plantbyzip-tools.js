@@ -9,7 +9,7 @@ const toolZoneStorageKey = "plantbyzip.zoneCache.v1";
 const toolZoneLookupTimeoutMs = 8000;
 const toolDataUrls = {
   plants: "/data/plants.json",
-  metrics: "/data/plant-metrics-home.json",
+  metrics: "/data/plant-metrics-core.json",
   products: "/data/affiliate-products.json",
   relationships: "/data/plant-relationships.json"
 };

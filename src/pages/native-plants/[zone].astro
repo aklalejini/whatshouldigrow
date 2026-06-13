@@ -1,4 +1,5 @@
 ---
+import PrimaryNav from "../../components/PrimaryNav.astro";
 import AnalyticsEvents from "../../components/AnalyticsEvents.astro";
 import ZoneIntentArticle from "../../components/ZoneIntentArticle.astro";
 import plantMetrics from "../../data/plantMetrics.json";
@@ -80,13 +81,7 @@ const itemListJsonLd = {
   </head>
   <body>
     <main class="app-shell">
-      <nav class="site-tabs" aria-label="Primary sections">
-        <a class="site-tab is-active" aria-current="page" href="/">Plant matcher</a>
-        <a class="site-tab" href="/#screener">Screener</a>
-        <a class="site-tab" href="/planting-calendar/">Calendar</a>
-        <a class="site-tab" href="/#zone-map">Zone map</a>
-        <a class="site-tab" href="/blog/">Guides</a>
-      </nav>
+      <PrimaryNav active="matcher" />
 
       <ZoneIntentArticle target={target} entries={entries} relatedTargets={relatedTargets} />
     </main>

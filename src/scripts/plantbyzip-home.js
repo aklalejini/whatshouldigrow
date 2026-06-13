@@ -6,7 +6,10 @@ let plantMetrics = {};
 let plantRelationships = [];
 let blogSearchData = [];
 let plantPhotoById = {};
+let coreDataLoaded = false;
+let detailMetricsLoaded = false;
 let coreDataPromise = null;
+let detailDataPromise = null;
 let blogDataPromise = null;
 let zoneMapInitialized = false;
 let calendarInitialized = false;
@@ -16,8 +19,9 @@ const dataUrls = {
   plants: "/data/plants.json",
   partners: "/data/affiliate-partners.json",
   affiliateProducts: "/data/affiliate-products.json",
-  plantPhotos: "/data/plant-photos.json",
-  plantMetrics: "/data/plant-metrics-home.json",
+  plantPhotos: "/data/plant-photos-home.json",
+  plantMetrics: "/data/plant-metrics-core.json",
+  plantMetricsDetail: "/data/plant-metrics-home.json",
   plantRelationships: "/data/plant-relationships.json",
   blogSearch: "/data/blog-search.json"
 };
@@ -33,7 +37,7 @@ function setDataLoading(message = "Loading plant data...") {
 }
 
 async function ensureCoreData() {
-  if (plants.length) return;
+  if (coreDataLoaded) return;
   if (!coreDataPromise) {
     coreDataPromise = Promise.all([
       loadJson(dataUrls.plants),
@@ -50,9 +54,22 @@ async function ensureCoreData() {
       plantMetrics = metricRows;
       plantRelationships = relationshipRows;
       plantPhotoById = Object.fromEntries(plantPhotoEntries.map((entry) => [entry.id, entry]));
+      coreDataLoaded = true;
     });
   }
   await coreDataPromise;
+}
+
+async function ensureDetailData() {
+  await ensureCoreData();
+  if (detailMetricsLoaded) return;
+  if (!detailDataPromise) {
+    detailDataPromise = loadJson(dataUrls.plantMetricsDetail).then((metricRows) => {
+      plantMetrics = metricRows;
+      detailMetricsLoaded = true;
+    });
+  }
+  await detailDataPromise;
 }
 
 async function ensureBlogData() {
@@ -870,7 +887,7 @@ async function ensureCalendarReady() {
 }
 
 async function ensureScreenerReady() {
-  await ensureCoreData();
+  await ensureDetailData();
   if (!screenerInitialized) {
     initializeScreener();
     screenerInitialized = true;
@@ -878,7 +895,7 @@ async function ensureScreenerReady() {
 }
 
 async function ensureGardenPlannerReady() {
-  await ensureCoreData();
+  await ensureDetailData();
   if (!screenerInitialized) {
     initializeScreener();
     screenerInitialized = true;

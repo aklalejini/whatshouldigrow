@@ -1,4 +1,5 @@
 ---
+import PrimaryNav from "../components/PrimaryNav.astro";
 import { getCollection } from "astro:content";
 import AnalyticsEvents from "../components/AnalyticsEvents.astro";
 import plants from "../data/plants.json";
@@ -160,68 +161,7 @@ const heroPhotos = heroPhotoSelections
   </head>
   <body>
     <main class="app-shell" data-progressive-shell>
-      <nav class="site-tabs" aria-label="Primary sections" role="tablist">
-        <button
-          class="site-tab is-active"
-          type="button"
-          role="tab"
-          aria-selected="true"
-          aria-controls="matcher-view"
-          data-view="matcher"
-        >
-          Plant matcher
-        </button>
-        <button
-          class="site-tab"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          aria-controls="screener-view"
-          data-view="screener"
-        >
-          Screener
-        </button>
-        <button
-          class="site-tab"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          aria-controls="garden-planner-view"
-          data-view="garden-planner"
-        >
-          Garden planner
-        </button>
-        <button
-          class="site-tab"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          aria-controls="calendar-view"
-          data-view="calendar"
-        >
-          Calendar
-        </button>
-        <button
-          class="site-tab"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          aria-controls="zone-map-view"
-          data-view="zone-map"
-        >
-          Zone map
-        </button>
-        <button
-          class="site-tab"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          aria-controls="blog-view"
-          data-view="blog"
-        >
-          Guides
-        </button>
-      </nav>
+      <PrimaryNav mode="tabs" active="matcher" />
 
       <div id="matcher-view" class="view-panel is-active" role="tabpanel" data-view-panel="matcher">
       <section class="workspace" aria-labelledby="app-title">
@@ -1614,6 +1554,8 @@ const heroPhotos = heroPhotoSelections
     <script define:vars={{ gardenPlanTemplates }}>
       window.plantByZipGardenTemplates = gardenPlanTemplates;
     </script>
-    <script type="module" src="/js/plantbyzip-home.js?v=20260612-real-photo-cards"></script>
+    <script>
+      import "../scripts/plantbyzip-home.js";
+    </script>
   </body>
 </html>

@@ -1,0 +1,62 @@
+---
+const {
+  mode = "links",
+  active = "",
+  includeTools = true
+} = Astro.props;
+
+const linkItems = [
+  { key: "matcher", href: "/", label: "Plant matcher" },
+  { key: "screener", href: "/#screener", label: "Screener" },
+  { key: "garden-planner", href: "/#garden-planner", label: "Garden planner" },
+  { key: "calendar", href: "/planting-calendar/", label: "Calendar" },
+  { key: "zone-map", href: "/#zone-map", label: "Zone map" },
+  { key: "plants", href: "/plants/", label: "Plants" },
+  { key: "guides", href: "/blog/", label: "Guides" },
+  { key: "tools", href: "/tools/", label: "Tools", optional: true }
+].filter((item) => includeTools || !item.optional);
+
+const tabItems = [
+  { key: "matcher", control: "matcher-view", label: "Plant matcher" },
+  { key: "screener", control: "screener-view", label: "Screener" },
+  { key: "garden-planner", control: "garden-planner-view", label: "Garden planner" },
+  { key: "calendar", control: "calendar-view", label: "Calendar" },
+  { key: "zone-map", control: "zone-map-view", label: "Zone map" },
+  { key: "blog", control: "blog-view", label: "Guides" }
+];
+---
+
+{mode === "tabs" ? (
+  <nav class="site-tabs" aria-label="Primary sections" role="tablist">
+    {tabItems.map((item) => {
+      const isActive = item.key === active;
+      return (
+        <button
+          class={isActive ? "site-tab is-active" : "site-tab"}
+          type="button"
+          role="tab"
+          aria-selected={String(isActive)}
+          aria-controls={item.control}
+          data-view={item.key}
+        >
+          {item.label}
+        </button>
+      );
+    })}
+  </nav>
+) : (
+  <nav class="site-tabs" aria-label="Primary sections">
+    {linkItems.map((item) => {
+      const isActive = item.key === active;
+      return (
+        <a
+          class={isActive ? "site-tab is-active" : "site-tab"}
+          aria-current={isActive ? "page" : undefined}
+          href={item.href}
+        >
+          {item.label}
+        </a>
+      );
+    })}
+  </nav>
+)}

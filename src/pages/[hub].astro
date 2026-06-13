@@ -1,4 +1,5 @@
 ---
+import PrimaryNav from "../components/PrimaryNav.astro";
 import AnalyticsEvents from "../components/AnalyticsEvents.astro";
 import affiliateProducts from "../data/affiliateProducts.json";
 import plantMetricSources from "../data/plantMetricSources.json";
@@ -59,8 +60,6 @@ const hubResourceProducts = hubProductIds(hub)
   .map((id) => affiliateProducts.find((product) => product.id === id))
   .filter(Boolean);
 const isCalendarHub = hub.slug === "planting-calendar";
-const matcherTabClass = isCalendarHub ? "site-tab" : "site-tab is-active";
-const calendarTabClass = isCalendarHub ? "site-tab is-active" : "site-tab";
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -130,13 +129,7 @@ const collectionJsonLd = {
   </head>
   <body>
     <main class="app-shell">
-      <nav class="site-tabs" aria-label="Primary sections">
-        <a class={matcherTabClass} aria-current={isCalendarHub ? undefined : "page"} href="/">Plant matcher</a>
-        <a class="site-tab" href="/#screener">Screener</a>
-        <a class={calendarTabClass} aria-current={isCalendarHub ? "page" : undefined} href="/planting-calendar/">Calendar</a>
-        <a class="site-tab" href="/#zone-map">Zone map</a>
-        <a class="site-tab" href="/blog/">Guides</a>
-      </nav>
+      <PrimaryNav active={isCalendarHub ? "calendar" : "matcher"} />
 
       <article class="hub-page">
         <nav class="breadcrumb" aria-label="Breadcrumb">

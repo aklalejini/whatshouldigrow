@@ -1,4 +1,5 @@
 ---
+import PrimaryNav from "../components/PrimaryNav.astro";
 import AnalyticsEvents from "../components/AnalyticsEvents.astro";
 import {
   DEFAULT_SOCIAL_IMAGE,
@@ -41,14 +42,7 @@ const socialImageUrl = siteUrl(DEFAULT_SOCIAL_IMAGE);
   <body>
     <AnalyticsEvents pageType="error_page" topic="404" />
     <main class="app-shell">
-      <nav class="site-tabs" aria-label="Primary sections">
-        <a class="site-tab" href="/">Plant matcher</a>
-        <a class="site-tab" href="/#screener">Screener</a>
-        <a class="site-tab" href="/planting-calendar/">Calendar</a>
-        <a class="site-tab" href="/#zone-map">Zone map</a>
-        <a class="site-tab" href="/plants/">Plants</a>
-        <a class="site-tab" href="/blog/">Guides</a>
-      </nav>
+      <PrimaryNav />
 
       <article class="trust-page">
         <nav class="breadcrumb" aria-label="Breadcrumb">

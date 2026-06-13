@@ -77,6 +77,50 @@ const metricDisplayKeys = [
   "confidence"
 ];
 
+const metricCoreTopLevelKeys = [
+  "daysToMaturityMax",
+  "daysToMaturityMin",
+  "firstYieldYearsMax",
+  "spacingPlantFtMin",
+  "spacingPlantFtMax",
+  "spacingRowFtMin",
+  "spacingRowFtMax",
+  "spacingAreaSqFtMin",
+  "spacingAreaSqFtMax",
+  "plantsPer100SqFtMin",
+  "plantsPer100SqFtMax",
+  "matureHeightFtMin",
+  "matureHeightFtMax",
+  "outputMax",
+  "outputMin",
+  "difficultyScore",
+  "reliabilityScore",
+  "horizonKey",
+  "horizonLabel",
+  "riskLevel",
+  "containerMinGallons",
+  "containerSuitability",
+  "deerResistance",
+  "deerResistanceLabel",
+  "jugloneTolerance",
+  "jugloneToleranceLabel",
+  "yieldLbsMin",
+  "yieldLbsMax"
+];
+
+const metricCoreDisplayKeys = [
+  "firstOutput",
+  "spacing",
+  "containerNote",
+  "containerMin",
+  "matureSize",
+  "output",
+  "yieldLbs",
+  "difficulty",
+  "reliability",
+  "confidence"
+];
+
 function cleanValue(value) {
   return value === "Needs source" ? null : value;
 }
@@ -91,18 +135,40 @@ async function writeJson(file, value) {
 }
 
 function trimMetrics(metrics) {
+  return trimMetricFields(metrics, metricTopLevelKeys, metricDisplayKeys);
+}
+
+function trimCoreMetrics(metrics) {
+  return trimMetricFields(metrics, metricCoreTopLevelKeys, metricCoreDisplayKeys);
+}
+
+function trimMetricFields(metrics, topLevelKeys, displayKeys) {
   return Object.fromEntries(
     Object.entries(metrics).map(([id, metric]) => {
       const trimmed = {};
-      metricTopLevelKeys.forEach((key) => {
+      topLevelKeys.forEach((key) => {
         if (Object.hasOwn(metric, key)) trimmed[key] = cleanValue(metric[key]);
       });
       trimmed.display = Object.fromEntries(
-        metricDisplayKeys.map((key) => [key, cleanValue(metric.display?.[key])])
+        displayKeys.map((key) => [key, cleanValue(metric.display?.[key])])
       );
       return [id, trimmed];
     })
   );
+}
+
+function trimHomePhotos(photos) {
+  return photos.map((entry) => ({
+    id: entry.id,
+    primary: entry.primary
+      ? {
+          src: entry.primary.src,
+          alt: entry.primary.alt,
+          position: entry.primary.position,
+          bytes: entry.primary.bytes
+        }
+      : null
+  }));
 }
 
 function frontmatterValue(source, key) {
@@ -159,6 +225,8 @@ await Promise.all([
   writeJson("affiliate-products.json", affiliateProducts),
   writeJson("plant-art.json", plantArt),
   writeJson("plant-photos.json", plantPhotos),
+  writeJson("plant-photos-home.json", trimHomePhotos(plantPhotos)),
+  writeJson("plant-metrics-core.json", trimCoreMetrics(plantMetrics)),
   writeJson("plant-metrics-home.json", trimMetrics(plantMetrics)),
   writeJson("plant-relationships.json", plantRelationships),
   writeJson("blog-search.json", await buildBlogSearchData())

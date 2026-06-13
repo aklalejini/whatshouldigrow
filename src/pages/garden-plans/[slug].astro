@@ -1,4 +1,5 @@
 ---
+import PrimaryNav from "../../components/PrimaryNav.astro";
 import AnalyticsEvents from "../../components/AnalyticsEvents.astro";
 import affiliateProducts from "../../data/affiliateProducts.json";
 import plants from "../../data/plants.json";
@@ -118,13 +119,7 @@ const collectionJsonLd = {
   </head>
   <body>
     <main class="app-shell">
-      <nav class="site-tabs" aria-label="Primary sections">
-        <a class="site-tab" href="/">Plant matcher</a>
-        <a class="site-tab" href="/#screener">Screener</a>
-        <a class="site-tab is-active" aria-current="page" href="/garden-plans/">Garden plans</a>
-        <a class="site-tab" href="/planting-calendar/">Calendar</a>
-        <a class="site-tab" href="/blog/">Guides</a>
-      </nav>
+      <PrimaryNav active="garden-planner" />
 
       <article class="hub-page garden-plan-page">
         <nav class="breadcrumb" aria-label="Breadcrumb">
