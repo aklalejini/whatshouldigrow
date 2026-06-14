@@ -467,7 +467,7 @@ button {
 }
 
 .app-shell:not(.has-started) .workspace {
-  width: min(1360px, calc(100dvw - 40px));
+  width: min(1280px, calc(100dvw - 40px));
   min-height: auto;
   padding: 12px 0 16px;
   align-items: stretch;
@@ -531,7 +531,7 @@ button {
 
 .home-hero-photo img {
   object-fit: cover;
-  object-position: 50% 50%;
+  object-position: 54% 50%;
 }
 
 .home-hero-photo::after {
