@@ -13,7 +13,7 @@
     "photos:audit": "node scripts/audit_plant_photo_applicability.mjs",
     "photos:dedupe": "node scripts/dedupe_plant_photo_metadata.mjs",
     "validate": "node scripts/validate_site_data.mjs",
-    "build": "npm run data:build && astro build",
+    "build": "npm run data:build && npm run images:optimize && astro build",
     "preview": "astro preview --host 127.0.0.1",
     "art:import": "python scripts/import_plant_art.py",
     "metrics:generate": "node scripts/generate_plant_metrics.mjs"

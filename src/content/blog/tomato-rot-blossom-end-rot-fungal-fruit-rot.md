@@ -33,6 +33,25 @@ Late blight is a different level of concern. It can move fast during cool, wet w
 
 Cracking and splitting are not diseases at first. They happen when fruit takes up water faster than the skin can expand, often after a dry period followed by heavy rain or heavy irrigation. Cracked fruit then becomes an easy entry point for fungi, bacteria, yeasts, and insects.
 
+<div class="article-image-grid" aria-label="Common tomato rot and fruit damage examples">
+  <figure>
+    <img src="/blog/tomato-rot-blossom-end-closeup.jpg" alt="A ripe tomato with a dark sunken blossom-end rot lesion on the blossom end." loading="lazy" />
+    <figcaption>Blossom-end rot is usually dry, dark, and leathery on the blossom end of the fruit. Photo: <a href="https://commons.wikimedia.org/wiki/File:Blossom_end_rot_tomato_2017_A.jpg" target="_blank" rel="noopener noreferrer">Fructibus / Wikimedia Commons</a>, CC0.</figcaption>
+  </figure>
+  <figure>
+    <img src="/blog/tomato-rot-anthracnose.jpg" alt="A tomato fruit with a circular sunken anthracnose lesion." loading="lazy" />
+    <figcaption>Anthracnose often appears as circular, sunken spots on ripening or ripe fruit. Photo: <a href="https://commons.wikimedia.org/wiki/File:Colletotrichum_coccodes.jpg" target="_blank" rel="noopener noreferrer">Clemson University - USDA Cooperative Extension Slide Series / Bugwood.org</a>, public domain.</figcaption>
+  </figure>
+  <figure>
+    <img src="/blog/tomato-rot-late-blight.jpg" alt="Tomato fruit on the vine with brown late blight damage and collapsing foliage." loading="lazy" />
+    <figcaption>Late blight can damage leaves, stems, and fruit quickly during cool, wet disease-favorable weather. Photo: <a href="https://commons.wikimedia.org/wiki/File:Tomato_late_blight_fruit_damage_(5816738680).jpg" target="_blank" rel="noopener noreferrer">Scot Nelson / Wikimedia Commons</a>, CC0.</figcaption>
+  </figure>
+  <figure>
+    <img src="/blog/tomato-rot-cracking.jpg" alt="Two ripe tomatoes with long cracks radiating down from the stem end." loading="lazy" />
+    <figcaption>Cracking starts as a moisture-swing injury, then may invite secondary decay if fruit is left exposed. Photo: <a href="https://commons.wikimedia.org/wiki/File:2_x_Cracked_tomato_2017_A.jpg" target="_blank" rel="noopener noreferrer">Fructibus / Wikimedia Commons</a>, CC0.</figcaption>
+  </figure>
+</div>
+
 ## Blossom-end rot: the common black-bottom tomato
 
 Blossom-end rot is a physiological disorder, not an infectious disease. NC State Extension describes it as damage from a non-living factor, and University of Maryland Extension explains that it develops when enlarging fruit does not receive enough calcium. The key phrase is "the fruit does not receive." That is not always the same as "the soil has no calcium."

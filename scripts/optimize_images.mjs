@@ -1,4 +1,4 @@
-import { mkdir, readFile } from "node:fs/promises";
+import { mkdir, readFile, readdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
@@ -31,23 +31,13 @@ plantPhotos.forEach((entry) => {
   (entry.details ?? []).forEach((photo) => addJob(photo.src, [480, 800, 1200]));
 });
 
-[
-  "/blog/struggling-blueberry-hero.jpg",
-  "/blog/right-plant-right-place-hero.jpg",
-  "/blog/garden-pests-hero.jpg",
-  "/blog/garden-pest-squash-bugs.jpg",
-  "/blog/garden-pest-slugs.jpg",
-  "/blog/garden-pest-japanese-beetle-damage.jpg",
-  "/blog/garden-pest-cucumber-beetles.jpg",
-  "/blog/garden-pest-cabbage-worms.jpg",
-  "/blog/garden-pest-aphids.jpg",
-  "/blog/garden-beds-hero.jpg",
-  "/blog/heat-tolerant-plants-hero.jpg",
-  "/blog/fruit-tree-apple-hero.jpg",
-  "/blog/drip-irrigation-hero.jpg",
-  "/blog/zone-6-starter-kit-hero.png",
-  "/blog/zone-7-starter-kit-hero.jpg"
-].forEach((src) => addJob(src, [640, 1200, 1600]));
+const blogDir = path.join(publicDir, "blog");
+if (existsSync(blogDir)) {
+  for (const entry of await readdir(blogDir, { withFileTypes: true })) {
+    if (!entry.isFile() || !/\.(avif|jpe?g|png|webp)$/i.test(entry.name)) continue;
+    addJob(`/blog/${entry.name}`, [640, 1200, 1600]);
+  }
+}
 
 addJob("/maps/usda-plant-hardiness-all-states-hillshade.png", [1200, 2000, 3000]);
 

@@ -104,6 +104,19 @@ for (const file of requiredVendorFiles) {
   expect(existsSync(path.join(publicDir, file)), `Missing self-hosted vendor asset: ${file}`);
 }
 
+const blogRoot = path.join(publicDir, "blog");
+if (existsSync(blogRoot)) {
+  for (const file of await readdir(blogRoot)) {
+    if (!/\.(avif|jpe?g|png|webp)$/i.test(file)) continue;
+    const src = `/blog/${file}`;
+    [640, 1200, 1600].forEach((width) => {
+      ["avif", "webp"].forEach((format) => {
+        expect(existsSync(publicFile(optimizedUrl(src, width, format))), `Missing optimized blog ${format} ${width}: ${src}`);
+      });
+    });
+  }
+}
+
 let largestPhoto = { file: "", size: 0 };
 const photoRoot = path.join(publicDir, "plant-photos");
 for (const dir of await readdir(photoRoot)) {
